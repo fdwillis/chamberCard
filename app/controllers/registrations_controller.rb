@@ -5,8 +5,13 @@ class RegistrationsController < Devise::RegistrationsController
 
   def createAccount
     if resource.persisted? # user is created successfuly
-      resource.createUserAPI(params[:user])
-    	debugger
+      createAtt = resource.createUserAPI(params[:user])
+
+      if createAtt['success']
+      	userFound = User.find_by(email: createAtt['email'])
+      	userFound.update_attributes(uuid: createAtt['uuid'])
+      	flash[:notice] = "Created account"
+      end
     end
   end
 end
