@@ -102,19 +102,19 @@ p {
 }
 
 .theme-light .header .header-logo {
-  background-image: url(../images/preload-logo.png);
+  background-image: url(/assets/preload-logo.png);
 }
 
 .theme-dark .header .header-logo {
-  background-image: url(../images/preload-logo.png);
+  background-image: url(/assets/preload-logo.png);
 }
 
 .theme-light .footer .footer-logo {
-  background-image: url(../images/preload-logo.png);
+  background-image: url(/assets/preload-logo.png);
 }
 
 .theme-dark .footer .footer-logo {
-  background-image: url(../images/preload-logo.png);
+  background-image: url(/assets/preload-logo.png);
 }
 
 /*--Header---*/
@@ -5019,127 +5019,127 @@ code {
 
 /*Styles used to showcase the demo product on ThemeForest and create backgrounds. These can be deleted to increase speed of loading*/
 .bg-0 {
-  background-image: url(../images/pictures/0l.jpg);
+  background-image: url(/assets/pictures/0l.jpg);
 }
 
 .bg-1 {
-  background-image: url(../images/pictures/1.jpg);
+  background-image: url(/assets/pictures/1.jpg);
 }
 
 .bg-2 {
-  background-image: url(../images/pictures/2.jpg);
+  background-image: url(/assets/pictures/2.jpg);
 }
 
 .bg-3 {
-  background-image: url(../images/pictures/3.jpg);
+  background-image: url(/assets/pictures/3.jpg);
 }
 
 .bg-4 {
-  background-image: url(../images/pictures/4.jpg);
+  background-image: url(/assets/pictures/4.jpg);
 }
 
 .bg-5 {
-  background-image: url(../images/pictures/5.jpg);
+  background-image: url(/assets/pictures/5.jpg);
 }
 
 .bg-6 {
-  background-image: url(../images/pictures/6.jpg);
+  background-image: url(/assets/pictures/6.jpg);
 }
 
 .bg-7 {
-  background-image: url(../images/pictures/7.jpg);
+  background-image: url(/assets/pictures/7.jpg);
 }
 
 .bg-8 {
-  background-image: url(../images/pictures/8.jpg);
+  background-image: url(/assets/pictures/8.jpg);
 }
 
 .bg-9 {
-  background-image: url(../images/pictures/9.jpg);
+  background-image: url(/assets/pictures/9.jpg);
 }
 
 .bg-10 {
-  background-image: url(../images/pictures/10.jpg);
+  background-image: url(/assets/pictures/10.jpg);
 }
 
 .bg-11 {
-  background-image: url(../images/pictures/11.jpg);
+  background-image: url(/assets/pictures/11.jpg);
 }
 
 .bg-12 {
-  background-image: url(../images/pictures/12.jpg);
+  background-image: url(/assets/pictures/12.jpg);
 }
 
 .bg-13 {
-  background-image: url(../images/pictures/13.jpg);
+  background-image: url(/assets/pictures/13.jpg);
 }
 
 .bg-14 {
-  background-image: url(../images/pictures/14.jpg);
+  background-image: url(/assets/pictures/14.jpg);
 }
 
 .bg-15 {
-  background-image: url(../images/pictures/15.jpg);
+  background-image: url(/assets/pictures/15.jpg);
 }
 
 .bg-16 {
-  background-image: url(../images/pictures/16.jpg);
+  background-image: url(/assets/pictures/16.jpg);
 }
 
 .bg-17 {
-  background-image: url(../images/pictures/17.jpg);
+  background-image: url(/assets/pictures/17.jpg);
 }
 
 .bg-18 {
-  background-image: url(../images/pictures/18.jpg);
+  background-image: url(/assets/pictures/18.jpg);
 }
 
 .bg-19 {
-  background-image: url(../images/pictures/19.jpg);
+  background-image: url(/assets/pictures/19.jpg);
 }
 
 .bg-20 {
-  background-image: url(../images/pictures/20.jpg);
+  background-image: url(/assets/pictures/20.jpg);
 }
 
 .bg-21 {
-  background-image: url(../images/pictures/21.jpg);
+  background-image: url(/assets/pictures/21.jpg);
 }
 
 .bg-22 {
-  background-image: url(../images/pictures/22.jpg);
+  background-image: url(/assets/pictures/22.jpg);
 }
 
 .bg-23 {
-  background-image: url(../images/pictures/23.jpg);
+  background-image: url(/assets/pictures/23.jpg);
 }
 
 .bg-24 {
-  background-image: url(../images/pictures/24.jpg);
+  background-image: url(/assets/pictures/24.jpg);
 }
 
 .bg-25 {
-  background-image: url(../images/pictures/25.jpg);
+  background-image: url(/assets/pictures/25.jpg);
 }
 
 .bg-26 {
-  background-image: url(../images/pictures/26.jpg);
+  background-image: url(/assets/pictures/26.jpg);
 }
 
 .bg-27 {
-  background-image: url(../images/pictures/27.jpg);
+  background-image: url(/assets/pictures/27.jpg);
 }
 
 .bg-28 {
-  background-image: url(../images/pictures/28.jpg);
+  background-image: url(/assets/pictures/28.jpg);
 }
 
 .bg-29 {
-  background-image: url(../images/pictures/29.jpg);
+  background-image: url(/assets/pictures/29.jpg);
 }
 
 .bg-30 {
-  background-image: url(../images/pictures/30.jpg);
+  background-image: url(/assets/pictures/30.jpg);
 }
 
 /*Demo Colors*/
@@ -5298,7 +5298,7 @@ html.lb-disable-scrolling {
   width: 32px;
   height: 32px;
   margin: 0 auto;
-  background: url(../images/loading.gif) no-repeat;
+  background: url(/assets/loading.gif) no-repeat;
 }
 
 .lb-nav {
@@ -5329,7 +5329,7 @@ html.lb-disable-scrolling {
   width: 34%;
   left: 0;
   float: left;
-  background: url(../images/prev.png) left 48% no-repeat;
+  background: url(/assets/prev.png) left 48% no-repeat;
   filter: alpha(Opacity=0);
   opacity: 0;
   -webkit-transition: opacity .6s;
@@ -5347,7 +5347,7 @@ html.lb-disable-scrolling {
   width: 64%;
   right: 0;
   float: right;
-  background: url(../images/next.png) right 48% no-repeat;
+  background: url(/assets/next.png) right 48% no-repeat;
   filter: alpha(Opacity=0);
   opacity: 0;
   -webkit-transition: opacity .6s;
@@ -5401,7 +5401,7 @@ html.lb-disable-scrolling {
   float: right;
   width: 30px;
   height: 30px;
-  background: url(../images/close.png) top right no-repeat;
+  background: url(/assets/close.png) top right no-repeat;
   text-align: right;
   outline: 0;
   filter: alpha(Opacity=70);
