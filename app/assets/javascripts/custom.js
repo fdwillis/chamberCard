@@ -1377,6 +1377,6 @@ $(document).ready(function(){
             location.appendChild(scriptTag);
         };
         function loadPWA(){}
-        loadJS('scripts/pwa.js', loadPWA, document.body);
+        loadJS('/assets/pwa.js', loadPWA, document.body);
     }    
 }); 
