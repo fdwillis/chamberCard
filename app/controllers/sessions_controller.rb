@@ -8,7 +8,9 @@ class SessionsController < Devise::SessionsController
     logoutAtt = current_user.deleteUserSessionAPI
     
     if logoutAtt['success']
-      flash[:notice] = "Welcome"
+      flash[:notice] = "See ya later"
+    else
+      flash[:error] = "Trouble Connecting"
     end
   end
 
@@ -18,7 +20,6 @@ class SessionsController < Devise::SessionsController
     if loginAtt['success']
       flash[:success] = "Welcome"
     else
-      sign_out resource
       flash[:error] = "Trouble Connecting"
     end
   end
