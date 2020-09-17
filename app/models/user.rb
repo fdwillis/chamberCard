@@ -8,7 +8,7 @@ class User < ApplicationRecord
 
   def createUserAPI
 
-    curlCall = `curl -d "email=#{self.email}&password=#{self.password}&password_confirmation=#{self.password}" #{SITEurl}v1/users`
+    curlCall = `curl -d "email=#{self.email}&password=#{self.password}&password_confirmation=#{self.password}" #{SITEurl}/v1/users`
 
     response = Oj.load(curlCall)
 
@@ -18,10 +18,10 @@ class User < ApplicationRecord
   end
 
   def createUserSessionAPI(password)
-    curlCall = `curl -d "email=#{self.email}&password=#{password}" #{SITEurl}v1/sessions`
+    curlCall = `curl -d "email=#{self.email}&password=#{password}" #{SITEurl}/v1/sessions`
     
     response = Oj.load(curlCall)
-
+    
     if response['success']
       self.update_attributes(authentication_token: response['authentication_token'] )
       return response
@@ -31,7 +31,7 @@ class User < ApplicationRecord
   end
 
   def deleteUserSessionAPI
-    response = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X DELETE #{SITEurl}v1/sessions/#{self.uuid}`
+    response = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X DELETE #{SITEurl}/v1/sessions/#{self.uuid}`
     
     Oj.load(response)
   end
