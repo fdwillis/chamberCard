@@ -14,3 +14,7 @@
  *= require font-awesome
  *= require_self
  */
+ 
+.alert {
+  margin-top: 50px;
+}

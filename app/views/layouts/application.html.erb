@@ -26,11 +26,29 @@
                 
     
     <div id="page">
+        <div class="header">
+          <% if flash[:notice] %>
+            <div class="text-center alert alert-success">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <h3 class="tex-center"><%= flash[:notice] %></h3>
+            </div>
+          <% elsif flash[:error] %>
+            <div class="text-center alert alert-danger">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <h3 class="tex-center"><%= flash[:error] %></h3>
+            </div>
+          <% elsif flash[:alert] %>
+            <div class="text-center alert alert-warning">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <h3 class="tex-center"><%= flash[:alert] %></h3>
+            </div>
+          <% end %>
+        </div>
         <div class="header header-fixed header-logo-center">
           <a href="index.html" class="header-title">Messy Lawns Logo</a>
           <a href="#" data-back-button="" class="header-icon header-icon-1"><i class="fa fa-arrow-left"></i></a>
           <a href="#" data-menu="menu-share" class="header-icon header-icon-3"><i class="fa fa-share-alt"></i></a>
-      </div>
+        </div>
       <div id="footer-bar" class="footer-bar-1">
           <a href="index.html"><i class="fa fa-home"></i><span>Home</span></a>
           <a href="index-components.html"><i class="fa fa-star"></i><span>Features</span></a>
