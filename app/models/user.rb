@@ -31,8 +31,7 @@ class User < ApplicationRecord
   end
 
   def deleteUserSessionAPI
-    
-    response = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X PUT #{SITEurl}/v1/sessions/#{self.uuid}`
+    response = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X DELETE #{SITEurl}/v1/sessions/#{self.uuid}`
     
     Oj.load(response)
   end

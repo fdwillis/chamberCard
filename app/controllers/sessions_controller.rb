@@ -1,18 +1,15 @@
 class SessionsController < Devise::SessionsController
   after_action :after_login, :only => :create
-  before_action :after_logout, :only => :destroy
+  before_action :before_logout, :only => :destroy
   # before_action :after_login, :only => :create
   
 
-  def after_logout
-    # logoutAtt = current_user.deleteUserSessionAPI
-    # debugger
+  def before_logout
+    logoutAtt = current_user.deleteUserSessionAPI
     
-    # if logoutAtt['success']
-    #   userFound = User.find_by(uuid: logoutAtt['uuid'])
-    #   userFound.update_attributes(authentication_token: nil)
-    #   flash[:notice] = "Welcome"
-    # end
+    if logoutAtt['success']
+      flash[:notice] = "Welcome"
+    end
   end
 
   def after_login
