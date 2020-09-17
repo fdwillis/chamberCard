@@ -6,7 +6,7 @@ class RegistrationsController < Devise::RegistrationsController
   def createAccount
     if resource.persisted? # user is created successfuly
       createAtt = resource.createUserAPI
-
+      
       if createAtt['success']
 
       	
