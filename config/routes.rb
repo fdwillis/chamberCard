@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
 	get 'auth/_manifest.json' => 'home#manifest'
 	get '_manifest.json' => 'home#manifest'
+	# get 'service-worker.js' => 'home#service_worker'
   devise_for :users, path: '/', path_names: { sign_in: 'auth/login', sign_out: 'auth/logout', sign_up: 'auth/sign-up' }, controllers: { registrations: 'registrations', sessions: 'sessions'}
 	devise_scope :user do
 		
 	  authenticated :user do
-	    root 'home#home', as: :authenticated_root
+	    root 'services#index', as: :authenticated_root
 	  end
 
 	  unauthenticated do

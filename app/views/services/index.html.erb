@@ -1,0 +1,87 @@
+
+
+<div class="card card-style mt-4">
+    <div class="content">         
+        <a href="#" class="d-flex pb-4">
+            <div class="align-self-center">
+                <img src="images/pictures/14s.jpg" class="rounded-sm" width="50">
+            </div>
+            <div class="align-self-center">
+                <h5 class="mb-n1">Mobile PWA's</h5>
+                <p class="font-600 opacity-40 mb-0">1 hour, 24 minutes</p>
+            </div>
+            <div class="align-self-center ml-auto">
+                <span class="btn btn-sm rounded-sm bg-green1-dark text-uppercase font-800">START</span>
+            </div>
+        </a>
+    </div>           
+</div>
+
+<div class="card card-style">
+    <div class="content mt-3 mb-3">
+      <h3>Services</h3>
+      <p>
+          Services offered by Messy Lawns
+      </p>
+      <ul class="gallery-filter-controls">
+          <li class="gallery-filter-active gallery-filter-all" data-filter="all">All</li>
+          <li data-filter="1">Services</li>
+          <li data-filter="2">Hourlies</li>
+          <!-- <li data-filter="3">Products</li> -->
+      </ul>
+    </div>
+</div>
+<div class="card card-style mt-4">
+    <div class="content">
+        <div class=" gallery-filter">
+
+          <a href="#" data-lightbox="gallery-1" class="filtr-item" title="Service" data-category="1" style="transform: unset;">
+<!--             <div class="align-self-center">
+                <img src="images/pictures/14s.jpg" class="rounded-sm" width="50">
+            </div> -->
+            <div class="align-self-center">
+                <h5 class="">Service</h5>
+                <p class="font-600 opacity-40">1 hour, 24 minutes</p>
+            </div>
+            <div class="align-self-center">
+                <span class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">START</span>
+            </div>
+          </a>
+          
+          <a href="#" data-lightbox="gallery-1" class="filtr-item" title="Hourlie" data-category="2">
+<!--             <div class="align-self-center">
+                <img src="images/pictures/14s.jpg" class="rounded-sm" width="50">
+            </div> -->
+            <div class="align-self-center">
+                <h5 class="">Hourlie</h5>
+                <p class="font-600 opacity-40">1 hour, 24 minutes</p>
+            </div>
+            <div class="align-self-center">
+                <span class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">START</span>
+            </div>
+          </a>
+          
+
+
+
+
+
+
+
+
+
+            						
+        </div>
+    </div>
+</div>
+
+  
+<% if @hourlies.present? %>
+	<%= @hourlies %>
+<% end %>
+<% if @services.present? %>
+	<%= @services %>
+<% end %>
+<% if @products.present? %>
+	<%= @products %>
+<% end %>

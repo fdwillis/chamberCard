@@ -2,6 +2,10 @@ class HomeController < ApplicationController
   def home
   end
 
+  def service_worker
+  	
+  end
+
   def manifest
   	manifest = {
 		"version" => "3.0",

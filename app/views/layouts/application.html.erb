@@ -50,13 +50,15 @@
           <a href="#" data-menu="menu-share" class="header-icon header-icon-3"><i class="fa fa-share-alt"></i></a>
         </div>
       <div id="footer-bar" class="footer-bar-1">
-          <a href="index.html"><i class="fa fa-home"></i><span>Home</span></a>
-          <a href="index-components.html"><i class="fa fa-star"></i><span>Features</span></a>
-          <a href="index-pages.html" ><i class="fa fa-heart"></i><span>Pages</span></a>
-          <a href="index-search.html"><i class="fa fa-search"></i><span>Search</span></a>
-          <a href="#" data-menu="menu-settings"><i class="fa fa-cog"></i><span>Settings</span></a>
+          <a href="index.html"><i class="fa fa-briefcase"></i><span>Services</span></a>
+          <a href="index-components.html"><i class="fa fa-address-book"></i><span>Schedule</span></a>
+          <a href="index-pages.html" ><i class="fa fa-dollar-sign"></i><span>Payments/Charges</span></a>
+          <a href="index-search.html"><i class="fa fa-user"></i><span>Profile</span></a>
+          <!-- <a href="#" data-menu="menu-settings"><i class="fa fa-cog"></i><span>Settings</span></a> -->
       </div>
-      <%= yield %>
+      <div class="page-content header-clear-medium">
+        <%= yield %>
+      </div>
       <!-- All Menus, Action Sheets, Modals, Notifications, Toasts, Snackbars get Placed outside the <div class="page-content"> -->
       <div id="menu-settings" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-height="308">
           <div class="menu-title"><h1>Settings</h1><p class="color-highlight">Flexible and Easy to Use</p><a href="#" class="close-menu"><i class="fa fa-times"></i></a></div>
