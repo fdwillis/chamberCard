@@ -25,30 +25,58 @@
   </div>
     
     <div id="page">
-      <div class="header header-fixed header-logo-center">
-          <% if flash[:success] %>
-            <div class="text-center alert alert-success">
-              <button type="button" class="close" data-dismiss="alert">&times;</button>
-              <h3 class="tex-center"><%= flash[:success] %></h3>
+      <div class="header header-fixed header-logo-app mb-3">
+            <a href="index.html" class="header-title">Messy Lawns Logo</a>
+            <a href="#" class="header-icon header-icon-1"><i class="fa fa-arrow-left"></i></a>
+            
+            <div id="header-icon-3-group">
+                <a href="#" data-menu="menu-share" class="header-icon header-icon-3"><i class="fa fa-share-alt"></i></a>
             </div>
-          <% elsif flash[:error] %>
-            <div class="text-center alert alert-danger">
-              <button type="button" class="close" data-dismiss="alert">&times;</button>
-              <h3 class="tex-center"><%= flash[:error] %></h3>
-            </div>
-          <% elsif flash[:notice] %>
-            <div class="text-center alert alert-warning">
-              <button type="button" class="close" data-dismiss="alert">&times;</button>
-              <h3 class="tex-center"><%= flash[:notice] %></h3>
-            </div>
-          <% end %>
-          <a href="index.html" class="header-title">Sticky Mobile</a>
-          <a href="#" data-back-button class="header-icon header-icon-1"><i class="fa fa-arrow-left"></i></a>
-          <a href="#" data-toggle-theme class="header-icon header-icon-4"><i class="fa fa-lightbulb"></i></a>
-          <% if current_user %>
-            <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: 'header-icon header-icon-2' %>
-          <% end %>
-      </div>
+            <!-- <div id="header-icon-3-group">
+                <button type="button" id="header-3" data-toggle="dropdown" class="header-icon header-icon-3"><i class="fas fa-bars"></i><span class="badge bg-highlight">7</span></button>
+                <div class="dropdown-menu bg-theme border-0 shadow-l rounded-s mr-2 mt-2" aria-labelledby="header-3">
+                    <p class="font-10 pl-3 pr-3 font-500 mb-0">Mini Menu</p>
+                    <div class="divider mb-0"></div>
+                    <div class="list-group list-custom-small pl-2 pr-3">
+                        <a href="#">
+                            <i class="fa font-14 fa-home color-blue2-dark"></i>
+                            <span>Home</span>
+                            <i class="fa fa-angle-right"></i>
+                        </a>        
+                        <a href="#">
+                            <i class="fa font-14 fa-cog color-gray2-dark"></i>
+                            <span>Features</span>
+                            <i class="fa fa-angle-right"></i>
+                        </a>        
+                        <a href="#">
+                            <i class="fa font-14 fa-file color-green1-dark"></i>
+                            <span>Pages</span>
+                            <i class="fa fa-angle-right"></i>
+                        </a>        
+                        <a href="#">
+                            <i class="fa font-14 fa-mobile color-dark1-dark"></i>
+                            <span>Appstyle</span>
+                            <i class="fa fa-angle-right"></i>
+                        </a>        
+                        <a href="#">
+                            <i class="fa font-14 fa-camera color-brown1-dark"></i>
+                            <span>Galleries</span>
+                            <i class="fa fa-angle-right"></i>
+                        </a>        
+                        <a href="#">
+                            <i class="fa font-14 fa-image color-red2-dark"></i>
+                            <span>Portfolios</span>
+                            <i class="fa fa-angle-right"></i>
+                        </a>        
+                        <a href="#" class="border-0">
+                            <i class="fa font-14 fa-envelope color-blue2-dark"></i>
+                            <span>Contact Us</span>
+                            <i class="fa fa-angle-right"></i>
+                        </a>        
+                    </div>
+                </div>
+            </div> -->
+        </div>
       
       <div id="footer-bar" class="footer-bar-1">
           <a href="index.html"><i class="fa fa-home"></i><span>Home</span></a>
@@ -146,22 +174,22 @@
               <div class="divider mb-0"></div>
               <div class="list-group list-custom-small list-icon-0">
                   <a href="#" class="shareToFacebook">
-                      <i class="font-18 fab fa-facebook color-facebook"></i>
+                      <i class="font-18 fa fa-facebook color-facebook"></i>
                       <span class="font-13">Facebook</span>
                       <i class="fa fa-angle-right"></i>
                   </a>
                   <a href="#" class="shareToTwitter">
-                      <i class="font-18 fab fa-twitter-square color-twitter"></i>
+                      <i class="font-18 fa fa-twitter-square color-twitter"></i>
                       <span class="font-13">Twitter</span>
                       <i class="fa fa-angle-right"></i>
                   </a>
                   <a href="#" class="shareToLinkedIn">
-                      <i class="font-18 fab fa-linkedin color-linkedin"></i>
+                      <i class="font-18 fa fa-linkedin color-linkedin"></i>
                       <span class="font-13">LinkedIn</span>
                       <i class="fa fa-angle-right"></i>
                   </a>        
                   <a href="#" class="shareToWhatsApp">
-                      <i class="font-18 fab fa-whatsapp-square color-whatsapp"></i>
+                      <i class="font-18 fa fa-whatsapp-square color-whatsapp"></i>
                       <span class="font-13">WhatsApp</span>
                       <i class="fa fa-angle-right"></i>
                   </a>   
