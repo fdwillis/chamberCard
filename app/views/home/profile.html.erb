@@ -6,29 +6,29 @@
             <div class="d-flex content mb-1">
                 <!-- left side of profile -->
                 <div class="flex-grow-1">
-                    <h1 class="font-700">Karla Black<i class="fa fa-check-circle color-blue2-dark float-right font-13 mt-2 mr-3"></i></h1>
-                    <p class="mb-2">
+                    <h1 class="font-700">Karla Black</h1>
+<!--                     <p class="mb-2">
                         Karla Black is a name used when you generate a text with an annonymous name.
                     </p>
                     <p class="font-10">
                         <strong class="color-theme pr-1">1k</strong>Followers
                         <strong class="color-theme pl-3 pr-1">342</strong>Following 
-                    </p>
+                    </p> -->
                 </div>
                 <!-- right side of profile. increase image width to increase column size-->
-                <img src="images/empty.png" data-src="images/pictures/0t.jpg" width="115" class="rounded-circle mt-3 shadow-xl preload-img">
+                <!-- <img src="images/empty.png" data-src="images/pictures/0t.jpg" width="115" class="rounded-circle mt-3 shadow-xl preload-img"> -->
             </div>
             <!-- follow buttons-->
             <div class="content mb-0">
                 <div class="row mb-0">
-                    <div class="col-4">
+<!--                     <div class="col-4">
                         <a href="#" class="btn btn-full btn-s rounded-s text-uppercase font-900 bg-blue2-dark">Follow</a>
                     </div>
                     <div class="col-4">
                         <a href="#" class="btn btn-full btn-s rounded-s text-uppercase font-900 color-theme border-blue2-dark">Message</a>
-                    </div>
-                    
-                    <div class="col-4">
+                    </div> -->
+
+                    <div class="col-12">
                         <a href="<%= destroy_user_session_path %>" class="btn btn-full btn-s rounded-s text-uppercase font-900 bg-red2-dark">Signout</a>
                     </div>
                 </div>
@@ -37,9 +37,9 @@
             <div class="divider mt-4 mb-0"></div>
             
             <div class="gallery-view-controls">
-                <a href="#" class="color-highlight gallery-view-1-activate"><i class="fa fa-th"></i></a>
-                <a href="#" class="gallery-view-2-activate"><i class="fa fa-th-large"></i></a>
-                <a href="#" class="gallery-view-3-activate"><i class="fa fa-bars"></i></a>
+                <a href="#" class="color-highlight gallery-view-1-activate"><i class="fa fa-user"></i></a>
+                <a href="#" class="gallery-view-2-activate"><i class="fa fa-credit-card"></i></a>
+                <a href="#" class="gallery-view-3-activate"><i class="fa fa-cog"></i></a>
                 <div class="clear"></div>
             </div>
             <div class="content mb-0">
@@ -168,7 +168,8 @@
             </div>
         </div>
 
-        <a href="<%= new_user_session_url %>" class="btn btn-m rounded-l shadow-xl btn-full bg-green1-dark font-900 text button-m scale-box">CREATE ACCOUNT</a>
+        <a href="<%= new_user_registration_url %>" class="btn btn-l bg-green1-dark col-md-6">CREATE ACCOUNT</a>
+        <a href="<%= new_user_session_url %>" class="btn btn-l btn-full border-green1-dark">LOGIN</a>
   </div>
   
   <div class="cover-button-bottom">

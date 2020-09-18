@@ -70,7 +70,7 @@
           <a href="/charges"><i class="fa fa-dollar-sign"></i><span>Payments</span></a>
         <% end %>
 
-        <% if request.fullpath == '/profile' %>
+        <% if request.fullpath == '/profile' || request.fullpath == '/auth/login'|| request.fullpath == '/auth/sign-up' %>
           <a href="/profile"><i class="fa fa-user color-highlight"></i><span>Profile</span></a>
         <% else %>
           <a href="/profile"><i class="fa fa-user"></i><span>Profile</span></a>
