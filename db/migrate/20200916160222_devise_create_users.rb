@@ -6,6 +6,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
       ## Database authenticatable
       t.string :accessPin
       t.string :authentication_token, unique: true
+      t.string :username, unique: true
       t.string :uuid, unique: true
 
       t.string :email,              null: false, default: ""

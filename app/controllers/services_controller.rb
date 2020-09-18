@@ -1,4 +1,4 @@
-class ServicesController < Devise::RegistrationsController
+class ServicesController < ApplicationController
 	def index
 		curlCall = `curl -d "" -X GET #{SITEurl}/v1/time-slots`
 

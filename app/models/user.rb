@@ -2,19 +2,21 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
-  
+         :recoverable, :rememberable, :validatable  
   # after_create :createUserAPI
 
   def createUserAPI
 
-    curlCall = `curl -d "email=#{self.email}&password=#{self.password}&password_confirmation=#{self.password}" #{SITEurl}/v1/users`
+    curlCall = `curl -d "email=#{self.email}&username=#{self.username}&password=#{self.password}&password_confirmation=#{self.password}" #{SITEurl}/v1/users`
 
     response = Oj.load(curlCall)
-
-    self.update_attributes(uuid: response['uuid'], accessPin: response['accessPin'] )
-   
-    return response
+    
+    if !response.blank? && response['success']
+      self.update_attributes(uuid: response['uuid'],username: response['username'], accessPin: response['accessPin'] )
+      return response
+    else
+      return false
+    end
   end
 
   def createUserSessionAPI(password)
@@ -33,6 +35,13 @@ class User < ApplicationRecord
   def deleteUserSessionAPI
     response = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X DELETE #{SITEurl}/v1/sessions/#{self.uuid}`
     
-    Oj.load(response)
+    response = Oj.load(response)
+
+    if !response.blank? && response['success']
+      self.update_attributes(authentication_token: nil )
+      return response
+    else
+      return false
+    end
   end
 end
