@@ -1,22 +1,3 @@
-
-
-<div class="card card-style mt-4">
-    <div class="content">         
-        <a href="#" class="d-flex pb-4">
-            <div class="align-self-center">
-                <img src="images/pictures/14s.jpg" class="rounded-sm" width="50">
-            </div>
-            <div class="align-self-center">
-                <h5 class="mb-n1">Mobile PWA's</h5>
-                <p class="font-600 opacity-40 mb-0">1 hour, 24 minutes</p>
-            </div>
-            <div class="align-self-center ml-auto">
-                <span class="btn btn-sm rounded-sm bg-green1-dark text-uppercase font-800">START</span>
-            </div>
-        </a>
-    </div>           
-</div>
-
 <div class="card card-style">
     <div class="content mt-3 mb-3">
       <h3>Services</h3>
@@ -77,11 +58,11 @@
 
   
 <% if @hourlies.present? %>
-	<%= @hourlies %>
+	Hourlies: <%= @hourlies %>
 <% end %>
 <% if @services.present? %>
-	<%= @services %>
+	Services: <%= @services %>
 <% end %>
 <% if @products.present? %>
-	<%= @products %>
+	Products: <%= @products %>
 <% end %>
