@@ -46,13 +46,15 @@
         </div>
         <div class="header header-fixed header-logo-center">
           <a href="index.html" class="header-title">Messy Lawns Logo</a>
-          <a href="#" data-back-button="" class="header-icon header-icon-1"><i class="fa fa-arrow-left"></i></a>
+          <%= link_to :back, class: 'header-icon header-icon-1' do %>
+            <i class="fa fa-arrow-left"></i>
+          <% end %>
           <a href="#" data-menu="menu-share" class="header-icon header-icon-3"><i class="fa fa-share-alt"></i></a>
         </div>
       <div id="footer-bar" class="footer-bar-1">
           <a href="/services"><i class="fa fa-briefcase"></i><span>Services</span></a>
           <a href="/schedule"><i class="fa fa-address-book"></i><span>Schedule</span></a>
-          <a href="/charges" ><i class="fa fa-dollar-sign"></i><span>Payments/Charges</span></a>
+          <a href="/charges" ><i class="fa fa-dollar-sign"></i><span>Payments</span></a>
           <a href="/profile"><i class="fa fa-user"></i><span>Profile</span></a>
           <!-- <a href="#" data-menu="menu-settings"><i class="fa fa-cog"></i><span>Settings</span></a> -->
       </div>
