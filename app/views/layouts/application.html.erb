@@ -52,10 +52,31 @@
           <a href="#" data-menu="menu-share" class="header-icon header-icon-3"><i class="fa fa-share-alt"></i></a>
         </div>
       <div id="footer-bar" class="footer-bar-1">
+        <% if request.fullpath == '/services' %>
+          <a href="/services"><i class="fa fa-briefcase color-highlight"></i><span>Services</span></a>
+        <% else %>
           <a href="/services"><i class="fa fa-briefcase"></i><span>Services</span></a>
+        <% end %>
+
+        <% if request.fullpath == '/schedule' %>
+          <a href="/schedule"><i class="fa fa-address-book color-highlight"></i><span>Schedule</span></a>
+        <% else %>
           <a href="/schedule"><i class="fa fa-address-book"></i><span>Schedule</span></a>
-          <a href="/charges" ><i class="fa fa-dollar-sign"></i><span>Payments</span></a>
+        <% end %>
+
+        <% if request.fullpath == '/charges' %>
+          <a href="/charges"><i class="fa fa-dollar-sign color-highlight"></i><span>Payments</span></a>
+        <% else %>
+          <a href="/charges"><i class="fa fa-dollar-sign"></i><span>Payments</span></a>
+        <% end %>
+
+        <% if request.fullpath == '/profile' %>
+          <a href="/profile"><i class="fa fa-user color-highlight"></i><span>Profile</span></a>
+        <% else %>
           <a href="/profile"><i class="fa fa-user"></i><span>Profile</span></a>
+        <% end %>
+
+
           <!-- <a href="#" data-menu="menu-settings"><i class="fa fa-cog"></i><span>Settings</span></a> -->
       </div>
       <div class="page-content header-clear-medium">
