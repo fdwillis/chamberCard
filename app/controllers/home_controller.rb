@@ -1,10 +1,4 @@
 class HomeController < ApplicationController
-	def grabProfile
-		
-	end
-	
-  def home
-  end
 
   def service_worker
   	

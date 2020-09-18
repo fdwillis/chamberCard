@@ -4,6 +4,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
   def change
     create_table :users do |t|
       ## Database authenticatable
+      t.string :accessPin
       t.string :authentication_token, unique: true
       t.string :uuid, unique: true
 

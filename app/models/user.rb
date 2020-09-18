@@ -12,7 +12,7 @@ class User < ApplicationRecord
 
     response = Oj.load(curlCall)
 
-    self.update_attributes(uuid: response['uuid'] )
+    self.update_attributes(uuid: response['uuid'], accessPin: response['accessPin'] )
    
     return response
   end

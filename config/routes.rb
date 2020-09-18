@@ -1,20 +1,23 @@
 Rails.application.routes.draw do
 	get 'auth/_manifest.json' => 'home#manifest'
 	get '_manifest.json' => 'home#manifest'
-
-	get "profile" => 'home#grabProfile'
+	
+  devise_for :users, path: '/', path_names: { sign_in: 'auth/login', sign_out: 'auth/logout', sign_up: 'auth/sign-up' }, controllers: { registrations: 'registrations', sessions: 'sessions'}
 
 	# get 'service-worker.js' => 'home#service_worker'
-  devise_for :users, path: '/', path_names: { sign_in: 'auth/login', sign_out: 'auth/logout', sign_up: 'auth/sign-up' }, controllers: { registrations: 'registrations', sessions: 'sessions'}
+
 	devise_scope :user do
+
+		resources :charges
+		resources :schedule
+		resources :services
 		
 	  authenticated :user do
-	    root 'profile#grabProfile', as: :authenticated_root
+	    root 'profile#profile', as: :authenticated_root
 	  end
-    root 'services#index'
 
-	  # unauthenticated do
-	  #   root 'devise/sessions#new', as: :unauthenticated_root
-	  # end
+	  unauthenticated :user do
+	    root 'services#index', as: :unauthenticated_root
+	  end
 	end	
 end
