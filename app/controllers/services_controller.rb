@@ -4,14 +4,14 @@ class ServicesController < Devise::RegistrationsController
 
     response = Oj.load(curlCall)
 
-    if response['success']
+    if !response.blank? && response['success']
 			@hourlies = response['hourlies']
 			@services = response['services']
 			@products = response['products']
 			
 		else
-			flash[:notice] = "Trouble connecting"
-			redirect_to root_path
+			flash[:notice] = "Trouble connecting. Try again later."
+			redirect_to new_user_session_path
 		end
 	end
 end

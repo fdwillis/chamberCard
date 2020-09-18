@@ -27,20 +27,20 @@
     
     <div id="page">
         <div class="header">
-          <% if flash[:notice] %>
+          <% if flash[:success] %>
             <div class="text-center alert alert-success">
               <button type="button" class="close" data-dismiss="alert">&times;</button>
-              <h3 class="tex-center"><%= flash[:notice] %></h3>
+              <h3 class="tex-center"><%= flash[:success] %></h3>
             </div>
           <% elsif flash[:error] %>
             <div class="text-center alert alert-danger">
               <button type="button" class="close" data-dismiss="alert">&times;</button>
               <h3 class="tex-center"><%= flash[:error] %></h3>
             </div>
-          <% elsif flash[:alert] %>
+          <% elsif flash[:notice] %>
             <div class="text-center alert alert-warning">
               <button type="button" class="close" data-dismiss="alert">&times;</button>
-              <h3 class="tex-center"><%= flash[:alert] %></h3>
+              <h3 class="tex-center"><%= flash[:notice] %></h3>
             </div>
           <% end %>
         </div>

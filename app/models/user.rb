@@ -22,7 +22,7 @@ class User < ApplicationRecord
     
     response = Oj.load(curlCall)
     
-    if response['success']
+    if !response.blank? && response['success']
       self.update_attributes(authentication_token: response['authentication_token'] )
       return response
     else

@@ -15,54 +15,48 @@
 <div class="card card-style mt-4">
     <div class="content">
         <div class=" gallery-filter">
+          <!--<% if @products.present? %>
+          Products: <%= @products %>
+             <% end %>
+           -->
+          <% if @hourlies.present? %>
+            <% @hourlies.each do |h| %>
+              <a href="#" data-lightbox="gallery-1" class="filtr-item" title="<%= h['title'] %>" data-category="2">
+                <!-- <div class="align-self-center">
+                    <img src="images/pictures/14s.jpg" class="rounded-sm" width="50">
+                </div> -->
+                <div class="align-self-center">
+                    <h5 class=""><%= h['title'] %></h5>
+                    <p class="font-600 opacity-40"><%= number_to_currency(h['wageRate'], precision: 2) %> per hour</p>
+                </div>
+                <div class="align-self-center">
+                    <span class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">START</span>
+                </div>
+              </a>
+            <% end %>
+          <% end %>
 
-          <a href="#" data-lightbox="gallery-1" class="filtr-item" title="Service" data-category="1" style="transform: unset;">
-<!--             <div class="align-self-center">
-                <img src="images/pictures/14s.jpg" class="rounded-sm" width="50">
-            </div> -->
-            <div class="align-self-center">
-                <h5 class="">Service</h5>
-                <p class="font-600 opacity-40">1 hour, 24 minutes</p>
-            </div>
-            <div class="align-self-center">
-                <span class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">START</span>
-            </div>
-          </a>
+          <% if @services.present? %>
+            <% @services.each do |h| %>
+              <a href="#" data-lightbox="gallery-1" class="filtr-item" title="<%= h['title'] %>" data-category="1">
+                <!-- <div class="align-self-center">
+                    <img src="images/pictures/14s.jpg" class="rounded-sm" width="50">
+                </div> -->
+                <div class="align-self-center">
+                    <h5 class=""><%= h['title'] %></h5>
+                    <p class="font-600 opacity-40"><%= number_to_currency(h['cost'], precision: 2) %> per service</p>
+                </div>
+                <div class="align-self-center">
+                    <span class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">START</span>
+                </div>
+              </a>
+            <% end %>
+          <% end %>
           
-          <a href="#" data-lightbox="gallery-1" class="filtr-item" title="Hourlie" data-category="2">
-<!--             <div class="align-self-center">
-                <img src="images/pictures/14s.jpg" class="rounded-sm" width="50">
-            </div> -->
-            <div class="align-self-center">
-                <h5 class="">Hourlie</h5>
-                <p class="font-600 opacity-40">1 hour, 24 minutes</p>
-            </div>
-            <div class="align-self-center">
-                <span class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">START</span>
-            </div>
-          </a>
           
 
-
-
-
-
-
-
-
-
-            						
+					
         </div>
     </div>
 </div>
 
-  
-<% if @hourlies.present? %>
-	Hourlies: <%= @hourlies %>
-<% end %>
-<% if @services.present? %>
-	Services: <%= @services %>
-<% end %>
-<% if @products.present? %>
-	Products: <%= @products %>
-<% end %>

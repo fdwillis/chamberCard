@@ -10,17 +10,17 @@ class SessionsController < Devise::SessionsController
     if logoutAtt['success']
       flash[:notice] = "See ya later"
     else
-      flash[:error] = "Trouble Connecting"
+      flash[:notice] = "Trouble Connecting"
     end
   end
 
   def after_login
-    loginAtt = resource.createUserSessionAPI(params[:user][:password])
+    response = resource.createUserSessionAPI(params[:user][:password])
   	
-    if loginAtt['success']
+    if !response.blank? && response['success']
       flash[:success] = "Welcome"
     else
-      flash[:error] = "Trouble Connecting"
+      flash[:notice] = "Trouble Connecting. Some data will not display."
     end
   end
 end

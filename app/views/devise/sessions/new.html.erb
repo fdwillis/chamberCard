@@ -28,60 +28,10 @@
               <%= f.submit "Login", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
             <% end %> 
 
-
-            <div class="divider"></div>
-
-            <!-- <a href="#" class="btn btn-icon btn-m btn-full shadow-l bg-facebook text-uppercase font-900 text-left"><i class="fa fa-facebook-f text-center"></i>Login with Facebook</a>
-            <a href="#" class="btn btn-icon btn-m mt-2 btn-full shadow-l bg-twitter text-uppercase font-900 text-left"><i class="fab fa-twitter text-center"></i>Login with Twitter</a> -->
-
-            <div class="divider mt-4 mb-3"></div>
-
             <div class="pull-left">
                 <div class="font-11 pb-2 color-theme opacity-60 pb-3"><a href="#" class="color-theme"><%= render "devise/shared/links" %></a></div>
             </div>
         </div>
         
     </div>
-    <div class="footer card card-style">
-        <a href="#" class="footer-title"><span class="color-highlight">StickyMobile</span></a>
-        <p class="footer-text"><span>Made with <i class="fa fa-heart color-highlight font-16 pl-2 pr-2"></i> by Enabled</span><br><br>Powered by the best Mobile Website Developer on Envato Market. Elite Quality. Elite Products.</p>
-        <div class="text-center mb-3">
-            <a href="#" class="icon icon-xs rounded-sm shadow-l mr-1 bg-facebook"><i class="fa fa-facebook-f"></i></a>
-            <a href="#" class="icon icon-xs rounded-sm shadow-l mr-1 bg-twitter"><i class="fa fa-twitter"></i></a>
-            <a href="#" class="icon icon-xs rounded-sm shadow-l mr-1 bg-phone"><i class="fa fa-phone"></i></a>
-            <a href="#" data-menu="menu-share" class="icon icon-xs rounded-sm mr-1 shadow-l bg-red2-dark"><i class="fa fa-share-alt"></i></a>
-            <a href="#" class="back-to-top icon icon-xs rounded-sm shadow-l bg-dark1-light"><i class="fa fa-angle-up"></i></a>
-        </div>
-        <p class="footer-copyright">Copyright &copy; Enabled <span id="copyright-year">2017</span>. All Rights Reserved.</p>
-        <p class="footer-links"><a href="#" class="color-highlight">Privacy Policy</a> | <a href="#" class="color-highlight">Terms and Conditions</a> | <a href="#" class="back-to-top color-highlight"> Back to Top</a></p>
-        <div class="clear"></div>
-    </div>    
-
 </div>
-    <!-- End of Page Content--> 
-<h2>Log in</h2>
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
-
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
-    </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
