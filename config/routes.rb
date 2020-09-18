@@ -7,13 +7,13 @@ Rails.application.routes.draw do
 	# get 'service-worker.js' => 'home#service_worker'
 
 	devise_scope :user do
-
+		get "profile", to: 'home#profile', as: "profile"
 		resources :charges
 		resources :schedule
 		resources :services
 		
 	  authenticated :user do
-	    root 'profile#profile', as: :authenticated_root
+	    root 'home#profile', as: :authenticated_root
 	  end
 
 	  unauthenticated :user do
