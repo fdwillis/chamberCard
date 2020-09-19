@@ -22,17 +22,17 @@
           <% if @timeBought.present? %>
             <% @timeBought.each do |h| %>
               <a href="" data-lightbox="gallery-2" class="filtr-item" title="<%= h['title'] %>" data-category="2" >
-              <div class="align-self-center">
-                  <h5 class=""><%= h['title'] %></h5>
-                  <p class="font-600 opacity-40"><%= number_to_currency(h['amount'] * 0.01, precision: 2) %> per service</p>
-              </div>
-              <div class="align-self-center">
-                  <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
-              </div>
-              <div class="align-self-center">
-                  <span class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">REQUEST schedule</span>
-              </div>
-            </a>
+                <div class="align-self-center">
+                    <h5 class=""><%= h['title'] %></h5>
+                    <p class="font-600 opacity-40"><%= number_to_currency(h['amount'] * 0.01, precision: 2) %> per service</p>
+                </div>
+                <div class="align-self-center">
+                    <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
+                </div>
+                <div class="align-self-center">
+                    <span class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">REQUEST schedule</span>
+                </div>
+              </a>
             <% end %>
           <% end %>
 
@@ -52,12 +52,26 @@
               </div>
             </a>
             <% end %>
+          <% end %>   
+          <% if @bookingRequests.present? %>
+            <% @bookingRequests.each do |h| %>
+              <a href="" data-lightbox="gallery-4" class="filtr-item" title="<%= h['title'] %>" data-category="4" >
+                <div class="align-self-center">
+                    <h5 class=""><%= h['title'] %></h5>
+                    <p class="font-600 opacity-40"><%= number_to_currency(h['amount'], precision: 2) %> per service</p>
+                </div>
+                <div class="align-self-center">
+                    <p class="font-600 opacity-40">By: <%= h['sellerUsername'] %></p>
+                </div>
+                <div class="align-self-center">
+                    <span class="btn btn-sm col-md-12 rounded-sm border-yellow1-dark text-uppercase font-800">pending</span>
+                </div>
+              </a>
+            <% end %>
           <% end %>         
         </div>
     </div>
   </div>
-
-	   request: <%= @bookingRequests %>
 <% else %>
 <div class="page-content header-clear-medium">
         
