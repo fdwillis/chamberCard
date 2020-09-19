@@ -28,25 +28,29 @@
     <div id="page">
         <div class="header">
           <% if flash[:success] %>
-            <div class="text-center alert alert-success">
-              <button type="button" class="close" data-dismiss="alert">&times;</button>
-              <h3 class="tex-center"><%= flash[:success] %></h3>
-            </div>
+            <div class="ml-3 mr-3 alert alert-small rounded-s shadow-xl bg-green1-dark" role="alert">
+              <span><i class="fa fa-check"></i></span>
+              <strong><%= flash[:success] %></strong>
+              <button type="button" class="close color-white opacity-60 font-16" data-dismiss="alert" aria-label="Close">×</button>
+          </div>
           <% elsif flash[:error] %>
-            <div class="text-center alert alert-danger">
-              <button type="button" class="close" data-dismiss="alert">&times;</button>
-              <h3 class="tex-center"><%= flash[:error] %></h3>
-            </div>
-          <% elsif flash[:notice] %>
-            <div class="text-center alert alert-warning">
-              <button type="button" class="close" data-dismiss="alert">&times;</button>
-              <h3 class="tex-center"><%= flash[:notice] %></h3>
-            </div>
+            <div class="ml-3 mr-3 mb-5 alert alert-small rounded-s shadow-xl bg-red2-dark" role="alert">
+              <span><i class="fa fa-times"></i></span>
+              <strong><%= flash[:error] %></strong>
+              <button type="button" class="close color-white opacity-60 font-16" data-dismiss="alert" aria-label="Close">×</button>
+          </div>
           <% elsif flash[:alert] %>
-            <div class="text-center alert alert-warning">
-              <button type="button" class="close" data-dismiss="alert">&times;</button>
-              <h3 class="tex-center"><%= flash[:alert] %></h3>
-            </div>
+            <div class="ml-3 mr-3 alert alert-small rounded-s shadow-xl bg-yellow1-dark" role="alert">
+              <span><i class="fa fa-exclamation-triangle"></i></span>
+              <strong><%= flash[:alert] %></strong>
+              <button type="button" class="close color-white opacity-60 font-16" data-dismiss="alert" aria-label="Close">×</button>
+          </div>
+          <% elsif flash[:alert] %>
+            <div class="ml-3 mr-3 alert alert-small rounded-s shadow-xl bg-yellow1-dark" role="alert">
+              <span><i class="fa fa-exclamation-triangle"></i></span>
+              <strong><%= flash[:alert] %></strong>
+              <button type="button" class="close color-white opacity-60 font-16" data-dismiss="alert" aria-label="Close">×</button>
+          </div>
           <% end %>
         </div>
         <div class="header header-fixed header-logo-center">

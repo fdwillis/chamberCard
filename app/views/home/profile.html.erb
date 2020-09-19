@@ -1,97 +1,193 @@
 <% if current_user.present? %>
-  <div class="page-content header-clear-medium">
-        
-        <div class="card card-style">
-            
-            <div class="d-flex content mb-1">
-                <!-- left side of profile -->
-                <div class="flex-grow-1">
-                    <h1 class="font-700"><%= current_user.username %></h1>
-                    <h3><%= current_user.email %></h3>
-<!--                     <p class="mb-2">
-                        Karla Black is a name used when you generate a text with an annonymous name.
-                    </p>
-                    <p class="font-10">
-                        <strong class="color-theme pr-1">1k</strong>Followers
-                        <strong class="color-theme pl-3 pr-1">342</strong>Following 
-                    </p> -->
-                </div>
-                <!-- right side of profile. increase image width to increase column size-->
-                <!-- <img src="images/empty.png" data-src="images/pictures/0t.jpg" width="115" class="rounded-circle mt-3 shadow-xl preload-img"> -->
+  <div class="card card-style">
+    <div class="d-flex content">
+        <div class="flex-grow-1">
+            <div>
+                <h1 class="font-700 mb-1"><%= current_user.username %></h1>
+                <p class="mb-0 pb-1 pr-3">ID: <%= current_user.uuid %></p>
+                <p class="mb-0 pb-1 pr-3">
+                    Payment details, account information, &amp; more
+                </p>
+                <a href="<%= destroy_user_session_path %>" class="btn btn-full bg-red2-dark btn-m text-uppercase rounded-sm shadow-l mb-3 mt-4 font-900">logout</a>
             </div>
-            <!-- follow buttons-->
-            <div class="content mb-0">
-                <div class="row mb-0">
-<!--                     <div class="col-4">
-                        <a href="#" class="btn btn-full btn-s rounded-s text-uppercase font-900 bg-blue2-dark">Follow</a>
-                    </div>
-                    <div class="col-4">
-                        <a href="#" class="btn btn-full btn-s rounded-s text-uppercase font-900 color-theme border-blue2-dark">Message</a>
-                    </div> -->
-
-                    <div class="col-12">
-                        <a href="<%= destroy_user_session_path %>" class="btn btn-full btn-s rounded-s text-uppercase font-900 bg-red2-dark">Signout</a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="divider mt-4 mb-0"></div>
-            
-            <div class="gallery-view-controls">
-                <a href="#" class="color-highlight gallery-view-1-activate"><i class="fa fa-user"></i></a>
-                <a href="#" class="gallery-view-2-activate"><i class="fa fa-credit-card"></i></a>
-                <a href="#" class="gallery-view-3-activate"><i class="fa fa-cog"></i></a>
-                <div class="clear"></div>
-            </div>
-            <div class="content mb-0">
-                <div class="gallery-views gallery-view-1 mt-n4">
-                    <a data-lightbox="gallery-3" href="images/pictures/10t.jpg" title="Vynil and Typerwritter">
-                        <img src="images/empty.png" data-src="images/pictures/10t.jpg" class="rounded-m preload-img shadow-xl img-fluid" alt="img">
-                        <div class="caption">
-                            <h4 class="bottom-0 color-theme">Messy Desk?</h4>
-                            <p>Some may consider this to be a very messy desk.</p>
-                            <div class="divider bottom-0"></div>
-                        </div>
-                    </a>
-                    <a data-lightbox="gallery-3" href="images/pictures/11t.jpg" title="Fruit Cookie Pie">
-                        <div class="caption">
-                            <h4 class="bottom-0 color-theme">Designers Desk</h4>
-                            <p>With all the gadgets you'd ever wish for.</p>
-                            <div class="divider bottom-0"></div>
-                        </div>
-                    </a>    
-                    <a data-lightbox="gallery-1" href="images/pictures/28t.jpg" title="Plain Cookies and Flour">
-                        <div class="caption">
-                            <h4 class="bottom-0 color-theme">Apple Watch</h4>
-                            <p>The perfect and small notification device.</p>
-                            <div class="divider bottom-0"></div>
-                        </div>
-                    </a>  
-                    <a data-lightbox="gallery-1" href="images/pictures/18t.jpg" title="Pots and Stuff">
-                        <div class="caption">
-                            <h4 class="bottom-0 color-theme">City Landscape</h4>
-                            <p>It's absolutely gorgeous, we'd love to see it live.</p>
-                            <div class="divider bottom-0"></div>
-                        </div>
-                    </a>
-                    <a data-lightbox="gallery-1" href="images/pictures/14t.jpg" title="Delicious Strawberries">
-                        <div class="caption">
-                            <h4 class="bottom-0 color-theme">Typography and iPhone 5</h4>
-                            <p>A beautifully captured snap with great contrast.</p>
-                            <div class="divider bottom-0"></div>
-                        </div>
-                    </a>
-                    <a data-lightbox="gallery-1" href="images/pictures/15t.jpg" title="A Beautiful Camera">
-                        <div class="caption">
-                            <h4 class="bottom-0 color-theme">Feather and Paper?</h4>
-                            <p>Going back to days when things were simplere.</p>
-                        </div>
-                    </a>      
-                </div>
-            </div>
-        </div> 
-        
+        </div>
+        <div>
+            <!-- <img src="images/empty.png" data-src="images/pictures/faces/4s.png" width="80" class="rounded-circle mt- shadow-xl preload-img"> -->
+        </div>
     </div>
+  </div>
+  <div class="card card-style">
+      <div class="content mt-0 mb-0">
+          <div class="list-group list-custom-large list-icon-0">
+              <a data-toggle-theme data-trigger-switch="switch-a" href="#">
+                  <i class="fa font-14 fa-lightbulb rounded-s color-yellow1-dark"></i>
+                  <span>Dark View</span>
+                  <strong>Turn off the Lights</strong>
+                  <div class="custom-control scale-switch ios-switch">
+                      <input type="checkbox" class="ios-input" id="switch-a">
+                      <label class="custom-control-label" for="switch-1"></label>
+                  </div>
+                  <i class="fa fa-chevron-right opacity-30"></i>
+              </a>        
+              <!-- <a data-trigger-switch="switch-b" href="#">
+                  if user subscribed, opt for text/email message alerts
+                  <i class="fa font-14 fa-envelope rounded-s color-blue2-dark"></i>
+                  <span>Newsletter</span>
+                  <strong>Get updates via Newsletter?</strong>
+                  <div class="custom-control scale-switch ios-switch">
+                      <input type="checkbox" class="ios-input" id="switch-b">
+                      <label class="custom-control-label" for="switch-1"></label>
+                  </div>
+                  <i class="fa fa-chevron-right opacity-30"></i>
+              </a>        
+               -->     
+          </div>
+      </div>
+  </div> 
+
+  <div class="card card-style">
+    <div class="content mb-0">
+      <h2>Payment Information</h2>
+      <% if current_user.stripeUserID.blank? %>
+
+          <!-- <h2>Payment Information</h2> -->
+          <p class="mb-5">
+              This contains basic profile fields, easily editable, set to disable or pre-populate with useful information.
+          </p>
+          
+          
+          <a href="#" class="btn btn-full bg-yellow1-dark btn-m text-uppercase rounded-sm shadow-l mb-3 mt-4 font-900">Proceed</a>
+      <% end %>
+
+      <% if !current_user.stripeUserID.blank? %>
+        <% if current_user.stripeSourceVerified %>
+          showing sources
+          showing form to add new source
+          button to delete source in one click
+        <% else %>
+          show form to add source
+            <h2>Payment Information</h2>
+            <p class="mb-5">
+                This contains basic profile fields, easily editable, set to disable or pre-populate with useful information.
+            </p>
+            <div class="input-style input-style-2 has-icon input-required">
+                <i class="input-icon fa fa-user"></i>
+                <span class="color-highlight input-style-1-active">Name</span>
+                <em>(required)</em>
+                <input type="name" class="form-control" value="Jackson Doe">
+            </div> 
+            <div class="input-style input-style-2 has-icon input-required mt-4">
+                <i class="input-icon fa fa-at"></i>
+                <span class="color-highlight input-style-1-active">Email Address</span>
+                <em>(required)</em>
+                <input type="email" class="form-control" value="jack.doe@domain.com">
+            </div> 
+            <div class="input-style input-style-2 has-icon input-required mt-4">
+                <i class="input-icon fa fa-map-marker"></i>
+                <span class="color-highlight input-style-1-active">Location</span>
+                <em>(required)</em>
+                <input type="text" class="form-control" value="Melbourne, Australia">
+            </div> 
+            <div class="input-style input-style-2 has-icon input-required mt-4">
+                <i class="input-icon fa fa-phone"></i>
+                <span class="color-highlight input-style-1-active">Phone Number</span>
+                <em>(required)</em>
+                <input type="phone" class="form-control" value="+1 234 5678 9134">
+            </div> 
+            <a href="#" class="btn btn-full bg-green1-dark btn-m text-uppercase rounded-sm shadow-l mb-3 mt-4 font-900">Save Account Information</a>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="card card-style">
+      <div class="content mb-0">
+          <h2>Account Information</h2>
+          <p class="mb-5">
+              This contains basic profile fields, easily editable, set to disable or pre-populate with useful information.
+          </p>
+          <div class="input-style input-style-2 has-icon input-required">
+              <i class="input-icon fa fa-user"></i>
+              <span class="color-highlight input-style-1-active">Name</span>
+              <em>(required)</em>
+              <input type="name" class="form-control" value="Jackson Doe">
+          </div> 
+          <div class="input-style input-style-2 has-icon input-required mt-4">
+              <i class="input-icon fa fa-at"></i>
+              <span class="color-highlight input-style-1-active">Email Address</span>
+              <em>(required)</em>
+              <input type="email" class="form-control" value="jack.doe@domain.com">
+          </div> 
+          <div class="input-style input-style-2 has-icon input-required mt-4">
+              <i class="input-icon fa fa-map-marker"></i>
+              <span class="color-highlight input-style-1-active">Location</span>
+              <em>(required)</em>
+              <input type="text" class="form-control" value="Melbourne, Australia">
+          </div> 
+          <div class="input-style input-style-2 has-icon input-required mt-4">
+              <i class="input-icon fa fa-phone"></i>
+              <span class="color-highlight input-style-1-active">Phone Number</span>
+              <em>(required)</em>
+              <input type="phone" class="form-control" value="+1 234 5678 9134">
+          </div> 
+          <a href="#" class="btn btn-full bg-green1-dark btn-m text-uppercase rounded-sm shadow-l mb-3 mt-4 font-900">Save Basic Information</a>
+      </div>
+  </div>         
+      
+  <div class="card card-style">
+      <div class="content mb-2">
+          <h2>Social Profiles</h2>
+          <p>
+              Activate options or set different elements here that are different from basic fields.
+          </p>
+          <div class="list-group list-custom-small list-icon-0">      
+              <a href="#">
+                  <i class="fab font-14 fa-facebook-f rounded-s color-facebook"></i>
+                  <span>Facebook</span>
+                  <span class="badge text-uppercase bg-green1-dark">Connected</span>
+                  <i class="fa fa-chevron-right disabled"></i>
+              </a>        
+              <a href="#">
+                  <i class="fab font-14 fa-twitter rounded-s color-twitter"></i>
+                  <span>Twitter</span>
+                  <span class="badge text-uppercase bg-green1-dark">Connected</span>
+                  <i class="fa fa-chevron-right disabled"></i>
+              </a>        
+              <a href="#">
+                  <i class="fab font-14 fa-instagram rounded-s color-instagram"></i>
+                  <span>Instagram</span>
+                  <span class="badge text-uppercase bg-red2-dark">ACCOUNT ERROR</span>
+                  <i class="fa fa-chevron-right disabled"></i>
+              </a>        
+              <a class="border-0" href="#">
+                  <i class="fab font-14 fa-linkedin-in rounded-s color-linkedin"></i>
+                  <span>LinkedIn</span>
+                  <span class="badge text-uppercase bg-yellow1-dark">PENDING APPROVAL</span>
+                  <i class="fa fa-chevron-right disabled"></i>
+              </a>        
+          </div>
+      </div>
+  </div>
+  
+  <div class="card card-style">
+      <div class="content mb-0">
+          <h2 class="mb-0">Account Security</h2>
+          <p class="mb-5">
+              Activate options or set different elements here that are different from basic fields.
+          </p>
+          <div class="input-style input-style-2 input-required">
+              <span class="color-highlight input-style-1-active">Password</span>
+              <em>(required)</em>
+              <input type="password" class="form-control"  placeholder="" value="password here">
+          </div> 
+          <div class="input-style input-style-2 input-required">
+              <span class="color-highlight input-style-1-active">Confirm Password</span>
+              <em>(required)</em>
+              <input type="password" class="form-control"  placeholder="" value="password here">
+          </div> 
+          <a href="#" class="btn btn-full bg-green1-dark btn-m text-uppercase rounded-sm shadow-l mb-3 mt-4 font-900">Save Password</a>
+      </div>
+  </div> 
 <% else %>
 	<div class="page-content ">
         
@@ -165,7 +261,7 @@
         </div>
 
         <a href="<%= new_user_registration_url %>" class="btn btn-l bg-green1-dark col-md-6">CREATE ACCOUNT</a>
-        <a href="<%= new_user_session_url %>" class="btn btn-l btn-full border-green1-dark">LOGIN</a>
+        <a href="<%= new_user_session_path %>" class="btn btn-full btn-l text-uppercase color-theme border-green1-dark">LOGIN</a>
   </div>
   
   <div class="cover-button-bottom">

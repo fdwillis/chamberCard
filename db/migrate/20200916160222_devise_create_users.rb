@@ -4,11 +4,12 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
   def change
     create_table :users do |t|
       t.string :stripeUserID, unique: true
+      t.boolean :stripeSourceVerified, default: false
       ## Database authenticatable
       t.string :accessPin
       t.string :authentication_token, unique: true
-      t.string :username, unique: true
-      t.string :uuid, unique: true
+      t.string :username, unique: true, null: false
+      t.string :uuid, unique: true, null: false
 
       t.string :email,              null: false, default: ""
       t.string :encrypted_password, null: false, default: ""

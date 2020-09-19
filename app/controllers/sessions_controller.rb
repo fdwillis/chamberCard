@@ -1,14 +1,14 @@
 class SessionsController < Devise::SessionsController
   after_action :after_login, :only => :create
-  after_action :after_logout, :only => :destroy
+  before_action :before_logout, :only => :destroy
   # before_action :after_login, :only => :create
   
 
-  def after_logout
+  def before_logout
     logoutAtt = current_user.deleteUserSessionAPI
     
     if logoutAtt['success']
-      flash[:notice] = "See ya later"
+      flash[:success] = "See ya later"
     else
       flash[:notice] = "Trouble Connecting"
     end

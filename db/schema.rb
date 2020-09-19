@@ -17,10 +17,11 @@ ActiveRecord::Schema.define(version: 2020_09_16_160222) do
 
   create_table "users", force: :cascade do |t|
     t.string "stripeUserID"
+    t.boolean "stripeSourceVerified", default: false
     t.string "accessPin"
     t.string "authentication_token"
-    t.string "username"
-    t.string "uuid"
+    t.string "username", null: false
+    t.string "uuid", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"

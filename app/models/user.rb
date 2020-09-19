@@ -12,7 +12,7 @@ class User < ApplicationRecord
     response = Oj.load(curlCall)
     
     if !response.blank? && response['success']
-      self.update_attributes(uuid: response['uuid'],username: response['username'], accessPin: response['accessPin'] )
+      self.update_attributes(accessPin: response['accessPin'] )
       return response
     else
       return false
@@ -25,7 +25,7 @@ class User < ApplicationRecord
     response = Oj.load(curlCall)
     
     if !response.blank? && response['success']
-      self.update_attributes(authentication_token: response['authentication_token'] )
+      self.update_attributes(authentication_token: response['authentication_token'], uuid: response['uuid'] )
       return response
     else
       return false
@@ -33,10 +33,10 @@ class User < ApplicationRecord
   end
 
   def deleteUserSessionAPI
-    response = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X DELETE #{SITEurl}/v1/sessions/#{self.uuid}`
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X DELETE #{SITEurl}/v1/sessions/#{self.uuid}`
     
-    response = Oj.load(response)
-
+    response = Oj.load(curlCall)
+    
     if !response.blank? && response['success']
       self.update_attributes(authentication_token: nil )
       return response
