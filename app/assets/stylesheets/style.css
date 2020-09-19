@@ -5238,7 +5238,7 @@ html.lb-disable-scrolling {
   width: 100vw;
 }
 
-.lightboxOverlay {
+/*.lightboxOverlay {
   position: fixed;
   top: 0;
   bottom: 0 !important;
@@ -5251,7 +5251,7 @@ html.lb-disable-scrolling {
   opacity: 1;
   display: none;
   overflow: hidden;
-}
+}*/
 
 .lightbox {
   right: 0;
@@ -5293,13 +5293,13 @@ html.lb-disable-scrolling {
   width: 100%;
 }
 
-.lb-cancel {
+/*.lb-cancel {
   display: block;
   width: 32px;
   height: 32px;
   margin: 0 auto;
   background: url(/assets/loading.gif) no-repeat;
-}
+}*/
 
 .lb-nav {
   position: absolute;

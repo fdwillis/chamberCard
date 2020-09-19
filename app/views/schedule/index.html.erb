@@ -21,7 +21,7 @@
 
           <% if @timeBought.present? %>
             <% @timeBought.each do |h| %>
-              <a href="" data-lightbox="gallery-2" class="filtr-item default-link" title="<%= h['title'] %>" data-category="2" >
+              <a href="" data-lightbox="gallery-2" class="filtr-item" title="<%= h['title'] %>" data-category="2" >
               <div class="align-self-center">
                   <h5 class=""><%= h['title'] %></h5>
                   <p class="font-600 opacity-40"><%= number_to_currency(h['amount'] * 0.01, precision: 2) %> per service</p>
@@ -30,7 +30,7 @@
                   <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
               </div>
               <div class="align-self-center">
-                  <span class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">Scheudle Now</span>
+                  <span class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">REQUEST schedule</span>
               </div>
             </a>
             <% end %>
@@ -38,10 +38,11 @@
 
           <% if @availableTimes.present? %>
             <% @availableTimes.each do |h| %>
-              <a href="" data-lightbox="gallery-3" class="filtr-item default-link" title="<%= h['title'] %>" data-category="3" >
+              <a href="" data-lightbox="gallery-3" class="filtr-item" title="<%= h['title'] %>" data-category="3" >
               <div class="align-self-center">
-                  <h5 class=""><%= h['startTime'].to_date.strftime("%B %d, %Y")%></h5>
-                  <p class="font-600 opacity-40"> per service</p>
+                  <h5 class=""><%= h['startTime'].to_date.strftime("%B %d, %Y")%>
+                  </h5>
+                  <h5><%= h['startTime'].to_date.strftime("%H:%M")%></h5>
               </div>
               <div class="align-self-center">
                   <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
@@ -51,24 +52,7 @@
               </div>
             </a>
             <% end %>
-          <% end %> 
-
-          <% if @bookingRequests.present? %>
-            <% @bookingRequests.each do |h| %>
-              <!-- <a href="" data-lightbox="gallery-2" class="filtr-item default-link" title="" data-category="2" >
-                <div class="align-self-center">
-                    <h5 class=""></h5>
-                    <p class="font-600 opacity-40"> per hour</p>
-                </div>
-                <div class="align-self-center">
-                    <p class="font-600 opacity-40">By: </p>
-                </div>
-                <div class="align-self-center">
-                    <span class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">START</span>
-                </div>
-              </a> -->
-            <% end %>
-          <% end %>           
+          <% end %>         
         </div>
     </div>
   </div>
