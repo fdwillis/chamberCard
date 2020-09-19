@@ -45,18 +45,16 @@
               <div class="">
                 <% if @hourlies.present? %>
                   <% @hourlies.each do |h| %>
-                    <a href="" data-lightbox="gallery-2" class="filtr-item default-link" title="<%= h['title'] %>" data-category="2" >
-                      <div class="align-self-center">
-                          <h5 class=""><%= h['title'] %></h5>
-                          <p class="font-600 opacity-40"><%= number_to_currency(h['wageRate'], precision: 2) %> per hour</p>
-                      </div>
-                      <div class="align-self-center">
-                          <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
-                      </div>
-                      <div class="align-self-center">
-                          <a href="" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">PURCHASE</a>
-                      </div>
-                    </a>
+                    <div class="align-self-center">
+                        <h5 class=""><%= h['title'] %></h5>
+                        <p class="font-600 opacity-40"><%= number_to_currency(h['wageRate'], precision: 2) %> per hour</p>
+                    </div>
+                    <div class="align-self-center">
+                        <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
+                    </div>
+                    <div class="align-self-center">
+                        <a href="" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">PURCHASE</a>
+                    </div>
                   <% end %>
                 <% end %>           
               </div>

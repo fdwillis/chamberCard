@@ -1,80 +1,100 @@
 
 <% if current_user.present? %>
-  
   <div class="card card-style">
     <div class="content mt-3 mb-3">
       <h3>Schedule</h3>
       <p>
-          Schedule your purchased service, see the status of your pending service requests, and see all availale times by service providers! 
+          Schedule your purchased service, see the status of your pending service requests, and see all available times by service providers! 
       </p>
-      <ul class="gallery-filter-controls">
-          <li class="gallery-filter-active gallery-filter-all" data-filter="all">All</li>
-          <li data-filter="4">Requests</li>
-          <li data-filter="3">Available</li>
-          <li data-filter="2">Schedule</li>
-          <li data-filter="1">Upcoming</li>
-      </ul>
     </div>
   </div>
-  <div class="card card-style">
-    <div class="content mb-3">
-        <div class="gallery gallery-filter">
 
-          <% if @timeBought.present? %>
-            <% @timeBought.each do |h| %>
-              <a href="https://www.google.com" data-lightbox="gallery-2" class="filtr-item default-link" title="<%= h['title'] %>" data-category="2" >
-                <div class="align-self-center">
-                    <h5 class=""><%= h['title'] %></h5>
-                    <p class="font-600 opacity-40"><%= number_to_currency(h['amount'] * 0.01, precision: 2) %> per service</p>
-                </div>
-                <div class="align-self-center">
-                    <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
-                </div>
-                <div class="align-self-center">
-                    <span class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">REQUEST schedule</span>
-                </div>
-              </a>
-            <% end %>
-          <% end %>
+  <div class="card card-style bg-theme pb-0">
+    <div class="content">
+        <div class="tab-controls tabs-round tab-animated tabs-medium tabs-rounded shadow-xl" 
+             data-tab-items="1" 
+             data-tab-active="bg-green1-dark color-white">
 
-          <% if @availableTimes.present? %>
-            <% @availableTimes.each do |h| %>
-              <a href="https://www.google.com" data-lightbox="gallery-3" class="filtr-item default-link" title="<%= h['title'] %>" data-category="3" >
-              <div class="align-self-center">
-                  <h5 class=""><%= h['date'].to_date.strftime("%B %d, %Y")%>
-                    <p class="font-600 opacity-40"><%= h['startTime']%> - <%= h['endTime']%></p>
-                  </h5>
-              </div>
-              <div class="align-self-center">
-              </div>
-              <div class="align-self-center">
-                  <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
-              </div>
-              <div class="align-self-center">
-                  <span class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Book Now</span>
-              </div>
-            </a>
-            <% end %>
-          <% end %>  
-          <% if @bookingRequests.present? %>
-            <% @bookingRequests.each do |h| %>
-              <a href="https://www.google.com" data-lightbox="gallery-4" class="filtr-item default-link" title="<%= h['title'] %>" data-category="4" >
-              <div class="align-self-center">
-                  <h5 class=""><%= h['title']%>
-                    <p class="font-600 opacity-40"><%= h['startTime']%> - <%= h['endTime']%></p>
-                  </h5>
-              </div>
-              <div class="align-self-center">
-              </div>
-              <div class="align-self-center">
-                  <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
-              </div>
-              <div class="align-self-center">
-                  <span class="btn btn-sm col-md-12 rounded-sm border-yellow1-dark text-uppercase font-800">Pending</span>
-              </div>
-            </a>
-            <% end %>
-          <% end %>         
+            <a href="#" data-tab-active data-tab="tab-3"><i class="fa fa-clock"></i> Available Now</a>
+            <a href="#" data-tab="tab-1"><i class="fa fa-calendar-check"></i> Upcoming</a>
+            <a href="#" data-tab="tab-4"><i class="fa fa-briefcase"></i> Book Now</a>
+            <a href="#" data-tab="tab-2"><i class="fa fa-sync"></i> Pending</a>
+        </div>
+        <div class="clearfix mb-3"></div>
+        
+        <div class="tab-content" id="tab-2">
+          <div class="card card-style">
+            <div class="content mb-3">
+                <div class="">
+                  <% if @bookingRequests.present? %>
+                    <% @bookingRequests.each do |h| %>
+                      <div class="align-self-center">
+                          <h5 class=""><%= h['title']%>
+                            <p class="font-600 opacity-40"><%= h['startTime']%> - <%= h['endTime']%></p>
+                          </h5>
+                      </div>
+                      <div class="align-self-center">
+                      </div>
+                      <div class="align-self-center">
+                          <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
+                      </div>
+                      <div class="align-self-center">
+                          <span class="btn btn-sm col-md-12 rounded-sm border-yellow1-dark text-uppercase font-800">Pending</span>
+                      </div>
+                    <% end %>
+                  <% end %>           
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-4">
+          <div class="card card-style">
+            <div class="content mb-3">
+                <div class="">
+                  <% if @timeBought.present? %>
+                    <% @timeBought.each do |h| %>
+                      <div class="align-self-center">
+                          <h5 class=""><%= h['title'] %></h5>
+                          <p class="font-600 opacity-40"><%= number_to_currency(h['amount'] * 0.01, precision: 2) %> per service</p>
+                      </div>
+                      <div class="align-self-center">
+                          <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
+                      </div>
+                      <div class="align-self-center">
+                          <span class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">REQUEST schedule</span>
+                      </div>
+                    <% end %>
+                  <% end %>           
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-3">
+          <div class="card card-style">
+            <div class="content mb-3">
+                <div class="">
+                  <% if @availableTimes.present? %>
+                    <% @availableTimes.each do |h| %>
+                      <div class="align-self-center">
+                          <h5 class=""><%= h['date'].to_date.strftime("%B %d, %Y")%>
+                            <p class="font-600 opacity-40"><%= h['startTime']%> - <%= h['endTime']%></p>
+                          </h5>
+                      </div>
+                      <div class="align-self-center">
+                      </div>
+                      <div class="align-self-center">
+                          <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
+                      </div>
+                      <div class="align-self-center">
+                          <span class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Book Now</span>
+                      </div>
+                    <% end %>
+                  <% end %>           
+                </div>
+            </div>
+          </div>
         </div>
     </div>
   </div>
