@@ -5,14 +5,60 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable  
   # after_create :createUserAPI
 
-  def createUserAPI
+  def updateStripeUserAPI(params)
+    email = params[:email]
+    phone = params[:phone]
+    source = params[:source]
 
-    curlCall = `curl -d "email=#{self.email}&username=#{self.username}&password=#{self.password}&password_confirmation=#{self.password}" #{SITEurl}/v1/users`
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/v1/stripe-customers/#{self.uuid}`
 
     response = Oj.load(curlCall)
     
     if !response.blank? && response['success']
-      self.update_attributes(accessPin: response['accessPin'] )
+      return response
+    else
+      return false
+    end
+  end
+
+  def attachSourceStripe(source)
+
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "source=#{source}" -X PATCH #{SITEurl}/v1/stripe-customers/#{self.uuid}`
+
+    response = Oj.load(curlCall)
+    debugger
+    if !response.blank? && response['success']
+      return response
+    else
+      return false
+    end
+  end
+
+  def createStripeTokenAPI(params)
+    number = params[:number]
+    exp_year = params[:exp_year]
+    exp_month = params[:exp_month]
+    cvc = params[:cvc]
+
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/v1/stripe-customers`
+
+    response = Oj.load(curlCall)
+    
+    if !response.blank? && response['success']
+      return response
+    else
+      return false
+    end
+  end
+
+  def createStripeCustomerAPI
+
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "" #{SITEurl}/v1/stripe-customers`
+
+    response = Oj.load(curlCall)
+    
+    if !response.blank? && response['success']
+      self.update_attributes(stripeUserID: response['stripeUserID'] )
       return response
     else
       return false
