@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 2020_09_16_160222) do
   enable_extension "plpgsql"
 
   create_table "users", force: :cascade do |t|
+    t.string "stripeUserID"
     t.string "accessPin"
     t.string "authentication_token"
     t.string "username"

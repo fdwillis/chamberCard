@@ -1,17 +1,15 @@
 class ChargesController < ApplicationController
 	def index
-		curlCall = `curl -d "" -X GET #{SITEurl}/v1/time-slots`
+		if current_user.present?
+			curlCall = `curl -d "" -X GET #{SITEurl}/v1/stripe-charges`
 
-    response = Oj.load(curlCall)
-
-    if !response.blank? && response['success']
-			@hourlies = response['hourlies']
-			@services = response['services']
-			@products = response['products']
-			
-		else
-			flash[:notice] = "Trouble connecting. Try again later."
-			redirect_to new_user_session_path
+	    response = Oj.load(curlCall)
+	    if !response.blank? && response['success']
+				@payments = response['payments']
+				@overdue = response['overdue']
+			else
+				flash[:notice] = response['success']
+			end
 		end
 	end
 end
