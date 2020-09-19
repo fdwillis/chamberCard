@@ -4,51 +4,64 @@
       <p>
           Services offered by Messy Lawns
       </p>
-      <ul class="gallery-filter-controls">
-          <li class="gallery-filter-active gallery-filter-all" data-filter="all">All</li>
-          <li data-filter="1">Services</li>
-          <li data-filter="2">Hourlies</li>
-          <!-- <li data-filter="3">Products</li> -->
-      </ul>
     </div>
 </div>
-<div class="card card-style">
-  <div class="content mb-3">
-      <div class="gallery gallery-filter">
 
-        <% if @services.present? %>
-          <% @services.each do |h| %>
-            <a href="" data-lightbox="gallery-1" class="filtr-item default-link" title="<%= h['title'] %>" data-category="1" >
-              <div class="align-self-center">
-                  <h5 class=""><%= h['title'] %></h5>
-                  <p class="font-600 opacity-40"><%= number_to_currency(h['cost'], precision: 2) %> per service</p>
-              </div>
-              <div class="align-self-center">
-                  <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
-              </div>
-              <div class="align-self-center">
-                  <span class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">PURCHASE</span>
-              </div>
-            </a>
-          <% end %>
-        <% end %>
+<div class="card card-style bg-theme pb-0">
+  <div class="content">
+      <div class="tab-controls tabs-round tab-animated tabs-medium tabs-rounded shadow-xl" 
+           data-tab-items="2" 
+           data-tab-active="bg-green1-dark color-white">
+          <a href="#" data-tab-active data-tab="tab-8"><i class="fa fa-briefcase"></i> Services</a>
+          <a href="#" data-tab="tab-9"><i class="fa fa-clock"></i> Hourlies</a>
+      </div>
+      <div class="clearfix mb-3"></div>
+      <div class="tab-content" id="tab-8">
+        <div class="card card-style">
+          <div class="content mb-3">
+              <div class="">
 
-        <% if @hourlies.present? %>
-          <% @hourlies.each do |h| %>
-            <a href="" data-lightbox="gallery-2" class="filtr-item default-link" title="<%= h['title'] %>" data-category="2" >
-              <div class="align-self-center">
-                  <h5 class=""><%= h['title'] %></h5>
-                  <p class="font-600 opacity-40"><%= number_to_currency(h['wageRate'], precision: 2) %> per hour</p>
+                <% if @services.present? %>
+                  <% @services.each do |h| %>
+                      <div class="align-self-center">
+                          <h5 class=""><%= h['title'] %></h5>
+                          <p class="font-600 opacity-40"><%= number_to_currency(h['cost'], precision: 2) %> per service</p>
+                      </div>
+                      <div class="align-self-center">
+                          <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
+                      </div>
+                      <div class="align-self-center">
+                          <a href="" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">PURCHASE</a>
+                      </div>
+                  <% end %>
+                <% end %>
               </div>
-              <div class="align-self-center">
-                  <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
+          </div>
+        </div>
+      </div>
+      <div class="tab-content" id="tab-9">
+        <div class="card card-style">
+          <div class="content mb-3">
+              <div class="">
+                <% if @hourlies.present? %>
+                  <% @hourlies.each do |h| %>
+                    <a href="" data-lightbox="gallery-2" class="filtr-item default-link" title="<%= h['title'] %>" data-category="2" >
+                      <div class="align-self-center">
+                          <h5 class=""><%= h['title'] %></h5>
+                          <p class="font-600 opacity-40"><%= number_to_currency(h['wageRate'], precision: 2) %> per hour</p>
+                      </div>
+                      <div class="align-self-center">
+                          <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
+                      </div>
+                      <div class="align-self-center">
+                          <a href="" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">PURCHASE</a>
+                      </div>
+                    </a>
+                  <% end %>
+                <% end %>           
               </div>
-              <div class="align-self-center">
-                  <span class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">PURCHASE</span>
-              </div>
-            </a>
-          <% end %>
-        <% end %>           
+          </div>
+        </div>
       </div>
   </div>
 </div>
