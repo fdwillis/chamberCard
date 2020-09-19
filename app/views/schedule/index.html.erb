@@ -21,7 +21,7 @@
 
           <% if @timeBought.present? %>
             <% @timeBought.each do |h| %>
-              <a href="" data-lightbox="gallery-2" class="filtr-item" title="<%= h['title'] %>" data-category="2" >
+              <a href="" data-lightbox="gallery-2" class="filtr-item default-link" title="<%= h['title'] %>" data-category="2" >
                 <div class="align-self-center">
                     <h5 class=""><%= h['title'] %></h5>
                     <p class="font-600 opacity-40"><%= number_to_currency(h['amount'] * 0.01, precision: 2) %> per service</p>
@@ -38,11 +38,13 @@
 
           <% if @availableTimes.present? %>
             <% @availableTimes.each do |h| %>
-              <a href="" data-lightbox="gallery-3" class="filtr-item" title="<%= h['title'] %>" data-category="3" >
+              <a href="" data-lightbox="gallery-3" class="filtr-item default-link" title="<%= h['title'] %>" data-category="3" >
               <div class="align-self-center">
-                  <h5 class=""><%= h['startTime'].to_date.strftime("%B %d, %Y")%>
+                  <h5 class=""><%= h['date'].to_date.strftime("%B %d, %Y")%>
+                    <p class="font-600 opacity-40"><%= h['startTime']%> - <%= h['endTime']%></p>
                   </h5>
-                  <h5><%= h['startTime'].to_date.strftime("%H:%M")%></h5>
+              </div>
+              <div class="align-self-center">
               </div>
               <div class="align-self-center">
                   <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
@@ -52,21 +54,24 @@
               </div>
             </a>
             <% end %>
-          <% end %>   
+          <% end %>  
           <% if @bookingRequests.present? %>
             <% @bookingRequests.each do |h| %>
-              <a href="" data-lightbox="gallery-4" class="filtr-item" title="<%= h['title'] %>" data-category="4" >
-                <div class="align-self-center">
-                    <h5 class=""><%= h['title'] %></h5>
-                    <p class="font-600 opacity-40"><%= number_to_currency(h['amount'], precision: 2) %> per service</p>
-                </div>
-                <div class="align-self-center">
-                    <p class="font-600 opacity-40">By: <%= h['sellerUsername'] %></p>
-                </div>
-                <div class="align-self-center">
-                    <span class="btn btn-sm col-md-12 rounded-sm border-yellow1-dark text-uppercase font-800">pending</span>
-                </div>
-              </a>
+              <a href="" data-lightbox="gallery-3" class="filtr-item default-link" title="<%= h['title'] %>" data-category="3" >
+              <div class="align-self-center">
+                  <h5 class=""><%= h['title']%>
+                    <p class="font-600 opacity-40"><%= h['startTime']%> - <%= h['endTime']%></p>
+                  </h5>
+              </div>
+              <div class="align-self-center">
+              </div>
+              <div class="align-self-center">
+                  <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
+              </div>
+              <div class="align-self-center">
+                  <span class="btn btn-sm col-md-12 rounded-sm border-yellow1-dark text-uppercase font-800">Pending</span>
+              </div>
+            </a>
             <% end %>
           <% end %>         
         </div>
