@@ -1,6 +1,57 @@
 
 <% if current_user.present? %>
-	charges
+	<div class="card card-style">
+    <div class="content mt-3 mb-3">
+      <h3>Payments</h3>
+      <p>
+        View all of your payment history any time anywhere!
+      </p>
+      <ul class="gallery-filter-controls">
+          <li class="gallery-filter-active gallery-filter-all" data-filter="all">All</li>
+          <li data-filter="3">History</li>
+          <li data-filter="2">Overdue</li>
+<!--           <li data-filter="1">Available</li>
+ -->      </ul>
+    </div>
+  </div>
+  <div class="card card-style mt-4">
+      <div class="content">
+          <div class=" gallery-filter">
+            <% if @payments.present? %>
+              <% @payments.each do |h| %>
+                <a href="#" data-lightbox="gallery-1" class="filtr-item" title="<%= h['title'] %>" data-category="1">
+                  <!-- <div class="align-self-center">
+                      <img src="images/pictures/14s.jpg" class="rounded-sm" width="50">
+                  </div> -->
+                  <!-- <div class="align-self-center">
+                      <h5 class=""><%= h['title'] %></h5>
+                      <p class="font-600 opacity-40"><%= number_to_currency(h['cost'], precision: 2) %> per service</p>
+                  </div>
+                  <div class="align-self-center">
+                      <span class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">START</span>
+                  </div> -->
+                </a>
+              <% end %>
+            <% end %>
+            <% if @overdue.present? %>
+              <% @overdue.each do |h| %>
+                <a href="#" data-lightbox="gallery-1" class="filtr-item" title="<%= h['title'] %>" data-category="2">
+                  <!-- <div class="align-self-center">
+                      <img src="images/pictures/14s.jpg" class="rounded-sm" width="50">
+                  </div> -->
+                  <!-- <div class="align-self-center">
+                      <h5 class=""><%= h['title'] %></h5>
+                      <p class="font-600 opacity-40"><%= number_to_currency(h['wageRate'], precision: 2) %> per hour</p>
+                  </div>
+                  <div class="align-self-center">
+                      <span class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">START</span>
+                  </div> -->
+                </a>
+              <% end %>
+            <% end %>
+          </div>
+      </div>
+  </div>
 <% else %>
 <div class="page-content header-clear-medium">
         
