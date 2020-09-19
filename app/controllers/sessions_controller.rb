@@ -1,10 +1,10 @@
 class SessionsController < Devise::SessionsController
   after_action :after_login, :only => :create
-  before_action :before_logout, :only => :destroy
+  after_action :after_logout, :only => :destroy
   # before_action :after_login, :only => :create
   
 
-  def before_logout
+  def after_logout
     logoutAtt = current_user.deleteUserSessionAPI
     
     if logoutAtt['success']
