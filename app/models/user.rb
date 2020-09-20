@@ -21,6 +21,17 @@ class User < ApplicationRecord
     end
   end
 
+  def showStripeUserAPI
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/stripe-customers/#{self.uuid}`
+
+    response = Oj.load(curlCall)
+    if !response.blank? && response['success']
+      return response
+    else
+      return false
+    end
+  end
+
   def attachSourceStripe(tokenSource)
 
     curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "source=#{tokenSource}" -X PATCH #{SITEurl}/v1/stripe-customers/#{self.uuid}`

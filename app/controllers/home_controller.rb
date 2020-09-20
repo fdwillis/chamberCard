@@ -1,8 +1,15 @@
 class HomeController < ApplicationController
 
 	def profile
-		if current_user&.stripeUserID&.stripeSourceVerified
+		if current_user&.stripeSourceVerified && current_user&.stripeUserID
+			callCurl = current_user.showStripeUserAPI
 
+			if callCurl['success']
+				@sources = callCurl['sources']
+			else
+				flash[:error] = callCurl
+				redirect_to profile_path(newStripeToken)
+			end
 		end
 	end
 
