@@ -7,6 +7,41 @@
     </div>
 </div>
 
+<% if current_user.stripeUserID.blank? %>
+  <div class="card card-style">
+      <div class="content mb-0">
+        <h3>Payment Missing</h3>
+        <p class="mb-5 text-justify">
+            Your account is unable to make purchases. If you would like to purchase services, get started by clicking 'Proceed' below!
+        </p>
+      </div>
+      <%= form_for :newStripeCustomer, url: stripe_customers_path do |f| %>
+        <%= f.submit "Proceed", class: "btn btn-full bg-yellow1-dark btn-m text-uppercase rounded-sm shadow-l mb-3 mt-4 font-900"%>
+
+      <% end %>
+  </div>
+<% else %>
+  <% if !current_user.stripeSourceVerified %>
+    <div class="card card-style">
+      <div class="content mb-0">
+        <h3>Payment Missing</h3>
+        <p class="mb-5 text-justify">
+            Almost there! Just add a card and your setup is complete
+        </p>
+      </div>
+    </div>
+    <div class="row text-center mb-0 mt-n2">
+      <a href="#" data-menu="menu-transaction-transfer" class="col-12 pr-0">
+          <div class="card card-style ml-2 mb-3">
+              <i class="fa fa-credit-card color-magenta2-dark fa-2x mt-3"></i>
+              <h1 class="pt-2 font-18">Card</h1>
+              <p class="font-11 opacity-50 mt-n2 mb-3">Tap to add another card</p>
+          </div>
+      </a>
+    </div>
+  <% end %>
+<% end %>
+
 <div class="card card-style bg-theme pb-0">
   <div class="content">
       <div class="tab-controls tabs-round tab-animated tabs-medium tabs-rounded shadow-xl" 
@@ -23,16 +58,22 @@
 
                 <% if @services.present? %>
                   <% @services.each do |h| %>
-                      <div class="align-self-center">
-                          <h5 class=""><%= h['title'] %></h5>
-                          <p class="font-600 opacity-40"><%= number_to_currency(h['cost'], precision: 2) %> per service</p>
-                      </div>
-                      <div class="align-self-center">
-                          <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
-                      </div>
+                    <div class="align-self-center">
+                        <h5 class=""><%= h['title'] %></h5>
+                        <p class="font-600 opacity-40"><%= number_to_currency(h['cost'], precision: 2) %> per service</p>
+                    </div>
+                    <div class="align-self-center">
+                        <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
+                    </div>
+                    <% if current_user&.stripeSourceVerified %>
                       <div class="align-self-center">
                           <a href="" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">PURCHASE</a>
                       </div>
+                    <% end %>
+                    <br>
+                    <div class="align-self-center">
+                      <a href="" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View</a>
+                    </div>
                   <% end %>
                 <% end %>
               </div>
@@ -52,8 +93,14 @@
                     <div class="align-self-center">
                         <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
                     </div>
+                    <% if current_user&.stripeSourceVerified %>
+                      <div class="align-self-center">
+                          <a href="" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">PURCHASE</a>
+                      </div>
+                    <% end %>
+                    <br>
                     <div class="align-self-center">
-                        <a href="" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">PURCHASE</a>
+                      <a href="" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View</a>
                     </div>
                   <% end %>
                 <% end %>           

@@ -45,7 +45,7 @@
       </div>
   </div> 
 
-  <div class="card card-style text-center">
+  <div class="card card-style">
     <div class="content mb-0">
       <h2>Payment Information</h2>
       <% if current_user.stripeUserID.blank? %>
@@ -121,22 +121,6 @@
                   </div>
               </a>
           </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <% else %>
             <p class="mb-5">
                 This contains basic profile fields, easily editable, set to disable or pre-populate with useful information.
