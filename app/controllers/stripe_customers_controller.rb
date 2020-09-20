@@ -12,4 +12,14 @@ before_action :authenticate_user!
 			redirect_to profile_path
 		end
 	end
+
+	def update
+		
+	end
+
+	private
+
+	def stripeCustomerParams
+		params.require(:stripeCustomerUpdate).permit(:username, :email, :phone)
+	end
 end
