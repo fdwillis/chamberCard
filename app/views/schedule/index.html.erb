@@ -26,7 +26,7 @@
           <div class="card card-style">
             <div class="content mb-3">
                 <div class="">
-                  <% if @bookingRequests.present? %>
+                  <% if @bookingRequests.count > 0 %>
                     <% @bookingRequests.each do |h| %>
                       <div class="align-self-center">
                           <h5 class=""><%= h['title']%>
@@ -41,6 +41,17 @@
                       <div class="align-self-center">
                           <span class="btn btn-sm col-md-12 rounded-sm border-yellow1-dark text-uppercase font-800">Pending</span>
                       </div>
+                      <br>
+                      <% if h['service?'] %>
+                        <div class="align-self-center">
+                          <a href="" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Service</a>
+                        </div>
+                      <% end %>
+                      <% if h['product?'] %>
+                        <div class="align-self-center">
+                          <a href="" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Product</a>
+                        </div>
+                      <% end %>
                     <% end %>
                   <% end %>           
                 </div>
@@ -52,7 +63,7 @@
           <div class="card card-style">
             <div class="content mb-3">
                 <div class="">
-                  <% if @timeBought.present? %>
+                  <% if @timeBought.count > 0 %>
                     <% @timeBought.each do |h| %>
                       <div class="align-self-center">
                           <h5 class=""><%= h['title'] %></h5>
@@ -75,7 +86,7 @@
           <div class="card card-style">
             <div class="content mb-3">
                 <div class="">
-                  <% if @availableTimes.present? %>
+                  <% if @availableTimes.count > 0 %>
                     <% @availableTimes.each do |h| %>
                       <div class="align-self-center">
                           <h5 class=""><%= h['date'].to_date.strftime("%B %d, %Y")%>
