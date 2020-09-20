@@ -9,6 +9,7 @@ class ScheduleController < ApplicationController
 				@timeBought = response['timeBought']
 				@availableTimes = response['availableTimes']
 				@bookingRequests = response['bookingRequests']
+				
 			elsif response['message'] == "Invalid Token"
 				flash[:notice] = "To authorize your account, logout then login again."
 			else
