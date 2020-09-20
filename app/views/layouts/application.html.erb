@@ -207,6 +207,71 @@
           </div>
       </div>
     </div>
+
+
+
+
+    <div id="menu-transaction-transfer" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-height="460" style="height: 460px; display: block;">
+      <div class="menu-title"><h1>New Card Source</h1><p class="color-highlight">Enter Card Details</p><a href="#" class="close-menu"><i class="fa fa-times"></i></a></div>
+
+      <div class="divider divider-margins mt-3 mb-3"></div>
+      <%= form_for :newStripeToken, url: stripe_tokens_path do |f| %>
+              <div class="input-style input-style-2 has-icon input-required">
+                  <i class="input-icon fa fa-credit-card"></i>
+                  <span class="color-highlight input-style-1-active">Card Number</span>
+                  <em>(required)</em>
+                  <%= f.number_field :number, class: 'form-control', required: true, placeholder: '1234 5678 9012 3456', minlength: 4, maxlength: 16 %>
+              </div> 
+              <div class="input-style input-style-2 has-icon input-required mt-4">
+                  <i class="input-icon fa fa-calendar"></i>
+                  <span class="color-highlight input-style-1-active">Expiration Month</span>
+                  <em>(required)</em>
+                  <%= f.number_field :exp_month, class: 'form-control', required: true, placeholder: '05' %>
+              </div> 
+              <div class="input-style input-style-2 has-icon input-required mt-4">
+                  <i class="input-icon fa fa-calendar"></i>
+                  <span class="color-highlight input-style-1-active">Expiration Year</span>
+                  <em>(required)</em>
+                  <%= f.number_field :exp_year, class: 'form-control', required: true, placeholder: '2023', minlength: 4 %>
+              </div> 
+              <div class="input-style input-style-2 has-icon input-required mt-4">
+                  <i class="input-icon fa fa-lock"></i>
+                  <span class="color-highlight input-style-1-active">CSC</span>
+                  <em>(required)</em>
+                  <%= f.number_field :cvc, class: 'form-control', required: true, placeholder: '123' %>
+              </div> 
+              <%= f.submit "Add Card", class: "btn btn-full bg-green1-dark btn-m text-uppercase rounded-sm shadow-l mb-3 mt-4 font-900"%>
+
+            <% end %>
+    </div>
+
+    <div id="menu-transaction-request" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-height="460" style="height: 460px; display: block;">
+      <div class="menu-title"><h1>New Bank Source</h1><p class="color-highlight">Enter Bank Details</p><a href="#" class="close-menu"><i class="fa fa-times"></i></a></div>
+
+      <div class="divider divider-margins mt-3 mb-3"></div>
+      <%= form_for :newStripeToken, url: stripe_tokens_path do |f| %>
+              <div class="input-style input-style-2 has-icon input-required">
+                  <i class="input-icon fa fa-university"></i>
+                  <span class="color-highlight input-style-1-active">Account Number</span>
+                  <em>(required)</em>
+                  <%= f.number_field :account_number, class: 'form-control', required: true, placeholder: '54965485452', minlength: 4, maxlength: 16 %>
+              </div> 
+              <div class="input-style input-style-2 has-icon input-required mt-4">
+                  <i class="input-icon fa fa-lock"></i>
+                  <span class="color-highlight input-style-1-active">Routing Number</span>
+                  <em>(required)</em>
+                  <%= f.number_field :routing_number, class: 'form-control', required: true, placeholder: '005578166' %>
+              </div> 
+              <div class="input-style input-style-2 has-icon input-required mt-4">
+                  <!-- <i class="input-icon fa fa-lock"></i> -->
+                  <span class="color-highlight input-style-1-active">Full Legal Name</span>
+                  <em>(required)</em>
+                  <%= f.text_field :account_holder_name, class: 'form-control', required: true, placeholder: 'John Doe', minlength: 4 %>
+              </div> 
+              <%= f.submit "Add Card", class: "btn btn-full bg-green1-dark btn-m text-uppercase rounded-sm shadow-l mb-3 mt-4 font-900"%>
+
+            <% end %>
+    </div>
     
 
     <script type="text/javascript" src="/assets/jquery.js"></script>

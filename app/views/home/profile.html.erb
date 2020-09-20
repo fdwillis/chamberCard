@@ -67,7 +67,77 @@
           showing sources
           showing form to add new source
           button to delete source in one click
-          <%= @sources %>
+          <div class="card card-style">
+            <div class="content">
+              <%= @sources%>
+              <% @sources.each do |s| %>
+
+                <div class="d-flex">
+                  <% if s['brand'] == "Visa" %>
+                    <div class="align-self-center">
+                        <%= image_tag "pay-1.png","width"=>"50" %>
+                    </div>
+                    <div class="align-self-center pl-3">
+                        <h5 class="mb-n2">Visa</h5>
+                        <p class="mt-n1 mb-0 font-10">**** <%= s['last4'] %></p>
+                    </div>
+                  <% elsif s['brand'] == "MasterCard" %>
+                    <div class="align-self-center">
+                        <%= image_tag "pay-2.png","width"=>"50" %>
+                    </div>
+                    <div class="align-self-center pl-3">
+                        <h5 class="mb-n2">MasterCard</h5>
+                        <p class="mt-n1 mb-0 font-10">**** <%= s['last4'] %></p>
+                    </div>
+                  <% elsif s['brand'] == "American Express" %>
+                    <div class="align-self-center">
+                        <%= image_tag "pay-5.png","width"=>"50" %>
+                    </div>
+                    <div class="align-self-center pl-3">
+                        <h5 class="mb-n2">MasterCard</h5>
+                        <p class="mt-n1 mb-0 font-10">**** <%= s['last4'] %></p>
+                    </div>
+                  <% end %>
+                    
+                </div>
+                
+                <div class="divider mt-2 mb-2"></div>
+              <% end %>
+            </div>
+          </div>
+          <h2 class='text-center'>New Payment Source</h2>
+          <div class="row text-center mb-0 mt-n2">
+              <a href="#" data-menu="menu-transaction-transfer" class="col-6 pr-0">
+                  <div class="card card-style ml-2 mb-3">
+                      <i class="fa fa-credit-card color-magenta2-dark fa-2x mt-3"></i>
+                      <h1 class="pt-2 font-18">Card</h1>
+                      <p class="font-11 opacity-50 mt-n2 mb-3">Tap to add another card</p>
+                  </div>
+              </a>
+              <a href="#" data-menu="menu-transaction-request" class="col-6 pl-0">
+                  <div class="card card-style ml-2 mb-3">
+                      <i class="fa fa-university color-highlight fa-2x mt-3"></i>
+                      <h1 class="pt-2 font-18">Bank</h1>
+                      <p class="font-11 opacity-50 mt-n2 mb-3">Tap to Request Funds</p>
+                  </div>
+              </a>
+          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <% else %>
             <p class="mb-5">
                 This contains basic profile fields, easily editable, set to disable or pre-populate with useful information.
@@ -140,7 +210,7 @@
       </div>
   </div>         
       
-  <div class="card card-style">
+  <!-- <div class="card card-style">
       <div class="content mb-2">
           <h2>Social Profiles</h2>
           <p>
@@ -173,7 +243,7 @@
               </a>        
           </div>
       </div>
-  </div>
+  </div> -->
   
   <div class="card card-style">
       <div class="content mb-0">

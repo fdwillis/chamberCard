@@ -3,7 +3,7 @@ before_action :authenticate_user!
 
 	def create
 		callCurl = current_user.createStripeTokenAPI(params[:newStripeToken])
-
+		
 		if callCurl['success']
 			tokenReady = callCurl['token']
 
