@@ -1,5 +1,11 @@
 class HomeController < ApplicationController
 
+	def profile
+		if current_user&.stripeUserID&.stripeSourceVerified
+
+		end
+	end
+
   def service_worker
   	
   end

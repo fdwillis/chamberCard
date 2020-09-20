@@ -21,16 +21,17 @@ class User < ApplicationRecord
     end
   end
 
-  def attachSourceStripe(source)
+  def attachSourceStripe(tokenSource)
 
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "source=#{source}" -X PATCH #{SITEurl}/v1/stripe-customers/#{self.uuid}`
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "source=#{tokenSource}" -X PATCH #{SITEurl}/v1/stripe-customers/#{self.uuid}`
 
     response = Oj.load(curlCall)
-    debugger
+    
     if !response.blank? && response['success']
+      self.update_attributes(stripeSourceVerified: response['stripeSourceVerified'])
       return response
     else
-      return false
+      return response['error']
     end
   end
 
@@ -40,14 +41,14 @@ class User < ApplicationRecord
     exp_month = params[:exp_month]
     cvc = params[:cvc]
 
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/v1/stripe-customers`
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/v1/stripe-tokens`
 
     response = Oj.load(curlCall)
     
     if !response.blank? && response['success']
       return response
     else
-      return false
+      return response['error']
     end
   end
 
