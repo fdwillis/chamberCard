@@ -46,13 +46,29 @@ class User < ApplicationRecord
     end
   end
 
-  def createStripeTokenAPI(params)
+  def createStripeCardTokenAPI(params)
     number = params[:number]
     exp_year = params[:exp_year]
     exp_month = params[:exp_month]
     cvc = params[:cvc]
 
     curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/v1/stripe-tokens`
+
+    response = Oj.load(curlCall)
+    
+    if !response.blank? && response['success']
+      return response
+    else
+      return response['error']
+    end
+  end
+
+  def createStripeBankTokenAPI(params)
+    account_holder_name = params[:account_holder_name]
+    account_number = params[:account_number]
+    routing_number = params[:routing_number]
+
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "account_holder_name=#{account_holder_name}&account_number=#{account_number}&routing_number=#{routing_number}" #{SITEurl}/v1/stripe-tokens`
 
     response = Oj.load(curlCall)
     

@@ -45,7 +45,7 @@
       </div>
   </div> 
 
-  <div class="card card-style">
+  <div class="card card-style text-center">
     <div class="content mb-0">
       <h2>Payment Information</h2>
       <% if current_user.stripeUserID.blank? %>
@@ -69,38 +69,37 @@
           button to delete source in one click
           <div class="card card-style">
             <div class="content">
-              <%= @sources%>
               <% @sources.each do |s| %>
+                <% if s['object'] == 'card' %>
+                    <% if s['brand'] == "Visa" %>
+                      <div style="align-items: center;" class=" card card-style ml-2 mb-3">
+                          <%= image_tag "pay-1.png","width"=>"50", stlye: '' %>
+                          <h5 class="mb-n2">Visa</h5>
+                          <p class="mt-n1 mb-0 font-10">**** <%= s['last4'] %></p>
+                      </div>
+                    <% elsif s['brand'] == "MasterCard" %>
+                      <div style="align-items: center;" class=" card card-style ml-2 mb-3">
+                          <%= image_tag "pay-2.png","width"=>"50" %>
+                          <h5 class="mb-n2">MasterCard</h5>
+                          <p class="mt-n1 mb-0 font-10">**** <%= s['last4'] %></p>
+                      </div>
+                    <% elsif s['brand'] == "American Express" %>
+                      <div style="align-items: center;" class=" card card-style ml-2 mb-3">
+                          <%= image_tag "pay-5.png","width"=>"50" %>
+                          <h5 class="mb-n2">American Express</h5>
+                          <p class="mt-n1 mb-0 font-10">**** <%= s['last4'] %></p>
+                      </div>
+                    <% end %>
+                      
+                <% end %>
 
-                <div class="d-flex">
-                  <% if s['brand'] == "Visa" %>
-                    <div class="align-self-center">
-                        <%= image_tag "pay-1.png","width"=>"50" %>
-                    </div>
-                    <div class="align-self-center pl-3">
-                        <h5 class="mb-n2">Visa</h5>
-                        <p class="mt-n1 mb-0 font-10">**** <%= s['last4'] %></p>
-                    </div>
-                  <% elsif s['brand'] == "MasterCard" %>
-                    <div class="align-self-center">
-                        <%= image_tag "pay-2.png","width"=>"50" %>
-                    </div>
-                    <div class="align-self-center pl-3">
-                        <h5 class="mb-n2">MasterCard</h5>
-                        <p class="mt-n1 mb-0 font-10">**** <%= s['last4'] %></p>
-                    </div>
-                  <% elsif s['brand'] == "American Express" %>
-                    <div class="align-self-center">
-                        <%= image_tag "pay-5.png","width"=>"50" %>
-                    </div>
-                    <div class="align-self-center pl-3">
-                        <h5 class="mb-n2">MasterCard</h5>
-                        <p class="mt-n1 mb-0 font-10">**** <%= s['last4'] %></p>
-                    </div>
-                  <% end %>
-                    
-                </div>
-                
+                <% if s['object'] == 'bank_account' %>
+                  <div class="text-center card card-style ml-2 mb-3">
+                      <i class="fa fa-university color-highlight fa-2x mt-3"></i>
+                      <h1 class="pt-2 font-18"><%= s['last4'] %></h1>
+                      <p class="font-11 opacity-50 mt-n2 mb-3"><%= s['routing_number'] %></p>
+                  </div>
+                <% end %>
                 <div class="divider mt-2 mb-2"></div>
               <% end %>
             </div>
@@ -178,8 +177,8 @@
 
   <div class="card card-style">
       <div class="content mb-0">
-          <h2>Account Information</h2>
-          <p class="mb-5">
+          <h2 class="text-center">Account Information</h2>
+          <p class="mb-5 text-center">
               This contains basic profile fields, easily editable, set to disable or pre-populate with useful information.
           </p>
           <div class="input-style input-style-2 has-icon input-required">
