@@ -9,7 +9,7 @@ class ChargesController < ApplicationController
 				@payments = response['payments']
 				@overdue = response['overdue']
 			elsif response['message'] == "No purchases found"
-				flash[:alert] = response['message']
+				@message = response['message']
 			else
 				flash[:error] = response['message']
 			end
