@@ -32,7 +32,7 @@
                 </p>
                 
                 <% if current_user&.stripeSourceVerified %>
-                  <a href="" class="btn btn-m btn-full rounded-sm shadow-xl bg-highlight text-uppercase mb-3 font-900">PURCHASE</a>
+                  <a href="<%= new_charge_path(title: @slot['title'], uuid: @slot['uuid'], desc: @slot['desc']) %>" class="btn btn-m btn-full rounded-sm shadow-xl bg-highlight text-uppercase mb-3 font-900">PURCHASE</a>
                 <% end %>
                 <!-- <a href="#" class="btn btn-m btn-full rounded-sm shadow-xl bg-highlight text-uppercase mb-3 font-900">Join Event</a> -->
             </div>

@@ -15,4 +15,28 @@ class ChargesController < ApplicationController
 			end
 		end
 	end
+
+	def new
+		@title = params[:title]
+		@uuid = params[:uuid]
+		@desc = params[:desc]
+	end
+
+	def create
+		timeSlot = params[:newCharge][:uuid]
+		quantity = params[:newCharge][:quantity]
+		desc = params[:newCharge][:desc]
+    
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "quantity=#{quantity}&timeSlot=#{timeSlot}&timeSlotCharge=true&description=#{desc}" #{SITEurl}/v1/stripe-charges`
+		debugger
+		response = Oj.load(curlCall)
+    
+    if !response.blank? && response['success']
+			flash[:success] = "Purchase successful"
+      redirect_to service_path(id: timeSlot)
+    else
+      return false
+    end
+
+	end
 end
