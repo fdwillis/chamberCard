@@ -24,10 +24,10 @@
         
         <div class="tab-content" id="tab-2">
           <div class="card card-style">
-            <div class="content mb-3">
-                <div class="">
                   <% if @bookingRequests.count > 0 %>
                     <% @bookingRequests.each do |h| %>
+            <div class="content mb-3">
+                <div class="">
                       <div class="align-self-center">
                           <h5 class=""><%= h['title']%>
                             <p class="font-600 opacity-40"><%= h['startTime']%> - <%= h['endTime']%></p>
@@ -52,19 +52,19 @@
                           <a href="<%= service_path(id: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Product</a>
                         </div>
                       <% end %>
-                    <% end %>
-                  <% end %>           
                 </div>
             </div>
+                    <% end %>
+                  <% end %>           
           </div>
         </div>
 
         <div class="tab-content" id="tab-4">
           <div class="card card-style">
-            <div class="content mb-3">
-                <div class="">
                   <% if @timeBought.count > 0 %>
                     <% @timeBought.each do |h| %>
+            <div class="content mb-3">
+                <div class="">
                       <div class="align-self-center">
                           <h5 class=""><%= h['title'] %></h5>
                           <p class="font-600 opacity-40"><%= number_to_currency(h['amount'] * 0.01, precision: 2) %> per service</p>
@@ -75,19 +75,19 @@
                       <div class="align-self-center">
                           <span class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">REQUEST schedule</span>
                       </div>
-                    <% end %>
-                  <% end %>           
                 </div>
             </div>
+                    <% end %>
+                  <% end %>           
           </div>
         </div>
 
         <div class="tab-content" id="tab-3">
           <div class="card card-style">
-            <div class="content mb-3">
-                <div class="">
                   <% if @availableTimes.count > 0 %>
                     <% @availableTimes.each do |h| %>
+            <div class="content mb-3">
+                <div class="">
                       <div class="align-self-center">
                           <h5 class=""><%= h['date'].to_date.strftime("%B %d, %Y")%>
                             <p class="font-600 opacity-40"><%= h['startTime']%> - <%= h['endTime']%></p>
@@ -101,10 +101,10 @@
                       <div class="align-self-center">
                           <span class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Book Now</span>
                       </div>
-                    <% end %>
-                  <% end %>           
                 </div>
             </div>
+                    <% end %>
+                  <% end %>           
           </div>
         </div>
     </div>
