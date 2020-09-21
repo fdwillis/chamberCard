@@ -44,12 +44,12 @@
                       <br>
                       <% if h['service?'] %>
                         <div class="align-self-center">
-                          <a href="" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Service</a>
+                          <a href="<%= service_path(id: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Service</a>
                         </div>
                       <% end %>
                       <% if h['product?'] %>
                         <div class="align-self-center">
-                          <a href="" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Product</a>
+                          <a href="<%= service_path(id: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Product</a>
                         </div>
                       <% end %>
                     <% end %>

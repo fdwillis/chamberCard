@@ -1,0 +1,39 @@
+<!-- <%= @slot %> -->
+<div class="card card-style">
+            <div class="content mb-0">
+                <div class="float-left">
+                    <h1 class="mb-0">
+                    <%= @slot['title'].titleize %>
+                    		
+                    </h1>
+<!--                     <p class="font-10"><i class="fa fa-map-marker-alt mr-2"></i>Melbourne Victoria, Collins Street</p>
+ -->                </div>                
+                <div class="clearfix"></div>                
+                <div class="divider mt-2 mb-3"></div>
+                
+                <div class="row">
+                    <% if @slot['service?'] || @slot['product?'] %>
+	                    <div class="col-4">
+	                        <strong class="color-theme">Price:</strong>
+	                        <p class="font-12"><%= number_to_currency(@slot['cost']) %></p>
+	                    </div>
+	                  <% elsif !@slot['service?'] && !@slot['product?'] %>
+	                    <div class="col-4">
+	                        <strong class="color-theme">Price:</strong>
+	                        <p class="font-12"><%= number_to_currency(@slot['wageRate']) %>/hour</p>
+	                    </div>
+	                  <% end %>
+                </div>
+                
+                
+                <h5>Description</h5>
+                <p>
+                    <%= @slot['desc'] %>
+                </p>
+                
+                <% if current_user&.stripeSourceVerified %>
+                  <a href="" class="btn btn-m btn-full rounded-sm shadow-xl bg-highlight text-uppercase mb-3 font-900">PURCHASE</a>
+                <% end %>
+                <!-- <a href="#" class="btn btn-m btn-full rounded-sm shadow-xl bg-highlight text-uppercase mb-3 font-900">Join Event</a> -->
+            </div>
+        </div> 
