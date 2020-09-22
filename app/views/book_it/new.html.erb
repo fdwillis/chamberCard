@@ -31,10 +31,9 @@
           </div>
           
           <%= form_for :bookIt, url: bookingRequest_path do |f| %>
-            <%= f.date_select :date, { order: [:month, :day, :year] }, { class: "form-control"} %>
+            <%= f.date_select :date, { order: [:month, :day, :year], start_year: Date.current.year }, { class: "form-control"} %>
 
 
-            <%= f.hidden_field :paidBy, value: current_user.uuid %>
           	<%= f.hidden_field :timeSlot, value: @timeBought['timeSlotUUID'] %>
           	<%= f.hidden_field :stripeChargeID, value: @timeBought['stripeChargeID'] %>
 	          <div class="col-12">

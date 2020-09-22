@@ -26,7 +26,26 @@ before_action :authenticate_user!
 	end
 
 	def bookingRequest
-		debugger
+		date = "#{params[:bookIt]['date(2i)']}/#{params[:bookIt]['date(3i)']}/#{params[:bookIt]['date(1i)']}"
+		
+		startTime = Date.strptime(date, "%m/%d/%Y")
+		endTime = Date.strptime(date, "%m/%d/%Y")
+		
+		paidBy = current_user.uuid
+		stripeChargeID = params[:bookIt][:stripeChargeID]
+		timeSlot = params[:bookIt][:timeSlot]
+
+		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "endTime=#{endTime}&startTime=#{startTime}&timeSlot=#{timeSlot}&stripeChargeID=#{stripeChargeID}&paidBy=#{paidBy}" -X POST #{SITEurl}/v1/booking-request`
+		
+		response = Oj.load(curlCall)
+	    
+    if !response.blank? && response['success']
+    	flash[:success] = "Request Submitted"
+    	redirect_to schedule_index_path
+    else
+    	flash[:error] = "Something went wrong"
+    end
+
 	end
 
 	private
