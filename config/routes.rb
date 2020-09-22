@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 		resources :services
 		resources :stripe_customers, :path => '/stripe-customers'
 		resources :stripe_tokens, :path => '/stripe-tokens'
+		resources :book_it, :path => '/book-it'
 		
 		get "profile", to: 'home#profile', as: "profile"
 	  authenticated :user do

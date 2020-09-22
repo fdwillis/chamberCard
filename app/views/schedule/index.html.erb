@@ -24,47 +24,51 @@
         
         <div class="tab-content" id="tab-2">
           <div class="card card-style">
-                  <% if @bookingRequests.count > 0 %>
-                    <% @bookingRequests.each do |h| %>
-            <div class="content mb-3">
-                <div class="">
-                      <div class="align-self-center">
-                          <h5 class=""><%= h['title']%> (<%= h['remaining']%>)
-                            <p class="font-600 opacity-40"><%= h['startTime']%> - <%= h['endTime']%></p>
-                          </h5>
-                      </div>
-                      <div class="align-self-center">
-                      </div>
-                      <div class="align-self-center">
-                          <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
-                      </div>
-                      <div class="align-self-center">
-                          <span class="btn btn-sm col-md-12 rounded-sm border-yellow1-dark text-uppercase font-800">Pending</span>
-                      </div>
-                      <br>
-                      <% if h['service?'] %>
-                        <div class="align-self-center">
-                          <a href="<%= service_path(id: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Service</a>
-                        </div>
-                      <% end %>
-                      <% if h['product?'] %>
-                        <div class="align-self-center">
-                          <a href="<%= service_path(id: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Product</a>
-                        </div>
-                      <% end %>
+            <% if @bookingRequests.count > 0 %>
+              <% @bookingRequests.each do |h| %>
+                <div class="content mb-3">
+                    <div class="">
+                          <div class="align-self-center">
+                              <h5 class=""><%= h['title']%>
+                                <p class="font-600 opacity-40"><%= h['startTime']%> - <%= h['endTime']%></p>
+                              </h5>
+                          </div>
+                          <div class="align-self-center">
+                          </div>
+                          <div class="align-self-center">
+                              <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
+                          </div>
+                          <div class="align-self-center">
+                              <span class="btn btn-sm col-md-12 rounded-sm border-yellow1-dark text-uppercase font-800">Pending</span>
+                          </div>
+                          <br>
+                          <div class="align-self-center">
+                              <span class="btn btn-sm col-md-12 rounded-sm border-blue1-dark text-uppercase font-800">Edit</span>
+                          </div>
+                          <br>
+                          <% if h['service?'] %>
+                            <div class="align-self-center">
+                              <a href="<%= service_path(id: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Service</a>
+                            </div>
+                          <% end %>
+                          <% if h['product?'] %>
+                            <div class="align-self-center">
+                              <a href="<%= service_path(id: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Product</a>
+                            </div>
+                          <% end %>
+                    </div>
                 </div>
-            </div>
-                    <% end %>
-                  <% end %>           
+              <% end %>
+            <% end %>           
           </div>
         </div>
 
         <div class="tab-content" id="tab-4">
           <div class="card card-style">
-                  <% if @timeBought.count > 0 %>
-                    <% @timeBought.each do |h| %>
-            <div class="content mb-3">
-                <div class="">
+            <% if @timeBought.count > 0 %>
+              <% @timeBought.each do |h| %>
+                <div class="content mb-3">
+                    <div class="">
                       <div class="align-self-center">
                           <h5 class=""><%= h['title'] %> (<%= h['remaining']%>)</h5>
                           <p class="font-600 opacity-40"><%= number_to_currency(h['amount'] * 0.01, precision: 2) %> per service</p>
@@ -75,36 +79,36 @@
                       <div class="align-self-center">
                           <span class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">REQUEST schedule</span>
                       </div>
+                    </div>
                 </div>
-            </div>
-                    <% end %>
-                  <% end %>           
+              <% end %>
+            <% end %>           
           </div>
         </div>
 
         <div class="tab-content" id="tab-3">
           <div class="card card-style">
-                  <% if @availableTimes.count > 0 %>
-                    <% @availableTimes.each do |h| %>
-            <div class="content mb-3">
-                <div class="">
-                      <div class="align-self-center">
-                          <h5 class=""><%= h['date'].to_date.strftime("%B %d, %Y")%>
-                            <p class="font-600 opacity-40"><%= h['startTime']%> - <%= h['endTime']%></p>
-                          </h5>
-                      </div>
-                      <div class="align-self-center">
-                      </div>
-                      <div class="align-self-center">
-                          <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
-                      </div>
-                      <div class="align-self-center">
-                          <span class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Book Now</span>
-                      </div>
+            <% if @availableTimes.count > 0 %>
+              <% @availableTimes.each do |h| %>
+                <div class="content mb-3">
+                    <div class="">
+                          <div class="align-self-center">
+                              <h5 class=""><%= h['date'].to_date.strftime("%B %d, %Y")%>
+                                <p class="font-600 opacity-40"><%= h['startTime']%> - <%= h['endTime']%></p>
+                              </h5>
+                          </div>
+                          <div class="align-self-center">
+                          </div>
+                          <div class="align-self-center">
+                              <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
+                          </div>
+                          <div class="align-self-center">
+                              <a href="<%= new_book_it_path(timeBought: @timeBought, booking: h) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Book Now</a>
+                          </div>
+                    </div>
                 </div>
-            </div>
-                    <% end %>
-                  <% end %>           
+              <% end %>
+            <% end %>           
           </div>
         </div>
     </div>
@@ -119,7 +123,7 @@
                 <div class="flex-grow-1">
                     <h1 class="font-700">Book Now</h1>
                     <p class="mb-2">
-                    	All of your scheduled appointments will be posted here. Cancel an appointment anytime for free!
+                      All of your scheduled appointments will be posted here. Cancel an appointment anytime for free!
                     </p>
                 </div>
                 <!-- right side of profile. increase image width to increase column size-->

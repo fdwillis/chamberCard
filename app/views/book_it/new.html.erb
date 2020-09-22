@@ -1,0 +1,68 @@
+<%= @timeBought %>
+BOOKING: <%= params[:booking] %>
+
+<div class="page-content header-clear-medium" style="min-height: 812px;">
+        
+  <div class="card card-style">
+      <!-- <img data-src="images/pictures/18w.jpg" class="preload-img img-fluid bottom-20" src="images/pictures/18w.jpg"> -->
+      <div class="content mb-0">
+          <div class="float-left">
+              <h1 class="mb-0"><%= params[:booking][:sellerUsername].titleize %></h1>
+              <!-- <p class="font-10"><i class="fa fa-map-marker-alt mr-2"></i>Choose a service below for <%= params[:booking][:sellerUsername].titleize %> to complete during this time.</p> -->
+          </div>
+          <a href="#" class="float-right btn btn-xs bg-highlight rounded-xl shadow-xl text-uppercase font-900 mt-2 font-11">Available Now</a>
+          
+          <div class="clearfix"></div>                
+          <div class="divider mt-2 mb-3"></div>
+          
+          <div class="row">
+              <div class="col-6">
+                  <strong class="color-theme">Date:</strong>
+                  <p class="font-12"></i><%= params[:booking][:date].to_date.strftime("%b %d, %Y") %></p>
+              </div>
+              <div class="col-3">
+                  <strong class="color-theme">Start</strong>
+                  <p class="font-12"></i><%= params[:booking][:startTime] %></p>
+              </div>
+              <div class="col-3">
+                  <strong class="color-theme">End</strong>
+                  <p class="font-12"></i><%= params[:booking][:endTime] %></p>
+              </div>
+          </div>
+          
+          
+          <h5>Instructions</h5>
+          <p class="text-justify">If you have purchased services from <%= params[:booking][:sellerUsername].titleize %>, click which service you would like to have completed during this time. </p>
+          
+          
+          <!-- <a href="#" class="btn btn-m btn-full rounded-sm shadow-xl bg-highlight text-uppercase mb-3 font-900">Join Event</a> -->
+      </div>
+  </div> 
+  <% @timeBought.each do |h| %>
+  	<div class="card card-style">
+      <div class="content mb-3">
+          <div class="">
+            <div class="align-self-center">
+                <h5 class=""><%= h['title'] %> (<%= h['remaining']%>)</h5>
+                <p class="font-600 opacity-40"><%= number_to_currency(h['amount'] * 0.01, precision: 2) %> per service</p>
+            </div>
+            <div class="align-self-center">
+                <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
+            </div>
+            <%= form_for :bookIt, url: book_it_index_path do |f| %>
+            	<%= f.hidden_field :timeSlot, value: h['timeSlotUUID'] %>
+            	<%= f.hidden_field :stripeCharge, value: h['stripeChargeID'] %>
+            	<%= f.hidden_field :timeToBook, value: params[:booking]['uuid'] %>
+            	<%= f.hidden_field :purchase, value: true %>
+
+		          <div class="col-12">
+		            <div class="input-style input-style-2">
+								  <%= f.submit "Book It", class: "btn bg-green1-dark text-uppercase rounded-sm font-900"%>
+			          </div>
+		          </div>
+						<% end %>
+          </div>
+      </div>
+    </div>
+  <% end %>  
+</div>
