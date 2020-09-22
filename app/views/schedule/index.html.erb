@@ -26,6 +26,7 @@
           <div class="card card-style">
             <% if @bookingRequests.count > 0 %>
               <% @bookingRequests.each do |h| %>
+              <%= h%>
                 <div class="content mb-3">
                     <div class="">
                           <div class="align-self-center">
@@ -38,9 +39,11 @@
                           <div class="align-self-center">
                               <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
                           </div>
-                          <div class="align-self-center">
-                              <span class="btn btn-sm col-md-12 rounded-sm border-yellow1-dark text-uppercase font-800">Pending</span>
-                          </div>
+                          <% if !h['managerApproved?'] %>
+                            <div class="align-self-center">
+                                <span class="btn btn-sm col-md-12 rounded-sm border-yellow1-dark text-uppercase font-800">Pending</span>
+                            </div>
+                          <% end %>
                           <br>
                           <div class="align-self-center">
                               <span class="btn btn-sm col-md-12 rounded-sm bg-red1-dark text-uppercase font-800">Cancel</span>

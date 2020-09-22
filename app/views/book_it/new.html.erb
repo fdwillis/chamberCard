@@ -36,10 +36,10 @@
 
             <%= f.hidden_field :paidBy, value: current_user.uuid %>
           	<%= f.hidden_field :timeSlot, value: @timeBought['timeSlotUUID'] %>
-          	<%= f.hidden_field :stripeCharge, value: @timeBought['stripeChargeID'] %>
+          	<%= f.hidden_field :stripeChargeID, value: @timeBought['stripeChargeID'] %>
 	          <div class="col-12">
 	            <div class="input-style input-style-2">
-							  <%= f.submit "Book It", class: "btn bg-green1-dark text-uppercase rounded-sm font-900"%>
+							  <%= f.submit "Submit Request", class: "btn bg-green1-dark text-uppercase rounded-sm font-900"%>
 		          </div>
 	          </div>
 					<% end %>

@@ -3,9 +3,9 @@ before_action :authenticate_user!
 
 	def create
 		timeSlot = claimSlotParams[:timeSlot]
-		stripeCharge = claimSlotParams[:stripeCharge]
+		stripeChargeID = claimSlotParams[:stripeChargeID]
 
-		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "timeSlot=#{timeSlot}&stripeCharge=#{stripeCharge}&purchase=true" -X PATCH #{SITEurl}/v1/available-times/#{claimSlotParams[:timeToBook]}`
+		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "timeSlot=#{timeSlot}&stripeChargeID=#{stripeChargeID}&purchase=true" -X PATCH #{SITEurl}/v1/available-times/#{claimSlotParams[:timeToBook]}`
 		
 		response = Oj.load(curlCall)
 	    
@@ -27,12 +27,11 @@ before_action :authenticate_user!
 
 	def bookingRequest
 		debugger
-		
 	end
 
 	private
 
 	def claimSlotParams
-		params.require(:bookIt).permit(:timeSlot, :stripeCharge, :timeToBook, :purchase)
+		params.require(:bookIt).permit(:timeSlot, :stripeChargeID, :timeToBook, :purchase)
 	end
 end
