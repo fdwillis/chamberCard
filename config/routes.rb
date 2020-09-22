@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 		resources :stripe_tokens, :path => '/stripe-tokens'
 		resources :book_it, :path => '/book-it'
 		
+		post "cancel", to: 'schedule#cancel', as: "cancel"
 		post "bookingRequest", to: 'book_it#bookingRequest', as: "bookingRequest"
 		
 		get "profile", to: 'home#profile', as: "profile"

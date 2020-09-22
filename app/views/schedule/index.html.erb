@@ -26,7 +26,6 @@
           <div class="card card-style">
             <% if @bookingRequests.count > 0 %>
               <% @bookingRequests.each do |h| %>
-              <%= h%>
                 <div class="content mb-3">
                     <div class="">
                           <div class="align-self-center">
@@ -45,18 +44,23 @@
                             </div>
                           <% end %>
                           <br>
+
                           <div class="align-self-center">
-                              <span class="btn btn-sm col-md-12 rounded-sm bg-red1-dark text-uppercase font-800">Cancel</span>
+                          <%= form_for :cancel, url: cancel_path do |f| %>
+                            <%= f.hidden_field :uuid, value: h['uuid'] %>
+                            <%= f.submit "Cancel", class: "btn btn-sm col-md-12 rounded-sm bg-red1-dark text-uppercase font-800"%>
+                          <% end %>
                           </div>
+                          
                           <br>
                           <% if h['service?'] %>
                             <div class="align-self-center">
-                              <a href="<%= service_path(id: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Service</a>
+                              <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Service</a>
                             </div>
                           <% end %>
                           <% if h['product?'] %>
                             <div class="align-self-center">
-                              <a href="<%= service_path(id: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Product</a>
+                              <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Product</a>
                             </div>
                           <% end %>
                     </div>
@@ -80,7 +84,7 @@
                           <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
                       </div>
                       <div class="align-self-center">
-                        <a href="<%= new_book_it_path(timeBought: h) %>" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">View Product</a>
+                        <a href="<%= new_book_it_path(timeBought: h) %>" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">Request</a>
                       </div>
                     </div>
                 </div>

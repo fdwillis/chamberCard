@@ -17,4 +17,21 @@ class ScheduleController < ApplicationController
 			end
 		end
 	end
+
+	def cancel
+		# canceling session
+		cancelIt = params[:cancel][:uuid]
+		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "" -X PATCH #{SITEurl}/v1/available-times/#{cancelIt}/cancel`
+    
+    response = Oj.load(curlCall)
+		
+		if !response.blank? && response['success']
+			flash[:alert] = response['message']
+			redirect_to request.referrer
+		elsif response['message'] == "Invalid Token"
+			flash[:notice] = "To authorize your account, logout then login again."
+		else
+			flash[:notice] = "Trouble connecting. Try again later."
+		end
+	end
 end
