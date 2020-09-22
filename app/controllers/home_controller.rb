@@ -7,8 +7,8 @@ class HomeController < ApplicationController
 			if callCurl['success']
 				@sources = callCurl['sources']
 			else
-				flash[:error] = callCurl
-				redirect_to profile_path(newStripeToken)
+				current_user.createUserSessionAPI(current_user.encrypted_password)
+				redirect_to services_path
 			end
 		end
 	end

@@ -3,7 +3,6 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable  
-  # after_create :createUserAPI
 
   def updateStripeUserAPI(params)
     email = params[:email]
@@ -17,7 +16,7 @@ class User < ApplicationRecord
     if !response.blank? && response['success']
       return response
     else
-      return false
+      return response
     end
   end
 
@@ -28,7 +27,7 @@ class User < ApplicationRecord
     if !response.blank? && response['success']
       return response
     else
-      return false
+      return response
     end
   end
 
@@ -89,7 +88,7 @@ class User < ApplicationRecord
       self.update_attributes(stripeUserID: response['stripeUserID'] )
       return response
     else
-      return false
+      return response
     end
   end
 
@@ -102,7 +101,7 @@ class User < ApplicationRecord
       self.update_attributes(authentication_token: response['authentication_token'], uuid: response['uuid'] )
       return response
     else
-      return false
+      return response
     end
   end
 
@@ -115,7 +114,7 @@ class User < ApplicationRecord
       self.update_attributes(authentication_token: nil )
       return response
     else
-      return false
+      return response
     end
   end
 end
