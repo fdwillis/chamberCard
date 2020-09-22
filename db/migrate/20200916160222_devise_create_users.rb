@@ -8,9 +8,10 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
       t.boolean :stripeSourceVerified, default: false
       ## Database authenticatable
       t.string :accessPin
+      t.string :referredBy
       t.string :authentication_token, unique: true
       t.string :username, unique: true, null: false
-      t.string :uuid, unique: true, null: false
+      t.string :uuid, unique: true
 
       t.string :email,              null: false, default: ""
       t.string :encrypted_password, null: false, default: ""

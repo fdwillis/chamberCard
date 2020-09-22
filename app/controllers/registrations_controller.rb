@@ -12,11 +12,6 @@ class RegistrationsController < Devise::RegistrationsController
       	
       	auth = resource.createUserSessionAPI(params[:user][:password])
       	if auth['success']
-
-          crypt = ActiveSupport::MessageEncryptor.new(ENV['encryptMeDatax'])
-          encrypted_data = crypt.encrypt_and_sign(params[:user][:password])
-          resource.update_attributes(encrypted_password: encrypted_data)
-
 	      	flash[:success] = "Created account"
 	      else
 	      	flash[:notice] = "You will need to verify later"

@@ -105,6 +105,21 @@ class User < ApplicationRecord
     end
   end
 
+  def createUserAPI
+
+    curlCall = `curl -d "email=#{self.email}&username=#{self.username}&password=#{self.password}&password_confirmation=#{self.password}" #{SITEurl}/v1/users`
+
+    response = Oj.load(curlCall)
+    
+    if !response.blank? && response['success']
+      self.update_attributes(uuid: response['uuid'],username: response['username'], accessPin: response['accessPin'] )
+      return response
+    else
+      return false
+    end
+  end
+
+
   def deleteUserSessionAPI
     curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X DELETE #{SITEurl}/v1/sessions/#{self.uuid}`
     

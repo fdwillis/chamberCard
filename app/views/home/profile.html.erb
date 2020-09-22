@@ -56,7 +56,7 @@
           </p>
 
           <%= form_for :newStripeCustomer, url: stripe_customers_path do |f| %>
-            <%= f.submit "Proceed", class: "btn btn-full bg-yellow1-dark btn-m text-uppercase rounded-sm shadow-l mb-3 mt-4 font-900"%>
+            <%= f.submit "Proceed", class: "btn btn-full bg-yellow1-dark btn-m text-uppercase rounded-sm shadow-l col-12 mb-3 mt-4 font-900"%>
 
           <% end %>
           
@@ -99,20 +99,20 @@
           </div>
           <h2 class='text-center'>New Payment Source</h2>
           <div class="row text-center mb-0 mt-n2">
-              <a href="#" data-menu="menu-transaction-transfer" class="col-6 pr-0">
+              <a href="#" data-menu="menu-transaction-transfer" class="col-12 pr-0">
                   <div class="card card-style ml-2 mb-3">
                       <i class="fa fa-credit-card color-highlight fa-2x mt-3"></i>
                       <h1 class="pt-2 font-18">Card</h1>
                       <p class="font-11 opacity-50 mt-n2 mb-3">Tap to add another card</p>
                   </div>
               </a>
-              <a href="#" data-menu="menu-transaction-request" class="col-6 pl-0">
+              <!-- <a href="#" data-menu="menu-transaction-request" class="col-6 pl-0">
                   <div class="card card-style ml-2 mb-3">
                       <i class="fa fa-university color-highlight fa-2x mt-3"></i>
                       <h1 class="pt-2 font-18">Bank</h1>
                       <p class="font-11 opacity-50 mt-n2 mb-3">Tap to Request Funds</p>
                   </div>
-              </a>
+              </a> -->
           </div>
         <% else %>
             <p class="mb-5">

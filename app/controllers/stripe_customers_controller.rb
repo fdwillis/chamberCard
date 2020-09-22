@@ -6,7 +6,7 @@ before_action :authenticate_user!
 
 		if callCurl['success']
 			flash[:success] = "Customer account created"
-			redirect_to profile_path
+			redirect_to request.referrer
 		else
 			flash[:error] = callCurl['message']
 			redirect_to profile_path

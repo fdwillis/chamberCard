@@ -96,7 +96,7 @@
         <div class="tab-content" id="tab-3">
           <div class="card card-style">
             <% if @availableTimes.count > 0 %>
-              <% @availableTimes.each do |h| %>
+              <% @availableTimes.each_with_index do |h,i| %>
                 <div class="content mb-3">
                     <div class="">
                           <div class="align-self-center">
@@ -110,7 +110,7 @@
                               <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
                           </div>
                           <div class="align-self-center">
-                              <a href="<%= new_book_it_path(timeBought: @timeBought, booking: h) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Book Now</a>
+                              <a href="<%= new_book_it_path(timeBought: @timeBought[i], booking: h) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Book Now</a>
                           </div>
                     </div>
                 </div>

@@ -6,7 +6,7 @@ class SessionsController < Devise::SessionsController
 
   def before_logout
     logoutAtt = current_user.deleteUserSessionAPI
-    
+
     if logoutAtt['success']
       flash[:success] = "See ya later"
     else

@@ -18,7 +18,7 @@ before_action :authenticate_user!
 
 			if source['success']
 				flash[:success] = "Payment added"
-				redirect_to profile_path
+				redirect_to request.referrer
 			else
 				flash[:error] = source
 				redirect_to profile_path

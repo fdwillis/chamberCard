@@ -20,9 +20,10 @@ ActiveRecord::Schema.define(version: 2020_09_16_160222) do
     t.string "phone"
     t.boolean "stripeSourceVerified", default: false
     t.string "accessPin"
+    t.string "referredBy"
     t.string "authentication_token"
     t.string "username", null: false
-    t.string "uuid", null: false
+    t.string "uuid"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
