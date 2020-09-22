@@ -7,7 +7,7 @@
     </div>
 </div>
 
-<% if current_user.stripeUserID.blank? %>
+<% if current_user&.stripeUserID.blank? %>
   <div class="card card-style">
       <div class="content mb-0">
         <h3>Payment Missing</h3>
@@ -21,7 +21,7 @@
       <% end %>
   </div>
 <% else %>
-  <% if !current_user.stripeSourceVerified %>
+  <% if !current_user&.stripeSourceVerified %>
     <div class="card card-style">
       <div class="content mb-0">
         <h3>Payment Missing</h3>

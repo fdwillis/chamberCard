@@ -9,7 +9,6 @@ before_action :authenticate_user!
 		
 		response = Oj.load(curlCall)
 	    
-		debugger
     if !response.blank? && response['success']
     	flash[:success] = "Successfully Booked"
     	redirect_to schedule_path
@@ -19,7 +18,16 @@ before_action :authenticate_user!
 	end
 
 	def new
-		@timeBought = params[:timeBought]
+		if @timeBought = params[:timeBought]
+		else
+			flash[:alert] = "Please choose a service to book"
+			redirect_to schedule_path
+		end
+	end
+
+	def bookingRequest
+		debugger
+		
 	end
 
 	private

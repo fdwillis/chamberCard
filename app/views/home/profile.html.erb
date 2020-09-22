@@ -71,26 +71,19 @@
             <div class="content">
               <% @sources.each do |s| %>
                 <% if s['object'] == 'card' %>
+                  <div style="align-items: center;" class=" card card-style ml-2 mb-3">
                     <% if s['brand'] == "Visa" %>
-                      <div style="align-items: center;" class=" card card-style ml-2 mb-3">
-                          <%= image_tag "pay-1.png","width"=>"50", stlye: '' %>
-                          <h5 class="mb-n2">Visa</h5>
-                          <p class="mt-n1 mb-0 font-10">**** <%= s['last4'] %></p>
-                      </div>
+                      <%= image_tag "pay-1.png","width"=>"50", stlye: '' %>
+                      <h5 class="mb-n2">Visa</h5>
                     <% elsif s['brand'] == "MasterCard" %>
-                      <div style="align-items: center;" class=" card card-style ml-2 mb-3">
-                          <%= image_tag "pay-2.png","width"=>"50" %>
-                          <h5 class="mb-n2">MasterCard</h5>
-                          <p class="mt-n1 mb-0 font-10">**** <%= s['last4'] %></p>
-                      </div>
+                      <%= image_tag "pay-2.png","width"=>"50" %>
+                      <h5 class="mb-n2">MasterCard</h5>
                     <% elsif s['brand'] == "American Express" %>
-                      <div style="align-items: center;" class=" card card-style ml-2 mb-3">
-                          <%= image_tag "pay-5.png","width"=>"50" %>
-                          <h5 class="mb-n2">American Express</h5>
-                          <p class="mt-n1 mb-0 font-10">**** <%= s['last4'] %></p>
-                      </div>
+                      <%= image_tag "pay-5.png","width"=>"50" %>
+                      <h5 class="mb-n2">American Express</h5>
                     <% end %>
-                      
+                      <p class="mt-n1 mb-0 font-10">**** <%= s['last4'] %></p>
+                  </div>  
                 <% end %>
 
                 <% if s['object'] == 'bank_account' %>
