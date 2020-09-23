@@ -6,11 +6,12 @@ class HomeController < ApplicationController
 
 			if callCurl['success']
 				@sources = callCurl['sources']
-			else
-				current_user.createUserSessionAPI(current_user.encrypted_password)
-				redirect_to services_path
 			end
 		end
+	end
+
+	def authenticateAPI
+		
 	end
 
   def service_worker

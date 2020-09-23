@@ -11,7 +11,7 @@ before_action :authenticate_user!
 	    
     if !response.blank? && response['success']
     	flash[:success] = "Successfully Booked"
-    	redirect_to schedule_path
+    	redirect_to schedule_index_path
     else
     	flash[:error] = "Something went wrong"
     end
@@ -21,7 +21,7 @@ before_action :authenticate_user!
 		if @timeBought = params[:timeBought]
 		else
 			flash[:alert] = "Please choose a service to book"
-			redirect_to schedule_path
+			redirect_to schedule_index_path
 		end
 	end
 

@@ -18,6 +18,8 @@ Rails.application.routes.draw do
 		post "bookingRequest", to: 'book_it#bookingRequest', as: "bookingRequest"
 		
 		get "profile", to: 'home#profile', as: "profile"
+		get "authenticateAPI", to: 'home#authenticateAPI', as: "authenticateAPI"
+
 	  authenticated :user do
 	    root 'home#profile', as: :authenticated_root
 	  end
