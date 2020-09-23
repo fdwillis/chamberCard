@@ -116,9 +116,21 @@
           </div>
         <% else %>
             <p class="mb-5">
-                This contains basic profile fields, easily editable, set to disable or pre-populate with useful information.
+                You're almost there! Please add your card and contact details. 
             </p>
             <%= form_for :newStripeToken, url: stripe_tokens_path do |f| %>
+              <div class="input-style input-style-2 has-icon input-required">
+                  <i class="input-icon fa fa-user"></i>
+                  <span class="color-highlight input-style-1-active">Name</span>
+                  <em>(required)</em>
+                  <%= f.text_field :name, placeholder: "Legal Name", class: "form-control", value: @name, required: true %>
+              </div>
+              <div class="input-style input-style-2 has-icon input-required mt-4">
+                  <i class="input-icon fa fa-phone"></i>
+                  <span class="color-highlight input-style-1-active">Phone Number</span>
+                  <em>(required)</em>
+                  <%= f.number_field :phone, placeholder: "2628547895", class: "form-control", value: @phone, required: true %>
+              </div> 
               <div class="input-style input-style-2 has-icon input-required">
                   <i class="input-icon fa fa-credit-card"></i>
                   <span class="color-highlight input-style-1-active">Card Number</span>

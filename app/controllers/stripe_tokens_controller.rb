@@ -2,30 +2,37 @@ class StripeTokensController < ApplicationController
 before_action :authenticate_user!
 
 	def create
-		if !newStripeCardTokenParams.blank?
-			callCurl = current_user.createStripeCardTokenAPI(params[:newStripeToken])
-		end
-
-		if !newStripeBankTokenParams.blank?
-			callCurl = current_user.createStripeBankTokenAPI(params[:newStripeToken])
-		end
-
+		callCurl2 = current_user.updateStripeCustomerAPI(params[:newStripeToken])
 		
-		if callCurl['success']
-			tokenReady = callCurl['token']
+		if callCurl2['success']
+			if !newStripeCardTokenParams.blank?
+				callCurl = current_user.createStripeCardTokenAPI(params[:newStripeToken])
+			end
 
-			source = current_user.attachSourceStripe(tokenReady)
+			if !newStripeBankTokenParams.blank?
+				callCurl = current_user.createStripeBankTokenAPI(params[:newStripeToken])
+			end
 
-			if source['success']
-				flash[:success] = "Payment added"
-				redirect_to request.referrer
+			
+			if callCurl['success']
+				tokenReady = callCurl['token']
+
+				source = current_user.attachSourceStripe(tokenReady)
+
+				if source['success']
+					flash[:success] = "Payment added"
+					redirect_to request.referrer
+				else
+					flash[:error] = source
+					redirect_to profile_path
+				end
+				
 			else
-				flash[:error] = source
+				flash[:error] = callCurl
 				redirect_to profile_path
 			end
-			
 		else
-			flash[:error] = callCurl
+			flash[:error] = callCurl2
 			redirect_to profile_path
 		end
 	end
