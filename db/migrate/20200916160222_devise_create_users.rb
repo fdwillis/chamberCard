@@ -4,8 +4,6 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
   def change
     create_table :users do |t|
       t.string :stripeUserID, unique: true
-      t.string :phone
-      t.string :name
       t.boolean :stripeSourceVerified, default: false
       ## Database authenticatable
       t.string :accessPin

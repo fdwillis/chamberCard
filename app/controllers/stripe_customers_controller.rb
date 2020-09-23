@@ -14,7 +14,16 @@ before_action :authenticate_user!
 	end
 
 	def update
-		debugger
+		callCurl = current_user.updateStripeCustomerAPI(params[:updateCustomer])
+
+		if callCurl['success']
+			flash[:success] = "Stripe Account Updated"
+			redirect_to request.referrer
+		else
+			flash[:error] = callCurl['message']
+			redirect_to profile_path
+		end
+
 	end
 
 	private

@@ -6,6 +6,8 @@ class HomeController < ApplicationController
 
 			if callCurl['success']
 				@sources = callCurl['sources']
+				@phone = callCurl['stripeCustomer']['phone']
+				@name = callCurl['stripeCustomer']['name']
 			else
 				reset_session
 				redirect_to services_path
