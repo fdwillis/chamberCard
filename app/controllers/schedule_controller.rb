@@ -11,9 +11,9 @@ class ScheduleController < ApplicationController
 				@bookingRequests = response['bookingRequests']
 				
 			elsif response['message'] == "Invalid Token"
-				flash[:notice] = "To authorize your account, logout then login again."
+				flash[:alert] = "To authorize your account, logout then login again."
 			else
-				flash[:notice] = "Trouble connecting. Try again later."
+				flash[:alert] = "Trouble connecting. Try again later."
 			end
 		end
 	end
@@ -29,9 +29,9 @@ class ScheduleController < ApplicationController
 			flash[:alert] = response['message']
 			redirect_to request.referrer
 		elsif response['message'] == "Invalid Token"
-			flash[:notice] = "To authorize your account, logout then login again."
+			flash[:alert] = "To authorize your account, logout then login again."
 		else
-			flash[:notice] = "Trouble connecting. Try again later."
+			flash[:alert] = "Trouble connecting. Try again later."
 		end
 	end
 end

@@ -10,7 +10,7 @@ class ServicesController < ApplicationController
 			@products = response['products']
 			
 		else
-			flash[:notice] = "Trouble connecting. Try again later."
+			flash[:alert] = "Trouble connecting. Try again later."
 			redirect_to new_user_session_path
 		end
 	end
@@ -23,7 +23,7 @@ class ServicesController < ApplicationController
 		if !response.blank? && response['success']
 			@slot = response['timeSlot']
 		else
-			flash[:notice] = "Trouble connecting. Try again later."
+			flash[:alert] = "Trouble connecting. Try again later."
 		end
 	end
 end

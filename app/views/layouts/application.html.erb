@@ -33,16 +33,16 @@
               <strong><%= flash[:success] %></strong>
               <button type="button" class="close color-white opacity-60 font-16" data-dismiss="alert" aria-label="Close">×</button>
           </div>
+          <% elsif flash[:notice] %>
+            <div class="ml-3 mr-3 alert alert-small rounded-s shadow-xl bg-yellow1-dark" role="alert">
+              <span><i class="fa fa-exclamation-triangle"></i></span>
+              <strong><%= flash[:notice] %></strong>
+              <button type="button" class="close color-white opacity-60 font-16" data-dismiss="alert" aria-label="Close">×</button>
+          </div>
           <% elsif flash[:error] %>
             <div class="ml-3 mr-3 mb-5 alert alert-small rounded-s shadow-xl bg-red2-dark" role="alert">
               <span><i class="fa fa-times"></i></span>
               <strong><%= flash[:error] %></strong>
-              <button type="button" class="close color-white opacity-60 font-16" data-dismiss="alert" aria-label="Close">×</button>
-          </div>
-          <% elsif flash[:alert] %>
-            <div class="ml-3 mr-3 alert alert-small rounded-s shadow-xl bg-yellow1-dark" role="alert">
-              <span><i class="fa fa-exclamation-triangle"></i></span>
-              <strong><%= flash[:alert] %></strong>
               <button type="button" class="close color-white opacity-60 font-16" data-dismiss="alert" aria-label="Close">×</button>
           </div>
           <% elsif flash[:alert] %>

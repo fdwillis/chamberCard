@@ -115,7 +115,7 @@ class User < ApplicationRecord
       self.update_attributes(uuid: response['uuid'],username: response['username'], accessPin: response['accessPin'] )
       return response
     else
-      return false
+      return response
     end
   end
 

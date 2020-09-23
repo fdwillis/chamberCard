@@ -22,7 +22,7 @@ class SessionsController < Devise::SessionsController
     if !response.blank? && response['success']
       flash[:success] = "Welcome"
     else
-      flash[:notice] = "Trouble Connecting. Some data will not display."
+      flash[:alert] = "Trouble Connecting. Some data will not display."
     end
   end
 end
