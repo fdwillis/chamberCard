@@ -14,7 +14,7 @@ before_action :authenticate_user!
 	end
 
 	def update
-		
+		debugger
 	end
 
 	private

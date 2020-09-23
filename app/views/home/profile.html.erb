@@ -151,34 +151,42 @@
       <% end %>
     </div>
   </div>
+  <% if !current_user.stripeUserID.blank? %>
+    <div class="card card-style">
+        <div class="content mb-0">
+            <h2 class="text-center">Account Information</h2>
+            <p class="mb-5 text-center">
+                This information will be needed so that service providers can contact you. Payment receipts will be sent to the email address below.
+            </p>
+            <%= form_for :updateCustomer, url: stripe_customer_path(id: current_user.stripeUserID), method: :put do |f| %>
 
-  <div class="card card-style">
-      <div class="content mb-0">
-          <h2 class="text-center">Account Information</h2>
-          <p class="mb-5 text-center">
-              This information will be needed so that service providers can contact you. Payment receipts will be sent to the email address below.
-          </p>
-          <div class="input-style input-style-2 has-icon input-required">
-              <i class="input-icon fa fa-user"></i>
-              <span class="color-highlight input-style-1-active">Name</span>
-              <em>(required)</em>
-              <input type="name" class="form-control" value="Jackson Doe">
-          </div> 
-          <div class="input-style input-style-2 has-icon input-required mt-4">
-              <i class="input-icon fa fa-at"></i>
-              <span class="color-highlight input-style-1-active">Email Address</span>
-              <em>(required)</em>
-              <input type="email" class="form-control" value="jack.doe@domain.com">
-          </div> 
-          <div class="input-style input-style-2 has-icon input-required mt-4">
-              <i class="input-icon fa fa-phone"></i>
-              <span class="color-highlight input-style-1-active">Phone Number</span>
-              <em>(required)</em>
-              <input type="phone" class="form-control" value="+1 234 5678 9134">
-          </div> 
-          <a href="#" class="btn btn-full bg-green1-dark btn-m text-uppercase rounded-sm shadow-l mb-3 mt-4 font-900">Save Basic Information</a>
-      </div>
-  </div>         
+              <div class="input-style input-style-2 has-icon input-required">
+                  <i class="input-icon fa fa-user"></i>
+                  <span class="color-highlight input-style-1-active">Name</span>
+                  <em>(required)</em>
+                  <input type="name" class="form-control" placeholder="Jackson Doe">
+              </div> 
+              <div class="input-style input-style-2 has-icon input-required mt-4">
+                  <i class="input-icon fa fa-at"></i>
+                  <span class="color-highlight input-style-1-active">Email Address</span>
+                  <em>(required)</em>
+                  <%= f.email_field :email, value: current_user.email, class: "form-control" %>
+              </div> 
+              <div class="input-style input-style-2 has-icon input-required mt-4">
+                  <i class="input-icon fa fa-phone"></i>
+                  <span class="color-highlight input-style-1-active">Phone Number</span>
+                  <em>(required)</em>
+                  <input type="phone" class="form-control" placeholder="+1 234 5678 9134">
+              </div> 
+              <div class="col-12">
+                <div class="input-style input-style-2">
+                  <%= f.submit "Save Information", class: "btn bg-green1-dark text-uppercase rounded-sm font-900"%>
+                </div>
+              </div>
+            <% end %>
+        </div>
+    </div>   
+  <% end %>      
       
   <!-- <div class="card card-style">
       <div class="content mb-2">
