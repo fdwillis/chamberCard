@@ -31,20 +31,23 @@
         </div>
       </div>
       <div class="row text-center mt-n2">
-        <a href="#" data-menu="menu-transaction-transfer" class="col-12 pr-0">
-            <div class="card card-style ml-2 mb-3">
-                <i class="fa fa-credit-card color-green1-dark fa-2x mt-3"></i>
-                <h1 class="pt-2 font-18">Card</h1>
-                <p class="font-11 opacity-50 mt-n2 mb-3">Tap to add another card</p>
-            </div>
-        </a>
-        <!-- <a href="#" data-menu="menu-transaction-request" class="col-6 pl-0">
-            <div class="card card-style ml-2 mb-3">
-                <i class="fa fa-university color-highlight fa-2x mt-3"></i>
-                <h1 class="pt-2 font-18">Bank</h1>
-                <p class="font-11 opacity-50 mt-n2 mb-3">Tap to Request Funds</p>
-            </div>
-        </a> -->
+        <% if !current_user.manager? %>
+          <a href="#" data-menu="menu-transaction-transfer" class="col-12">
+              <div class="card card-style ml-2 mb-3">
+                  <i class="fa fa-credit-card color-highlight fa-2x mt-3"></i>
+                  <h1 class="pt-2 font-18">Card</h1>
+                  <p class="font-11 opacity-50 mt-n2 mb-3">Tap to add another card</p>
+              </div>
+          </a>
+        <% else %>
+          <a href="#" data-menu="menu-transaction-request" class="col-12">
+              <div class="card card-style">
+                  <i class="fa fa-university color-highlight fa-2x mt-3"></i>
+                  <h1 class="pt-2 font-18">Bank</h1>
+                  <p class="font-11 opacity-50 mt-n2 mb-3">Tap to add Bank Account</p>
+              </div>
+          </a>
+        <% end %>
       </div>
     <% end %>
   <% end %>

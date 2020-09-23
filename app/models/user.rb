@@ -5,17 +5,22 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable  
 
   def updateStripeCustomerAPI(params)
-    email = params[:email]
+    email = params[:email] ? params[:email] : self.email
     stripeName = params[:name]
     phone = params[:phone]
     source = params[:source]
 
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "email=#{email}&name=#{stripeName}&phone=#{phone}&source=#{source}" -X PATCH #{SITEurl}/v1/stripe-customers/#{self.uuid}`
+    curlCall  = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "email=#{email}&name=#{stripeName}&phone=#{phone}&source=#{source}" -X PATCH #{SITEurl}/v1/stripe-customers/#{self.uuid}`
+    curlCall2 = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "email=#{email}" -X PATCH #{SITEurl}/v1/users/#{self.uuid}`
 
     response = Oj.load(curlCall)
+    response2 = Oj.load(curlCall2)
     
     if !response.blank? && response['success']
-      return response
+      if !response2.blank? && response2['success']
+        self.update_attributes(email: email)
+        return response
+      end
     else
       return response
     end
@@ -99,7 +104,7 @@ class User < ApplicationRecord
     response = Oj.load(curlCall)
     
     if !response.blank? && response['success']
-      self.update_attributes(stripeSourceVerified: response['stripeSourceVerified'] , stripeUserID: response['stripeUserID'], authentication_token: response['authentication_token'], uuid: response['uuid'] )
+      self.update_attributes(accessPin: response['accessPin'] , stripeSourceVerified: response['stripeSourceVerified'] , stripeUserID: response['stripeUserID'], authentication_token: response['authentication_token'], uuid: response['uuid'] )
       return response
     else
       return response
@@ -132,5 +137,39 @@ class User < ApplicationRecord
     else
       return response
     end
+  end
+
+  def talent?
+    talentAccess.include?(accessPin)      
+  end
+
+  def virtual?
+    virtualAccess.include?(accessPin)     
+  end
+
+  def manager?
+    managerAccess.include?(accessPin)     
+  end
+
+  def admin?
+    adminAccess.include?(accessPin)     
+  end
+
+  private
+
+  def talentAccess
+    return ['talent']
+  end
+
+  def virtualAccess
+    return ['virtual']
+  end
+
+  def managerAccess
+    return ['manager']
+  end
+  
+  def adminAccess
+    return ['admin' , 'trustee']
   end
 end

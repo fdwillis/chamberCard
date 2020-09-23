@@ -20,7 +20,7 @@ before_action :authenticate_user!
 			flash[:success] = "Stripe Account Updated"
 			redirect_to request.referrer
 		else
-			flash[:error] = callCurl['message']
+			flash[:error] = callCurl['error']
 			redirect_to profile_path
 		end
 

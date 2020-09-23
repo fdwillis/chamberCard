@@ -255,11 +255,17 @@
             <% end %>
     </div>
 
-    <div id="menu-transaction-request" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-height="460" style="height: 460px; display: block;">
+    <div id="menu-transaction-request" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-height="580" style="height: 580px; display: block;">
       <div class="menu-title"><h1>New Bank Source</h1><p class="color-highlight">Enter Bank Details</p><a href="#" class="close-menu"><i class="fa fa-times"></i></a></div>
 
       <div class="divider divider-margins mt-3 mb-3"></div>
       <%= form_for :newStripeToken, url: stripe_tokens_path do |f| %>
+              <div class="input-style input-style-2 has-icon input-required mt-4">
+                  <i class="input-icon fa fa-phone"></i>
+                  <span class="color-highlight input-style-1-active">Phone Number</span>
+                  <em>(required)</em>
+                  <%= f.number_field :phone, placeholder: "2628547895", class: "form-control", value: @phone, required: true %>
+              </div> 
               <div class="input-style input-style-2 has-icon input-required">
                   <i class="input-icon fa fa-university"></i>
                   <span class="color-highlight input-style-1-active">Account Number</span>

@@ -16,7 +16,7 @@ before_action :authenticate_user!
 			
 			if callCurl['success']
 				tokenReady = callCurl['token']
-
+				
 				source = current_user.attachSourceStripe(tokenReady)
 
 				if source['success']
@@ -27,12 +27,12 @@ before_action :authenticate_user!
 					redirect_to profile_path
 				end
 			else
-				debugger
+				
 				flash[:error] = callCurl
 				redirect_to profile_path
 			end
 		else
-			debugger
+			
 			flash[:error] = callCurl2
 			redirect_to profile_path
 		end

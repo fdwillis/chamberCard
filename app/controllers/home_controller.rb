@@ -6,8 +6,15 @@ class HomeController < ApplicationController
 
 			if callCurl['success']
 				@sources = callCurl['sources']
-				@phone = callCurl['stripeCustomer']['phone']
-				@name = callCurl['stripeCustomer']['name']
+
+				if !current_user.manager?
+					@phone = callCurl['stripeCustomer']['phone']
+					@name = callCurl['stripeCustomer']['name']
+					@email = callCurl['stripeCustomer']['email']
+				else
+					@phone = callCurl['stripeCustomer']['individual']['phone'][2..12]
+					@email = callCurl['stripeCustomer']['individual']['email']
+				end
 			else
 				reset_session
 				redirect_to services_path
