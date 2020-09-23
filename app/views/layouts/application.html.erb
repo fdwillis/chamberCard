@@ -58,7 +58,9 @@
           <%= link_to :back, class: 'header-icon header-icon-1' do %>
             <i class="fa fa-arrow-left"></i>
           <% end %>
-          <a href="#" data-menu="menu-share" class="header-icon header-icon-3"><i class="fa fa-share-alt"></i></a>
+          <% if current_user %>
+            <%= link_to "logout", destroy_session_path(current_user), method: :delete, class: "header-icon text-uppercase header-icon-3","data-menu"=>"menu-share"  %>
+          <% end %>
         </div>
       <div id="footer-bar" class="footer-bar-1">
         <% if request.fullpath == '/services' %>

@@ -6,12 +6,11 @@ class HomeController < ApplicationController
 
 			if callCurl['success']
 				@sources = callCurl['sources']
+			else
+				reset_session
+				redirect_to services_path
 			end
 		end
-	end
-
-	def authenticateAPI
-		
 	end
 
   def service_worker
