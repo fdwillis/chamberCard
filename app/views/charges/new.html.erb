@@ -12,6 +12,7 @@
                   <span class="input-style-1-active">Qty</span>
                   <%= f.number_field :quantity, style: "border-width:1px;", placeholder: '0', required: true %>
                   <%= f.hidden_field :uuid, value: @uuid %>
+                  <%= f.hidden_field :desc, value: @desc %>
               </div>
           </div>
           <div class="col-8">
