@@ -1,3 +1,5 @@
+resident: <%= @residential %><br>
+business: <%= @business %>
 <div class="card card-style">
     <div class="content mt-3 mb-3">
       <h3>Services</h3>
@@ -67,8 +69,8 @@
           <div class="content mb-3">
               <div class="">
 
-                <% if @services.present? %>
-                  <% @services.each do |h| %>
+                <% if @residential.present? %>
+                  <% @residential.each do |h| %>
                     <div class="align-self-center">
                         <h5 class=""><%= h['title'] %></h5>
                         <p class="font-600 opacity-40"><%= number_to_currency(h['cost'], precision: 2) %> per service</p>
@@ -95,8 +97,8 @@
         <div class="card card-style">
           <div class="content mb-3">
               <div class="">
-                <% if @hourlies.present? %>
-                  <% @hourlies.each do |h| %>
+                <% if @business.present? %>
+                  <% @business.each do |h| %>
                     <div class="align-self-center">
                         <h5 class=""><%= h['title'] %></h5>
                         <p class="font-600 opacity-40"><%= number_to_currency(h['wageRate'], precision: 2) %> per hour</p>

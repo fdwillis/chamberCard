@@ -12,8 +12,7 @@ class ServicesController < ApplicationController
     if !response.blank? && response['success']
 			@hourlies = response['hourlies']
 			@services = response['services']
-			@products = response['products']
-			debugger
+			# debugger
 			@residential = response['residential']
 			@business = response['business']
 		else
