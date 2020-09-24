@@ -8,16 +8,17 @@ class RegistrationsController < Devise::RegistrationsController
       createAtt = resource.createUserAPI
 
       if createAtt['success']
-
-      	auth = resource.createUserSessionAPI(params[:user][:password])
+        auth = resource.createUserSessionAPI(params[:user][:password])
+        debugger
+        
       	if auth['success']
 	      	flash[:success] = "Created account"
 	      else
           flash[:alert] = "You will need to verify later"
         end
       else
-        resource.destroy!
       	flash[:alert] = createAtt['error']
+        resource.destroy!
       end
     end
   end

@@ -12,7 +12,6 @@ class SessionsController < Devise::SessionsController
     else
       flash[:alert] = "You've been signed out"
       current_user.update_attributes(authentication_token: nil )
-      redirect_to destroy_user_session_path(current_user)
     end
   end
 

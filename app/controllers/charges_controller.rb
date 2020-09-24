@@ -36,7 +36,7 @@ class ChargesController < ApplicationController
       redirect_to service_path(id: timeSlot)
     else
 			flash[:error] = response['error']
-      redirect_to service_path
+      redirect_to service_path(id: timeSlot)
     end
 
 	end
