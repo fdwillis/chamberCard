@@ -16,9 +16,11 @@
              data-tab-active="bg-green1-dark color-white">
 
             <!-- <a href="#" data-tab-active data-tab="tab-3"><i class="fa fa-clock"></i> Available Now</a> -->
-            <a href="#" data-tab-active data-tab="tab-4"><i class="fa fa-briefcase"></i> Make Request</a>
+            <% if !current_user.manager? %>
+              <a href="#" data-tab="tab-4"><i class="fa fa-briefcase"></i> Make Request</a>
+            <% end %>
             <a href="#" data-tab="tab-1"><i class="fa fa-calendar-check"></i> Upcoming</a>
-            <a href="#" data-tab="tab-2"><i class="fa fa-sync"></i> Pending</a>
+            <a href="#" data-tab-active data-tab="tab-2"><i class="fa fa-sync"></i> Pending</a>
         </div>
         <div class="clearfix mb-3"></div>
         
@@ -38,31 +40,52 @@
                           <div class="align-self-center">
                               <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
                           </div>
-                          <% if !h['managerApproved?'] %>
-                            <div class="align-self-center">
-                                <span class="btn btn-sm col-md-12 rounded-sm border-yellow1-dark text-uppercase font-800">Pending</span>
-                            </div>
-                          <% end %>
                           <br>
-
-                          <div class="align-self-center">
-                          <%= form_for :cancel, url: cancel_path do |f| %>
-                            <%= f.hidden_field :uuid, value: h['uuid'] %>
-                            <%= f.submit "Cancel", class: "btn btn-sm col-md-12 rounded-sm bg-red1-dark text-uppercase font-800"%>
+                          <% if current_user.manager? && h['buyerApproved?'] %>
+                            <div class="row">
+                              <div class="col-6">
+                              <%= form_for :cancel, url: cancel_path do |f| %>
+                                <%= f.hidden_field :uuid, value: h['uuid'] %>
+                                <%= f.submit "Cancel", class: "col-12 btn btn-sm rounded-sm bg-red1-dark text-uppercase font-800"%>
+                              <% end %>
+                              </div>
+                              <div class="col-6">
+                              <%= form_for :cancel, url: cancel_path do |f| %>
+                                <%= f.hidden_field :uuid, value: h['uuid'] %>
+                                <%= f.submit "Accept", class: "col-12 btn btn-sm rounded-sm bg-green1-dark text-uppercase font-800"%>
+                              <% end %>
+                              </div>
+                            </div>
+                            <% if h['service?'] %>
+                              <div class="align-self-center">
+                                <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Edit Service</a>
+                              </div>
+                            <% end %>
+                            <% if h['product?'] %>
+                              <div class="align-self-center">
+                                <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Edit Product</a>
+                              </div>
+                            <% end %>
+                          <% else %>
+                            <div class="align-self-center">
+                            <%= form_for :cancel, url: cancel_path do |f| %>
+                              <%= f.hidden_field :uuid, value: h['uuid'] %>
+                              <%= f.submit "Cancel", class: "btn btn-sm col-md-12 rounded-sm bg-red1-dark text-uppercase font-800"%>
+                            <% end %>
+                            </div>
+                            <br>
+                            <% if h['service?'] %>
+                              <div class="align-self-center">
+                                <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Service</a>
+                              </div>
+                            <% end %>
+                            <% if h['product?'] %>
+                              <div class="align-self-center">
+                                <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Product</a>
+                              </div>
+                            <% end %>
                           <% end %>
-                          </div>
                           
-                          <br>
-                          <% if h['service?'] %>
-                            <div class="align-self-center">
-                              <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Service</a>
-                            </div>
-                          <% end %>
-                          <% if h['product?'] %>
-                            <div class="align-self-center">
-                              <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Product</a>
-                            </div>
-                          <% end %>
                     </div>
                 </div>
               <% end %>
