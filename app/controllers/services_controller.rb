@@ -1,6 +1,11 @@
 class ServicesController < ApplicationController
 	def index
-		curlCall = `curl -d "" -X GET #{SITEurl}/v1/time-slots`
+		
+		if current_user&.authentication_token
+			curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/time-slots`
+		else
+			curlCall = `curl -X GET #{SITEurl}/v1/time-slots`
+		end
 
     response = Oj.load(curlCall)
 
@@ -8,7 +13,9 @@ class ServicesController < ApplicationController
 			@hourlies = response['hourlies']
 			@services = response['services']
 			@products = response['products']
-			
+			debugger
+			@residential = response['residential']
+			@business = response['business']
 		else
 			flash[:alert] = "Trouble connecting. Try again later."
 			redirect_to new_user_session_path
