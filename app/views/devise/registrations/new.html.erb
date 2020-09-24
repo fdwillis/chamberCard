@@ -7,10 +7,15 @@
 
         <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
           <div class="input-style has-icon input-style-1 input-required pb-1">
+              <span>Account Type</span>
+              <em>(required)</em>
+              <%= f.select :accessPin, [['Buying Services', 'talent'], ['Selling Services', 'manager']], required: true %>
+          </div> 
+          <div class="input-style has-icon input-style-1 input-required pb-1">
               <i class="input-icon fa fa-user color-theme"></i>
               <span>Username</span>
               <em>(required)</em>
-              <%= f.text_field :username, autocomplete: "username", autofocus: true, placeholder: "Username", required: true %>
+              <%= f.text_field :username, autocomplete: "username", placeholder: "Username", required: true %>
           </div> 
           <div class="input-style has-icon input-style-1 input-required pb-1">
               <i class="input-icon fa fa-at color-theme"></i>
