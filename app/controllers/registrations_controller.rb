@@ -17,8 +17,8 @@ class RegistrationsController < Devise::RegistrationsController
           flash[:alert] = "You will need to verify later"
         end
       else
-        flash[:alert] = createAtt['error']
         resource.destroy!
+        flash[:alert] = createAtt['error']
       end
     else
       resource.destroy!

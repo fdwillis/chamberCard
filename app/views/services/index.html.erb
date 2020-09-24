@@ -64,59 +64,54 @@
       <div class="clearfix mb-3"></div>
       <div class="tab-content" id="tab-8">
         <div class="card card-style">
-          <div class="content mb-3">
-              <div class="">
-
-                <% if @residential.present? %>
-                  <% @residential.each do |h| %>
-                    <div class="align-self-center">
-                        <h5 class=""><%= h['title'] %></h5>
-                        <p class="font-600 opacity-40"><%= number_to_currency(h['cost'], precision: 2) %></p>
-                    </div>
-                    <div class="align-self-center">
-                        <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
-                    </div>
-                    <% if current_user&.stripeSourceVerified %>
-                      <div class="align-self-center">
-                          <a href="<%= new_charge_path(title: h['title'], uuid: h['uuid'], desc: h['desc']) %>" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">PURCHASE</a>
-                      </div>
-                    <% end %>
-                    <br>
-                    <div class="align-self-center">
-                      <a href="<%= service_path(id: h['uuid'], desc: h['desc']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Service</a>
-                    </div>
-                  <% end %>
+          <% if @residential.present? %>
+            <% @residential.each do |h| %>
+              <div class="content mb-3">
+                <div class="align-self-center">
+                    <h5 class=""><%= h['title'] %></h5>
+                    <p class="font-600 opacity-40"><%= number_to_currency(h['cost'], precision: 2) %></p>
+                </div>
+                <div class="align-self-center">
+                    <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
+                </div>
+                <% if current_user&.stripeSourceVerified %>
+                  <div class="align-self-center">
+                      <a href="<%= new_charge_path(title: h['title'], uuid: h['uuid'], desc: h['desc']) %>" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">PURCHASE</a>
+                  </div>
                 <% end %>
+                <br>
+                <div class="align-self-center">
+                  <a href="<%= service_path(id: h['uuid'], desc: h['desc']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Service</a>
+                </div>
               </div>
-          </div>
+            <% end %>
+          <% end %>
         </div>
       </div>
       <div class="tab-content" id="tab-9">
         <div class="card card-style">
-          <div class="content mb-3">
-              <div class="">
-                <% if @business.present? %>
-                  <% @business.each do |h| %>
+          <% if @business.present? %>
+            <% @business.each do |h| %>
+              <div class="content mb-3">
+                  <div class="align-self-center">
+                      <h5 class=""><%= h['title'] %></h5>
+                      <p class="font-600 opacity-40"><%= number_to_currency(h['cost'], precision: 2) %></p>
+                  </div>
+                  <div class="align-self-center">
+                      <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
+                  </div>
+                  <% if current_user&.stripeSourceVerified %>
                     <div class="align-self-center">
-                        <h5 class=""><%= h['title'] %></h5>
-                        <p class="font-600 opacity-40"><%= number_to_currency(h['cost'], precision: 2) %></p>
-                    </div>
-                    <div class="align-self-center">
-                        <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
-                    </div>
-                    <% if current_user&.stripeSourceVerified %>
-                      <div class="align-self-center">
-                          <a href="<%= new_charge_path(title: h['title'], uuid: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">PURCHASE</a>
-                      </div>
-                    <% end %>
-                    <br>
-                    <div class="align-self-center">
-                      <a href="<%= service_path(id: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Hourlie</a>
+                        <a href="<%= new_charge_path(title: h['title'], uuid: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">PURCHASE</a>
                     </div>
                   <% end %>
-                <% end %>           
+                  <br>
+                  <div class="align-self-center">
+                    <a href="<%= service_path(id: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Hourlie</a>
+                  </div>
               </div>
-          </div>
+            <% end %>
+          <% end %>           
         </div>
       </div>
   </div>
