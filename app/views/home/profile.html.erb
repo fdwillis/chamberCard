@@ -69,14 +69,11 @@
 
       <% if !current_user.stripeUserID.blank? %>
         <% if current_user.stripeSourceVerified %>
-          showing sources
-          showing form to add new source
-          button to delete source in one click
           <div class="card card-style">
             <div class="content">
               <% @sources.each do |s| %>
                 <% if s['object'] == 'card' %>
-                  <div style="align-items: center;" class=" card card-style ml-2 mb-3">
+                  <div style="align-items: center;" class=" card card-style">
                     <% if s['brand'] == "Visa" %>
                       <%= image_tag "pay-1.png","width"=>"50", stlye: '' %>
                       <h5 class="mb-n2">Visa</h5>
@@ -92,7 +89,7 @@
                 <% end %>
 
                 <% if s['object'] == 'bank_account' %>
-                  <div class="text-center card card-style ml-2 mb-3">
+                  <div class="text-center card card-style">
                       <i class="fa fa-university color-highlight fa-2x mt-3"></i>
                       <h1 class="pt-2 font-18"><%= s['last4'] %></h1>
                       <p class="font-11 opacity-50 mt-n2 mb-3"><%= s['routing_number'] %></p>
@@ -106,7 +103,7 @@
           <div class="row text-center">
               <% if !current_user.manager? %>
                 <a href="#" data-menu="menu-transaction-transfer" class="col-12">
-                    <div class="card card-style ml-2 mb-3">
+                    <div class="card card-style">
                         <i class="fa fa-credit-card color-highlight fa-2x mt-3"></i>
                         <h1 class="pt-2 font-18">Card</h1>
                         <p class="font-11 opacity-50 mt-n2 mb-3">Tap to add another card</p>
@@ -122,7 +119,7 @@
                 </a>
               <% end %>
               <!-- <a href="#" data-menu="menu-transaction-request" class="col-6 pl-0">
-                  <div class="card card-style ml-2 mb-3">
+                  <div class="card card-style">
                       <i class="fa fa-university color-highlight fa-2x mt-3"></i>
                       <h1 class="pt-2 font-18">Bank</h1>
                       <p class="font-11 opacity-50 mt-n2 mb-3">Tap to Request Funds</p>
