@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 		post "cancel", to: 'schedule#cancel', as: "cancel"
 		post "acceptRequest", to: 'schedule#acceptRequest', as: "acceptRequest"
 		post "bookingRequest", to: 'book_it#bookingRequest', as: "bookingRequest"
+		get "destroy", to: 'services#destroy', as: "destroyService"
 		
 		get "profile", to: 'home#profile', as: "profile"
 		get "authenticateAPI", to: 'home#authenticateAPI', as: "authenticateAPI"

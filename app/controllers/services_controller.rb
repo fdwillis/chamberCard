@@ -100,6 +100,21 @@ class ServicesController < ApplicationController
 		end
 	end
 
+	def destroy
+		debugger
+
+		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X DELETE #{SITEurl}/v1/time-slots/#{params[:id]}`
+		
+		response = Oj.load(curlCall)
+		
+		if !response.blank? && response['success']
+			flash[:success] = "Service removed. No longer for sale"
+			redirect_to services_path
+		else
+			flash[:alert] = "Trouble connecting. Try again later."
+		end
+	end
+
 	def edit
 		show
 	end
