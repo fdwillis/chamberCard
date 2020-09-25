@@ -10,7 +10,7 @@
 
 <div class="card card-style">
   <div class="content mb-0">
-		<%= form_for :newService, url: services_path do |f| %>
+		<%= form_for :updateService, url: service_path(id: @slot['uuid']), method: :patch do |f| %>
 			<div class="input-style input-style-2 has-icon input-required">
 			    <span class="color-highlight input-style-1-active">Title</span>
 			    <em>(required)</em>

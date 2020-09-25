@@ -82,6 +82,24 @@ class ServicesController < ApplicationController
 		end
 	end
 
+	def update
+		cost = params[:updateService][:cost]
+		title = params[:updateService][:title]
+		desc = params[:updateService][:desc]
+
+
+		curlCall = `curl -d "desc=#{desc}&cost=#{cost}&title=#{title}&" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X PATCH #{SITEurl}/v1/time-slots/#{params[:id]}`
+		
+		response = Oj.load(curlCall)
+		
+		if !response.blank? && response['success']
+			flash[:success] = "Service Updated"
+			redirect_to services_path
+		else
+			flash[:alert] = "Trouble connecting. Try again later."
+		end
+	end
+
 	def edit
 		show
 	end
