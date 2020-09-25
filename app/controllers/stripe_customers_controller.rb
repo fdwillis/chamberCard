@@ -5,7 +5,7 @@ before_action :authenticate_user!
 		callCurl = current_user.createStripeCustomerAPI
 
 		if callCurl['success']
-			flash[:success] = "Customer account created"
+			flash[:success] = "Lets Get Started!"
 			redirect_to request.referrer
 		else
 			flash[:error] = callCurl['message']

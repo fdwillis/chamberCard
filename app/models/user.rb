@@ -31,6 +31,7 @@ class User < ApplicationRecord
 
     response = Oj.load(curlCall)
     if !response.blank? && response['success']
+      self.update_attributes(stripeSourceVerified: response['stripeSourceVerified'])
       return response
     else
       return response
