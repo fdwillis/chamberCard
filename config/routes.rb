@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 		resources :book_it, :path => '/book-it'
 		
 		post "cancel", to: 'schedule#cancel', as: "cancel"
+		post "acceptRequest", to: 'schedule#acceptRequest', as: "acceptRequest"
 		post "bookingRequest", to: 'book_it#bookingRequest', as: "bookingRequest"
 		
 		get "profile", to: 'home#profile', as: "profile"

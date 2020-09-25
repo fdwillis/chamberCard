@@ -3,8 +3,15 @@
   <div class="card card-style">
     <div class="content mt-3 mb-3">
       <h3>Schedule</h3>
-      <p>
-          Schedule your purchased service, see the status of your pending service requests, and see all available times by service providers! 
+      <p class='text-justify'>
+          <% if !current_user&.manager? %>
+            Schedule your purchased service, see the status of your pending service requests, and see all available times by service providers!
+          <% end %>
+          <% if current_user&.manager? %>
+            As clients purchase your services the 'Pending' section will show you which clients have requested their service be complete. <br><br>
+
+            After you have accepted the date and time to complete a service, it will be show in the 'Upcoming' section
+          <% end %>
       </p>
     </div>
   </div>
@@ -24,6 +31,82 @@
         </div>
         <div class="clearfix mb-3"></div>
         
+        <div class="tab-content" id="tab-1">
+          <div class="card card-style">
+            <% if !@scheduledTimes.blank? %>
+              <% @scheduledTimes.each do |h| %>
+                <div class="content mb-3">
+                    <div class="">
+                          <div class="align-self-center">
+                              <h5 class=""><%= h['title']%>
+                                <p class="font-600 opacity-40"><%= h['date']%>:<br><%= h['startTime']%> - <%= h['endTime']%></p>
+                              </h5>
+                          </div>
+                          <div class="align-self-center">
+                          </div>
+                          <br>
+                          <% if current_user.manager? && h['buyerApproved?'] %>
+                            <div class="row">
+                              <div class="col-4">
+                                <%= form_for :accept, url: acceptRequest_path do |f| %>
+                                  <%= f.hidden_field :uuid, value: h['uuid'] %>
+                                  <%= button_tag( :class => "col-12 btn btn-sm rounded-sm bg-green1-dark text-uppercase font-800") do %><i class="fa fa-check"></i>
+                                  <% end %>
+                                <% end %>
+                              </div>
+                              <div class="col-4">
+                                <%= form_for :cancel, url: cancel_path do |f| %>
+                                  <%= f.hidden_field :uuid, value: h['uuid'] %>
+                                  <%= button_tag( :class => "col-12 btn btn-sm rounded-sm bg-magenta1-dark text-uppercase font-800") do %><i class="fa fa-clock"></i>
+                                  <% end %>
+                                <% end %>
+                              </div>
+                              <div class="col-4">
+                                <%= form_for :cancel, url: cancel_path do |f| %>
+                                  <%= f.hidden_field :uuid, value: h['uuid'] %>
+                                  <%= button_tag( :class => "col-12 btn btn-sm rounded-sm bg-red1-dark text-uppercase font-800") do %><i class="fa fa-close"></i>
+                                  <% end %>
+
+                                <% end %>
+                              </div>
+                            </div>
+                            <% if h['service?'] %>
+                              <div class="align-self-center">
+                                <a href="<%= edit_service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Edit Service</a>
+                              </div>
+                            <% end %>
+                            <% if h['product?'] %>
+                              <div class="align-self-center">
+                                <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Edit Product</a>
+                              </div>
+                            <% end %>
+                          <% else %>
+                            <div class="align-self-center">
+                            <%= form_for :cancel, url: cancel_path do |f| %>
+                              <%= f.hidden_field :uuid, value: h['uuid'] %>
+                              <%= f.submit "Cancel", class: "btn btn-sm col-md-12 rounded-sm bg-red1-dark text-uppercase font-800"%>
+                            <% end %>
+                            </div>
+                            <br>
+                            <% if h['service?'] %>
+                              <div class="align-self-center">
+                                <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">View Service</a>
+                              </div>
+                            <% end %>
+                            <% if h['product?'] %>
+                              <div class="align-self-center">
+                                <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">View Product</a>
+                              </div>
+                            <% end %>
+                          <% end %>
+                          
+                    </div>
+                </div>
+              <% end %>
+            <% end %>           
+          </div>
+        </div>
+
         <div class="tab-content" id="tab-2">
           <div class="card card-style">
             <% if !@bookingRequests.blank? %>
@@ -41,18 +124,14 @@
                           <% if current_user.manager? && h['buyerApproved?'] %>
                             <div class="row">
                               <div class="col-4">
-                                <%= form_for :cancel, url: cancel_path do |f| %>
+                                <%= form_for :accept, url: acceptRequest_path do |f| %>
                                   <%= f.hidden_field :uuid, value: h['uuid'] %>
                                   <%= button_tag( :class => "col-12 btn btn-sm rounded-sm bg-green1-dark text-uppercase font-800") do %><i class="fa fa-check"></i>
                                   <% end %>
                                 <% end %>
                               </div>
                               <div class="col-4">
-                                <%= form_for :cancel, url: cancel_path do |f| %>
-                                  <%= f.hidden_field :uuid, value: h['uuid'] %>
-                                  <%= button_tag( :class => "col-12 btn btn-sm rounded-sm bg-magenta1-dark text-uppercase font-800") do %><i class="fa fa-clock"></i>
-                                  <% end %>
-                                <% end %>
+                                <a href="<%= edit_service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-magenta1-dark text-uppercase font-800"><i class="fa fa-pencil"></i></a>
                               </div>
                               <div class="col-4">
                                 <%= form_for :cancel, url: cancel_path do |f| %>
