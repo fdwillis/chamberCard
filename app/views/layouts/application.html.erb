@@ -255,7 +255,7 @@
             <% end %>
     </div>
 
-    <div id="menu-transaction-request" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-height="580" style="height: 580px; display: block;">
+    <div id="menu-transaction-request" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-height="440" style="height: 440px; display: block;">
       <div class="menu-title"><h1>New Bank Source</h1><p class="color-highlight">Enter Bank Details</p><a href="#" class="close-menu"><i class="fa fa-times"></i></a></div>
 
       <div class="divider divider-margins mt-3 mb-3"></div>
@@ -279,7 +279,7 @@
                   <%= f.number_field :routing_number, class: 'form-control', required: true, placeholder: '005578166' %>
               </div> 
               <div class="input-style input-style-2 has-icon input-required mt-4">
-                  <!-- <i class="input-icon fa fa-lock"></i> -->
+                  <i class="input-icon fa fa-user"></i>
                   <span class="color-highlight input-style-1-active">Full Legal Name</span>
                   <em>(required)</em>
                   <%= f.text_field :account_holder_name, class: 'form-control', required: true, placeholder: 'John Doe', minlength: 4 %>

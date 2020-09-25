@@ -45,14 +45,19 @@
       </div>
   </div> 
 
-  <div class="card card-style">
+  <div class="card card-style text-center">
     <div class="content mb-0">
       <h2>Payment Information</h2>
       <% if current_user.stripeUserID.blank? %>
 
           <!-- <h2>Payment Information</h2> -->
           <p class="mb-5">
+            <% if current_user&.talent? %>
               Your account is unable to make purchases. If you would like to purchase services, get started by clicking 'Proceed' below!
+            <% end %>
+            <% if current_user&.manager? %>
+              Your account is unable to charge clients &amp; post services for sale. If you would like to activate your account to begin offering services, get started by clicking 'Proceed' below!
+            <% end %>
           </p>
 
           <%= form_for :newStripeCustomer, url: stripe_customers_path do |f| %>
@@ -125,50 +130,47 @@
               </a> -->
           </div>
         <% else %>
-            <p class="mb-5">
-                You're almost there! Please add your card and contact details. 
-            </p>
-            <%= form_for :newStripeToken, url: stripe_tokens_path do |f| %>
-              <div class="input-style input-style-2 has-icon input-required">
-                  <i class="input-icon fa fa-user"></i>
-                  <span class="color-highlight input-style-1-active">Name</span>
-                  <em>(required)</em>
-                  <%= f.text_field :name, placeholder: "Legal Name", class: "form-control", value: @name, required: true %>
-              </div>
-              <div class="input-style input-style-2 has-icon input-required mt-4">
-                  <i class="input-icon fa fa-phone"></i>
-                  <span class="color-highlight input-style-1-active">Phone Number</span>
-                  <em>(required)</em>
-                  <%= f.number_field :phone, placeholder: "2628547895", class: "form-control", value: @phone, required: true %>
-              </div> 
-              <div class="input-style input-style-2 has-icon input-required">
-                  <i class="input-icon fa fa-credit-card"></i>
-                  <span class="color-highlight input-style-1-active">Card Number</span>
-                  <em>(required)</em>
-                  <%= f.number_field :number, class: 'form-control', required: true, placeholder: '1234 5678 9012 3456', minlength: 4, maxlength: 16 %>
-              </div> 
-              <div class="input-style input-style-2 has-icon input-required mt-4">
-                  <i class="input-icon fa fa-calendar"></i>
-                  <span class="color-highlight input-style-1-active">Expiration Month</span>
-                  <em>(required)</em>
-                  <%= f.number_field :exp_month, class: 'form-control', required: true, placeholder: '05' %>
-              </div> 
-              <div class="input-style input-style-2 has-icon input-required mt-4">
-                  <i class="input-icon fa fa-calendar"></i>
-                  <span class="color-highlight input-style-1-active">Expiration Year</span>
-                  <em>(required)</em>
-                  <%= f.number_field :exp_year, class: 'form-control', required: true, placeholder: '2023', minlength: 4 %>
-              </div> 
-              <div class="input-style input-style-2 has-icon input-required mt-4">
-                  <i class="input-icon fa fa-lock"></i>
-                  <span class="color-highlight input-style-1-active">CSC</span>
-                  <em>(required)</em>
-                  <%= f.number_field :cvc, class: 'form-control', required: true, placeholder: '123' %>
-              </div> 
-              <%= f.submit "Add Card", class: "btn btn-full bg-green1-dark btn-m text-uppercase rounded-sm shadow-l mb-3 mt-4 font-900"%>
+          <div class="row text-center">
+            <% if !current_user.manager? %>
+              <p class="mb-5">
 
+                  You're almost there! Please add your default source and contact details. 
+              </p>
+              <a href="#" data-menu="menu-transaction-transfer" class="col-12">
+                  <div class="card card-style ml-2 mb-3">
+                      <i class="fa fa-credit-card color-highlight fa-2x mt-3"></i>
+                      <h1 class="pt-2 font-18">Card</h1>
+                      <p class="font-11 opacity-50 mt-n2 mb-3">Tap to add another card</p>
+                  </div>
+              </a>
+            <% else %>
+              <% if @pending && (@phone && @phone) %>
+                <p class="mb-5">
+                
+                    We will contact you soon to verify your contact details &amp; complete your account activation!  
+                </p>
+                <a href="#" class="col-12">
+                    <div class="card card-style">
+                        <i class="fa fa-university color-highlight fa-2x mt-3"></i>
+                        <h1 class="pt-2 font-18">Bank</h1>
+                        <p class="font-11 opacity-50 mt-n2 mb-3">PENDING</p>
+                    </div>
+                </a>
+              <% else %>
+                <p class="mb-5">
+                
+                    You're almost there! Please add your default source and contact details. 
+                </p>
+                <a href="#" data-menu="menu-transaction-request" class="col-12">
+                    <div class="card card-style">
+                        <i class="fa fa-university color-highlight fa-2x mt-3"></i>
+                        <h1 class="pt-2 font-18">Bank</h1>
+                        <p class="font-11 opacity-50 mt-n2 mb-3">Tap to add Bank Account</p>
+                    </div>
+                </a>
+              <% end %>
             <% end %>
-            
+          </div>  
         <% end %>
       <% end %>
     </div>
@@ -178,7 +180,12 @@
         <div class="content mb-0">
             <h2 class="text-center">Account Information</h2>
             <p class="mb-5 text-center">
-                This information will be needed so that service providers can contact you. Payment receipts will be sent to the email address below.
+                <% if current_user&.talent? %>
+                  This information is so that service providers can contact you. Payment receipts will be sent to the email address below.
+                <% end %>
+                <% if current_user&.manager? %>
+                  This information is so that Messy Services can contact you to verify your bank account &amp; contact details on your clients behalf. Payment receipts will be sent to the email address below.
+                <% end %>
             </p>
             <%= form_for :updateCustomer, url: stripe_customer_path(id: current_user.stripeUserID), method: :put do |f| %>
 

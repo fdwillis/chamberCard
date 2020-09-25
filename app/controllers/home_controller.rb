@@ -1,7 +1,7 @@
 class HomeController < ApplicationController
 
 	def profile
-		if current_user&.stripeSourceVerified && current_user&.stripeUserID
+		if current_user&.stripeUserID
 			callCurl = current_user.showStripeUserAPI
 
 			if callCurl['success']
@@ -11,9 +11,18 @@ class HomeController < ApplicationController
 					@phone = callCurl['stripeCustomer']['phone']
 					@name = callCurl['stripeCustomer']['name']
 					@email = callCurl['stripeCustomer']['email']
+
 				else
-					@phone = callCurl['stripeCustomer']['individual']['phone'][2..12]
-					@email = callCurl['stripeCustomer']['individual']['email']
+					
+					if callCurl['stripeCustomer']['capabilities']["card_payments"] == "inactive" &&
+						 callCurl['stripeCustomer']['capabilities']["transfers"] == "inactive"
+						@pending = true
+					end
+
+					if callCurl['stripeCustomer']['individual']['phone']
+						@phone = callCurl['stripeCustomer']['individual']['phone'][2..12]
+						@email = callCurl['stripeCustomer']['individual']['email']
+					end
 				end
 			else
 				reset_session
