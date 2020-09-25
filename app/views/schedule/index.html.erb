@@ -147,17 +147,14 @@
                           </div>
                           <% if current_user.manager? && h['buyerApproved?'] %>
                             <div class="row">
-                              <div class="col-4">
+                              <div class="col-6">
                                 <%= form_for :accept, url: acceptRequest_path do |f| %>
                                   <%= f.hidden_field :uuid, value: h['uuid'] %>
                                   <%= button_tag( :class => "col-12 btn btn-sm rounded-sm bg-green1-dark text-uppercase font-800") do %><i class="fa fa-check"></i>
                                   <% end %>
                                 <% end %>
                               </div>
-                              <div class="col-4">
-                                <a href="<%= edit_book_it_path(id: h['timeSlotUUID'], timeBought: h) %>" class="btn btn-sm col-md-12 rounded-sm bg-magenta1-dark text-uppercase font-800"><i class="fa fa-pencil"></i></a>
-                              </div>
-                              <div class="col-4">
+                              <div class="col-6">
                                 <%= form_for :cancel, url: cancel_path do |f| %>
                                   <%= f.hidden_field :uuid, value: h['uuid'] %>
                                   <%= button_tag( :class => "col-12 btn btn-sm rounded-sm bg-red1-dark text-uppercase font-800") do %><i class="fa fa-close"></i>
@@ -166,16 +163,9 @@
                                 <% end %>
                               </div>
                             </div>
-                            <% if h['service?'] %>
-                              <div class="align-self-center">
-                                <a href="<%= edit_service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Edit Service</a>
-                              </div>
-                            <% end %>
-                            <% if h['product?'] %>
-                              <div class="align-self-center">
-                                <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Edit Product</a>
-                              </div>
-                            <% end %>
+                            <div class="align-self-center">
+                              <a href="<%= edit_service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Edit Service</a>
+                            </div>
                           <% else %>
                             <div class="align-self-center">
                             <%= form_for :cancel, url: cancel_path do |f| %>
