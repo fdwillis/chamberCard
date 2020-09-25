@@ -205,9 +205,9 @@ $(document).ready(function(){
             var isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
             var isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
             var isNoPreference = window.matchMedia("(prefers-color-scheme: no-preference)").matches
-            window.matchMedia("(prefers-color-scheme: dark)").addListener(e => e.matches && activateDarkMode())
-            window.matchMedia("(prefers-color-scheme: light)").addListener(e => e.matches && activateLightMode())
-            window.matchMedia("(prefers-color-scheme: no-preference)").addListener(e => e.matches && activateNoPreference())
+            window.matchMedia("(prefers-color-scheme: dark)").addListener(activateDarkMode())
+            window.matchMedia("(prefers-color-scheme: light)").addListener(activateLightMode())
+            window.matchMedia("(prefers-color-scheme: no-preference)").addListener(activateNoPreference())
             if(isDarkMode) activateDarkMode();
             if(isLightMode) activateLightMode();
         }
