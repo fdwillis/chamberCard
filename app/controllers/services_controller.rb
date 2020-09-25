@@ -2,7 +2,7 @@ class ServicesController < ApplicationController
 	def index
 		
 		if current_user&.authentication_token
-			curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/time-slots`
+			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/time-slots`
 		else
 			curlCall = `curl -X GET #{SITEurl}/v1/time-slots`
 		end
