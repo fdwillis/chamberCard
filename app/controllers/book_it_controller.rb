@@ -20,12 +20,11 @@ before_action :authenticate_user!
 	def bookingRequest
 		# 2025-05-05 00:00:00 -0500
 
-		date = "#{params[:bookIt][:monthSelect]}/#{params[:bookIt][:daySelect]}/#{params[:bookIt][:yearSelect]} #{params[:bookIt][:startHour]}:#{params[:bookIt][:startMinute]}:00"
+		date = "#{params[:bookIt][:yearSelect]}/#{params[:bookIt][:monthSelect]}/#{params[:bookIt][:daySelect]} #{params[:bookIt][:startHour]}:#{params[:bookIt][:startMinute]}:00"
 		parsedDate = DateTime.parse(date)
 
 		startTime = parsedDate
 		endTime = parsedDate + 1.hour
-		
 		paidBy = current_user.uuid
 		stripeChargeID = params[:bookIt][:stripeChargeID]
 		timeSlot = params[:bookIt][:timeSlot]

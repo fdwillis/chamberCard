@@ -141,7 +141,7 @@
                   </div>
               </a>
             <% else %>
-              <% if @pending && (@phone && @phone) %>
+              <% if (!@phone.blank? && !@email.blank?) %>
                 <p class="mb-5">
                 
                     We will contact you soon to verify your contact details &amp; complete your account activation!  

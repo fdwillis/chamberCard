@@ -16,7 +16,7 @@
     </div>
   </div>
 
-  <div class="card card-style bg-theme pb-0">
+  <div class="card card-style bg-theme pb-0 text-center">
     <div class="content">
         <div class="tab-controls tabs-round tab-animated tabs-medium tabs-rounded shadow-xl" 
              data-tab-items="1" 
@@ -24,10 +24,10 @@
 
             <!-- <a href="#" data-tab-active data-tab="tab-3"><i class="fa fa-clock"></i> Available Now</a> -->
             <% if !current_user.manager? %>
-              <a href="#" data-tab="tab-4"><i class="fa fa-briefcase"></i> Make Request</a>
+              <a href="#" data-tab="tab-4"><i class="fa fa-briefcase"></i> Make Request<%= @timeBought ? " (#{@timeBought.size})" : nil %></a>
             <% end %>
-            <a href="#" data-tab="tab-1"><i class="fa fa-calendar-check"></i> Upcoming</a>
-            <a href="#" data-tab-active data-tab="tab-2"><i class="fa fa-sync"></i> Pending</a>
+            <a href="#" data-tab="tab-1"><i class="fa fa-calendar-check"></i> Upcoming<%= @scheduledTimes ? " (#{@scheduledTimes.size})" : nil %></a>
+            <a href="#" data-tab-active data-tab="tab-2"><i class="fa fa-sync"></i> Pending<%= @bookingRequests ? " (#{@bookingRequests.size})" : nil %></a>
         </div>
         <div class="clearfix mb-3"></div>
         
@@ -36,11 +36,21 @@
             <% if !@scheduledTimes.blank? %>
               <% @scheduledTimes.each do |h| %>
                 <div class="content mb-3">
-                    <div class="">
-                          <div class="align-self-center">
-                              <h5 class=""><%= h['title']%>
-                                <p class="font-600 opacity-40"><%= h['date']%>:<br><%= h['startTime']%> - <%= h['endTime']%></p>
-                              </h5>
+                  <h2 class="text-center font-18 color-green2-dark"><%= h['title']%></h2>
+                    <div class="text-center">
+                          <div class="align-self-center text-center">
+                            <h5 class=""><%= h['paidBy'] %>
+                              <p class="font-600 opacity-40 ">
+                                Phone: <a href="tel:<%= h['buyerPhone'] %>"><%= h['buyerPhone'] %></a>
+                                <br>
+
+                                Email: <a href = "mailto:<%= h['buyerEmail'] %>"><%= h['buyerEmail'] %></a>
+                                <br>
+
+                                <%= h['date'] %><br>
+                                <%= h['startTime']%> - <%= h['endTime']%>
+                              </p>
+                            </h5>
                           </div>
                           <div class="align-self-center">
                           </div>
@@ -115,18 +125,18 @@
                   <h2 class="text-center font-18 color-green2-dark"><%= h['title']%></h2>
                     <div class="">
                           <div class="align-self-center text-center">
-                              <h5 class=""><%= h['paidBy'] %>
-                                <p class="font-600 opacity-40 ">
-                                  Phone: <a href="tel:<%= h['buyerPhone'] %>"><%= h['buyerPhone'] %></a>
-                                  <br>
+                            <h5 class=""><%= h['paidBy'] %>
+                              <p class="font-600 opacity-40 ">
+                                Phone: <a href="tel:<%= h['buyerPhone'] %>"><%= h['buyerPhone'] %></a>
+                                <br>
 
-                                  Email: <a href = "mailto:<%= h['buyerEmail'] %>"><%= h['buyerEmail'] %></a>
-                                  <br>
+                                Email: <a href = "mailto:<%= h['buyerEmail'] %>"><%= h['buyerEmail'] %></a>
+                                <br>
 
-                                  <%= h['date'] %><br>
-                                  <%= h['startTime']%> - <%= h['endTime']%>
-                                </p>
-                              </h5>
+                                <%= h['date'] %><br>
+                                <%= h['startTime']%> - <%= h['endTime']%>
+                              </p>
+                            </h5>
                           </div>
                           <br>
                           <div class="align-self-center text-right">
