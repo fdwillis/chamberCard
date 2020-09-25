@@ -101,8 +101,6 @@ class ServicesController < ApplicationController
 	end
 
 	def destroy
-		debugger
-
 		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X DELETE #{SITEurl}/v1/time-slots/#{params[:id]}`
 		
 		response = Oj.load(curlCall)
@@ -112,6 +110,7 @@ class ServicesController < ApplicationController
 			redirect_to services_path
 		else
 			flash[:alert] = "Trouble connecting. Try again later."
+			redirect_to services_path
 		end
 	end
 

@@ -1244,7 +1244,7 @@ $(document).ready(function(){
             if (data.indexOf(bodyColor) > -1) {
                 var highlightLocated = data.indexOf(bodyColor)
                 var backgroundLocated = data.indexOf(bodyBackground)
-                var highlightColorCode = "#8cc152"
+                var highlightColorCode = "#4cbb17"
                 var backgroundColorCode = colorsArray[backgroundLocated][3] + ', ' + colorsArray[backgroundLocated][1]
                 var highlightColor = '.color-highlight{color:'+highlightColorCode+'!important}'
                 var highlightBg = '.bg-highlight, .page-item.active a{background-color:'+highlightColorCode+'!important}'
