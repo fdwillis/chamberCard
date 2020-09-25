@@ -28,15 +28,30 @@
                     <h5 class=""><%= h['title'] %></h5>
                     <p class="font-600 opacity-40"><%= number_to_currency(h['cost'], precision: 2) %></p>
                 </div>
-                <% if current_user&.stripeSourceVerified %>
-                  <div class="align-self-center">
-                      <a href="<%= new_charge_path(title: h['title'], uuid: h['uuid'], desc: h['desc']) %>" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">PURCHASE</a>
-                  </div>
-                <% end %>
-                <br>
-                <div class="align-self-center">
-                  <a href="<%= service_path(id: h['uuid'], desc: h['desc']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Service</a>
-                </div>
+                <% if current_user&.stripeSourceVerified && current_user.username != h['sellerUsername'] %>
+                    <div class="align-self-center">
+                        <a href="<%= new_charge_path(title: h['title'], uuid: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">PURCHASE</a>
+                    </div>
+                  <% end %>
+                  <br>
+                  <% if current_user.username == h['sellerUsername'] %>
+                    <div class="row">
+                      <div class="align-self-center col-4">
+
+                        <a href="<%= service_path(id: h['uuid']) %>" class="btn btn-sm col-md-6 rounded-sm bg-yellow1-dark text-uppercase font-800"><i class="fa fa-eye"></i></a>
+                      </div>
+                      <div class="align-self-center col-4">
+                        <a href="<%= edit_service_path(id: h['uuid']) %>" class="btn btn-sm col-md-6 rounded-sm bg-magenta1-dark text-uppercase font-800"><i class="fa fa-pencil"></i></a>
+                      </div>
+                      <div class="align-self-center col-4">
+                        <a href="<%= edit_service_path(id: h['uuid']) %>" class="btn btn-sm col-md-6 rounded-sm bg-red1-dark text-uppercase font-800"><i class="fa fa-close"></i></a>
+                      </div>
+                    </div>
+                  <% else %>
+                    <div class="align-self-center">
+                      <a href="<%= service_path(id: h['uuid'], desc: h['desc']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Service</a>
+                    </div>
+                  <% end %>
               </div>
             <% end %>
           <% end %>
@@ -51,15 +66,30 @@
                       <h5 class=""><%= h['title'] %></h5>
                       <p class="font-600 opacity-40"><%= number_to_currency(h['cost'], precision: 2) %></p>
                   </div>
-                  <% if current_user&.stripeSourceVerified %>
+                  <% if current_user&.stripeSourceVerified && current_user.username != h['sellerUsername'] %>
                     <div class="align-self-center">
                         <a href="<%= new_charge_path(title: h['title'], uuid: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">PURCHASE</a>
                     </div>
                   <% end %>
                   <br>
-                  <div class="align-self-center">
-                    <a href="<%= service_path(id: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Service</a>
-                  </div>
+                  <% if current_user.username == h['sellerUsername'] %>
+                    <div class="row">
+                      <div class="align-self-center col-4">
+
+                        <a href="<%= service_path(id: h['uuid']) %>" class="btn btn-sm col-md-6 rounded-sm bg-yellow1-dark text-uppercase font-800"><i class="fa fa-eye"></i></a>
+                      </div>
+                      <div class="align-self-center col-4">
+                        <a href="<%= edit_service_path(id: h['uuid']) %>" class="btn btn-sm col-md-6 rounded-sm bg-magenta1-dark text-uppercase font-800"><i class="fa fa-pencil"></i></a>
+                      </div>
+                      <div class="align-self-center col-4">
+                        <a href="<%= edit_service_path(id: h['uuid']) %>" class="btn btn-sm col-md-6 rounded-sm bg-red1-dark text-uppercase font-800"><i class="fa fa-close"></i></a>
+                      </div>
+                    </div>
+                  <% else %>
+                    <div class="align-self-center">
+                      <a href="<%= service_path(id: h['uuid'], desc: h['desc']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Service</a>
+                    </div>
+                  <% end %>
               </div>
             <% end %>
           <% end %>           

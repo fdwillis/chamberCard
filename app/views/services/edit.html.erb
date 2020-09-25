@@ -1,0 +1,34 @@
+<div class="card card-style">
+    <div class="content mt-3 mb-3">
+      <h3>Editing Service <%= @slot['title'].titleize %></h3>
+      <p>
+          Enter the service information below. Once you are complete, the service will be available for sale.
+      </p>
+    </div>
+</div><!-- 
+<%= render partial: 'form' %> -->
+
+<div class="card card-style">
+  <div class="content mb-0">
+		<%= form_for :newService, url: services_path do |f| %>
+			<div class="input-style input-style-2 has-icon input-required">
+			    <span class="color-highlight input-style-1-active">Title</span>
+			    <em>(required)</em>
+			    <%= f.text_field :title, placeholder: "60 minute massage", class: "form-control", required: true, value: @slot['title'] %>
+			    <%= f.hidden_field :appName, value: ENV['appName'] %>
+			</div>
+			<div class="input-style input-style-2 has-icon input-required">
+			    <span class="color-highlight input-style-1-active">Cost</span>
+			    <em>(required)</em>
+			    <%= f.number_field :cost, placeholder: "20.45", class: "form-control", required: true, :step => "0.01", value: @slot['cost'] %>
+			</div> 
+			<div class="input-style input-style-1 has-icon input-required">
+			    <span class="color-highlight input-style-1-active">Description</span>
+			    <em>(required)</em>
+			    <%= f.text_area :desc, placeholder: "Description", class: "form-control", required: true, size: '100', value: @slot['desc'] %>
+			</div> 
+		  <%= f.submit "Add Service", class: "btn btn-full bg-yellow1-dark btn-m text-uppercase rounded-sm shadow-l col-12 mb-3 mt-4 font-900"%>
+
+		<% end %>
+	</div>
+</div>

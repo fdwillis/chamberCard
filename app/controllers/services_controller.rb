@@ -82,7 +82,10 @@ class ServicesController < ApplicationController
 		end
 	end
 
+	def edit
+		show
+	end
+
 	def new
-		
 	end
 end
