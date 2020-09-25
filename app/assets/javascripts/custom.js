@@ -202,9 +202,9 @@ $(document).ready(function(){
         function activateNoPreference(){$('#manual-mode-detected').removeClass('disabled');}        
 
         function setColorScheme() {
-            const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
-            const isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
-            const isNoPreference = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+            var isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+            var isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+            var isNoPreference = window.matchMedia("(prefers-color-scheme: no-preference)").matches
             window.matchMedia("(prefers-color-scheme: dark)").addListener(e => e.matches && activateDarkMode())
             window.matchMedia("(prefers-color-scheme: light)").addListener(e => e.matches && activateLightMode())
             window.matchMedia("(prefers-color-scheme: no-preference)").addListener(e => e.matches && activateNoPreference())
@@ -746,10 +746,10 @@ $(document).ready(function(){
                 $('.location-support').html('Your browser and device <strong class="color-red2-dark">support</strong> Geolocation.');
             }
             function geoLocate() {
-                const locationCoordinates = document.querySelector('.location-coordinates');
+                var locationCoordinates = document.querySelector('.location-coordinates');
                 function success(position) {
-                    const latitude  = position.coords.latitude;
-                    const longitude = position.coords.longitude;
+                    var latitude  = position.coords.latitude;
+                    var longitude = position.coords.longitude;
                     locationCoordinates.innerHTML = '<strong>Longitude:</strong> ' + longitude + '<br><strong>Latitude:</strong> '+ latitude;
 
                     var mapL1 = 'http://maps.google.com/maps?q=';
