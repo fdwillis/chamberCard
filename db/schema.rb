@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2020_09_16_160222) do
   create_table "users", force: :cascade do |t|
     t.string "stripeUserID"
     t.boolean "stripeSourceVerified", default: false
+    t.boolean "stripePending", default: true
     t.string "accessPin"
     t.string "referredBy"
     t.string "authentication_token"
