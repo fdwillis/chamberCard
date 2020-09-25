@@ -58,7 +58,7 @@
                             </div>
                             <% if h['service?'] %>
                               <div class="align-self-center">
-                                <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Edit Service</a>
+                                <a href="<%= edit_service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Edit Service</a>
                               </div>
                             <% end %>
                             <% if h['product?'] %>

@@ -35,7 +35,7 @@ before_action :authenticate_user!
 		stripeChargeID = params[:bookIt][:stripeChargeID]
 		timeSlot = params[:bookIt][:timeSlot]
 
-		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "endTime=#{endTime}&startTime=#{startTime}&timeSlot=#{timeSlot}&stripeChargeID=#{stripeChargeID}&paidBy=#{paidBy}" -X POST #{SITEurl}/v1/booking-request`
+		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "appName=#{ENV['appName']}&endTime=#{endTime}&startTime=#{startTime}&timeSlot=#{timeSlot}&stripeChargeID=#{stripeChargeID}&paidBy=#{paidBy}" -X POST #{SITEurl}/v1/booking-request`
 		
 		response = Oj.load(curlCall)
 	    
