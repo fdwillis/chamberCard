@@ -37,23 +37,30 @@
                           </div>
                           <div class="align-self-center">
                           </div>
-                          <div class="align-self-center">
-                              <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
-                          </div>
                           <br>
                           <% if current_user.manager? && h['buyerApproved?'] %>
                             <div class="row">
-                              <div class="col-6">
-                              <%= form_for :cancel, url: cancel_path do |f| %>
-                                <%= f.hidden_field :uuid, value: h['uuid'] %>
-                                <%= f.submit "Cancel", class: "col-12 btn btn-sm rounded-sm bg-red1-dark text-uppercase font-800"%>
-                              <% end %>
+                              <div class="col-4">
+                                <%= form_for :cancel, url: cancel_path do |f| %>
+                                  <%= f.hidden_field :uuid, value: h['uuid'] %>
+                                  <%= button_tag( :class => "col-12 btn btn-sm rounded-sm bg-green1-dark text-uppercase font-800") do %><i class="fa fa-check"></i>
+                                  <% end %>
+                                <% end %>
                               </div>
-                              <div class="col-6">
-                              <%= form_for :cancel, url: cancel_path do |f| %>
-                                <%= f.hidden_field :uuid, value: h['uuid'] %>
-                                <%= f.submit "Accept", class: "col-12 btn btn-sm rounded-sm bg-green1-dark text-uppercase font-800"%>
-                              <% end %>
+                              <div class="col-4">
+                                <%= form_for :cancel, url: cancel_path do |f| %>
+                                  <%= f.hidden_field :uuid, value: h['uuid'] %>
+                                  <%= button_tag( :class => "col-12 btn btn-sm rounded-sm bg-magenta1-dark text-uppercase font-800") do %><i class="fa fa-clock"></i>
+                                  <% end %>
+                                <% end %>
+                              </div>
+                              <div class="col-4">
+                                <%= form_for :cancel, url: cancel_path do |f| %>
+                                  <%= f.hidden_field :uuid, value: h['uuid'] %>
+                                  <%= button_tag( :class => "col-12 btn btn-sm rounded-sm bg-red1-dark text-uppercase font-800") do %><i class="fa fa-close"></i>
+                                  <% end %>
+
+                                <% end %>
                               </div>
                             </div>
                             <% if h['service?'] %>
@@ -76,12 +83,12 @@
                             <br>
                             <% if h['service?'] %>
                               <div class="align-self-center">
-                                <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Service</a>
+                                <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">View Service</a>
                               </div>
                             <% end %>
                             <% if h['product?'] %>
                               <div class="align-self-center">
-                                <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-yellow1-dark text-uppercase font-800">View Product</a>
+                                <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">View Product</a>
                               </div>
                             <% end %>
                           <% end %>
@@ -102,9 +109,6 @@
                       <div class="align-self-center">
                           <h5 class=""><%= h['title'] %> (<%= h['remaining']%>)</h5>
                           <p class="font-600 opacity-40"><%= number_to_currency(h['amount'] * 0.01, precision: 2) %> per service</p>
-                      </div>
-                      <div class="align-self-center">
-                          <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
                       </div>
                       <div class="align-self-center">
                         <a href="<%= new_book_it_path(timeBought: h) %>" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">Request</a>
@@ -128,9 +132,6 @@
                               </h5>
                           </div>
                           <div class="align-self-center">
-                          </div>
-                          <div class="align-self-center">
-                              <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
                           </div>
                           <div class="align-self-center">
                               <a href="<%= new_book_it_path(timeBought: @timeBought, booking: h) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Book Now</a>

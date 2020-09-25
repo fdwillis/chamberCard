@@ -43,7 +43,7 @@ $(document).ready(function(){
             ["teal","#A0CECB","#7DB1B1","#158383"], 
             ["aqua","#4FC1E9","#3BAFDA","#0a8ab9"], 
             ["sky","#188FB6","#0F5F79","#0F5F79"], 
-            ["blue1","#4FC1E9","#3BAFDA","#0b769d"],
+            ["blue1","#1b29cc","#1b29cc","#1b29cc"],
             ["blue2","#5D9CEC","#4A89DC","#1a64c6"], 
             ["magenta1","#AC92EC","#967ADC","#704dc9"], 
             ["magenta2","#8067B7","#6A50A7","#4e3190"], 
