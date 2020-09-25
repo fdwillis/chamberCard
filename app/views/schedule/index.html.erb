@@ -123,7 +123,7 @@
                                   Email: <a href = "mailto:<%= h['buyerEmail'] %>"><%= h['buyerEmail'] %></a>
                                   <br>
 
-                                  <%= h['date'].to_date.strftime("%B %d, %Y") %><br>
+                                  <%= h['date'] %><br>
                                   <%= h['startTime']%> - <%= h['endTime']%>
                                 </p>
                               </h5>
@@ -145,7 +145,7 @@
                                 <% end %>
                               </div>
                               <div class="col-4">
-                                <a href="<%= edit_service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-magenta1-dark text-uppercase font-800"><i class="fa fa-pencil"></i></a>
+                                <a href="<%= edit_book_it_path(id: h['timeSlotUUID'], timeBought: h) %>" class="btn btn-sm col-md-12 rounded-sm bg-magenta1-dark text-uppercase font-800"><i class="fa fa-pencil"></i></a>
                               </div>
                               <div class="col-4">
                                 <%= form_for :cancel, url: cancel_path do |f| %>
@@ -220,7 +220,7 @@
                 <div class="content mb-3">
                     <div class="">
                           <div class="align-self-center">
-                              <h5 class=""><%= h['date'].to_date.strftime("%B %d, %Y")%>
+                              <h5 class=""><%= h['date']%>
                                 <p class="font-600 opacity-40"><%= h['startTime']%> - <%= h['endTime']%></p>
                               </h5>
                           </div>

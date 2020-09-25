@@ -16,20 +16,15 @@ before_action :authenticate_user!
     	flash[:error] = "Something went wrong"
     end
 	end
-
-	def new
-		if @timeBought = params[:timeBought]
-		else
-			flash[:alert] = "Please choose a service to book"
-			redirect_to schedule_index_path
-		end
-	end
-
+	
 	def bookingRequest
-		date = "#{params[:bookIt]['date(2i)']}/#{params[:bookIt]['date(3i)']}/#{params[:bookIt]['date(1i)']}"
-		
-		startTime = Date.strptime(date, "%m/%d/%Y")
-		endTime = Date.strptime(date, "%m/%d/%Y")
+		# 2025-05-05 00:00:00 -0500
+
+		date = "#{params[:bookIt][:monthSelect]}/#{params[:bookIt][:daySelect]}/#{params[:bookIt][:yearSelect]} #{params[:bookIt][:startHour]}:#{params[:bookIt][:startMinute]}:00"
+		parsedDate = DateTime.parse(date)
+
+		startTime = parsedDate
+		endTime = parsedDate + 1.hour
 		
 		paidBy = current_user.uuid
 		stripeChargeID = params[:bookIt][:stripeChargeID]
@@ -47,6 +42,19 @@ before_action :authenticate_user!
     end
 
 	end
+
+	def new
+		if @timeBought = params[:timeBought]
+		else
+			flash[:alert] = "Please choose a service to book"
+			redirect_to schedule_index_path
+		end
+	end
+
+	def edit
+		new
+	end
+
 
 	private
 

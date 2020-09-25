@@ -18,29 +18,5 @@
           <!-- <a href="#" class="btn btn-m btn-full rounded-sm shadow-xl bg-highlight text-uppercase mb-3 font-900">Join Event</a> -->
       </div>
   </div> 
-	<div class="card card-style">
-    <div class="content mb-3">
-        <div class="">
-          <div class="align-self-center">
-              <h5 class=""><%= @timeBought['title'] %> (<%= @timeBought['remaining']%>)</h5>
-          </div>
-          <div class="align-self-center">
-              <p class="font-600 opacity-40">By: <%= @timeBought['sellerUsername'].titleize %></p>
-          </div>
-          
-          <%= form_for :bookIt, url: bookingRequest_path do |f| %>
-            <%= f.date_select :date, { order: [:month, :day, :year], start_year: Date.current.year }, { class: "form-control"} %>
-
-
-          	<%= f.hidden_field :timeSlot, value: @timeBought['timeSlotUUID'] %>
-          	<%= f.hidden_field :stripeChargeID, value: @timeBought['stripeChargeID'] %>
-	          <div class="col-12">
-	            <div class="input-style input-style-2">
-							  <%= f.submit "Submit Request", class: "btn bg-green1-dark text-uppercase rounded-sm font-900"%>
-		          </div>
-	          </div>
-					<% end %>
-        </div>
-    </div>
-  </div>
+	<%= render partial: 'form' %>
 </div>
