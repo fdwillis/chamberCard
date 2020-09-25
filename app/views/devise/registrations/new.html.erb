@@ -6,32 +6,32 @@
 
 
         <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-          <div class="input-style has-icon input-style-1 input-required pb-1">
-              <span>Account Type</span>
+          <div class="input-style has-icon input-style-2 input-required pb-1">
+              <span class="color-highlight input-style-1-active">Account Type</span>
               <em>(required)</em>
               <%= f.select :accessPin, [['Buying Services', 'talent'], ['Selling Services', 'manager']], required: true %>
           </div> 
-          <div class="input-style has-icon input-style-1 input-required pb-1">
+          <div class="input-style has-icon input-style-2 input-required pb-1">
               <i class="input-icon fa fa-user color-theme"></i>
-              <span>Username</span>
+              <span class="color-highlight input-style-1-active">Username</span>
               <em>(required)</em>
               <%= f.text_field :username, autocomplete: "username", placeholder: "Username", required: true %>
           </div> 
-          <div class="input-style has-icon input-style-1 input-required pb-1">
+          <div class="input-style has-icon input-style-2 input-required pb-1">
               <i class="input-icon fa fa-at color-theme"></i>
-              <span>Email</span>
+              <span class="color-highlight input-style-1-active">Email</span>
               <em>(required)</em>
               <%= f.email_field :email, autocomplete: "email", placeholder: "Email", required: true %>
           </div> 
-          <div class="input-style has-icon input-style-1 input-required pb-1">
+          <div class="input-style has-icon input-style-2 input-required pb-1">
               <i class="input-icon fa fa-lock color-theme"></i>
-              <span>Password</span>
+              <span class="color-highlight input-style-1-active">Password</span>
               <em>(required)</em>
               <%= f.password_field :password, autocomplete: "current-password", placeholder: 'Password', required: true %>
           </div> 
-          <div class="input-style has-icon input-style-1 input-required pb-1">
+          <div class="input-style has-icon input-style-2 input-required pb-1">
               <i class="input-icon fa fa-lock color-theme"></i>
-              <span>Confirm Password</span>
+              <span class="color-highlight input-style-1-active">Confirm Password</span>
               <em>(required)</em>
               <%= f.password_field :password_confirmation, autocomplete: "current-password", placeholder: 'Confirm Password', required: true %>
           </div> 

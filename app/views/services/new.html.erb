@@ -1,4 +1,42 @@
-<%= form_for :newService, url: services_path do |f| %>
-  <%= f.submit "Add Service", class: "btn btn-full bg-yellow1-dark btn-m text-uppercase rounded-sm shadow-l col-12 mb-3 mt-4 font-900"%>
+<div class="card card-style">
+    <div class="content mt-3 mb-3">
+      <h3>Adding Service</h3>
+      <p>
+          Enter the service information below. Once you are complete, the service will be available for sale.
+      </p>
+    </div>
+</div>
+<div class="card card-style">
+  <div class="content mb-0">
+		<%= form_for :newService, url: services_path do |f| %>
+			<div class="input-style has-icon input-style-2 input-required pb-1">
+          <span class="color-highlight input-style-1-active">Service Type</span>
+          <em>(required)</em>
+          <%= f.select :servicePackage, [['Service', 'service'], ['Package', 'package']], required: true %>
+      </div> 
+      <div class="input-style has-icon input-style-2 input-required pb-1">
+          <span class="color-highlight input-style-1-active">Customer Type</span>
+          <em>(required)</em>
+          <%= f.select :residentialBusiness, [['Business', 'business'], ['Residential', 'residential']], required: true %>
+      </div> 
+			<div class="input-style input-style-2 has-icon input-required">
+			    <span class="color-highlight input-style-1-active">Title</span>
+			    <em>(required)</em>
+			    <%= f.text_field :title, placeholder: "60 minute massage", class: "form-control", required: true %>
+			    <%= f.hidden_field :appName, value: ENV['appName'] %>
+			</div>
+			<div class="input-style input-style-2 has-icon input-required">
+			    <span class="color-highlight input-style-1-active">Cost</span>
+			    <em>(required)</em>
+			    <%= f.text_field :cost, placeholder: "60 minute massage", class: "form-control", required: true %>
+			</div> 
+			<div class="input-style input-style-1 has-icon input-required">
+			    <span class="color-highlight input-style-1-active">Description</span>
+			    <em>(required)</em>
+			    <%= f.text_area :desc, placeholder: "Description", class: "form-control", required: true, size: '100' %>
+			</div> 
+		  <%= f.submit "Add Service", class: "btn btn-full bg-yellow1-dark btn-m text-uppercase rounded-sm shadow-l col-12 mb-3 mt-4 font-900"%>
 
-<% end %>
+		<% end %>
+	</div>
+</div>

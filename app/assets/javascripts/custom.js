@@ -37,7 +37,7 @@ $(document).ready(function(){
             ["yellow1","#FFCE54","#F6BB42","#e6a00f"], 
             ["yellow2","#E8CE4D","#E0C341","#dbb50c"],
             ["yellow3","#CCA64F","#996A22","#996A22"], 
-            ["green1","#A0D468","#8CC152","#5ba30b"], 
+            ["green1","#4cbb17","#4cbb17","#4cbb17"], 
             ["green2","#2ECC71","#2ABA66","#0da24b"], 
             ["mint","#48CFAD","#37BC9B","#0fa781"], 
             ["teal","#A0CECB","#7DB1B1","#158383"], 

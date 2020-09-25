@@ -6,13 +6,13 @@
             <p class="bottom-0 text-center color-highlight font-11">Let's get you logged in</p>
 
             <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-              <div class="input-style has-icon input-style-1 input-required pb-1">
+              <div class="input-style has-icon input-style-2 input-required pb-1">
                   <i class="input-icon fa fa-user color-theme"></i>
                   <span>Email</span>
                   <em>(required)</em>
                   <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Email" %>
               </div> 
-              <div class="input-style has-icon input-style-1 input-required pb-1">
+              <div class="input-style has-icon input-style-2 input-required pb-1">
                   <i class="input-icon fa fa-lock color-theme"></i>
                   <span>Password</span>
                   <em>(required)</em>

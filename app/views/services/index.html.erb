@@ -5,7 +5,7 @@
           Services offered by Messy Lawns
       </p>
     </div>
-    <% if current_user&.stripeSourceVerified %>
+    <% if current_user&.stripeSourceVerified && current_user&.manager? %>
       <a href="<%= new_service_path %>" class="float-right btn btn-xs bg-yellow1-dark rounded-xl shadow-xl text-uppercase font-900 mt-2 font-11">Add Service</a>
     <% end %>
 </div>
@@ -27,9 +27,6 @@
                 <div class="align-self-center">
                     <h5 class=""><%= h['title'] %></h5>
                     <p class="font-600 opacity-40"><%= number_to_currency(h['cost'], precision: 2) %></p>
-                </div>
-                <div class="align-self-center">
-                    <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
                 </div>
                 <% if current_user&.stripeSourceVerified %>
                   <div class="align-self-center">
@@ -53,9 +50,6 @@
                   <div class="align-self-center">
                       <h5 class=""><%= h['title'] %></h5>
                       <p class="font-600 opacity-40"><%= number_to_currency(h['cost'], precision: 2) %></p>
-                  </div>
-                  <div class="align-self-center">
-                      <p class="font-600 opacity-40">By: <%= h['sellerUsername'].titleize %></p>
                   </div>
                   <% if current_user&.stripeSourceVerified %>
                     <div class="align-self-center">
