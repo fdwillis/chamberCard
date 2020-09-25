@@ -4,7 +4,7 @@ class ServicesController < ApplicationController
 		if current_user&.authentication_token
 			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/time-slots`
 		else
-			curlCall = `curl -X GET #{SITEurl}/v1/time-slots`
+			curlCall = `curl -H "appName: #{ENV['appName']}" -X GET #{SITEurl}/v1/time-slots`
 		end
 
     response = Oj.load(curlCall)
@@ -31,5 +31,9 @@ class ServicesController < ApplicationController
 		else
 			flash[:alert] = "Trouble connecting. Try again later."
 		end
+	end
+
+	def new
+		
 	end
 end

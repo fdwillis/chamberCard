@@ -5,6 +5,9 @@
           Services offered by Messy Lawns
       </p>
     </div>
+    <% if current_user&.stripeSourceVerified %>
+      <a href="<%= new_service_path %>" class="float-right btn btn-xs bg-yellow1-dark rounded-xl shadow-xl text-uppercase font-900 mt-2 font-11">Add Service</a>
+    <% end %>
 </div>
 
 <div class="card card-style bg-theme pb-0">
