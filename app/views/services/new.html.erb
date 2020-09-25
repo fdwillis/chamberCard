@@ -17,7 +17,7 @@
       <div class="input-style has-icon input-style-2 input-required pb-1">
           <span class="color-highlight input-style-1-active">Customer Type</span>
           <em>(required)</em>
-          <%= f.select :residentialBusiness, [['Business', 'business'], ['Residential', 'residential']], required: true %>
+          <%= f.select :residentialBusiness, [['Residential', 'residential'],['Business', 'business']], required: true %>
       </div> 
 			<div class="input-style input-style-2 has-icon input-required">
 			    <span class="color-highlight input-style-1-active">Title</span>
@@ -28,7 +28,7 @@
 			<div class="input-style input-style-2 has-icon input-required">
 			    <span class="color-highlight input-style-1-active">Cost</span>
 			    <em>(required)</em>
-			    <%= f.text_field :cost, placeholder: "60 minute massage", class: "form-control", required: true %>
+			    <%= f.number_field :cost, placeholder: "20.45", class: "form-control", required: true, :step => "0.01" %>
 			</div> 
 			<div class="input-style input-style-1 has-icon input-required">
 			    <span class="color-highlight input-style-1-active">Description</span>
