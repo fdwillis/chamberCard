@@ -112,15 +112,29 @@
             <% if !@bookingRequests.blank? %>
               <% @bookingRequests.each do |h| %>
                 <div class="content mb-3">
+                  <h2 class="text-center font-18 color-green2-dark"><%= h['title']%></h2>
                     <div class="">
-                          <div class="align-self-center">
-                              <h5 class=""><%= h['title']%>
-                                <p class="font-600 opacity-40"><%= h['date']%>:<br><%= h['startTime']%> - <%= h['endTime']%></p>
+                          <div class="align-self-center text-center">
+                              <h5 class=""><%= h['paidBy'] %>
+                                <p class="font-600 opacity-40 ">
+                                  Phone: <a href="tel:<%= h['buyerPhone'] %>"><%= h['buyerPhone'] %></a>
+                                  <br>
+
+                                  Email: <a href = "mailto:<%= h['buyerEmail'] %>"><%= h['buyerEmail'] %></a>
+                                  <br>
+
+                                  <%= h['date'].to_date.strftime("%B %d, %Y") %><br>
+                                  <%= h['startTime']%> - <%= h['endTime']%>
+                                </p>
                               </h5>
                           </div>
-                          <div class="align-self-center">
-                          </div>
                           <br>
+                          <div class="align-self-center text-right">
+                            <!-- <h2 class="font-18 color-green2-dark"><%= h['title']%></h2> -->
+                            <p class="font-12 opacity-50">
+                              
+                            </p>
+                          </div>
                           <% if current_user.manager? && h['buyerApproved?'] %>
                             <div class="row">
                               <div class="col-4">

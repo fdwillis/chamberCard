@@ -14,34 +14,33 @@
 
           <% if @payments.present? %>
             <% @payments.each do |h| %>
-              <a href="#" data-lightbox="gallery-2" class="filtr-item" title="<%= h['title'] %>" data-category="2">
+              <a href="#" data-lightbox="gallery-2" class="filtr-item" title="<%= h['title'].titleize %>" data-category="2">
                 <div class="align-self-center">
                   </div>
                   <% if current_user.manager? %>
                     <div class="align-self-center">
-                        <h1 class="mb-n2 font-16"><%= h['title'] %></h1>
+                        <h1 class="mb-n2 font-16"><%= h['title'].titleize %></h1>
                         <p class="font-11 opacity-60">
-                        Customer: <%= h['buyerName'].titleize %><br>
-                        Phone: <%= h['buyerPhone'] %><br>
-                        Email: <%= h['buyerEmail'] %>
-                          
-                        </p>
-                        <p class="font-11 opacity-60">
-                          
+                          <br>
+                          Customer: <%= h['buyerName'].titleize %>
+                          <br>
+                          Phone: <%= h['buyerPhone'] %>
+                          <br>
+                          Email: <%= h['buyerEmail'] %>
                         </p>
                     </div>
                     <div class="align-self-center ml-auto text-right">
-                        <h2 class="mb-n1 font-18 color-green2-dark"><%= number_to_currency(h['sellerAmount'] * 0.01) %></h2>
-                        <p class="font-12 opacity-50"><%= h['date'].to_date.strftime("%B %d, %Y") %></p>
+                      <h2 class="mb-n1 font-18 color-green2-dark"><%= number_to_currency(h['sellerAmount'] * 0.01) %></h2>
+                      <p class="font-12 opacity-50"><%= h['date'].to_date.strftime("%B %d, %Y") %></p>
                     </div>
                   <% else %>
                     <div class="align-self-center">
-                        <h1 class="mb-n2 font-16"><%= h['title'] %></h1>
+                        <h1 class="mb-n2 font-16"><%= h['title'].titleize %></h1>
+                        <div class="align-self-center ml-auto text-right">
+                            <h2 class="mb-n1 font-18 color-green2-dark"><%= number_to_currency(h['amount'] * 0.01) %></h2>
+                            <p class="font-12 opacity-50"><%= h['date'].to_date.strftime("%B %d, %Y") %></p>
+                        </div>
                         <p class="font-11 opacity-60">Payment Received</p>
-                    </div>
-                    <div class="align-self-center ml-auto text-right">
-                        <h2 class="mb-n1 font-18 color-green2-dark"><%= number_to_currency(h['amount'] * 0.01) %></h2>
-                        <p class="font-12 opacity-50"><%= h['date'].to_date.strftime("%B %d, %Y") %></p>
                     </div>
                   <% end %>
               </a>
