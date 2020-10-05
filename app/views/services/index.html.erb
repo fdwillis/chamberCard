@@ -29,13 +29,13 @@
                       <h5 class=""><%= h['title'] %></h5>
                       <p class="font-600 opacity-40"><%= number_to_currency(h['cost'], precision: 2) %></p>
                   </div>
-                  <% if current_user&.stripeSourceVerified && current_user.username != h['sellerUsername'] %>
+                  <% if current_user&.stripeSourceVerified && current_user&.username != h['sellerUsername'] %>
                     <div class="align-self-center">
                         <a href="<%= new_charge_path(title: h['title'], desc: h['desc'], uuid: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">PURCHASE</a>
                     </div>
                   <% end %>
                   <br>
-                  <% if current_user.username == h['sellerUsername'] %>
+                  <% if current_user&.username == h['sellerUsername'] %>
                     <div class="row">
                       <div class="align-self-center col-4">
 
@@ -68,13 +68,13 @@
                       <h5 class=""><%= h['title'] %></h5>
                       <p class="font-600 opacity-40"><%= number_to_currency(h['cost'], precision: 2) %></p>
                   </div>
-                  <% if current_user&.stripeSourceVerified && current_user.username != h['sellerUsername'] %>
+                  <% if current_user&.stripeSourceVerified && current_user&.username != h['sellerUsername'] %>
                     <div class="align-self-center">
                         <a href="<%= new_charge_path(title: h['title'], desc: h['desc'], uuid: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">PURCHASE</a>
                     </div>
                   <% end %>
                   <br>
-                  <% if current_user.username == h['sellerUsername'] %>
+                  <% if current_user&.username == h['sellerUsername'] %>
                     <div class="row">
                       <div class="align-self-center col-4">
 
