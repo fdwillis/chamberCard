@@ -54,8 +54,9 @@
           <%= link_to :back, class: 'header-icon header-icon-1' do %>
             <i class="fa fa-arrow-left"></i>
           <% end %>
+
           <% if current_user %>
-            <%= link_to "logout", destroy_session_path(current_user), method: :delete, class: "header-icon text-uppercase header-icon-3","data-menu"=>"menu-share"  %>
+            <%= link_to "logout", destroy_user_session_path, method: :delete, class: "header-icon text-uppercase header-icon-3" %>
           <% end %>
         </div>
       <div id="footer-bar" class="footer-bar-1">
@@ -289,7 +290,7 @@
         <% end %>
       </div>
     </div>
-    <div id="menu-install-pwa-android" class="menu menu-box-bottom menu-box-detached rounded-l" data-menu-height="350" data-menu-effect="menu-parallax" style="height: 350px; display: block;">
+    <!-- <div id="menu-install-pwa-android" class="menu menu-box-bottom menu-box-detached rounded-l" data-menu-height="350" data-menu-effect="menu-parallax" style="height: 350px; display: block;">
         <div class="boxed-text-l mt-4">
             <img class="rounded-l mb-3" src="assets/icon-128x128.png" alt="img" width="90">
             <h4 class="mt-3">Add Sticky on your Home Screen</h4>
@@ -312,7 +313,7 @@
             <a href="#" class="pwa-dismiss close-menu color-highlight uppercase ultrabold opacity-80 top-25">Maybe later</a>
             <i class="fa-ios-arrow fa fa-caret-down font-40"></i>
         </div>
-    </div>
+    </div> -->
     
     <script type="text/javascript">
       location.reload();

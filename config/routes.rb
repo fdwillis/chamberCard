@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
 	mount Pwa::Engine, at: ''
 	
-  devise_for :users, path: '/', path_names: { sign_in: 'auth/login', sign_out: 'auth/logout', sign_up: 'auth/sign-up' }, controllers: { registrations: 'registrations', sessions: 'sessions'}
+  devise_for :users, path: '/', path_names: { sign_in: 'auth/login', sign_out: 'auth/logout', sign_up: 'auth/sign-up' }, controllers: { registrations: 'registrations', sessions: 'sessions'} do
+  	get '/auth/logout' => 'devise/sessions#destroy'
+  end
 
 	devise_scope :user do
 		resources :charges

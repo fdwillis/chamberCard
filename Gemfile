@@ -12,6 +12,7 @@ gem 'jbuilder', '~> 2.7'
 gem 'uglifier'
 gem 'coffee-rails'
 gem 'jquery-rails'
+gem 'jquery'
 gem 'pwa'
 
 gem 'stripe'
