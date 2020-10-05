@@ -14,7 +14,8 @@
  *= require font-awesome
  *= require_self
  */
- 
-.alert {
-  margin-top: 50px;
+ @media all and (display-mode: fullscreen) {
+	.alert {
+	  margin-top: 50px;
+	}
 }
