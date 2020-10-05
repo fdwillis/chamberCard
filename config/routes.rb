@@ -1,10 +1,9 @@
 Rails.application.routes.draw do
 	get 'auth/_manifest.json' => 'home#manifest'
 	get '_manifest.json' => 'home#manifest'
+	get '_service-worker.js' => 'home#service_worker'
 	
   devise_for :users, path: '/', path_names: { sign_in: 'auth/login', sign_out: 'auth/logout', sign_up: 'auth/sign-up' }, controllers: { registrations: 'registrations', sessions: 'sessions'}
-
-	# get '_service-worker.js' => 'home#service_worker'
 
 	devise_scope :user do
 		resources :charges
