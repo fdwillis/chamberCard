@@ -8,7 +8,7 @@
 "name" : "Messy Lawns",
 "scope" : "/",
 "display" : "fullscreen",
-"start_url" : "/",
+"start_url" : "https://dry-beach-36435.herokuapp.com/",
 "short_name" : "Messy Lawns",
 "description" : "",
 "orientation" : "portrait",
