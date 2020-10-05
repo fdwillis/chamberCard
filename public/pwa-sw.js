@@ -1,4 +1,4 @@
-importScripts('http://localhost:3001/pwa.js');
+importScripts('https://dry-beach-36435.herokuapp.com/pwa.js');
 
 import ProgressiveWebApp from 'pwa-rails';
 document.addEventListener('turbolinks:load', () => {
