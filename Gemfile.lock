@@ -196,11 +196,18 @@ GEM
     money_helper (1.0.2)
       activesupport
       money (~> 6.5)
+    mozaic (2.0.1)
+      activesupport (>= 5.0)
+      nestive-rails (~> 1.0)
+      railties (>= 5.0)
     msgpack (1.3.3)
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
     nenv (0.3.0)
+    nestive-rails (1.0.2)
+      actionview (>= 5.0)
+      railties (>= 5.0)
     netrc (0.11.0)
     nio4r (2.5.4)
     nokogiri (1.10.10)
@@ -234,7 +241,12 @@ GEM
     public_suffix (4.0.6)
     puma (4.3.6)
       nio4r (~> 2.0)
+    pwa (4.0.6)
+      mozaic (~> 2.0)
+      railties (>= 5.0)
     rack (2.2.3)
+    rack-proxy (0.6.5)
+      rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (6.0.3.3)
@@ -314,6 +326,7 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
+    semantic_range (2.3.0)
     shellany (0.0.1)
     shoulda (4.0.0)
       shoulda-context (~> 2.0)
@@ -362,6 +375,14 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
+    webpacker (5.2.1)
+      activesupport (>= 5.2)
+      rack-proxy (>= 0.6.1)
+      railties (>= 5.2)
+      semantic_range (>= 2.3.0)
+    webpacker-pwa (0.1.0)
+      rack-proxy (>= 0.6.1)
+      webpacker (>= 4.0.0)
     websocket-driver (0.7.3)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -402,6 +423,7 @@ DEPENDENCIES
   omniauth-google-oauth2
   pg (>= 0.18, < 2.0)
   puma (~> 4.1)
+  pwa
   rails (~> 6.0.3, >= 6.0.3.3)
   rails_12factor
   rspec
@@ -419,6 +441,7 @@ DEPENDENCIES
   turbolinks (~> 5)
   uglifier
   web-console (>= 3.3.0)
+  webpacker-pwa
 
 RUBY VERSION
    ruby 2.6.1p33

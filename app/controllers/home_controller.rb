@@ -30,12 +30,4 @@ class HomeController < ApplicationController
 			end
 		end
 	end
-
-  def service_worker
-  	
-  end
-
-  def manifest
-  	
-  end
 end

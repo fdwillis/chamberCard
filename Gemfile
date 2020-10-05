@@ -35,6 +35,7 @@ gem 'oj'
 gem 'curb'
 gem 'byebug'
 gem 'rails_12factor', group: :production
+gem 'webpacker-pwa', group: :development
 
 
 

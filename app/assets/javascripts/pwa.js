@@ -1,15 +1,15 @@
 //Loading the Service Worker
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('_service-worker.js', {scope: ''});
-  });
-}
+// if ('serviceWorker' in navigator) {
+//   window.addEventListener('load', function() {
+//     navigator.serviceWorker.register('_service-worker.js', {scope: ''});
+//   });
+// }
 
 
 $(document).ready(function(){      
     'use strict'	
     
-    var pwaVersion = '3.0'; //must be identical to _manifest.json version. If not it will create update window loop
+    var pwaVersion = '3.0'; //must be identical to manifest.json version. If not it will create update window loop
     var pwaCookie = true; // if set to false, the PWA prompt will appear even if the user selects "maybe later"
     var pwaNoCache = true; // always keep the cache clear to serve the freshest possible content
     
@@ -141,7 +141,7 @@ $(document).ready(function(){
                 var dt = new Date();
                 var maniTimeVersion = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
                 var localVersionNumber = $('link[rel="manifest"]').data('pwa-version');
-                var onlineVersionJSON = "_manifest.json?ver=" + maniTimeVersion;
+                var onlineVersionJSON = "manifest?ver=" + maniTimeVersion;
                 var onlineVersionNumber = "Connection Offline. Waiting to Reconect";
                 $.getJSON(onlineVersionJSON, function(onlineData) {onlineVersionNumber = onlineData.version;}); 
                 setTimeout(function(){
