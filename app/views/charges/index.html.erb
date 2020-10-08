@@ -4,68 +4,81 @@
     <div class="content mt-3 mb-3">
       <h3>Payments</h3>
       <p>
-        View all of your payment history any time anywhere!
+        <% if !current_user&.manager? %>
+          View all of your payment history any time anywhere!
+        <% end %>
+        <% if current_user&.manager? %>
+          View past charges &amp; create new invoices on the go!
+        <% end %>
       </p>
     </div>
   </div>
-  <div class="card card-style">
-    <div class="content mb-3">
-        <div class="">
 
-          <% if @payments.present? %>
-            <% @payments.each do |h| %>
-              <% if current_user.manager? %>
-                <div class="align-self-center">
-                    <h1 class="mb-n2 font-16"><%= h['title'].titleize %></h1>
-                    <p class="font-11 opacity-60">
-                      <br>
-                      Customer: <%= h['buyerName'].titleize %>
-                      <br>
-                      Phone: <a href="tel:<%= h['buyerPhone'] %>"><%= h['buyerPhone'] %></a>
-                      <br>
-                      Email: <a href = "mailto:<%= h['buyerEmail'] %>"><%= h['buyerEmail'] %></a>
-                    </p>
-                </div>
-                <div class="align-self-center ml-auto text-right">
-                  <h2 class="mb-n1 font-18 color-green2-dark"><%= number_to_currency(h['sellerAmount'] * 0.01) %></h2>
-                  <p class="font-12 opacity-50"><%= h['date'].to_date.strftime("%B %d, %Y") %></p>
-                </div>
-              <% else %>
-                <div class="align-self-center">
-                    <h1 class="mb-n2 font-16"><%= h['title'].titleize %></h1>
-                    <div class="align-self-center ml-auto text-right">
-                        <h2 class="mb-n1 font-18 color-green2-dark"><%= number_to_currency(h['amount'] * 0.01) %></h2>
-                        <p class="font-12 opacity-50">
-                        <%= h['date'].to_date.strftime("%B %d, %Y") %><br>
-                          Payment Received<br>
-                        </p>
-                    </div>
-                    <p class="font-11 opacity-60"></p>
-                </div>
-              <% end %>
+  <div class="card card-style bg-theme pb-0 text-center">
+    <div class="content">
+      <div class="tab-controls tabs-round tab-animated tabs-medium tabs-rounded shadow-xl" data-tab-items="2" data-tab-active="bg-green1-dark color-white">
+          <!-- <a href="#" data-tab-active data-tab="tab-3"><i class="fa fa-clock"></i> Available Now</a> -->
+          <a href="#" data-tab="tab-1"><i class="fa fa-calendar-check"></i> Payments</a>
+          <a href="#" data-tab-active data-tab="tab-2"><i class="fa fa-sync"></i> Invoices</a>
+      </div>
+      <div class="clearfix mb-3"></div>
+      
+      <div class="tab-content" id="tab-1">
+        <% if @payments.present? %>
+          <% @payments.each do |h| %>
+            <% if current_user.manager? %>
+              <div class="align-self-center">
+                  <h1 class="mb-n2 font-16"><%= h['title'].titleize %></h1>
+                  <p class="font-11 opacity-60">
+                    <br>
+                    Customer: <%= h['buyerName'].titleize %>
+                    <br>
+                    Phone: <a href="tel:<%= h['buyerPhone'] %>"><%= h['buyerPhone'] %></a>
+                    <br>
+                    Email: <a href = "mailto:<%= h['buyerEmail'] %>"><%= h['buyerEmail'] %></a>
+                  </p>
+              </div>
+              <div class="align-self-center ml-auto text-right">
+                <h2 class="mb-n1 font-18 color-green2-dark"><%= number_to_currency(h['sellerAmount'] * 0.01) %></h2>
+                <p class="font-12 opacity-50"><%= h['date'].to_date.strftime("%B %d, %Y") %></p>
+              </div>
+            <% else %>
+              <div class="align-self-center">
+                  <h1 class="mb-n2 font-16"><%= h['title'].titleize %></h1>
+                  <div class="align-self-center ml-auto text-right">
+                      <h2 class="mb-n1 font-18 color-green2-dark"><%= number_to_currency(h['amount'] * 0.01) %></h2>
+                      <p class="font-12 opacity-50">
+                      <%= h['date'].to_date.strftime("%B %d, %Y") %><br>
+                        Payment Received<br>
+                      </p>
+                  </div>
+                  <p class="font-11 opacity-60"></p>
+              </div>
             <% end %>
           <% end %>
-
-          <% if @overdue.present? %>
-            <% @overdue.each do |h| %>
-              <a href="" data-lightbox="gallery-3" class="filtr-item default-link" title="<%= h['title'] %>" data-category="3" >
-              <div class="align-self-center">
-                  <h5 class=""><%= h['startTime'].to_date.strftime("%B %d, %Y")%></h5>
-                  <p class="font-600 opacity-40"> per service</p>
-              </div>
-              <div class="align-self-center">
-              </div>
-              <div class="align-self-center">
-                  <span class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Book Now</span>
-              </div>
-            </a>
-            <% end %>
-          <% end %>          
-        </div>
+        <% end %>
+      </div>
+      <div class="tab-content" id="tab-2">
+        <% if @overdue.present? %>
+          <% @overdue.each do |h| %>
+            <a href="" data-lightbox="gallery-3" class="filtr-item default-link" title="<%= h['title'] %>" data-category="3" >
+            <div class="align-self-center">
+                <h5 class=""><%= h['startTime'].to_date.strftime("%B %d, %Y")%></h5>
+                <p class="font-600 opacity-40"> per service</p>
+            </div>
+            <div class="align-self-center">
+            </div>
+            <div class="align-self-center">
+                <span class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Book Now</span>
+            </div>
+          </a>
+          <% end %>
+        <% end %>     
+      </div>
     </div>
   </div>
 <% else %>
-<div class="page-content header-clear-medium">
+  <div class="page-content header-clear-medium">
         
         <div class="card card-style">
             
@@ -93,5 +106,5 @@
             
             <div class="divider mt-4 mb-0"></div>
         </div>
-    </div>
+  </div>
 <% end %>
