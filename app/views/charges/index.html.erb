@@ -59,8 +59,8 @@
                   </p>
               </div>
               <div class="align-self-center ml-auto text-right">
-                <h2 class="mb-n1 font-18 color-green2-dark">NET: <%= number_to_currency(h['sellerAmount'] * 0.01) %></h2>
-                <h2 class="mb-n1 font-18 color-red2-dark">FEE: <%= number_to_currency(h['fee'] * 0.01) %></h2>
+                <h2 class="mb-n1 font-18 color-green2-dark">NET: <%= number_to_currency(h['sellerAmount'].to_i * 0.01) %></h2>
+                <h2 class="mb-n1 font-18 color-red2-dark">FEE: <%= number_to_currency(h['fee'].to_i * 0.01) %></h2>
                 <p class="font-12 opacity-50">
                 <%= h['date'].to_date.strftime("%B %d, %Y") %>
                 
@@ -72,7 +72,7 @@
                   <h1 class="mb-n2 font-16"><%= h['title'] ? h['title'].titleize : "Invoice" %></h1>
                   #<%= h['stripeChargeID'].split("ch_")[1] %>
                   <div class="align-self-center ml-auto text-right">
-                      <h2 class="mb-n1 font-18 color-green2-dark"><%= number_to_currency(h['amount'] * 0.01) %></h2>
+                      <h2 class="mb-n1 font-18 color-green2-dark"><%= number_to_currency(h['amount'].to_i * 0.01) %></h2>
                       <p class="font-12 opacity-50">
                       <%= h['date'].to_date.strftime("%B %d, %Y") %>
                       
