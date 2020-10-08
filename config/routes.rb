@@ -21,6 +21,7 @@ Rails.application.routes.draw do
 		post "acceptRequest", to: 'schedule#acceptRequest', as: "acceptRequest"
 		
 		
+		get "initiateCharge", to: 'charges#initiateCharge', as: "getinitiateCharge"
 		get "destroy", to: 'services#destroy', as: "destroyService"
 		get "profile", to: 'home#profile', as: "profile"
 		get "authenticateAPI", to: 'home#authenticateAPI', as: "authenticateAPI"

@@ -15,6 +15,7 @@ class ServicesController < ApplicationController
 			# debugger
 			@residential = response['residential']
 			@business = response['business']
+			
 		else
 			flash[:alert] = "Trouble connecting. Try again later."
 			redirect_to new_user_session_path

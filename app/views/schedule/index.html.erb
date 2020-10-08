@@ -55,59 +55,28 @@
                           <div class="align-self-center">
                           </div>
                           <br>
-                          <% if current_user.manager? && h['buyerApproved?'] %>
+                          <% if current_user.manager? %>
                             <div class="row">
-                              <div class="col-4">
-                                <%= form_for :accept, url: acceptRequest_path do |f| %>
-                                  <%= f.hidden_field :uuid, value: h['uuid'] %>
-                                  <%= button_tag( :class => "col-12 btn btn-sm rounded-sm bg-green1-dark text-uppercase font-800") do %><i class="fa fa-check"></i>
-                                  <% end %>
-                                <% end %>
-                              </div>
-                              <div class="col-4">
+                              <div class="col-12">
                                 <%= form_for :cancel, url: cancel_path do |f| %>
                                   <%= f.hidden_field :uuid, value: h['uuid'] %>
-                                  <%= button_tag( :class => "col-12 btn btn-sm rounded-sm bg-magenta1-dark text-uppercase font-800") do %><i class="fa fa-clock"></i>
-                                  <% end %>
-                                <% end %>
-                              </div>
-                              <div class="col-4">
-                                <%= form_for :cancel, url: cancel_path do |f| %>
-                                  <%= f.hidden_field :uuid, value: h['uuid'] %>
-                                  <%= button_tag( :class => "col-12 btn btn-sm rounded-sm bg-red1-dark text-uppercase font-800") do %><i class="fa fa-close"></i>
+                                  <%= button_tag( :class => "col-12 btn btn-sm rounded-sm bg-red1-dark text-uppercase font-800") do %>
+                                  Cancel
+                                  <!-- Cancel <i class="fa fa-close"></i> -->
                                   <% end %>
 
                                 <% end %>
                               </div>
                             </div>
-                            <% if h['service?'] %>
-                              <div class="align-self-center">
-                                <a href="<%= edit_service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Edit Service</a>
-                              </div>
-                            <% end %>
-                            <% if h['product?'] %>
-                              <div class="align-self-center">
-                                <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Edit Product</a>
-                              </div>
-                            <% end %>
                           <% else %>
-                            <div class="align-self-center">
-                            <%= form_for :cancel, url: cancel_path do |f| %>
-                              <%= f.hidden_field :uuid, value: h['uuid'] %>
-                              <%= f.submit "Cancel", class: "btn btn-sm col-md-12 rounded-sm bg-red1-dark text-uppercase font-800"%>
-                            <% end %>
+                            <div class="row">
+                              <div class="col-md-12 align-self-center">
+                                <%= form_for :cancel, url: cancel_path do |f| %>
+                                  <%= f.hidden_field :uuid, value: h['uuid'] %>
+                                  <%= f.submit "Cancel", class: "btn btn-sm col-md-6 rounded-sm bg-red1-dark text-uppercase font-800"%>
+                                <% end %>
+                              </div>
                             </div>
-                            <br>
-                            <% if h['service?'] %>
-                              <div class="align-self-center">
-                                <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">View Service</a>
-                              </div>
-                            <% end %>
-                            <% if h['product?'] %>
-                              <div class="align-self-center">
-                                <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">View Product</a>
-                              </div>
-                            <% end %>
                           <% end %>
                           
                     </div>
@@ -163,27 +132,23 @@
                                 <% end %>
                               </div>
                             </div>
-                            <div class="align-self-center">
-                              <a href="<%= edit_service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Edit Service</a>
-                            </div>
                           <% else %>
-                            <div class="align-self-center">
-                            <%= form_for :cancel, url: cancel_path do |f| %>
-                              <%= f.hidden_field :uuid, value: h['uuid'] %>
-                              <%= f.submit "Cancel", class: "btn btn-sm col-md-12 rounded-sm bg-red1-dark text-uppercase font-800"%>
-                            <% end %>
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="align-self-center">
+                                  <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">View Service</a>
+                                </div>
+                                <br>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="align-self-center">
+                                  <%= form_for :cancel, url: cancel_path do |f| %>
+                                    <%= f.hidden_field :uuid, value: h['uuid'] %>
+                                    <%= f.submit "Cancel", class: "btn btn-sm col-md-12 rounded-sm bg-red1-dark text-uppercase font-800"%>
+                                  <% end %>
+                                </div>
+                              </div>
                             </div>
-                            <br>
-                            <% if h['service?'] %>
-                              <div class="align-self-center">
-                                <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">View Service</a>
-                              </div>
-                            <% end %>
-                            <% if h['product?'] %>
-                              <div class="align-self-center">
-                                <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">View Product</a>
-                              </div>
-                            <% end %>
                           <% end %>
                           
                     </div>
@@ -201,7 +166,7 @@
                     <div class="">
                       <div class="align-self-center">
                           <h5 class=""><%= h['title'] %> (<%= h['remaining']%>)</h5>
-                          <p class="font-600 opacity-40"><%= number_to_currency(h['amount'] * 0.01, precision: 2) %> per service</p>
+                          <p class="font-600 opacity-40"><%= h['description']%></p>
                       </div>
                       <div class="align-self-center">
                         <a href="<%= new_book_it_path(timeBought: h) %>" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">Request</a>

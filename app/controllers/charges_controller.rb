@@ -43,16 +43,18 @@ class ChargesController < ApplicationController
 	end
 
 	def initiateCharge
-		uuid = params[:initiateCharge][:customerID]
-		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "" -X GET #{SITEurl}/v1/users/#{uuid}`
-			
-    response = Oj.load(curlCall)
-    
-    if !response.blank? && response['success']
-			redirect_to new_charge_path(customerUUID: uuid)
-		else
-			flash[:error] = response['message']
-			redirect_to charges_path
+		if request.post?
+			uuid = params[:initiateCharge][:customerID]
+			curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "" -X GET #{SITEurl}/v1/users/#{uuid}`
+				
+	    response = Oj.load(curlCall)
+	    
+	    if !response.blank? && response['success']
+				redirect_to getinitiateCharge_path(customerUUID: uuid)
+			else
+				flash[:error] = response['message']
+				redirect_to charges_path
+			end
 		end
 	end
 
@@ -61,8 +63,9 @@ class ChargesController < ApplicationController
 		customer = params[:newInvoice][:customer]
 		amount = params[:newInvoice][:amount]
 		desc = params[:newInvoice][:desc]
+		title = params[:newInvoice][:title]
     
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "customer=#{customer}&desc=#{desc}&managerInvoice=true&amount=#{amount}" -X POST #{SITEurl}/v1/stripe-charges`
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "customer=#{customer}&title=#{title}&desc=#{desc}&managerInvoice=true&amount=#{amount}" -X POST #{SITEurl}/v1/stripe-charges`
 
 		response = Oj.load(curlCall)
 
