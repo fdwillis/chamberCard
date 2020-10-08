@@ -24,9 +24,6 @@ class HomeController < ApplicationController
 						@email = callCurl['stripeCustomer']['individual']['email']
 					end
 				end
-			else
-				reset_session
-				redirect_to services_path
 			end
 		else
 			reset_session
