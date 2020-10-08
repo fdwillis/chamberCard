@@ -8,6 +8,7 @@ class ChargesController < ApplicationController
 	    if !response.blank? && response['success']
 				@payments = response['payments']
 				@overdue = response['overdue']
+				
 			elsif response['message'] == "No purchases found"
 				@message = response['message']
 			else
@@ -39,5 +40,57 @@ class ChargesController < ApplicationController
       redirect_to service_path(id: timeSlot)
     end
 
+	end
+
+	def initiateCharge
+		uuid = params[:initiateCharge][:customerID]
+		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "" -X GET #{SITEurl}/v1/users/#{uuid}`
+			
+    response = Oj.load(curlCall)
+    
+    if !response.blank? && response['success']
+			redirect_to new_charge_path(customerUUID: uuid)
+		else
+			flash[:error] = response['message']
+			redirect_to charges_path
+		end
+	end
+
+
+	def newInvoice
+		customer = params[:newInvoice][:customer]
+		amount = params[:newInvoice][:amount]
+		desc = params[:newInvoice][:desc]
+    
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "customer=#{customer}&desc=#{desc}&managerInvoice=true&amount=#{amount}" -X POST #{SITEurl}/v1/stripe-charges`
+
+		response = Oj.load(curlCall)
+
+    if !response.blank? && response['success']
+			flash[:notice] = "Invoice Created"
+			
+      redirect_to charges_path
+    else
+			flash[:error] = response['message']
+      redirect_to charges_path
+    end
+	end
+
+	def acceptInvoice
+		charge = params[:stripeChargeID]
+		
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X PATCH #{SITEurl}/v1/stripe-charges/#{charge}`
+
+		response = Oj.load(curlCall)
+
+    if !response.blank? && response['success']
+			flash[:notice] = "Invoice Paid"
+			
+      redirect_to charges_path
+    else
+			flash[:error] = response['message']
+      redirect_to charges_path
+    end
+		
 	end
 end

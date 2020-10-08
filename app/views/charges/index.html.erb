@@ -13,6 +13,24 @@
       </p>
     </div>
   </div>
+  <% if current_user&.manager? && current_user&.stripeSourceVerified %>
+    <div class="card card-style bg-theme pb-0">
+      <div class="content">
+        <h3>New Invoice</h3>
+        <p class="mb-5">Enter the client ID to begin a new invoice.  The client ID can be found by the client on the first section of their profile page. </p>
+
+        <%= form_for :initiateCharge, url: initiateCharge_path do |f| %>
+          <div class="input-style has-icon input-style-2 input-required pb-1">
+              <i class="input-icon fa fa-user color-theme"></i>
+              <span class="color-highlight input-style-1-active">Customer ID</span>
+              <em>(required)</em>
+              <%= f.text_field :customerID, placeholder: SecureRandom.uuid[0..7], required: true %>
+          </div> 
+          <%= f.submit "Begin", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 
   <div class="card card-style bg-theme pb-0 text-center">
     <div class="content">
@@ -22,16 +40,17 @@
           <a href="#" data-tab-active data-tab="tab-2"><i class="fa fa-sync"></i> Invoices</a>
       </div>
       <div class="clearfix mb-3"></div>
+
       
       <div class="tab-content" id="tab-1">
         <% if @payments.present? %>
           <% @payments.each do |h| %>
             <% if current_user.manager? %>
               <div class="align-self-center">
-                  <h1 class="mb-n2 font-16"><%= h['title'].titleize %></h1>
+                  <h1 class="mb-n2 font-16"><%= h['title'] ? h['title'].titleize : "Invoice" %></h1>
                   <p class="font-11 opacity-60">
                     <br>
-                    Customer: <%= h['buyerName'].titleize %>
+                    Customer: <%= h['buyerName'].titleize %>#<%= h['buyerUUID'] %>
                     <br>
                     Phone: <a href="tel:<%= h['buyerPhone'] %>"><%= h['buyerPhone'] %></a>
                     <br>
@@ -44,7 +63,7 @@
               </div>
             <% else %>
               <div class="align-self-center">
-                  <h1 class="mb-n2 font-16"><%= h['title'].titleize %></h1>
+                  <h1 class="mb-n2 font-16"><%= h['title'] ? h['title'].titleize : "Invoice" %></h1>
                   <div class="align-self-center ml-auto text-right">
                       <h2 class="mb-n1 font-18 color-green2-dark"><%= number_to_currency(h['amount'] * 0.01) %></h2>
                       <p class="font-12 opacity-50">
@@ -61,17 +80,21 @@
       <div class="tab-content" id="tab-2">
         <% if @overdue.present? %>
           <% @overdue.each do |h| %>
-            <a href="" data-lightbox="gallery-3" class="filtr-item default-link" title="<%= h['title'] %>" data-category="3" >
-            <div class="align-self-center">
-                <h5 class=""><%= h['startTime'].to_date.strftime("%B %d, %Y")%></h5>
-                <p class="font-600 opacity-40"> per service</p>
-            </div>
-            <div class="align-self-center">
-            </div>
-            <div class="align-self-center">
-                <span class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">Book Now</span>
-            </div>
-          </a>
+          <div class="align-self-center">
+              <div class="align-self-center ml-auto text-right">
+                  <h2 class="mb-n1 font-18 color-green2-dark"><%= number_to_currency(h['amount'] * 0.01) %></h2>
+                  <% if !current_user&.manager? %>
+                    <%= form_for :acceptInvoice, url: acceptInvoice_path(stripeChargeID: h['stripeChargeID']) do |f| %>
+                      <%= f.submit "Pay Invoice",class: "btn btn-sm col-md-12 rounded-sm bg-blue2-dark text-uppercase font-800" %>
+                    <% end %>
+                  <% else %>
+                    <span class="btn btn-sm col-md-12 rounded-sm border-yellow1-dark text-uppercase font-800">PENDING</span>
+                  <% end %>
+                  <p class="font-12 opacity-50">
+                  Created: <%= h['date'].to_date.strftime("%B %d, %Y") %><br>
+                  </p>
+              </div>
+          </div>
           <% end %>
         <% end %>     
       </div>

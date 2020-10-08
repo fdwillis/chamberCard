@@ -1,19 +1,24 @@
 <div class="card card-style">
   <div class="content mb-0">
-    <h2>Purchase: <%= @title.titleize %></h2>
+    <h2>New Invoice: <%= params[:customerUUID] %></h2>
     <p class="mb-5"><%= @desc %></p>
-		<%= form_for :newCharge, url: charges_path do |f| %>
+		<%= form_for :newInvoice, url: newInvoice_path do |f| %>
 
 			<div class="row mb-0">
-          <div class="col-4">
-              <div class="input-style input-style-2">
-                  <span class="input-style-1-active">Qty</span>
-                  <%= f.number_field :quantity, style: "border-width:1px;", placeholder: '0', required: true %>
-                  <%= f.hidden_field :uuid, value: @uuid %>
-                  <%= f.hidden_field :desc, value: @desc %>
-              </div>
-          </div>
-          <div class="col-8">
+          <div class="col-12">
+            <div class="input-style input-style-2">
+                <span class="input-style-1-active">Customer</span>
+                <%= f.text_field :customer, value: params[:customerUUID]  %>
+            </div>
+            <div class="input-style input-style-2">
+                <span class="input-style-1-active">Amount</span>
+                <%= f.number_field :amount, placeholder: "20.45", class: "form-control", required: true, :step => "0.01" %>
+            </div>
+            <div class="input-style input-style-1 has-icon input-required">
+                <span class="color-highlight input-style-1-active">Description</span>
+                <em>(required)</em>
+                <%= f.text_area :desc, placeholder: "Description", class: "form-control", required: true, size: '100' %>
+            </div> 
             <div class="input-style input-style-2">
 						  <%= f.submit "Purchase", class: "btn btn-full bg-green1-dark text-uppercase rounded-sm font-900"%>
 	          </div>

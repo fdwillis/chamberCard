@@ -13,11 +13,15 @@ Rails.application.routes.draw do
 		resources :stripe_tokens, :path => '/stripe-tokens'
 		resources :book_it, :path => '/book-it'
 		
+		post "bookingRequest", to: 'book_it#bookingRequest', as: "bookingRequest"
+		post "initiateCharge", to: 'charges#initiateCharge', as: "initiateCharge"
+		post "newInvoice", to: 'charges#newInvoice', as: "newInvoice"
+		post "acceptInvoice", to: 'charges#acceptInvoice', as: "acceptInvoice"
 		post "cancel", to: 'schedule#cancel', as: "cancel"
 		post "acceptRequest", to: 'schedule#acceptRequest', as: "acceptRequest"
-		post "bookingRequest", to: 'book_it#bookingRequest', as: "bookingRequest"
-		get "destroy", to: 'services#destroy', as: "destroyService"
 		
+		
+		get "destroy", to: 'services#destroy', as: "destroyService"
 		get "profile", to: 'home#profile', as: "profile"
 		get "authenticateAPI", to: 'home#authenticateAPI', as: "authenticateAPI"
 
