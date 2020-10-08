@@ -27,10 +27,20 @@ class ServicesController < ApplicationController
 		response = Oj.load(curlCall)
 		
 		if !response.blank? && response['success']
-			@slot = response['timeSlot']
+			if response['timeSlot'] ? true : false
+				@slot = response['timeSlot']
+				respond_to do |format|
+				  format.js {render inline: "location.reload();" }
+				end
+			else
+				flash[:alert] = "Service not found"
+				redirect_to services_path
+			end
 		else
 			flash[:alert] = "Trouble connecting. Try again later."
+			redirect_to services_path
 		end
+
 	end
 
 	def create

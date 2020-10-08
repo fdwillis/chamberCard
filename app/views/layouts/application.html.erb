@@ -38,40 +38,7 @@
         </div>
 
 
-        <% if flash %>
-          <div class="card card-style">
-            <% if flash[:success] %>
-              <div class="alert mr-3 ml-3 rounded-s bg-green1-dark" role="alert">
-                <span class="alert-icon"><i class="fa fa-check font-18"></i></span>
-                <h4 class="text-uppercase color-white">Success</h4>
-                <strong class="alert-icon-text"><%= flash[:success] %></strong>
-                <button type="button" class="close color-white opacity-60 font-16" data-dismiss="alert" aria-label="Close">×</button>
-              </div>
-            <% elsif flash[:notice] %>
-              <div class="alert mr-3 ml-3 rounded-s bg-blue2-dark" role="alert">
-                <span class="alert-icon"><i class="fa fa-cog font-18"></i></span>
-                <h4 class="text-uppercase color-white">Notice</h4>
-                <strong class="alert-icon-text"><%= flash[:notice] %></strong>
-                <button type="button" class="close color-white opacity-60 font-16" data-dismiss="alert" aria-label="Close">×</button>
-              </div>
-            <% elsif flash[:error] %>
-              <div class="alert mr-3 ml-3 rounded-s bg-red2-dark " role="alert">
-                <span class="alert-icon"><i class="fa fa-times-circle font-18"></i></span>
-                <h4 class="text-uppercase color-white">Error</h4>
-                <strong class="alert-icon-text"><%= flash[:error] %></strong>
-                <button type="button" class="close color-white opacity-60 font-16" data-dismiss="alert" aria-label="Close">×</button>
-              </div>
-            <% elsif flash[:alert] %>
 
-              <div class="alert mr-3 ml-3 rounded-s bg-yellow1-dark" role="alert">
-                <span class="alert-icon"><i class="fa fa-exclamation-triangle font-18"></i></span>
-                <h4 class="text-uppercase color-white">Warning</h4>
-                <strong class="alert-icon-text"><%= flash[:alert] %></strong>
-                <button type="button" class="close color-white opacity-60 font-16" data-dismiss="alert" aria-label="Close">×</button>
-              </div>
-            <% end %>
-          </div>
-        <% end %>
       <div id="footer-bar" class="footer-bar-1">
         <% if request.fullpath == '/services' %>
           <a href="/services"><i class="fa fa-briefcase color-highlight"></i><span>Services</span></a>
@@ -101,6 +68,38 @@
           <!-- <a href="#" data-menu="menu-settings"><i class="fa fa-cog"></i><span>Settings</span></a> -->
       </div>
       <div class="page-content header-clear-medium">
+        <% if flash %>
+          <% if flash[:success] %>
+            <div class="alert mr-3 ml-3 rounded-s bg-green1-dark" role="alert">
+              <span class="alert-icon"><i class="fa fa-check font-18"></i></span>
+              <h4 class="text-uppercase color-white">Success</h4>
+              <strong class="alert-icon-text"><%= flash[:success] %></strong>
+              <button type="button" class="close color-white opacity-60 font-16" data-dismiss="alert" aria-label="Close">×</button>
+            </div>
+          <% elsif flash[:notice] %>
+            <div class="alert mr-3 ml-3 rounded-s bg-blue2-dark" role="alert">
+              <span class="alert-icon"><i class="fa fa-cog font-18"></i></span>
+              <h4 class="text-uppercase color-white">Notice</h4>
+              <strong class="alert-icon-text"><%= flash[:notice] %></strong>
+              <button type="button" class="close color-white opacity-60 font-16" data-dismiss="alert" aria-label="Close">×</button>
+            </div>
+          <% elsif flash[:error] %>
+            <div class="alert mr-3 ml-3 rounded-s bg-red2-dark " role="alert">
+              <span class="alert-icon"><i class="fa fa-times-circle font-18"></i></span>
+              <h4 class="text-uppercase color-white">Error</h4>
+              <strong class="alert-icon-text"><%= flash[:error] %></strong>
+              <button type="button" class="close color-white opacity-60 font-16" data-dismiss="alert" aria-label="Close">×</button>
+            </div>
+          <% elsif flash[:alert] %>
+
+            <div class="alert mr-3 ml-3 rounded-s bg-yellow1-dark" role="alert">
+              <span class="alert-icon"><i class="fa fa-exclamation-triangle font-18"></i></span>
+              <h4 class="text-uppercase color-white">Warning</h4>
+              <strong class="alert-icon-text"><%= flash[:alert] %></strong>
+              <button type="button" class="close color-white opacity-60 font-16" data-dismiss="alert" aria-label="Close">×</button>
+            </div>
+          <% end %>
+        <% end %>
         <%= yield %>
       </div>
       <!-- All Menus, Action Sheets, Modals, Notifications, Toasts, Snackbars get Placed outside the <div class="page-content"> -->

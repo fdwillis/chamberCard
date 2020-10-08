@@ -28,6 +28,8 @@ class HomeController < ApplicationController
 				reset_session
 				redirect_to services_path
 			end
+		else
+			reset_session
 		end
 	end
 end

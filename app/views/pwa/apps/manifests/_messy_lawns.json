@@ -7,7 +7,7 @@
 "lang" : "en",
 "name" : "Messy Lawns",
 "scope" : "/",
-"display" : "fullscreen",
+"display" : "standalone",
 "start_url" : "/",
 "short_name" : "Messy Lawns",
 "description" : "",
