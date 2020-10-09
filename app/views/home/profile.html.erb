@@ -71,7 +71,7 @@
         <% if current_user&.stripeSourceVerified %>
           <div class="card card-style">
             <div class="content">
-              <% @sources.each do |s| %>
+              <% @sources&.each do |s| %>
                 <% if s['object'] == 'card' %>
                   <div style="align-items: center;" class=" card card-style">
                     <% if s['brand'] == "Visa" %>
