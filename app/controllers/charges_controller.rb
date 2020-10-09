@@ -70,8 +70,8 @@ class ChargesController < ApplicationController
 		response = Oj.load(curlCall)
 
     if !response.blank? && response['success']
-			flash[:notice] = "Invoice Created"
 			
+			flash[:success] = "Invoice Created"
       redirect_to charges_path
     else
 			flash[:error] = response['message']

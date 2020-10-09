@@ -90,18 +90,25 @@
         <% if @overdue.present? %>
           <% @overdue.each do |h| %>
           <div class="align-self-center">
-              <div class="align-self-center ml-auto text-right">
+              <div class="align-self-center ml-auto text-center">
+              <h1 class="mb-n2 font-16"><%= h['title'] ? h['title'].titleize : "Invoice" %></h1>
                   <h2 class="mb-n1 font-18 color-green2-dark"><%= number_to_currency(h['amount'] * 0.01) %></h2>
+                   <p class="font-12 opacity-50">
+                    Customer: <%= h['buyerName'] %>#<%= current_user&.uuid %><br>
+                    Phone: <a href="tel:<%= h['buyerPhone'] %>"><%= h['buyerPhone'] %></a>
+                                  <br>
+
+                    Email: <a href = "mailto:<%= h['buyerEmail'] %>"><%= h['buyerEmail'] %></a>
+                    <br>
+                  </p>
                   <% if !current_user&.manager? %>
                     <%= form_for :acceptInvoice, url: acceptInvoice_path(stripeChargeID: h['stripeChargeID']) do |f| %>
                       <%= f.submit "Pay Invoice",class: "btn btn-sm col-md-12 rounded-sm bg-blue2-dark text-uppercase font-800" %>
                     <% end %>
                   <% else %>
                     <span class="btn btn-sm col-md-12 rounded-sm border-yellow1-dark text-uppercase font-800">PENDING</span>
+                    <br>
                   <% end %>
-                  <p class="font-12 opacity-50">
-                  Created: <%= h['date'].to_date.strftime("%B %d, %Y") %><br>
-                  </p>
               </div>
           </div>
           <% end %>
