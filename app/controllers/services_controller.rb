@@ -85,7 +85,7 @@ class ServicesController < ApplicationController
 				redirect_to services_path
 			else
 				flash[:alert] = response['message']
-				redirect_to new_services_path
+				redirect_to new_service_path
 			end
 		end
 	end

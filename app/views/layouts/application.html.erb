@@ -227,7 +227,7 @@
       <%= form_for :newStripeToken, url: stripe_tokens_path do |f| %>
               <div class="input-style input-style-2 has-icon input-required">
                   <i class="input-icon fa fa-user"></i>
-                  <span class="color-highlight input-style-1-active">Name</span>
+                  <span class="color-highlight input-style-1-active">Legal Name</span>
                   <em>(required)</em>
                   <%= f.text_field :name, placeholder: "Legal Name", class: "form-control", value: @name, required: true %>
               </div>
