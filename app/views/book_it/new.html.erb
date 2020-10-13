@@ -12,7 +12,12 @@
           <div class="divider mt-2 mb-3"></div>     
           
           <h5>Instructions</h5>
-          <p class="text-justify">Since you have purchased <%= @timeBought['title'].titleize %> from <%= @timeBought['sellerUsername'].titleize %>, you are able to complete your booking request below. <%= @timeBought['sellerUsername'].titleize %> will get back to you for the time and location to complete the service. Please give 3 business days for <%= @timeBought['sellerUsername'].titleize %> to respond.</p>
+          <p class="text-justify">
+            <% if !current_user&.manager? %>
+            Since you have purchased <%= @timeBought['title'].titleize %> from <%= @timeBought['sellerUsername'].titleize %>, you are able to complete your booking request below. <%= @timeBought['sellerUsername'].titleize %> will get back to you for the time and location to complete the service. Please give 3 business days for <%= @timeBought['sellerUsername'].titleize %> to respond.
+            <% else %>
+            <% end %>
+          </p>
           
           
           <!-- <a href="#" class="btn btn-m btn-full rounded-sm shadow-xl bg-highlight text-uppercase mb-3 font-900">Join Event</a> -->
