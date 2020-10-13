@@ -20,16 +20,16 @@ before_action :authenticate_user!
 	def bookingRequest
 		# 2025-05-05 00:00:00 -0500
 
-		date = "#{params[:bookIt][:yearSelect]}/#{params[:bookIt][:monthSelect]}/#{params[:bookIt][:daySelect]} #{params[:bookIt][:startHour]}:#{params[:bookIt][:startMinute]}:00"
+		date = "#{params['sunrise(1i)']}/#{params['date']['month']}/#{params['date']['day']} #{params['sunrise(4i)']}:#{params['sunrise(5i)']}:00"
 		parsedDate = DateTime.parse(date)
-
 		startTime = parsedDate
 		endTime = parsedDate + 1.hour
 		paidBy = current_user.uuid
 		stripeChargeID = params[:bookIt][:stripeChargeID]
 		timeSlot = params[:bookIt][:timeSlot]
+		address = params[:bookIt][:address]
 
-		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "appName=#{ENV['appName']}&endTime=#{endTime}&startTime=#{startTime}&timeSlot=#{timeSlot}&stripeChargeID=#{stripeChargeID}&paidBy=#{paidBy}" -X POST #{SITEurl}/v1/booking-request`
+		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "appName=#{ENV['appName']}&address=#{address}&endTime=#{endTime}&startTime=#{startTime}&timeSlot=#{timeSlot}&stripeChargeID=#{stripeChargeID}&paidBy=#{paidBy}" -X POST #{SITEurl}/v1/booking-request`
 		
 		response = Oj.load(curlCall)
 	    

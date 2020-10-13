@@ -54,18 +54,18 @@ Contact
                 <h2 class="text-center font-18 color-green2-dark"><%= h['title']%></h2>
                   <div class="text-center">
                         <div class="align-self-center text-center">
-                          <h5 class=""><%= h['buyerName'] %>#<%= h['buyerUUID'] %>
+                          <h5 class="">
+                          <%= h['buyerName'] %> #<%= h['buyerUUID'] %><br>
+                          <%= link_to h['address'], "https://www.google.com/maps/place/#{h['address'].tr(" ", "+")}", target: "_blank" %><br>
+                          
+                          Start Time: <%= h['startTime']%>
+                          </h5>
                             <p class="font-600 opacity-40 ">
                               Phone: <a href="tel:<%= h['buyerPhone'] %>"><%= h['buyerPhone'] %></a>
                               <br>
 
                               Email: <a href = "mailto:<%= h['buyerEmail'] %>"><%= h['buyerEmail'] %></a>
-                              <br>
-
-                              <%= h['date'] %><br>
-                              <%= h['startTime']%> - <%= h['endTime']%>
                             </p>
-                          </h5>
                         </div>
                         <div class="align-self-center">
                         </div>
@@ -109,18 +109,17 @@ Contact
                 <h2 class="text-center font-18 color-green2-dark"><%= h['title']%></h2>
                   <div class="">
                         <div class="align-self-center text-center">
-                          <h5 class=""><%= h['buyerName'] %>#<%= h['buyerUUID'] %>
+                          <h5 class="">
+                          <%= h['buyerName'] %> #<%= h['buyerUUID'] %><br>
+                          <%= link_to h['address'], "https://www.google.com/maps/place/#{h['address'].tr(" ", "+")}", target: "_blank" %><br>
+                          Start Time: <%= h['startTime']%>
+                          </h5>
                             <p class="font-600 opacity-40 ">
                               Phone: <a href="tel:<%= h['buyerPhone'] %>"><%= h['buyerPhone'] %></a>
                               <br>
 
                               Email: <a href = "mailto:<%= h['buyerEmail'] %>"><%= h['buyerEmail'] %></a>
-                              <br>
-
-                              <%= h['date'] %><br>
-                              <%= h['startTime']%> - <%= h['endTime']%>
                             </p>
-                          </h5>
                         </div>
                         <br>
                         <div class="align-self-center text-right">
