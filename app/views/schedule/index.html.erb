@@ -32,14 +32,14 @@ Contact
         <% if current_user&.manager? %>
           data-tab-items="2" 
            data-tab-active="bg-green1-dark color-white">
-          <a href="#" data-tab="tab-1"><i class="fa fa-calendar-check"></i> Upcoming<%= @scheduledTimes.size > 0 ? " (#{@scheduledTimes.size})" : nil %></a>
-          <a href="#" data-tab-active data-tab="tab-2"><i class="fa fa-sync"></i> Pending<%= @bookingRequests.size > 0 ? " (#{@bookingRequests.size})" : nil %></a>
+          <a href="#" data-tab="tab-1"><i class="fa fa-calendar-check"></i> Upcoming<%= !@scheduledTimes.blank? ? " (#{@scheduledTimes.size})" : nil %></a>
+          <a href="#" data-tab-active data-tab="tab-2"><i class="fa fa-sync"></i> Pending<%= !@bookingRequests.blank? ? " (#{@bookingRequests.size})" : nil %></a>
         <% else %>
             data-tab-items="3" 
              data-tab-active="bg-green1-dark color-white">
-            <a href="#" data-tab="tab-4"><i class="fa fa-briefcase"></i> Request<%= @timeBought.size > 0 ? " (#{@timeBought.size})" : nil %></a>
-            <a href="#" data-tab="tab-1"><i class="fa fa-calendar-check"></i> Upcoming<%= @scheduledTimes.size > 0 ? " (#{@scheduledTimes.size})" : nil %></a>
-            <a href="#" data-tab-active data-tab="tab-2"><i class="fa fa-sync"></i> Pending<%= @bookingRequests.size > 0 ? " (#{@bookingRequests.size})" : nil %></a>
+            <a href="#" data-tab="tab-4"><i class="fa fa-briefcase"></i> Request<%= !@timeBought.blank? ? " (#{@timeBought.size})" : nil %></a>
+            <a href="#" data-tab="tab-1"><i class="fa fa-calendar-check"></i> Upcoming<%= !@scheduledTimes.blank? ? " (#{@scheduledTimes.size})" : nil %></a>
+            <a href="#" data-tab-active data-tab="tab-2"><i class="fa fa-sync"></i> Pending<%= !@bookingRequests.blank? ? " (#{@bookingRequests.size})" : nil %></a>
 
         <% end %>
       </div>
@@ -75,7 +75,7 @@ Contact
                             <div class="col-12">
                               <%= form_for :cancel, url: cancel_path do |f| %>
                                 <%= f.hidden_field :uuid, value: h['uuid'] %>
-                                <%= button_tag( :class => "col-12 btn btn-sm rounded-sm bg-red1-dark text-uppercase font-800") do %>
+                                <%= button_tag( :class => "col-12 btn btn-sm rounded-sm bg-gray3-dark text-uppercase font-800") do %>
                                 Cancel
                                 <!-- Cancel <i class="fa fa-close"></i> -->
                                 <% end %>
@@ -88,7 +88,7 @@ Contact
                             <div class="col-md-12 align-self-center">
                               <%= form_for :cancel, url: cancel_path do |f| %>
                                 <%= f.hidden_field :uuid, value: h['uuid'] %>
-                                <%= f.submit "Cancel", class: "btn btn-sm col-md-6 rounded-sm bg-red1-dark text-uppercase font-800"%>
+                                <%= f.submit "Cancel", class: "btn btn-sm col-md-6 rounded-sm bg-gray3-dark text-uppercase font-800"%>
                               <% end %>
                             </div>
                           </div>
@@ -140,7 +140,7 @@ Contact
                             <div class="col-6">
                               <%= form_for :cancel, url: cancel_path do |f| %>
                                 <%= f.hidden_field :uuid, value: h['uuid'] %>
-                                <%= button_tag( :class => "col-12 btn btn-sm rounded-sm bg-red1-dark text-uppercase font-800") do %><i class="fa fa-close"></i>
+                                <%= button_tag( :class => "col-12 btn btn-sm rounded-sm bg-gray3-dark text-uppercase font-800") do %><i class="fa fa-close"></i>
                                 <% end %>
 
                               <% end %>
@@ -150,7 +150,7 @@ Contact
                           <div class="row">
                             <div class="col-md-6">
                               <div class="align-self-center">
-                                <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-blue1-dark text-uppercase font-800">View Service</a>
+                                <a href="<%= service_path(id: h['timeSlotUUID']) %>" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">View Service</a>
                               </div>
                               <br>
                             </div>
@@ -158,7 +158,7 @@ Contact
                               <div class="align-self-center">
                                 <%= form_for :cancel, url: cancel_path do |f| %>
                                   <%= f.hidden_field :uuid, value: h['uuid'] %>
-                                  <%= f.submit "Cancel", class: "btn btn-sm col-md-12 rounded-sm bg-red1-dark text-uppercase font-800"%>
+                                  <%= f.submit "Cancel", class: "btn btn-sm col-md-12 rounded-sm bg-gray3-dark text-uppercase font-800"%>
                                 <% end %>
                               </div>
                             </div>

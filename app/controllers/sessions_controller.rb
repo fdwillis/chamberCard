@@ -21,7 +21,6 @@ class SessionsController < Devise::SessionsController
   	
     if !response.blank? && response['success']
       response2 = resource.updateUserAPI
-      debugger
       flash[:success] = "Welcome"
     else
       flash[:alert] = "Trouble Connecting. Some data will not display."

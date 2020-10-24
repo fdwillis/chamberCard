@@ -13,7 +13,7 @@
           <div class="input-style input-style-2 has-icon input-required">
             <span class="color-highlight input-style-1-active">Address</span>
             <em>(required)</em>
-            <%= f.text_field :address, placeholder: "Address where services will be provided", class: "form-control", required: true %>
+            <%= f.text_field :address, placeholder: "Where will services be provided?", class: "form-control", required: true %>
             <%= f.hidden_field :appName, value: ENV['appName'] %>
           </div>
           <div class="input-style input-style-2 has-icon input-required">
@@ -36,7 +36,7 @@
             </select>
           </div>
           <div class="input-style input-style-2 has-icon input-required">
-            <span class="color-highlight input-style-1-active">Starting Time</span>
+            <span class="color-highlight input-style-1-active">Start Time</span>
             <%= time_select(nil, "sunrise", ampm: true) %>
           </div>
           <%= f.hidden_field :timeSlot, value: @timeBought['timeSlotUUID'] %>
