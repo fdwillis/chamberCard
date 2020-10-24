@@ -1,12 +1,13 @@
 class SessionsController < Devise::SessionsController
   after_action :after_login, :only => :create
-  before_action :before_logout, :only => :destroy
+  before_action :after_logout, :only => :destroy
   # before_action :after_login, :only => :create
   
 
-  def before_logout
+  def after_logout
     logoutAtt = current_user.deleteUserSessionAPI
     if logoutAtt['success']
+      current_user = nil
       reset_session
       flash[:success] = "See ya later"
     else
@@ -19,6 +20,8 @@ class SessionsController < Devise::SessionsController
     response = resource.createUserSessionAPI(params[:user][:password])
   	
     if !response.blank? && response['success']
+      response2 = resource.updateUserAPI
+      debugger
       flash[:success] = "Welcome"
     else
       flash[:alert] = "Trouble Connecting. Some data will not display."
