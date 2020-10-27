@@ -69,34 +69,33 @@
       </div>
       <div class="page-content header-clear-medium">
         <% if flash[:success] %>
-          <div class="alert mr-3 ml-3 rounded-s bg-green1-dark" role="alert">
-            <span class="alert-icon"><i class="fa fa-check font-18"></i></span>
-            <h4 class="text-uppercase color-white">Success</h4>
-            <strong class="alert-icon-text"><%= flash[:success] %></strong>
-            <button type="button" class="close color-white opacity-60 font-16" data-dismiss="alert" aria-label="Close">×</button>
-          </div>
+          <div id="toast-2" class="toast toast-tiny toast-top bg-green1-dark fade" data-delay="3000" data-autohide="true"><i class="fa fa-info mr-3"></i><%= flash[:success] %></div>
+          <script type="text/javascript">
+            setTimeout(function(){
+                $('#toast-2').toast('show');;
+            }, 100);
+          </script>
         <% elsif flash[:notice] %>
-          <div class="alert mr-3 ml-3 rounded-s bg-blue2-dark" role="alert">
-            <span class="alert-icon"><i class="fa fa-cog font-18"></i></span>
-            <h4 class="text-uppercase color-white">Notice</h4>
-            <strong class="alert-icon-text"><%= flash[:notice] %></strong>
-            <button type="button" class="close color-white opacity-60 font-16" data-dismiss="alert" aria-label="Close">×</button>
-          </div>
+          <div id="toast-3" class="toast toast-tiny toast-top bg-blue2-dark fade" data-delay="3000" data-autohide="true"><i class="fa fa-info mr-3"></i><%= flash[:notice] %></div>
+          <script type="text/javascript">
+            setTimeout(function(){
+                $('#toast-3').toast('show');;
+            }, 100);
+          </script>
         <% elsif flash[:error] %>
-          <div class="alert mr-3 ml-3 rounded-s bg-red2-dark " role="alert">
-            <span class="alert-icon"><i class="fa fa-times-circle font-18"></i></span>
-            <h4 class="text-uppercase color-white">Error</h4>
-            <strong class="alert-icon-text"><%= flash[:error] %></strong>
-            <button type="button" class="close color-white opacity-60 font-16" data-dismiss="alert" aria-label="Close">×</button>
-          </div>
+          <div id="toast-32" class="toast toast-tiny toast-top bg-red2-dark fade" data-delay="3000" data-autohide="true"><i class="fa fa-info mr-3"></i><%= flash[:error] %></div>
+          <script type="text/javascript">
+            setTimeout(function(){
+                $('#toast-32').toast('show');;
+            }, 100);
+          </script>
         <% elsif flash[:alert] %>
-
-          <div class="alert mr-3 ml-3 rounded-s bg-yellow1-dark" role="alert">
-            <span class="alert-icon"><i class="fa fa-exclamation-triangle font-18"></i></span>
-            <h4 class="text-uppercase color-white">Warning</h4>
-            <strong class="alert-icon-text"><%= flash[:alert] %></strong>
-            <button type="button" class="close color-white opacity-60 font-16" data-dismiss="alert" aria-label="Close">×</button>
-          </div>
+          <div id="toast-344" class="toast toast-tiny toast-top bg-yellow1-dark fade" data-delay="3000" data-autohide="true"><i class="fa fa-info mr-3"></i><%= flash[:alert] %></div>
+          <script type="text/javascript">
+            setTimeout(function(){
+                $('#toast-344').toast('show');;
+            }, 100);
+          </script>
         <% end %>
         <%= yield %>
       </div>

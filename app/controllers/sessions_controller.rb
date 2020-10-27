@@ -11,8 +11,9 @@ class SessionsController < Devise::SessionsController
       reset_session
       flash[:success] = "See ya later"
     else
+      current_user = nil
+      reset_session
       flash[:alert] = "You've been signed out"
-      current_user.update_attributes(authentication_token: nil )
     end
   end
 
