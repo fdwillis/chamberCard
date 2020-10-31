@@ -102,19 +102,19 @@ p {
 }
 
 .theme-light .header .header-logo {
-  background-image: url(/assets/preload-logo.png);
+  background-image: url(/assets/messypart.png);
 }
 
 .theme-dark .header .header-logo {
-  background-image: url(/assets/preload-logo.png);
+  background-image: url(/assets/messypart.png);
 }
 
 .theme-light .footer .footer-logo {
-  background-image: url(/assets/preload-logo.png);
+  background-image: url(/assets/messypart.png);
 }
 
 .theme-dark .footer .footer-logo {
-  background-image: url(/assets/preload-logo.png);
+  background-image: url(/assets/messypart.png);
 }
 
 /*--Header---*/
