@@ -102,19 +102,19 @@ p {
 }
 
 .theme-light .header .header-logo {
-  background-image: url(/assets/messypart.png);
+  background-image: url(/assets/greenmessy.png);
 }
 
 .theme-dark .header .header-logo {
-  background-image: url(/assets/messypart.png);
+  background-image: url(/assets/greenmessy.png);
 }
 
 .theme-light .footer .footer-logo {
-  background-image: url(/assets/messypart.png);
+  background-image: url(/assets/greenmessy.png);
 }
 
 .theme-dark .footer .footer-logo {
-  background-image: url(/assets/messypart.png);
+  background-image: url(/assets/greenmessy.png);
 }
 
 /*--Header---*/
