@@ -58,6 +58,7 @@ Contact
                           <%= h['buyerName'] %> #<%= h['buyerUUID'] %><br>
                           <%= link_to h['address'], "https://www.google.com/maps/place/#{h['address'].tr(" ", "+")}", target: "_blank" %><br>
                           
+                          Date: <%= h['date']%><br>
                           Start Time: <%= h['startTime']%>
                           </h5>
                             <p class="font-600 opacity-40 ">
@@ -112,6 +113,7 @@ Contact
                           <h5 class="">
                           <%= h['buyerName'] %> #<%= h['buyerUUID'] %><br>
                           <%= link_to h['address'], "https://www.google.com/maps/place/#{h['address'].tr(" ", "+")}", target: "_blank" %><br>
+                          Date: <%= h['date']%><br>
                           Start Time: <%= h['startTime']%>
                           </h5>
                             <p class="font-600 opacity-40 ">
