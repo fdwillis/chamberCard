@@ -3599,6 +3599,7 @@ code {
   top: calc(65px + (constant(safe-area-inset-bottom))*1.1) !important;
   top: calc(65px + (env(safe-area-inset-bottom))*1.1) !important;
   transform: translate(-50%, -60px);
+  width: 80%;
 }
 
 .toast-top.toast-tiny.show {
