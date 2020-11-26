@@ -15,44 +15,18 @@
       <div class="tab-controls tabs-round tab-animated tabs-medium tabs-rounded shadow-xl" 
            data-tab-items="2" 
            data-tab-active="bg-green1-dark color-white">
-          <a href="#" data-tab-active data-tab="tab-8"><i class="fa fa-home"></i> Residential<%= @residential ? " (#{@residential.size})" : nil %></a>
-          <a href="#" data-tab="tab-9"><i class="fa fa-building"></i> Business<%= @business ? " (#{@business.size})" : nil %></a>
+          <a href="#" data-tab-active data-tab="tab-8"><i class="fa fa-home"></i> Active<%= @activeProducts ? " (#{@activeProducts.size})" : nil %></a>
+          <a href="#" data-tab="tab-9"><i class="fa fa-building"></i> Unavailable<%= @unavailableProducts ? " (#{@unavailableProducts.size})" : nil %></a>
       </div>
       <div class="clearfix mb-3"></div>
       <div class="tab-content" id="tab-8">
         <div class="card card-style">
-          <% if @residential.present? %>
-            <% @residential.each do |h| %>
-              
+          <% if @activeProducts.present? %>
+            <% @activeProducts.each do |h| %>
               <div class="content mb-3">
-                  <div class="align-self-center">
-                      <h5 class=""><%= h['title'] %></h5>
-                      <p class="font-600 opacity-40"><%= number_to_currency(h['cost'], precision: 2) %></p>
-                  </div>
-                  <% if current_user&.stripeSourceVerified && !current_user&.manager? %>
-                    <div class="align-self-center">
-                        <a href="<%= new_charge_path(title: h['title'], desc: h['desc'], uuid: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">PURCHASE</a>
-                    </div>
-                  <% end %>
-                  <br>
-                  <% if current_user&.manager? && current_user&.username == h['sellerUsername'] %>
-                    <div class="row">
-                      <div class="align-self-center col-4">
-
-                        <a href="<%= service_path(id: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-orange-dark text-uppercase font-800"><i class="fa fa-eye"></i></a>
-                      </div>
-                      <div class="align-self-center col-4">
-                        <a href="<%= edit_service_path(id: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800"><i class="fa fa-pencil"></i></a>
-                      </div>
-                      <div class="align-self-center col-4">
-                        <a href="<%= destroyService_path(id: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-gray3-dark text-uppercase font-800"><i class="fa fa-close"></i></a>
-                      </div>
-                    </div>
-                  <% else %>
-                    <div class="align-self-center">
-                      <a href="<%= service_path(id: h['uuid'], desc: h['desc']) %>" class="btn btn-sm col-md-12 rounded-sm bg-gray3-dark text-uppercase font-800">View Service</a>
-                    </div>
-                  <% end %>
+                <div class="align-self-center">
+                  <h5 class=""><%= h['name'] %></h5>
+                </div>
               </div>
             <% end %>
           <% end %>
@@ -60,42 +34,17 @@
       </div>
       <div class="tab-content" id="tab-9">
         <div class="card card-style">
-          <% if @business.present? %>
-            <% @business.each do |h| %>
-              
+          <% if @unavailableProducts.present? %>
+            <% @unavailableProducts.each do |h| %>
               <div class="content mb-3">
-                  <div class="align-self-center">
-                      <h5 class=""><%= h['title'] %></h5>
-                      <p class="font-600 opacity-40"><%= number_to_currency(h['cost'], precision: 2) %></p>
-                  </div>
-                  <% if current_user&.stripeSourceVerified && current_user&.username != h['sellerUsername'] %>
-                    <div class="align-self-center">
-                        <a href="<%= new_charge_path(title: h['title'], desc: h['desc'], uuid: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800">PURCHASE</a>
-                    </div>
-                  <% end %>
-                  <br>
-                  <% if current_user&.username == h['sellerUsername'] %>
-                    <div class="row">
-                      <div class="align-self-center col-4">
-
-                        <a href="<%= service_path(id: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-orange-dark text-uppercase font-800"><i class="fa fa-eye"></i></a>
-                      </div>
-                      <div class="align-self-center col-4">
-                        <a href="<%= edit_service_path(id: h['uuid']) %>" class="btn btn-sm col-md-12 rounded-sm bg-green1-dark text-uppercase font-800"><i class="fa fa-pencil"></i></a>
-                      </div>
-                      <div class="align-self-center col-4">
-                        <a href="<%= destroyService_path(id: h['uuid']) %>" method="DELETE" class="btn btn-sm col-md-12 rounded-sm bg-gray3-dark text-uppercase font-800"><i class="fa fa-close"></i></a>
-                      </div>
-                    </div>
-                  <% else %>
-                    <div class="align-self-center">
-                      <a href="<%= service_path(id: h['uuid'], desc: h['desc']) %>" class="btn btn-sm col-md-12 rounded-sm bg-gray3-dark text-uppercase font-800">View Service</a>
-                    </div>
-                  <% end %>
+                <div class="align-self-center">
+                  <h5 class=""><%= h['name'] %></h5>
+                </div>
               </div>
             <% end %>
-          <% end %>           
+          <% end %>
         </div>
       </div>
+      
   </div>
 </div>

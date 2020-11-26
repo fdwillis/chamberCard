@@ -12,6 +12,24 @@ class ServicesController < ApplicationController
 
     if !response.blank? && response['success']
 			@products = response['products']['data']
+
+			@activeProducts = []
+			@unavailableProducts = []
+
+			@products.each do |product|
+				if product['active'] == true
+					@activeProducts << product
+				else
+					@unavailableProducts << product
+				end
+			end
+
+=begin
+
+seperate products by available and not available
+seperate pricing by resident / business
+
+=end
 		else
 			flash[:alert] = "Trouble connecting. Try again later."
 			redirect_to new_user_session_path

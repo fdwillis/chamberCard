@@ -15,7 +15,7 @@
       <br>
       <br>
       <br>
-			<div class="d-flex">
+      <div class="d-flex">
           <div class="pt-1">
               <h5 data-activate="toggle-id-2" class="font-600"><strong><em>Available Now</em></strong></h5>
           </div>
@@ -28,11 +28,16 @@
               </div>
           </div>
       </div>
-
+      <div data-switch="toggle-id-2" class="switch-is-unchecked" style="display: none;">
+          <p class="mb-0 pb-0 pt-2">This will be available for purchase immediately after adding a price for the first time.</p>
+      </div>
+			
 
 
 	    <%= f.hidden_field :type, value: 'service' %>
-
+	    <br>
+	    <br>
+	    <br>
 		  <%= f.submit "Add Service", class: "btn btn-full bg-yellow1-dark btn-m text-uppercase rounded-sm shadow-l col-12 mb-3 mt-4 font-900"%>
 
 		<% end %>
