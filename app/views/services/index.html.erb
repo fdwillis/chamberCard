@@ -2,7 +2,7 @@
     <div class="content mt-3 mb-3">
       <h3>Services</h3>
       <p>
-          Services offered by Messy Lawns
+          <%= pluralize(@products.size, "service") %> offered by Messy Lawns
       </p>
     </div>
     <% if current_user&.stripeSourceVerified && current_user&.manager? %>

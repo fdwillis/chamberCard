@@ -1,32 +1,38 @@
 <div class="card card-style">
   <div class="content mb-0">
 		<%= form_for :newService, url: services_path do |f| %>
-			<div class="input-style has-icon input-style-2 input-required pb-1">
-          <span class="color-highlight input-style-1-active">Service Type</span>
-          <em>(required)</em>
-          <%= f.select :servicePackage, [['Service', 'service'], ['Package', 'package']], required: true %>
-      </div> 
-      <div class="input-style has-icon input-style-2 input-required pb-1">
-          <span class="color-highlight input-style-1-active">Customer Type</span>
-          <em>(required)</em>
-          <%= f.select :residentialBusiness, [['Residential', 'residential'],['Business', 'business']], required: true %>
-      </div> 
-			<div class="input-style input-style-2 has-icon input-required">
-			    <span class="color-highlight input-style-1-active">Title</span>
-			    <em>(required)</em>
-			    <%= f.text_field :title, placeholder: "60 minute massage", class: "form-control", required: true %>
-			    <%= f.hidden_field :appName, value: ENV['appName'] %>
-			</div>
-			<div class="input-style input-style-2 has-icon input-required">
-			    <span class="color-highlight input-style-1-active">Cost</span>
-			    <em>(required)</em>
-			    <%= f.number_field :cost, placeholder: "20.45", class: "form-control", required: true, :step => "0.01" %>
-			</div> 
+	    <%= f.hidden_field :appName, value: ENV['appName'] %>
+
 			<div class="input-style input-style-1 has-icon input-required">
-			    <span class="color-highlight input-style-1-active">Description</span>
+			    <span class="color-highlight input-style-1-active">Product Name</span>
 			    <em>(required)</em>
-			    <%= f.text_area :desc, placeholder: "Description", class: "form-control", required: true, size: '100' %>
+			    <%= f.text_field :name, class: "form-control", required: true %>
+			</div>
+			<div class="input-style has-icon">
+			    <span class="color-highlight input-style-2">Description</span>
+			    <%= f.text_area :description, class: "form-control", size: "10x3" %>
 			</div> 
+      <br>
+      <br>
+      <br>
+			<div class="d-flex">
+          <div class="pt-1">
+              <h5 data-activate="toggle-id-2" class="font-600"><strong><em>Available Now</em></strong></h5>
+          </div>
+          <div class="ml-auto mr-4 pr-2">
+              <div class="custom-control ios-switch ios-switch-icon">
+                  <%= f.check_box :active, class: 'ios-input', id: 'toggle-id-2' %>
+                  <label class="custom-control-label" for="toggle-id-2"></label>
+                  <i class="fa fa-check font-11 color-white"></i>
+                  <i class="fa fa-times font-11 color-white"></i>
+              </div>
+          </div>
+      </div>
+
+
+
+	    <%= f.hidden_field :type, value: 'service' %>
+
 		  <%= f.submit "Add Service", class: "btn btn-full bg-yellow1-dark btn-m text-uppercase rounded-sm shadow-l col-12 mb-3 mt-4 font-900"%>
 
 		<% end %>

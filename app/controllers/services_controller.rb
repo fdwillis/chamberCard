@@ -2,20 +2,16 @@ class ServicesController < ApplicationController
 	def index
 		
 		if current_user&.authentication_token
-			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/time-slots`
+			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/products`
 		else
-			curlCall = `curl -H "appName: #{ENV['appName']}" -X GET #{SITEurl}/v1/time-slots`
+			curlCall = `curl -H "appName: #{ENV['appName']}" -X GET #{SITEurl}/v1/products`
 		end
 
     response = Oj.load(curlCall)
 
+
     if !response.blank? && response['success']
-			@hourlies = response['hourlies']
-			@services = response['services']
-			# debugger
-			@residential = response['residential']
-			@business = response['business']
-			
+			@products = response['products']['data']
 		else
 			flash[:alert] = "Trouble connecting. Try again later."
 			redirect_to new_user_session_path
@@ -44,39 +40,14 @@ class ServicesController < ApplicationController
 	def create
 
 		if current_user&.manager?
-			cost = params[:newService][:cost].to_f
-			title = params[:newService][:title]
-			desc = params[:newService][:desc]
 			appName = ENV['appName']
+			productName = params[:newService][:name]
+			description = params[:newService][:description]
+			type = params[:newService][:type]
+			connectAccount = ENV['connectAccount']
 
-			if residentialBusiness = params[:newService][:residentialBusiness]
-				 residentialBusiness == 'residential' ? residentialBusiness : residentialBusiness = 'business'
 
-				 if residentialBusiness == 'business'
-				 	resOrBiz = "business?=true&"
-				 end
-
-				 if residentialBusiness == 'residential'
-				 	resOrBiz = "residential?=true&"
-				 end
-			end
-
-			if servicePackage = params[:newService][:servicePackage]
-				servicePackage == 'service' ? servicePackage : servicePackage = 'package'
-
-				 if servicePackage == 'package'
-				 	servOrPack = "package?=true&"
-				 end
-
-				 if servicePackage == 'service'
-				 	servOrPack = "service?=true&"
-				 end
-			end
-
-			approverID = current_user.uuid
-			approved = true
-			
-			curlCall = `curl -d "cost=#{cost}&#{servOrPack}approverID=#{approverID}&#{resOrBiz}title=#{title}&desc=#{desc}&appName=#{appName}&approved?=#{approved}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X POST #{SITEurl}/v1/time-slots`
+			curlCall = `curl -d "appName=#{appName}&name=#{productName}&description=#{description}&active=#{ActiveModel::Type::Boolean.new.cast(params[:newService][:active])}&type=#{type}&connectAccount=#{connectAccount}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X POST #{SITEurl}/v1/products`
 			
 			response = Oj.load(curlCall)
 		
