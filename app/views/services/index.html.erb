@@ -2,7 +2,7 @@
     <div class="content mt-3 mb-3">
       <h3>Services</h3>
       <p>
-          <%= pluralize(@products.size, "service") %> offered by Messy Lawns
+          <%= pluralize(@activeProducts.size, "service") %> offered by Messy Lawns
       </p>
     </div>
     <% if current_user&.stripeSourceVerified && current_user&.manager? %>
@@ -12,12 +12,13 @@
 
 <div class="card card-style bg-theme pb-0">
   <div class="content">
-      <div class="tab-controls tabs-round tab-animated tabs-medium tabs-rounded shadow-xl" 
-           data-tab-items="2" 
-           data-tab-active="bg-green1-dark color-white">
-          <a href="#" data-tab-active data-tab="tab-8"><i class="fa fa-check"></i> Active<%= @activeProducts ? " (#{@activeProducts.size})" : nil %></a>
-          <a href="#" data-tab="tab-9"><i class="fa fa-times"></i> Unavailable<%= @unavailableProducts ? " (#{@unavailableProducts.size})" : nil %></a>
+    <% if !current_user || !current_user.manager? %>
+      <div class="tab-controls tabs-round tab-animated tabs-medium tabs-rounded shadow-xl" data-tab-items="1" data-tab-active="bg-green1-dark color-white"><a href="#" data-tab-active data-tab="tab-8"><i class="fa fa-check"></i> Available Services<%= @activeProducts ? " (#{@activeProducts.size})" : nil %></a>
       </div>
+    <% else %>
+      <div class="tab-controls tabs-round tab-animated tabs-medium tabs-rounded shadow-xl" data-tab-items="2" data-tab-active="bg-green1-dark color-white"><a href="#" data-tab-active data-tab="tab-8"><i class="fa fa-check"></i> Active<%= @activeProducts ? " (#{@activeProducts.size})" : nil %></a> <a href="#" data-tab="tab-9"><i class="fa fa-times"></i> Unavailable<%= @unavailableProducts ? " (#{@unavailableProducts.size})" : nil %></a>
+      </div>
+    <% end %>
       <div class="clearfix mb-3"></div>
       <div class="tab-content" id="tab-8">
         <div class="card card-style">

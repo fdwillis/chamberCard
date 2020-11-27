@@ -26,15 +26,16 @@ class ServicesController < ApplicationController
 				else
 					@products.each do |product|
 						if product['stripePriceInfo']['active'] == true
-							@activeProducts << product
+							
+							@activeProducts << product['stripePriceInfo']
 						else
-							@unavailableProducts << product
+							@unavailableProducts << product['stripePriceInfo']
 						end
 					end
 				end
 
 
-
+				
 			else
 				# no products
 			end
