@@ -9,27 +9,35 @@ class ServicesController < ApplicationController
 
     response = Oj.load(curlCall)
 
-
     if !response.blank? && response['success']
-			@products = response['products']['data']
+			if @products = response['products']
 
-			@activeProducts = []
-			@unavailableProducts = []
+				@activeProducts = []
+				@unavailableProducts = []
 
-			@products.each do |product|
-				if product['active'] == true
-					@activeProducts << product
+				if current_user && current_user&.manager?
+					@products['data'].each do |product|
+						if product['active'] == true
+							@activeProducts << product
+						else
+							@unavailableProducts << product
+						end
+					end
 				else
-					@unavailableProducts << product
+					@products.each do |product|
+						if product['stripePriceInfo']['active'] == true
+							@activeProducts << product
+						else
+							@unavailableProducts << product
+						end
+					end
 				end
+
+
+
+			else
+				# no products
 			end
-
-=begin
-
-seperate products by available and not available
-seperate pricing by resident / business
-
-=end
 		else
 			flash[:alert] = "Trouble connecting. Try again later."
 			redirect_to new_user_session_path
@@ -37,17 +45,12 @@ seperate pricing by resident / business
 	end
 
 	def show
-		curlCall = `curl -X GET #{SITEurl}/v1/time-slots/#{params[:id]}`
+		curlCall = `curl -X GET #{SITEurl}/v1/products/#{params[:id]}`
 		
 		response = Oj.load(curlCall)
 		
-		if !response.blank? && response['success']
-			if response['timeSlot'] ? true : false
-				@slot = response['timeSlot']
-			else
-				flash[:alert] = "Service not found"
-				redirect_to services_path
-			end
+		if !response['product'].blank? && response['success']
+			@product = response['product']
 		else
 			flash[:alert] = "Trouble connecting. Try again later."
 			redirect_to services_path

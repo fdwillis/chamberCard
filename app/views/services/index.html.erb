@@ -15,17 +15,31 @@
       <div class="tab-controls tabs-round tab-animated tabs-medium tabs-rounded shadow-xl" 
            data-tab-items="2" 
            data-tab-active="bg-green1-dark color-white">
-          <a href="#" data-tab-active data-tab="tab-8"><i class="fa fa-home"></i> Active<%= @activeProducts ? " (#{@activeProducts.size})" : nil %></a>
-          <a href="#" data-tab="tab-9"><i class="fa fa-building"></i> Unavailable<%= @unavailableProducts ? " (#{@unavailableProducts.size})" : nil %></a>
+          <a href="#" data-tab-active data-tab="tab-8"><i class="fa fa-check"></i> Active<%= @activeProducts ? " (#{@activeProducts.size})" : nil %></a>
+          <a href="#" data-tab="tab-9"><i class="fa fa-times"></i> Unavailable<%= @unavailableProducts ? " (#{@unavailableProducts.size})" : nil %></a>
       </div>
       <div class="clearfix mb-3"></div>
       <div class="tab-content" id="tab-8">
         <div class="card card-style">
           <% if @activeProducts.present? %>
             <% @activeProducts.each do |h| %>
-              <div class="content mb-3">
+              <div class="content mb-4">
                 <div class="align-self-center">
-                  <h5 class=""><%= h['name'] %></h5>
+                  <h3><%= h['name'] %></h3>
+                  <p><%= h['description'] %></p>
+                  <div class="row mb-0">
+                    <div class="col-4">
+                      <p class="text-left mb-0 pb-3"><i class="fa fa-building color-blue2-dark mr-2"></i>3</p>
+                    </div>
+                    <div class="col-4">
+                      <p class="text-center mb-0 pb-3"><i class="fa fa-home mr-2 color-yellow1-dark"></i>15</p>
+                    </div>
+                    <div class="col-4">
+                      <p class="text-right mb-0 pb-3"><i class="fa fa-eye mr-2 color-green1-dark"></i><%= link_to "View", services_path(id: h['id']) %></p>
+                    </div>
+                  </div>
+                  <div class="divider mb-3"></div>
+                  <!-- <div class="divider"></div> -->
                 </div>
               </div>
             <% end %>
@@ -36,9 +50,29 @@
         <div class="card card-style">
           <% if @unavailableProducts.present? %>
             <% @unavailableProducts.each do |h| %>
-              <div class="content mb-3">
+              <div class="content mb-4">
                 <div class="align-self-center">
-                  <h5 class=""><%= h['name'] %></h5>
+                  <!-- <h5 class=""><%= h['name'] %></h5> -->
+
+
+
+
+
+                  <h3><%= h['name'] %></h3>
+                  <p><%= h['description'] %></p>
+                  <div class="row mb-0">
+                    <div class="col-4">
+                      <p class="text-left mb-0 pb-3"><i class="fa fa-building color-blue2-dark mr-2"></i>3</p>
+                    </div>
+                    <div class="col-4">
+                      <p class="text-center mb-0 pb-3"><i class="fa fa-home mr-2 color-yellow1-dark"></i>15</p>
+                    </div>
+                    <div class="col-4">
+                      <p class="text-right mb-0 pb-3"><i class="fa fa-eye mr-2 color-green1-dark"></i><%= link_to "View", services_path(id: h['id']) %></p>
+                    </div>
+                  </div>
+                  <div class="divider mb-3"></div>
+                  <!-- <div class="divider"></div> -->
                 </div>
               </div>
             <% end %>
@@ -48,3 +82,4 @@
       
   </div>
 </div>
+
