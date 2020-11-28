@@ -78,6 +78,9 @@
 
 
   priceLoaded.innerHTML =  "$"+document.getElementById('addToCart_sellerItem').value.split("-")[0] * 0.01
+  
+
+  
 
   document.getElementById('addToCart_sellerItem').addEventListener('change', function() {
     selectedV = this.value
@@ -85,8 +88,6 @@
     var priceVisible = document.querySelector("#uniquePriceChange");
     priceVisible.innerHTML = "$"+this.value.split("-")[0] * 0.01;
 
-
-    
     let re = 'package';
     let str = selectedV;
     let index = str.search(re);
@@ -102,7 +103,25 @@
   });
   
 
-  
+  window.onload = function() {
+    var selectedOnLoad = document.getElementById('addToCart_sellerItem');
+
+    console.log(selectedOnLoad.value);
+    selectedV = selectedOnLoad.value
+
+    let re = 'package';
+    let str = selectedV;
+    let index = str.search(re);
+    var packageAlert = document.querySelector("#packageSelected");
+
+    if (index > 0) {
+
+      packageAlert.style.display = 'inline';
+    } else {
+      packageAlert.style.display = 'none';
+    }
+    console.log(index);
+  };
 
 </script>
 
