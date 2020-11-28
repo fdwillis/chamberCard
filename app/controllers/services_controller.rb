@@ -24,11 +24,11 @@ class ServicesController < ApplicationController
 					end
 				else
 					@products.each do |product|
-						if product['stripePriceInfo']['active'] == true
+						if product['stripeProductInfo']['active'] == true
 							
-							@activeProducts << product['stripePriceInfo']
+							@activeProducts << product['stripeProductInfo']
 						else
-							@unavailableProducts << product['stripePriceInfo']
+							@unavailableProducts << product['stripeProductInfo']
 						end
 					end
 				end
@@ -72,7 +72,7 @@ class ServicesController < ApplicationController
 			connectAccount = ENV['connectAccount']
 
 
-			curlCall = `curl -d "appName=#{appName}&name=#{productName}&description=#{description}&active=#{ActiveModel::Type::Boolean.new.cast(params[:newService][:active])}&type=#{type}&connectAccount=#{connectAccount}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X POST #{SITEurl}/v1/products`
+			curlCall = `curl -H "appName: #{ENV['appName']}" -d "name=#{productName}&description=#{description}&active=#{ActiveModel::Type::Boolean.new.cast(params[:newService][:active])}&type=#{type}&connectAccount=#{connectAccount}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X POST #{SITEurl}/v1/products`
 			
 			response = Oj.load(curlCall)
 		
