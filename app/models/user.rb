@@ -114,7 +114,7 @@ class User < ApplicationRecord
 
   def createUserAPI(accessPin)
 
-    curlCall = `curl -d "accessPin=#{accessPin}&email=#{self.email}&username=#{self.username}&password=#{self.password}&password_confirmation=#{self.password}" #{SITEurl}/v1/users`
+    curlCall = `curl -d "appName=#{ENV['appName']}&accessPin=#{accessPin}&email=#{self.email}&username=#{self.username}&password=#{self.password}&password_confirmation=#{self.password}" #{SITEurl}/v1/users`
 
     response = Oj.load(curlCall)
     
