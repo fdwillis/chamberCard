@@ -1,4 +1,5 @@
 class ServicesController < ApplicationController
+	before_action :authenticate_user!, except: :index
 	def index
 		if current_user&.authentication_token
 			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/products`
@@ -36,7 +37,6 @@ class ServicesController < ApplicationController
 							end
 						end
 
-						debugger
 						
 					end
 				end
