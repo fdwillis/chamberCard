@@ -9,32 +9,40 @@ class ServicesController < ApplicationController
     response = Oj.load(curlCall)
 
     if !response.blank? && response['success']
-			if @products = response['products']
-
-				@activeProducts = []
-				@unavailableProducts = []
+			
+			if @store = response['store']
+				activeProducts = []
+				unavailableProducts = []
 
 				if current_user && current_user&.manager?
-					@products['data'].each do |product|
-						if product['active'] == true
-							@activeProducts << product
-						else
-							@unavailableProducts << product
+					@store.each do |store|
+						store['products'].each do |product|
+							if product['active'] == true
+								activeProducts << [product: product, connectAccount: store['connectAccount']]
+							else
+								unavailableProducts << [product: product, connectAccount: store['connectAccount']]
+							end
 						end
 					end
 				else
-					@products.each do |product|
-						if product['stripeProductInfo']['active'] == true
-							
-							@activeProducts << product['stripeProductInfo']
-						else
-							@unavailableProducts << product['stripeProductInfo']
+
+					@store.each do |store|
+
+						store['products'].each do |product|
+							if product['active'] == true
+								activeProducts << [product: product, connectAccount: store['connectAccount']]
+							else
+								unavailableProducts << [product: product, connectAccount: store['connectAccount']]
+							end
 						end
+
+						debugger
+						
 					end
 				end
 
-
-				
+				@activeProducts = activeProducts.flatten
+				@unavailableProducts = unavailableProducts.flatten
 			else
 				# no products
 			end
@@ -55,6 +63,8 @@ class ServicesController < ApplicationController
 		
 		if !response['product'].blank? && response['success']
 			@product = response['product']
+			@connectAccount = response['connectAccount']
+			@prices = response['prices']
 		else
 			flash[:alert] = "Trouble connecting. Try again later."
 			redirect_to services_path

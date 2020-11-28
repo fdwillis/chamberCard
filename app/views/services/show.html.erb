@@ -1,127 +1,124 @@
 <!-- <%= @product %> -->
 <div class="card card-style">
-            <div class="content mb-0">
-                <div class="float-left">
-                    <h1 class="mb-0">
-                    <%= @product['name'].titleize %>
-                    		
-                    </h1>
-<!--                     <p class="font-10"><i class="fa fa-map-marker-alt mr-2"></i>Melbourne Victoria, Collins Street</p>
- -->                </div>                
-                <div class="clearfix"></div>                
-                <div class="divider mt-2 mb-3"></div>
-                
-                <div class="row">
-                    <div class="col-4">
-                        <strong class="color-theme">Prices:</strong>
-                        <p class="font-12"><%= @product['prices'].to_i%></p>
-                    </div>
-                </div>
-                
-                
-                <h5>Description</h5>
-                <p>
-                    <%= @product %>
-                </p>
-                
-                
-                <!-- <a href="#" class="btn btn-m btn-full rounded-sm shadow-xl bg-highlight text-uppercase mb-3 font-900">Join Event</a> -->
-            </div>
-        </div> 
+  <div class="content">
 
-
-        <div class="card card-overflow card-style">
-            <div class="content">
-                <div class="d-flex">
-                    <div class="flex-grow-1">
-                        <h1 class="font-30">StickyMobile</h1>
-                        <p class="mt-n1 font-12 color-highlight mb-4">Mobile Template &amp; PWA Web Kit</p>
-                    </div>
-                    <div class="flex-shrink-1">
-                        <h1 class="font-20"><del class="opacity-20 font-300">$30<sup>.00</sup></del> $25<sup>.00</sup></h1>
-                        <span class="bg-green1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">In stock</span>
-                    </div>
-                </div>
-                
-                <div class="divider"></div>
-                
-                <p>
-                    The best selling Mobile Progressive Web App on the Envato Marketplaces just got even better now, with 3.0 introducing
-                    Boostrap 4.x compatibility and a tone of new gorgeous features!
-                </p>
-                
-                <div class="row">
-                    <div class="col-4">
-                        <span class="font-11">PWA</span>
-                        <p class="mt-n2 mb-1">
-                            <strong class="color-theme">Yes</strong>
-                        </p>
-                    </div>
-                    <div class="col-4">
-                        <span class="font-11">Boostrap</span>
-                        <p class="mt-n2 mb-1">
-                            <strong class="color-theme">4.4+</strong>
-                        </p>
-                    </div>
-                    <div class="col-4">
-                        <span class="font-11">Dark Mode</span>
-                        <p class="mt-n2 mb-1">
-                            <strong class="color-theme">Yes</strong>
-                        </p>
-                    </div>
-                    <div class="col-4">
-                        <span class="font-11">Cordova</span>
-                        <p class="mt-n2 mb-1">
-                            <strong class="color-theme">Compatible</strong>
-                        </p>
-                    </div>
-                    <div class="col-4">
-                        <span class="font-11">Components</span>
-                        <p class="mt-n2 mb-1">
-                            <strong class="color-theme">100+</strong>
-                        </p>
-                    </div>
-                    <div class="col-4">
-                        <span class="font-11">Total Pages</span>
-                        <p class="mt-n2 mb-1">
-                            <strong class="color-theme">150+</strong>
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="d-flex mt-3">
-                    <div class="flex-grow-1">
-                        <span class="font-11">Ratings &amp; Reviews </span>
-                        <p class="mt-n2">
-                            <strong class="color-theme">4.9</strong>
-                            <i class="fa fa-star color-yellow1-dark pl-2"></i>
-                            <i class="fa fa-star color-yellow1-dark"></i>
-                            <i class="fa fa-star color-yellow1-dark"></i>
-                            <i class="fa fa-star color-yellow1-dark"></i>
-                            <i class="fa fa-star color-yellow1-dark"></i>
-                        </p>
-                    </div>
-                    <div class="flex-shrink-1 mt-2">
-                        <a href="#">98 Reviews</a>
-                    </div>
-                </div>
-                
-                <div class="d-flex mt-4">
-                    <div class="flex-grow-1">
-                        <span class="font-11">Share with the World </span>
-                        <p class="mt-n2">
-                            <strong class="color-theme">Share or Save for Later</strong>
-                        </p>
-                    </div>
-                    <div class="flex-shrink-1 mt-1">
-                        <a href="#" data-menu="menu-share" class="icon icon-xs rounded-xl shadow-m ml-2 bg-blue2-dark"><i class="fa fa-share-alt"></i></a>
-                        <a href="#" data-menu="menu-share" class="icon icon-xs rounded-xl shadow-m ml-2 bg-red2-dark"><i class="fa fa-heart"></i></a>
-                    </div>
-                </div>
-                
-                <div class="divider mt-4"></div>
-                
-                <a href="#" class="btn btn-full btn-m font-900 text-uppercase rounded-sm shadow-l bg-green1-dark">Purchase Today</a>
-                
-            </div>
+    <div class="d-flex">
+        <div class="flex-grow-1">
+            <h1 class="font-30"><%= @product['name'].titleize %></h1>
+            <p class="mt-n1 font-12 color-highlight mb-4">Purchase &amp; Book At Your Convenience</p>
         </div>
+        <div class="flex-shrink-1">
+            <h1 class="font-20">
+              <!-- <del id='uniquePriceStrike' class="opacity-20 font-300">$30.00</del>  -->
+              <p id='uniquePriceChange' style="color: white;">25.00</p>
+            </h1>
+            <span class="bg-green1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 mt-n1">Available</span>
+        </div>
+    </div>
+    
+    <div class="divider"></div>
+    
+    <div class="d-flex mt-4">
+        <div class="flex-grow-1">
+            <span class="font-11">Share with the World </span>
+            <p class="mt-n2">
+                <strong class="color-theme">Share or Save for Later</strong>
+            </p>
+        </div>
+        <div class="flex-shrink-1 mt-1">
+            <a href="#" data-menu="menu-share" class="icon icon-xs rounded-xl shadow-m ml-2 bg-blue2-dark"><i class="fa fa-share-alt"></i></a>
+            <a href="#" data-menu="menu-share" class="icon icon-xs rounded-xl shadow-m ml-2 bg-red2-dark"><i class="fa fa-heart"></i></a>
+        </div>
+    </div>
+    <%if current_user.stripeUserID == @connectAccount %>
+      <div class="divider"></div>
+      
+      <div class="d-flex mt-4">
+          <div class="flex-grow-1">
+              <span class="font-11">Price Management</span>
+              <p class="mt-n2">
+                  <strong class="color-theme">Add, Update, or Unlist Prices </strong>
+              </p>
+          </div>
+          <div class="flex-shrink-1 mt-1">
+              <a href="#" data-menu="menu-share" class="icon icon-xs rounded-xl shadow-m ml-2 bg-blue2-dark"><i class="fa fa-share-alt"></i></a>
+              <a href="#" data-menu="menu-share" class="icon icon-xs rounded-xl shadow-m ml-2 bg-red2-dark"><i class="fa fa-heart"></i></a>
+          </div>
+      </div>
+    <% end %>
+  </div>
+</div> 
+
+
+<div class="card card-overflow card-style">
+  <div class="content">
+  <%= form_for :addToCart, url: services_path do |f|  %>
+      <div class="input-style has-icon input-style-2 input-required pb-1">
+          <span class="color-highlight input-style-1-active">Price</span>
+          <em>(required)</em>
+          <%= f.select :sellerItem, @prices.map{|p,i| [number_to_currency(p['unit_amount'] * 0.01, precision: 2), "#{p['unit_amount']}-#{p['id'].split("price_")[1]}"]}, required: true %>
+      </div> 
+      <%= f.submit "Add To Cart", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
+    <% end %> 
+    <p><%= @product['description'] %></p>
+    <div class="float-left">
+        <h1 class="mb-0">
+        <%= @product['name'].titleize %>
+            
+        </h1>
+    </div>                
+    <div class="clearfix"></div>                
+    <div class="divider mt-2 mb-3"></div>
+    
+    <div class="row">
+        <div class="col-4">
+            <strong class="color-theme">Prices:</strong>
+            <p class="font-12"><%= @product['prices'].to_i%></p>
+        </div>
+    </div>
+    
+    <h5>Description</h5>
+    <p>
+        <%= @product %>
+        <%= @prices %>
+    </p>
+    <a href="#" class="btn btn-full btn-m font-900 text-uppercase rounded-sm shadow-l bg-green1-dark">Purchase Today</a>
+      
+  </div>
+</div>
+
+<script type="text/javascript">
+  var priceLoaded = document.querySelector("#uniquePriceChange");
+
+
+  priceLoaded.innerHTML =  "$"+document.getElementById('addToCart_sellerItem').value.split("-")[0] * 0.01
+
+  document.getElementById('addToCart_sellerItem').addEventListener('change', function() {
+    console.log('You selected: ', this.value);
+    var priceVisible = document.querySelector("#uniquePriceChange");
+    priceVisible.innerHTML = "$"+this.value.split("-")[0] * 0.01;
+  });
+    
+
+
+  
+   // MyDiv3.innerHTML = MyDiv1.innerHTML;
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
