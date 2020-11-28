@@ -62,7 +62,7 @@
           <%= f.select :sellerItem, @prices.map{|p,i| [number_to_currency(p['unit_amount'] * 0.01, precision: 2), "#{p['unit_amount']}-#{p['id'].split("price_")[1]}" "#{!p['transform_quantity'].blank? ? "-package" : ""}"  ]}, required: true %>
           
       </div> 
-      <p class="mt-n1 font-12 color-highlight" id='packageSelected' style="display: none;"><i class="fa fa-info mr-3"></i> You've Selected A Package</p>
+      <p class="mt-n1 font-12 color-highlight mb-0" id='packageSelected' style="display: none;"><i class="fa fa-info mr-3"></i> You've Selected A Package</p>
       <%= f.submit "Add To Cart", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
     <% end %> 
     <h5>Description</h5>

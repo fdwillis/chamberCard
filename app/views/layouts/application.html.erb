@@ -41,25 +41,25 @@
 
 
       <div id="footer-bar" class="footer-bar-1">
-        <% if request.fullpath == '/services' %>
+        <% if request.fullpath.include?('/services') %>
           <a href="/services"><i class="fa fa-briefcase color-highlight"></i><span>Services</span></a>
         <% else %>
           <a href="/services"><i class="fa fa-briefcase"></i><span>Services</span></a>
         <% end %>
 
-        <% if request.fullpath == '/schedule' %>
+        <% if request.fullpath.include?('/schedule') %>
           <a href="/schedule"><i class="fa fa-address-book color-highlight"></i><span>Schedule</span></a>
         <% else %>
           <a href="/schedule"><i class="fa fa-address-book"></i><span>Schedule</span></a>
         <% end %>
 
-        <% if request.fullpath == '/charges' %>
+        <% if request.fullpath.include?('/charges') %>
           <a href="/charges"><i class="fa fa-dollar-sign color-highlight"></i><span>Payments</span></a>
         <% else %>
           <a href="/charges"><i class="fa fa-dollar-sign"></i><span>Payments</span></a>
         <% end %>
 
-        <% if request.fullpath == '/profile' || request.fullpath == '/auth/login'|| request.fullpath == '/auth/sign-up' %>
+        <% if request.fullpath.include?('/profile') || request.fullpath.include?('/auth/login')|| request.fullpath.include?('/auth/sign-up') %>
           <a href="/profile"><i class="fa fa-user color-highlight"></i><span>Profile</span></a>
         <% else %>
           <a href="/profile"><i class="fa fa-user"></i><span>Profile</span></a>
