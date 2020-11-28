@@ -1,9 +1,9 @@
-<!-- <%= @slot %> -->
+<!-- <%= @product %> -->
 <div class="card card-style">
             <div class="content mb-0">
                 <div class="float-left">
                     <h1 class="mb-0">
-                    <%= @slot['title'].titleize %>
+                    <%= @product['name'].titleize %>
                     		
                     </h1>
 <!--                     <p class="font-10"><i class="fa fa-map-marker-alt mr-2"></i>Melbourne Victoria, Collins Street</p>
@@ -13,8 +13,8 @@
                 
                 <div class="row">
                     <div class="col-4">
-                        <strong class="color-theme">Price:</strong>
-                        <p class="font-12"><%= number_to_currency(@slot['cost']) %></p>
+                        <strong class="color-theme">Prices:</strong>
+                        <p class="font-12"><%= @product['prices'].to_i%></p>
                     </div>
                 </div>
                 
@@ -24,9 +24,7 @@
                     <%= @product %>
                 </p>
                 
-                <% if current_user&.stripeSourceVerified %>
-                  <a href="<%= new_charge_path(title: @slot['title'], uuid: @slot['uuid'], desc: @slot['desc']) %>" class="btn btn-m btn-full rounded-sm shadow-xl bg-highlight text-uppercase mb-3 font-900">PURCHASE</a>
-                <% end %>
+                
                 <!-- <a href="#" class="btn btn-m btn-full rounded-sm shadow-xl bg-highlight text-uppercase mb-3 font-900">Join Event</a> -->
             </div>
         </div> 
