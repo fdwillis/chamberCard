@@ -1,6 +1,5 @@
 
 
-<div class="page-content header-clear-medium" style="min-height: 812px;">
         
   <div class="card card-style text-center">
       <div class="content">
@@ -14,25 +13,25 @@
       <div class="content">
 				  <% @cart['carts'].map{|c,i| c['cart']}.each_with_index do |stored, indx| %>
 				  	<% stored.each do |cart| %>
-		          <div class=" mb-4">
+		          <div class="mb-4">
 	              <div class="mr-3">
                   <h5 class="font-600"><%= cart['stripeProductInfo']['name'] %></h5>
-                  <h1 class="pt-3"><%= number_to_currency(cart['stripePriceInfo']['unit_amount'] * 0.01, precision: 2) %></h1>
+                  <h1 class="pt-3 mb-4"><%= number_to_currency(cart['stripePriceInfo']['unit_amount'] * 0.01, precision: 2) %></h1>
                   <div class="row mb-0">
-                    <div class="col-6" style="padding: 1px;">
+                    <div class="col-6">
                         <div class="input-style input-style-2">
                             <span class="input-style-1-active">Quantity</span>
                             <input type="number" min="1" max="999" style="border-width:1px;" placeholder="1" readonly="true" value="<%= cart['quantity'] %>">
                         </div>
                     </div>
-                    <div class="col-6" style="padding: 1px;">
+                    <div class="col-6">
                         <div class="input-style input-style-2">
                             <span class="input-style-1-active">Cost</span>
                             <input placeholder="1" readonly="true" value="<%= number_to_currency(cart['subItemAmount'] * 0.01, precision: 2) %>">
                         </div>
                     </div>
                   </div>
-                    <div class="col-12" style="padding: 1px;">
+                    <div class="col-12">
                         <div class="input-style input-style-2">
                           <%= link_to "Remove", cart_path(id:@cart['carts'][indx]['connectAccount'], item: cart['stripePriceInfo']['id']), class: 'btn btn-full bg-red2-dark btn-m text-uppercase font-800 rounded-sm', method: :delete %>
                         </div>
@@ -85,4 +84,3 @@
           <% end %>
       </div>
   </div>
-</div>
