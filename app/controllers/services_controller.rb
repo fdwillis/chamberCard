@@ -43,6 +43,7 @@ class ServicesController < ApplicationController
 
 				@activeProducts = activeProducts.flatten
 				@unavailableProducts = unavailableProducts.flatten
+
 			else
 				# no products
 			end
@@ -54,13 +55,12 @@ class ServicesController < ApplicationController
 
 	def show
 		if current_user&.authentication_token
-			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/products/prod_#{params[:id]}`
+			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/products/prod_#{params[:id]}?connectAccount=#{params[:connectAccount]}`
 		else
 
 		end
 		
 		response = Oj.load(curlCall)
-		
 		if !response['product'].blank? && response['success']
 			@product = response['product']
 			@connectAccount = response['connectAccount']

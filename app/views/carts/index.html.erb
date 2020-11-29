@@ -1,0 +1,87 @@
+
+
+<div class="page-content header-clear-medium" style="min-height: 812px;">
+        
+  <div class="card card-style">
+      <div class="content">
+          <h2 class="mb-0">
+              Checkout
+          </h2>
+          <p>
+              Your shopping cart before checking out. We've included 2 options for you to choose from
+          </p>
+      </div>
+  </div>
+  
+  <div class="card card-style">
+      <div class="content">
+          <div class="d-flex mb-4">
+              <div class="mr-3">
+                  <h5 class="font-600">Your awesome long or short product title</h5>
+                  <h1 class="pt-3">$99.<sup>99</sup></h1>
+                  <a href="#" class="color-theme opacity-50 font-10"><i class="fa fa-times color-red2-dark pr-2 pt-3"></i>Remove</a>
+              </div>
+              <div class="ml-auto">
+                  <img src="images/pictures/10s.jpg" class="rounded-m shadow-xl" width="130">
+              </div>
+          </div>
+          <div class="divider"></div>
+          <div class="d-flex mb-3">
+              <div class="mr-3">
+                  <h5 class="font-600">iMac 27" 5k Display and Accessories</h5>
+                  <h1 class="pt-3">$2499.<sup>99</sup></h1>
+                  <a href="#" class="color-theme opacity-50 font-10"><i class="fa fa-times color-red2-dark pr-2 pt-3"></i>Remove</a>
+              </div>
+              <div class="ml-auto">
+                  <img src="images/pictures/11s.jpg" class="rounded-m shadow-xl" width="130">
+              </div>
+          </div>
+          <div class="divider"></div>
+          <div class="d-flex mb-3">
+              <div class="mr-3">
+                  <h5 class="font-600">Macbook Pro 13" Core i7, 16GB, 512 SSD</h5>
+                  <h1 class="pt-3">$1499.<sup>99</sup></h1>
+                  <a href="#" class="color-theme opacity-50 font-10"><i class="fa fa-times color-red2-dark pr-2 pt-3"></i>Remove</a>
+              </div>
+              <div class="ml-auto">
+                  <img src="images/pictures/13s.jpg" class="rounded-m shadow-xl" width="130">
+              </div>
+          </div>
+          <div class="divider"></div>
+          <div class="d-flex mb-3">
+              <div class="mr-3">
+                  <h5 class="font-600">Fee</h5>
+              </div>
+              <div class="ml-auto">
+                  <h4>
+	                  <%= number_to_currency(@cart['serviceFee'] * 0.01, precision: 2) %>
+                  </h4>
+              </div>
+          </div>
+          <div class="d-flex">
+              <div class="mr-3">
+                  <h5 class="font-600">Sub Total</h5>
+              </div>
+              <div class="ml-auto">
+                  <h4>
+                  	<%= number_to_currency(@cart['subItemsTotal'] * 0.01, precision: 2) %>
+                  </h4>
+              </div>
+          </div>
+          <div class="divider"></div>
+          <div class="d-flex mb-3">
+              <div class="mr-3">
+                  <h4 class="font-20">Grand Total</h4>
+              </div>
+              <div class="ml-auto">
+                  <h4 class="font-20">
+                  	<%= number_to_currency(@cart['subTotal'] * 0.01, precision: 2) %>
+                  </h4>
+              </div>
+          </div>
+          <div class="divider"></div>
+          <a href="#" class="btn btn-full bg-highlight btn-m text-uppercase font-800 rounded-sm">Proceed to Checkout</a>
+      </div>
+  </div>
+</div>
+<%= @cart %>

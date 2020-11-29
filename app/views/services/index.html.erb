@@ -36,7 +36,7 @@
                       <p class="text-center mb-0 pb-3"><i class="fa fa-home mr-2 color-yellow1-dark"></i>15</p>
                     </div>
                     <div class="col-4">
-                      <p class="text-right mb-0 pb-3"><i class="fa fa-eye mr-2 color-green1-dark"></i><%= link_to "View", service_path(id: h[:product]['id'][5..h[:product]['id'].size]) %></p>
+                      <p class="text-right mb-0 pb-3"><i class="fa fa-eye mr-2 color-green1-dark"></i><%= link_to "View", service_path(id: h[:product]['id'][5..h[:product]['id'].size], connectAccount: h[:connectAccount]) %></p>
                     </div>
                   </div>
                   <div class="divider mb-3"></div>

@@ -1,6 +1,6 @@
 class ScheduleController < ApplicationController
 	def index
-		if current_user.present?
+		if current_user&.authentication_token
 			curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "" -X GET #{SITEurl}/v1/available-times`
 
 	    response = Oj.load(curlCall)

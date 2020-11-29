@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 	devise_scope :user do
 		resources :charges
 		resources :schedule
+		resources :carts
 		resources :services
 		resources :stripe_customers, :path => '/stripe-customers'
 		resources :stripe_tokens, :path => '/stripe-tokens'
