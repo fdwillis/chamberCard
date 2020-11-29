@@ -27,6 +27,27 @@ class CartsController < ApplicationController
 	  end
 	end
 
+	def show
+		params = {
+			'line_items' => [
+				{
+					'stripePriceID' => grabItem,
+				}
+			]
+		}.to_json
+
+		if current_user&.authentication_token
+			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X DELETE #{SITEurl}/v1/carts/#{grabID}`
+			
+	    response = Oj.load(curlCall)
+
+	    if !response.blank? && response['success']
+	    	flash[:alert] = "Removed From Cart"
+	    	redirect_to request.referrer
+	    end
+	  end
+	end
+
 	private
 
 	def cartParams
@@ -35,6 +56,10 @@ class CartsController < ApplicationController
 
 	def grabID
 		params.require(:id)
+	end
+
+	def grabItem
+		params.require(:item)
 	end
 
 end

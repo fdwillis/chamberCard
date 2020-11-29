@@ -14,6 +14,8 @@ class ApplicationController < ActionController::Base
 	    	@cart = response
 	    	
 	    end
+	  else
+	  	@cart = nil
 	  end
 
 	end

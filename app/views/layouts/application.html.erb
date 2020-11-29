@@ -33,14 +33,14 @@
             <i class="fa fa-arrow-left"></i>
           <% end %>
 
-          <% if current_user %>
+          <% if current_user&.authentication_token && !@cart.nil? %>
             <%= link_to '/carts', class: 'font-14 header-icon header-icon-3' do %>
               <i class="fa fa-shopping-cart"></i>
               <% if @cart['carts'].map{|c,i| c['cart']}.flatten.map{|c,i|c['quantity']}.sum > 0%>
                 <span class="badge bg-green1-dark" style="width: 30px;"><%= @cart['carts'].map{|c,i| c['cart']}.flatten.map{|c,i|c['quantity']}.sum %></span>
               <% end %>
             <% end %>
-            <%= link_to '#', 'data-menu'=>"menu-sidebar-left-1", class: 'header-icon header-icon-4' do %>
+            <%= link_to '#', 'data-menu'=>"menu-sidebar-right-1", class: 'header-icon header-icon-4' do %>
               <!-- <i class="fa fa-bars"></i> -->
 
                   <i class="fa fa-bars font-14"></i>
@@ -81,28 +81,28 @@
       </div>
       <div class="page-content header-clear-medium">
         <% if flash[:success] %>
-          <div id="toast-2" class="toast toast-tiny toast-top bg-green1-dark fade" data-delay="3000" data-autohide="true"><i class="fa fa-info mr-3"></i><%= flash[:success] %></div>
+          <div id="toast-2" class="toast text-center toast-tiny toast-top bg-green1-dark fade" data-delay="3000" data-autohide="true"><i class="fa fa-info mr-3"></i><%= flash[:success] %></div>
           <script type="text/javascript">
             setTimeout(function(){
                 $('#toast-2').toast('show');;
             }, 100);
           </script>
         <% elsif flash[:notice] %>
-          <div id="toast-3" class="toast toast-tiny toast-top bg-blue2-dark fade" data-delay="3000" data-autohide="true"><i class="fa fa-info mr-3"></i><%= flash[:notice] %></div>
+          <div id="toast-3" class="toast text-center toast-tiny toast-top bg-blue2-dark fade" data-delay="3000" data-autohide="true"><i class="fa fa-info mr-3"></i><%= flash[:notice] %></div>
           <script type="text/javascript">
             setTimeout(function(){
                 $('#toast-3').toast('show');;
             }, 100);
           </script>
         <% elsif flash[:error] %>
-          <div id="toast-32" class="toast toast-tiny toast-top bg-red2-dark fade" data-delay="3000" data-autohide="true"><i class="fa fa-info mr-3"></i><%= flash[:error] %></div>
+          <div id="toast-32" class="toast text-center toast-tiny toast-top bg-red2-dark fade" data-delay="3000" data-autohide="true"><i class="fa fa-info mr-3"></i><%= flash[:error] %></div>
           <script type="text/javascript">
             setTimeout(function(){
                 $('#toast-32').toast('show');;
             }, 100);
           </script>
         <% elsif flash[:alert] %>
-          <div id="toast-344" class="toast toast-tiny toast-top bg-yellow1-dark fade" data-delay="3000" data-autohide="true"><i class="fa fa-info mr-3"></i><%= flash[:alert] %></div>
+          <div id="toast-344" class="toast text-center toast-tiny toast-top bg-yellow1-dark fade" data-delay="3000" data-autohide="true"><i class="fa fa-info mr-3"></i><%= flash[:alert] %></div>
           <script type="text/javascript">
             setTimeout(function(){
                 $('#toast-344').toast('show');;
@@ -110,7 +110,7 @@
           </script>
         <% end %>
         <%= yield %>
-        <div id="menu-sidebar-left-1" class="bg-white menu menu-box-left" data-menu-width="320" style="width: 320px; display: block;">
+        <div id="menu-sidebar-right-1" class="bg-white menu menu-box-right" data-menu-width="320" style="width: 320px; display: block;">
             <div class="d-flex">
                 <a href="#" class="flex-fill icon icon-m text-center color-facebook border-bottom border-right"><i class="fab font-12 fa-facebook-f"></i></a>
                 <a href="#" class="flex-fill icon icon-m text-center color-twitter border-bottom border-right"><i class="fab font-12 fa-twitter"></i></a>
