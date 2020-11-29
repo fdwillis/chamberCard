@@ -29,13 +29,16 @@
     <div id="page">
         <div class="header header-fixed header-logo-center">
           <a href="/services" class="header-title">Messy Lawns</a>
-          <%= link_to :back, class: 'header-icon header-icon-1' do %>
+          <%= link_to :back, class: 'header-icon header-icon-1 font-14' do %>
             <i class="fa fa-arrow-left"></i>
           <% end %>
 
           <% if current_user %>
-            <%= link_to '/carts', class: 'header-icon header-icon-3' do %>
-              <i class="fa fa-shopping-cart"> <%= @cart['carts'].map{|c,i| c['cart']}.flatten.map{|c,i|c['quantity']}.sum %></i>
+            <%= link_to '/carts', class: 'font-14 header-icon header-icon-3' do %>
+              <i class="fa fa-shopping-cart"></i>
+              <% if @cart['carts'].map{|c,i| c['cart']}.flatten.map{|c,i|c['quantity']}.sum > 0%>
+                <span class="badge bg-green1-dark" style="width: 30px;"><%= @cart['carts'].map{|c,i| c['cart']}.flatten.map{|c,i|c['quantity']}.sum %></span>
+              <% end %>
             <% end %>
             <%= link_to '#', 'data-menu'=>"menu-sidebar-left-1", class: 'header-icon header-icon-4' do %>
               <!-- <i class="fa fa-bars"></i> -->
