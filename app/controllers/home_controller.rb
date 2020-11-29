@@ -6,8 +6,8 @@ class HomeController < ApplicationController
 				callCurl = current_user.showStripeUserAPI
 
 				if callCurl['success']
-					@sources = callCurl['sources']
-
+					@sources = callCurl['source']
+					
 					if !current_user.manager?
 						@phone = callCurl['stripeCustomer']['phone']
 						@name = callCurl['stripeCustomer']['name']

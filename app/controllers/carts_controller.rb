@@ -43,7 +43,7 @@ class CartsController < ApplicationController
 
 	    if !response.blank? && response['success']
 	    	flash[:alert] = "Removed From Cart"
-	    	redirect_to request.referrer
+	    	redirect_to carts_path
 	    end
 	  end
 	end

@@ -68,7 +68,11 @@
           <%= f.select :quantity, 1..100, required: true %>
       </div> 
       <p class="mt-n1 font-12 color-highlight mb-0" id='packageSelected' style="display: none;"><i class="fa fa-info mr-3"></i> Package Selected</p>
-      <%= f.submit "Add To Cart", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
+      <% if current_user&.stripeUserID.blank? || !current_user&.stripeSourceVerified %>
+        <%= link_to "Setup Payment", '/profile', class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' %>
+      <% else %>
+        <%= f.submit "Add To Cart", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
+      <% end %> 
     <% end %> 
     <h5>Description</h5>
     <%= @product['description'] %>
