@@ -20,7 +20,7 @@ Rails.application.routes.draw do
 		post "acceptInvoice", to: 'charges#acceptInvoice', as: "acceptInvoice"
 		post "cancel", to: 'schedule#cancel', as: "cancel"
 		post "acceptRequest", to: 'schedule#acceptRequest', as: "acceptRequest"
-		
+		post "checkout", to: 'carts#checkout', as: "checkout"
 		
 		get "initiateCharge", to: 'charges#initiateCharge', as: "getinitiateCharge"
 		get "destroy", to: 'services#destroy', as: "destroyService"

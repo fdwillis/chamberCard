@@ -48,10 +48,34 @@ class CartsController < ApplicationController
 	  end
 	end
 
+	def checkout
+
+		params = {
+			'carts' => @cart['carts']
+		}.to_json
+		
+		
+		if current_user&.authentication_token
+			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X POST #{SITEurl}/v1/checkout`
+			
+			
+	    response = Oj.load(curlCall)
+
+	    if !response.blank? && response['success']
+	    	flash[:success] = "Purchase Complete"
+	    	redirect_to carts_path
+	    end
+	  end
+	end
+
 	private
 
 	def cartParams
 		params.require(:addToCart).permit(:sellerItem, :quantity)
+	end
+
+	def checkoutParams
+		params.require(:checkout).permit(:cart)
 	end
 
 	def grabID

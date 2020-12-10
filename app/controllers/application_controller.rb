@@ -3,8 +3,6 @@ class ApplicationController < ActionController::Base
 	before_action :grabCart
 
 	def grabCart
-
-
 		if current_user&.authentication_token
 			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/carts`
 			

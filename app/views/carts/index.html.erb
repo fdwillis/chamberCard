@@ -12,30 +12,30 @@
   <div class="card card-style">
       <div class="content">
 				  <% @cart['carts'].map{|c,i| c['cart']}.each_with_index do |stored, indx| %>
-				  	<% stored.each do |cart| %>
-		          <div class="mb-4">
-	              <div class="mr-3">
-                  <h5 class="font-600"><%= cart['stripeProductInfo']['name'] %></h5>
-                  <h1 class="pt-3 mb-4"><%= number_to_currency(cart['stripePriceInfo']['unit_amount'] * 0.01, precision: 2) %></h1>
+          <%=  %>
+            <% stored.each do |cart| %>
+              <div class="mb-4">
+                <div class="mr-3">
+                  <h5 class="mb-4 font-600"><%= link_to cart['stripeProductInfo']['name'].titleize, service_path(id: cart['stripeProductInfo']['id'][5..cart['stripeProductInfo']['id'].size], connectAccount: @cart['carts'][indx]['connectAccount'])%></h5>
                   <div class="row mb-0">
-                    <div class="col-6">
+                    <div class="col-4">
                         <div class="input-style input-style-2">
                             <span class="input-style-1-active">Quantity</span>
                             <input type="number" min="1" max="999" style="border-width:1px;" placeholder="1" readonly="true" value="<%= cart['quantity'] %>">
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <div class="input-style input-style-2">
-                            <span class="input-style-1-active">Cost</span>
+                            <span class="input-style-1-active">Price</span>
                             <input placeholder="1" readonly="true" value="<%= number_to_currency(cart['subItemAmount'] * 0.01, precision: 2) %>">
                         </div>
                     </div>
-                  </div>
-                    <div class="col-12">
+                    <div class="col-2 offset-2">
                         <div class="input-style input-style-2">
-                          <%= link_to "Remove", cart_path(id:@cart['carts'][indx]['connectAccount'], item: cart['stripePriceInfo']['id']), class: 'btn btn-full bg-red2-dark btn-m text-uppercase font-800 rounded-sm', method: :delete %>
+                          <%= link_to "X", cart_path(id:@cart['carts'][indx]['connectAccount'], item: cart['stripePriceInfo']['id']), class: 'btn btn-full bg-red2-dark btn-m text-uppercase font-800 rounded-sm', method: :delete %>
                         </div>
                     </div>
+                  </div>
 	              </div>
 	              <!-- <div class="ml-auto">
 	                  <img src="images/pictures/10s.jpg" class="rounded-m shadow-xl" width="130">
@@ -78,7 +78,16 @@
           </div>
           <div class="divider"></div>
           <% if @cart['carts'].map{|c,i| c['cart']}.flatten.map{|c,i|c['quantity']}.sum != 0 %>
-            <a href="#" class="btn btn-full bg-highlight btn-m text-uppercase font-800 rounded-sm">Charge Me</a>
+
+            <%= form_for :checkout, url: checkout_path do |f| %>
+              <div class="input-style input-style-2">
+                <%= f.submit "Charge Me", class: "btn btn-full bg-green1-dark text-uppercase rounded-sm font-900"%>
+              </div>
+                  
+            <% end %>
+
+
+
           <% else %>
             <a href="/services" class="btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm">Continue Shopping</a>
           <% end %>
