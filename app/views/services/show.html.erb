@@ -44,8 +44,8 @@
               </p>
           </div>
           <div class="flex-shrink-1 mt-1">
-              <a href="#" data-menu="menu-share" class="icon icon-xs rounded-xl shadow-m ml-2 bg-green1-dark"><i class="fa fa-plus"></i></a>
-              <a href="#" data-menu="menu-share" class="icon icon-xs rounded-xl shadow-m ml-2 bg-yellow1-dark"><i class="fa fa-list"></i></a>
+
+              <span class="bg-yellow2-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2" style="color: white;"><%= link_to "Manage", '#', style: "color: white;" %></span>
           </div>
       </div>
     <% end %>
@@ -71,7 +71,13 @@
       <% if current_user&.stripeUserID.blank? || !current_user&.stripeSourceVerified %>
         <%= link_to "Setup Payment", '/profile', class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' %>
       <% else %>
-        <%= f.submit "Add To Cart", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
+        <% if !@prices.blank? %>
+          <% if !current_user.manager? %>
+            <%= f.submit "Add To Cart", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
+          <% else %>
+            <%= link_to "Edit",'#' %> 
+          <% end %> 
+        <% end %> 
       <% end %> 
     <% end %> 
     <h5>Description</h5>
@@ -80,7 +86,65 @@
     <div class="clearfix"></div>                
     <div class="divider mt-2 mb-3"></div>
   </div>
+
 </div>
+
+
+
+<div id="menu-share" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-height="345" data-menu-effect="menu-over">
+  <div class="menu-title mt-n1"><h1><%= @product['name'].titleize %> Pricing</h1><p class="color-highlight">Manage single &amp; package pricing will be managed for customers to purchase</p><a href="#" class="close-menu"><i class="fa fa-times"></i></a></div>
+  <div class="content mb-0">
+        <h4>Daily Tasklist</h4>
+        <p class="mb-2">
+            Below is a simulated task list, you can add your own tasks here or you can connect to a CMS and add them by admin panel. By default this is a template.
+        </p>
+
+        <div class="list-group list-custom-large mr-2">
+            <a data-menu="menu-task-item" href="#">
+                <i class="fa fa-heart bg-fade-red2-dark rounded-xl color-red2-dark font-12 font-12"></i>
+                <span>Update Sticky</span>
+                <strong>Essential for Customers</strong>
+                <span class="badge bg-red2-dark mr-2">VIP</span>
+                <i class="fa fa-angle-right"></i>
+            </a>
+            <a data-menu="menu-task-item" href="#">
+                <i class="fa fa-check rounded-xl bg-fade-green1-dark color-green1-dark font-12"></i>
+                <span>Create New Page</span>
+                <strong>With New Design Patterns</strong>
+                <i class="fa fa-angle-right"></i>
+            </a>
+            <a data-menu="menu-task-item" href="#">
+                <i class="fa fa-cog rounded-xl bg-fade-magenta1-dark color-magenta1-dark font-12"></i>
+                <span>Upgade Components</span>
+                <strong>More Poweful Features</strong>
+                <i class="fa fa-angle-right"></i>
+            </a>      
+            <a data-menu="menu-task-item" href="#">
+                <i class="fa fa-bolt rounded-xl bg-fade-yellow1-dark color-yellow1-dark font-12"></i>
+                <span>Load Faster</span>
+                <strong>More Poweful Features</strong>
+                <i class="fa fa-angle-right"></i>
+            </a>        
+            <a data-menu="menu-task-item" href="#" class="no-border">
+                <i class="fa fa-mobile-alt rounded-xl bg-fade-blue2-dark color-blue2-dark font-12"></i>
+                <span>Release PWA Version</span>
+                <strong>More Poweful Features</strong>
+                <i class="fa fa-angle-right"></i>
+            </a>
+        </div>  
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
 
 <script type="text/javascript">
   var priceLoaded = document.querySelector("#uniquePriceChange");

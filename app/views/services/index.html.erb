@@ -41,7 +41,33 @@
           <% end %>
         </div>
       </div>
+
+      <div class="clearfix mb-3"></div>
       <div class="tab-content" id="tab-9">
+        <div class="card card-style">
+          <% if @unavailableProducts.present? %>
+            <% @unavailableProducts.each do |h| %>
+              <div class="content mb-4">
+                <div class="align-self-center">
+                  <h3><%= h[:product]['name'] %></h3>
+                  <p><%= h[:product]['description'] %></p>
+                  <div class="row mb-0">
+                    <div class="col-12">
+                      <%= link_to " View", service_path(id: h[:product]['id'][5..h[:product]['id'].size], connectAccount: h[:connectAccount]), class: 'fa fa-eye btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm' %>
+                    </div>
+                  </div>
+                  <div class="divider mb-3"></div>
+                  <!-- <div class="divider"></div> -->
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+
+
+      <div class="tab-content" id="tab-0">
         <div class="card card-style">
           <% if @unavailableProducts.present? %>
             <% @unavailableProducts.each do |h| %>

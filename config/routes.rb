@@ -9,7 +9,9 @@ Rails.application.routes.draw do
 		resources :charges
 		resources :schedule
 		resources :carts
-		resources :services
+		resources :services do
+			resources :pricing, :path => '/pricing'
+		end
 		resources :stripe_customers, :path => '/stripe-customers'
 		resources :stripe_tokens, :path => '/stripe-tokens'
 		resources :book_it, :path => '/book-it'

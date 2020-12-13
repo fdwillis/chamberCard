@@ -19,7 +19,7 @@ class ServicesController < ApplicationController
 				if current_user && current_user&.manager?
 					@store.each do |store|
 						store['products'].each do |product|
-							if product['active'] == true
+							if product['active'] == true && !Stripe::Price.list({limit: 100, product: product['id']}, {stripe_account: store['connectAccount']})['data'].blank?
 								activeProducts << [product: product, connectAccount: store['connectAccount']]
 							else
 								unavailableProducts << [product: product, connectAccount: store['connectAccount']]
@@ -31,7 +31,7 @@ class ServicesController < ApplicationController
 					@store.each do |store|
 
 						store['products'].each do |product|
-							if product['active'] == true
+							if product['active'] == true && !Stripe::Price.list({limit: 100, product: product['id']}, {stripe_account: store['connectAccount']})['data'].blank?
 								activeProducts << [product: product, connectAccount: store['connectAccount']]
 							else
 								unavailableProducts << [product: product, connectAccount: store['connectAccount']]
