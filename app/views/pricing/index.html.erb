@@ -1,0 +1,9 @@
+<div class="card card-style">
+  <div class="content mt-3 mb-3">
+    <h3><%= @productL['name'].titleize %> Price Management</h3>
+    <p>
+        <%= pluralize(@prices.count, "price") %> listed
+    </p>
+  </div>
+  <a href="<%= new_service_pricing_path %>" class="float-right btn btn-xs bg-yellow1-dark rounded-xl shadow-xl text-uppercase font-900 mt-2 font-11">Add Pricing</a>
+</div>

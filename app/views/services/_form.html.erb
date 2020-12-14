@@ -1,14 +1,13 @@
 <div class="card card-style">
   <div class="content mb-0">
 		<%= form_for :newService, url: services_path do |f| %>
-	    <%= f.hidden_field :appName, value: ENV['appName'] %>
 
-			<div class="input-style input-style-1 has-icon input-required">
-			    <span class="color-highlight input-style-1-active">Product Name</span>
+			<div class="input-style has-icon">
+			    <span class="color-highlight input-style-2">Product Name</span>
 			    <em>(required)</em>
 			    <%= f.text_field :name, class: "form-control", required: true %>
 			</div>
-			<div class="input-style has-icon">
+			<div class="input-style has-icon input-required">
 			    <span class="color-highlight input-style-2">Description</span>
 			    <%= f.text_area :description, class: "form-control", size: "10x3" %>
 			</div> 

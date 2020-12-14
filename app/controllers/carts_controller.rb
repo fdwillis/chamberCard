@@ -71,19 +71,23 @@ class CartsController < ApplicationController
 	private
 
 	def cartParams
-		params.require(:addToCart).permit(:sellerItem, :quantity)
+		paramsClean = params.require(:addToCart).permit(:sellerItem, :quantity)
+		return paramsClean.reject{|_, v| v.blank?}
 	end
 
 	def checkoutParams
-		params.require(:checkout).permit(:cart)
+		paramsClean = params.require(:checkout).permit(:cart)
+		return paramsClean.reject{|_, v| v.blank?}
 	end
 
 	def grabID
-		params.require(:id)
+		paramsClean = params.require(:id)
+		return paramsClean.reject{|_, v| v.blank?}
 	end
 
 	def grabItem
-		params.require(:item)
+		paramsClean = params.require(:item)
+		return paramsClean.reject{|_, v| v.blank?}
 	end
 
 end

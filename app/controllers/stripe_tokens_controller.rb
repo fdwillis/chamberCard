@@ -41,11 +41,13 @@ before_action :authenticate_user!
 	private
 
 	def newStripeCardTokenParams
-		params.require(:newStripeToken).permit(:number, :exp_year, :exp_month, :cvc)
+		paramsClean = params.require(:newStripeToken).permit(:number, :exp_year, :exp_month, :cvc)
+		return paramsClean.reject{|_, v| v.blank?}
 	end
 
 	def newStripeBankTokenParams
-		params.require(:newStripeToken).permit(:account_holder_name, :routing_number, :account_number)
+		paramsClean = params.require(:newStripeToken).permit(:account_holder_name, :routing_number, :account_number)
+		return paramsClean.reject{|_, v| v.blank?}
 	end
 
 end

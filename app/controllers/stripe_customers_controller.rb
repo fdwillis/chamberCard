@@ -29,6 +29,7 @@ before_action :authenticate_user!
 	private
 
 	def stripeCustomerParams
-		params.require(:stripeCustomerUpdate).permit(:username, :email, :phone)
+		paramsClean = params.require(:stripeCustomerUpdate).permit(:username, :email, :phone)
+		return paramsClean.reject{|_, v| v.blank?}
 	end
 end

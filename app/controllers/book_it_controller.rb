@@ -58,6 +58,7 @@ before_action :authenticate_user!
 	private
 
 	def claimSlotParams
-		params.require(:bookIt).permit(:timeSlot, :stripeChargeID, :timeToBook, :purchase)
+		paramsClean = params.require(:bookIt).permit(:timeSlot, :stripeChargeID, :timeToBook, :purchase)
+		return paramsClean.reject{|_, v| v.blank?}
 	end
 end
