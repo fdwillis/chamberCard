@@ -15,7 +15,6 @@ class PricingController < ApplicationController
 
 		if !response['product'].blank? && response['success']
 			@prices = response['prices']
-			# debugger
 		else
 			flash[:alert] = "Trouble connecting. Try again later."
 			redirect_to services_path
@@ -31,16 +30,30 @@ class PricingController < ApplicationController
 	end
 
 	def create
-
 		if !pricingParams['unit_amount'].blank?
-			debugger
+			if current_user&.authentication_token
+				params = {
+					'product' => @productL['id'],
+					'unit_amount' => pricingParams['unit_amount'].to_i * 100,
+					'connectAccount' => current_user.stripeUserID,
+					'package?' => ActiveModel::Type::Boolean.new.cast(pricingParams['package']),
+					'divide_by' => pricingParams['divide_by'],
+				}.to_json
+				
+				curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X POST #{SITEurl}/v1/products/#{@productL['id']}/pricing`
+			else
 
-			params = {
-				'product' => '',
-				'unit_amount' => '',
-				'connectAccount' => '',
-				'package?' => '',
-			}.to_json
+			end
+
+			response = Oj.load(curlCall)
+
+			if response['success']
+				flash[:success] = "Pricing Added"
+				redirect_to service_pricing_index_path(service_id: @productL['id'][5..@productL['id'].length])
+			else
+				flash[:alert] = "Trouble connecting. Try again later."
+				redirect_to request.referrer
+			end
 		else
 			redirect_to request.referrer
 			flash[:error] = "Price is required"

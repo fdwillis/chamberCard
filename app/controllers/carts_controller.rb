@@ -82,7 +82,7 @@ class CartsController < ApplicationController
 
 	def grabID
 		paramsClean = params.require(:id)
-		return paramsClean.reject{|_, v| v.blank?}
+		# return paramsClean.reject{|_, v| v.blank?}
 	end
 
 	def grabItem

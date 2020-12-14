@@ -18,24 +18,21 @@
               </div>
           </div>
       </div>
-      <div data-switch="toggle-id-2" class="switch-is-unchecked" style="display: none;">
-        <p class="mb-0 pb-0 pt-2"><em><u>One Time Purchase For Multiple Services</u></em></p>
-      	<div class="input-style has-icon">
+      <div class="input-style has-icon">
 			    <span class="color-highlight input-style-2">Price</span>
 			    <%= f.number_field :unit_amount, class: "form-control" %>
 				</div> 
+      <div data-switch="toggle-id-2" class="switch-is-unchecked" style="display: none;">
+        <p class="mb-0 pb-0 pt-2"><em><u>One Time Purchase For Multiple Services</u></em></p>
+      	
 				<div class="input-style has-icon">
-			    <span class="color-highlight input-style-2">Services Are Included With This Purchase</span>
+			    <span class="color-highlight input-style-2">Number of Services Included With Purchase</span>
 			    <%= f.number_field :divide_by, class: "form-control", placeholder: '0' %>
 				</div> 
       </div>
 
       <div id="one-offprice" class="switch-is-checked" style="display: block;">
         <p class="mb-0 pb-0 pt-2"><em><u>Single Service Purchase</u></em></p>
-      	<div class="input-style has-icon">
-			    <span class="color-highlight input-style-2">Price</span>
-			    <%= f.number_field :unit_amount, class: "form-control" %>
-				</div> 
       </div>
 
 		  <%= f.submit "Add Service", class: "btn btn-full bg-yellow1-dark btn-m text-uppercase rounded-sm shadow-l col-12 mb-3 mt-4 font-900"%>

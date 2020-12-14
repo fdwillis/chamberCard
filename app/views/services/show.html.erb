@@ -1,4 +1,5 @@
 <br>
+
 <div class="card card-style">
   <div class="content">
 
@@ -59,7 +60,7 @@
       <div class="input-style has-icon input-style-2 input-required pb-1">
           <span class="color-highlight input-style-1-active">Price</span>
           <em>(required)</em>
-          <%= f.select :sellerItem, @prices.map{|p,i| [number_to_currency(p['unit_amount'].to_f * 0.01, precision: 2), "#{p['unit_amount']}-#{p['id'].split("price_")[1]}" "#{!p['transform_quantity'].blank? ? "-package" : ""}"  ]}, required: true %>
+          <%= f.select :sellerItem, @prices.sort { |a,b| a['unit_amount'] <=> b['unit_amount'] }.map{|p,i| ["#{number_to_currency(p['unit_amount'].to_f * 0.01, precision: 2)} #{!p['transform_quantity'].blank? ? 'Package Of ' + p['transform_quantity']['divide_by'].to_s : "Single Purchase"}", "#{p['unit_amount']}" "#{!p['transform_quantity'].blank? ? "-package-#{p['transform_quantity']['divide_by']}" : ""}"  ]}, required: true %>
           
       </div>
       <div class="input-style has-icon input-style-2 input-required pb-1">
@@ -67,13 +68,13 @@
           <em>(required)</em>
           <%= f.select :quantity, 1..100, required: true %>
       </div> 
-      <p class="mt-n1 font-12 color-highlight mb-0" id='packageSelected' style="display: none;"><i class="fa fa-info mr-3"></i> Package Selected</p>
+      <p class="mt-n1 font-12 color-highlight mb-0" id='packageSelected' style="display: none;"><i class="fa fa-info mr-3"></i> Package Selected: Includes </p>
       <% if current_user&.stripeUserID.blank? || !current_user&.stripeSourceVerified %>
         <%= link_to "Setup Payment", '/profile', class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' %>
       <% else %>
         <% if !@prices.blank? %>
           <% if !current_user.manager? %>
-            <%= f.submit "Add To Cart", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
+            <%= f.submit "Add To Cart", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900", onclick: 'spinnerPage()' %>
           <% else %>
             <%= link_to "Edit",'#' %> 
           <% end %> 
@@ -152,7 +153,7 @@
 
   priceLoaded.innerHTML =  "$"+(document.getElementById('addToCart_sellerItem').value.split("-")[0] * 0.01).toFixed(2)
 
-  document.getElementById('addToCart_sellerItem').addEventListener('change', function() {
+  document.getElementById('addToCart_sellerItem').addEventListener('change', function byPack() {
     selectedV = this.value
     console.log('You selected: ', selectedV);
     var priceVisible = document.querySelector("#uniquePriceChange");
@@ -187,6 +188,11 @@
     if (index > 0) {
 
       packageAlert.style.display = 'inline';
+
+      var div = document.getElementById('packageSelected');
+      console.log(selectedOnLoad.value.split("-")[2]);
+      div.innerHTML += selectedOnLoad.value.split("-")[2] + ' Services';
+
     } else {
       packageAlert.style.display = 'none';
     }
@@ -194,14 +200,6 @@
   };
 
 </script>
-
-
-
-
-
-
-
-
 
 
 
