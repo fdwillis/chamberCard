@@ -51,7 +51,7 @@ class CartsController < ApplicationController
 	def checkout
 
 		params = {
-			'carts' => @cart['carts']
+			'carts' => @cart
 		}.to_json
 		
 		
@@ -72,22 +72,18 @@ class CartsController < ApplicationController
 
 	def cartParams
 		paramsClean = params.require(:addToCart).permit(:sellerItem, :quantity)
-		return paramsClean.reject{|_, v| v.blank?}
 	end
 
 	def checkoutParams
 		paramsClean = params.require(:checkout).permit(:cart)
-		return paramsClean.reject{|_, v| v.blank?}
 	end
 
 	def grabID
 		paramsClean = params.require(:id)
-		# return paramsClean.reject{|_, v| v.blank?}
 	end
 
 	def grabItem
 		paramsClean = params.require(:item)
-		return paramsClean.reject{|_, v| v.blank?}
 	end
 
 end
