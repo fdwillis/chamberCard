@@ -42,7 +42,7 @@ Contact
     </div>
   <% end %>
 
-  <div class="card card-style bg-theme pb-0 text-center">
+  <div class="card card-style bg-theme pb-0">
     <div class="content">
       <div class="tab-controls tabs-round tab-animated tabs-medium tabs-rounded shadow-xl" data-tab-items="2" data-tab-active="bg-green1-dark color-white">
           <!-- <a href="#" data-tab-active data-tab="tab-3"><i class="fa fa-clock"></i> Available Now</a> -->
@@ -52,44 +52,76 @@ Contact
       <div class="clearfix mb-3"></div>
       
       <div class="tab-content" id="tab-1">
-        <% if @payments.present? %>
-          <% @payments.each do |h| %>
-            <% if current_user.manager? %>
-              <div class="align-self-center">
-                  <h1 class="font-16"><%= h['buyerName'].titleize %> #<%= h['buyerUUID'] %>
-                  </h1>
-                  <!-- #<%= h['stripeChargeID'].split("ch_")[1] %> -->
-                  <p class="font-16 opacity-60">
-                    Phone: <a href="tel:<%= h['buyerPhone'] %>"><%= h['buyerPhone'] %></a>
-                    <br>
-                    Email: <a href = "mailto:<%= h['buyerEmail'] %>"><%= h['buyerEmail'] %></a>
-                  </p>
-              </div>
-              <div class=" align-self-center ml-auto text-right">
-                <h2 class="font-16"><%= h['title'] ? h['title'].titleize : "Invoice" %></h2>
-                <h5 class="font-14 mb-n1 color-green2-dark">Net: <%= number_to_currency(h['sellerAmount'].to_i * 0.01) %></h5>
-                <h5 class="font-14 mb-n1 color-red2-dark">Fee: <%= number_to_currency(h['fee'].to_i * 0.01) %></h5>
-                <h5 class="font-14 mb-n1 color-yellow2-dark">Total: <%= number_to_currency(h['amount'].to_i * 0.01) %></h5>
-                <p class="font-12 opacity-50">
-                Purchased: <%= h['date'].to_date.strftime("%B %d, %Y") %>
-                
-                  
-                </p>
-              </div>
-            <% else %>
-              <div class="align-self-center">
-                  <h1 class="mb-n2 font-16"><%= h['title'] ? h['title'].titleize : "Invoice" %></h1>
-                  <div class="align-self-center ml-auto text-right">
-                    <h2 class="mb-n1 font-18 color-green2-dark"><%= number_to_currency(h['amount'].to_i * 0.01) %></h2>
-                    <p class="font-12 opacity-50">
-                    </p>
-                  </div>
-                  <p class="font-11 opacity-60"></p>
-              </div>
-            <% end %>
-          <% end %>
-        <% end %>
+
+
+      <div class="card card-style">
+          <div class="content mb-0">
+              <h4>Daily Tasklist</h4>
+              <p class="mb-2">
+                  Below is a simulated task list, you can add your own tasks here or you can connect to a CMS and add them by admin panel. By default this is a template.
+              </p>
+
+              <% if @payments.present? %>
+                <% @payments.each do |h| %>
+                  <%= h %>
+                  <div class="list-group list-custom-large mr-2">
+                        <a data-menu="menu-task-item<%= h['stripeOrderID'] %>" href="#">
+                            <i class="fa fa-heart bg-fade-red2-dark rounded-xl color-red2-dark font-12 font-12"></i>
+                            <span>Update Sticky</span>
+                            <strong>Essential for Customers</strong>
+                            <span class="badge bg-red2-dark mr-2">VIP</span>
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+
+                        <% if current_user.manager? %>
+                          
+                        <% else %>
+                          
+                        <% end %>
+                  </div> 
+
+
+                <% end %>
+              <% end %>
+
+              
+          </div>
+        </div>
+        
       </div>
+      <% @payments.each do |h| %>
+        <div id="menu-task-item<%= h['stripeOrderID'] %>" class="menu menu-box-bottom menu-box-detached rounded-l" data-menu-height="380" data-menu-effect="menu-over" style="height: 380px; display: block;">
+            <div class="content">
+                <div class="d-flex">
+                    <div class="w-40">
+                        <img data-src="images/icons/18.png" src="images/icons/18.png" class="preload-img mx-auto" width="110">
+                    </div>
+                    <div class="w-60 pl-3">
+                        <h3 class="bolder">Task Title</h3>
+                        <p class="mb-0 pb-0"><strong>To:</strong> Enabled</p>
+                        <p class="mb-0 pb-0"><strong>Email:</strong> name@domain.com</p>
+                        <p class="mb-0 pb-0"><strong>Due Date:</strong> 15th Dec 2030</p>
+                    </div>
+                </div>
+                <div class="divider mt-4"></div>
+                <h5 class="bold">Task Notes</h5>
+                <p class="mb-0">
+                    Upgrade StickyMobile to include features requested by customers. Update
+                    is fully compatible with V1.0. 
+                </p>
+                <div class="divider mt-2"></div>
+                <div class="row">
+                    <div class="col-6">
+                        <a href="#" class="close-menu btn btn-s rounded-s shadow-l btn-full text-uppercase font-900 bg-green1-dark">Mark Done</a>
+                    </div>
+                    <div class="col-6">
+                        <a href="#" class="close-menu btn btn-s rounded-s shadow-l btn-full text-uppercase font-900 bg-blue2-dark">Do it later</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+      <% end %>
+
       <div class="tab-content" id="tab-2">
         <% if @overdue.present? %>
           <% @overdue.each do |h| %>
