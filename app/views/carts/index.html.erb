@@ -17,6 +17,9 @@
               <div class="mb-4">
                 <div class="mr-3">
                   <h5 class="mb-4 font-600"><%= link_to cart['stripeProductInfo']['name'].titleize, service_path(id: cart['stripeProductInfo']['id'][5..cart['stripeProductInfo']['id'].size], connectAccount: @cart['carts'][indx]['connectAccount'])%></h5>
+                  <% if !cart['stripePriceInfo']['transform_quantity'].blank? %>
+                    <p class="mt-n1 font-12 color-highlight mb-4" id='packageSelected'><i class="fa fa-info mr-3"></i><%= "Package of #{cart['stripePriceInfo']['transform_quantity']['divide_by']}"%></p>
+                  <% end %>
                   <div class="row mb-0">
                     <div class="col-4">
                         <div class="input-style input-style-2">
@@ -32,7 +35,9 @@
                     </div>
                     <div class="col-2 offset-2">
                         <div class="input-style input-style-2">
-                          <%= link_to "X", cart_path(id:@cart['carts'][indx]['connectAccount'], item: cart['stripePriceInfo']['id']), class: 'btn btn-full bg-red2-dark btn-m text-uppercase font-800 rounded-sm', method: :delete %>
+                          <%= link_to "", cart_path(id:@cart['carts'][indx]['connectAccount'], item: cart['stripePriceInfo']['id']), class: 'btn btn-full bg-red2-dark btn-m text-uppercase font-800 rounded-sm', method: :delete do %>
+                            <i class="fa fa-times"></i>
+                          <% end %>
                         </div>
                     </div>
                   </div>

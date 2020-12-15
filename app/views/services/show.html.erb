@@ -6,13 +6,12 @@
     <div class="d-flex">
         <div class="flex-grow-1">
             <h1 class="font-30"><%= @product['name'].titleize %></h1>
-            <p class="mt-n1 font-12 color-highlight mb-4">Purchase &amp; Book At Your Convenience</p>
+            <p class="mt-n1 font-12 color-highlight mb-0">Purchase &amp; Book At Your Convenience</p>
 
         </div>
         <div class="flex-shrink-1">
             <h1 class="font-20">
               <div id="uniquePriceChange">
-                $25<sup>.00</sup>
               </div>
             </h1>
             
@@ -20,7 +19,7 @@
         </div>
     </div>
     
-    <div class="divider"></div>
+    <!-- <div class="divider"></div>
     
     <div class="d-flex mt-4">
         <div class="flex-grow-1">
@@ -33,7 +32,7 @@
             <a href="#" data-menu="menu-share" class="icon icon-xs rounded-xl shadow-m ml-2 bg-blue2-dark"><i class="fa fa-share-alt"></i></a>
             <a href="#" data-menu="menu-share" class="icon icon-xs rounded-xl shadow-m ml-2 bg-red2-dark"><i class="fa fa-heart"></i></a>
         </div>
-    </div>
+    </div> -->
     <%if current_user.stripeUserID == @connectAccount %>
       <div class="divider"></div>
       
@@ -56,27 +55,31 @@
 
 <div class="card card-overflow card-style">
   <div class="content">
-  <%= form_for :addToCart, url: cart_path(id: @connectAccount), method: :patch do |f|  %>
-      <div class="input-style has-icon input-style-2 input-required pb-1">
-          <span class="color-highlight input-style-1-active">Price</span>
-          <em>(required)</em>
-          <%= f.select :sellerItem, @prices.sort { |a,b| a['unit_amount'] <=> b['unit_amount'] }.map{|p,i| ["#{number_to_currency(p['unit_amount'].to_f * 0.01, precision: 2)} #{!p['transform_quantity'].blank? ? 'Package Of ' + p['transform_quantity']['divide_by'].to_s : "Single Purchase"}", "#{p['unit_amount']}" "#{!p['transform_quantity'].blank? ? "-package-#{p['transform_quantity']['divide_by']}" : ""}"  ]}, required: true %>
-          
-      </div>
-      <div class="input-style has-icon input-style-2 input-required pb-1">
-          <span class="color-highlight input-style-1-active">Quantity</span>
-          <em>(required)</em>
-          <%= f.select :quantity, 1..100, required: true %>
-      </div> 
-      <p class="mt-n1 font-12 color-highlight mb-0" id='packageSelected' style="display: none;"><i class="fa fa-info mr-3"></i> Package Selected: Includes </p>
-      <% if current_user&.stripeUserID.blank? || !current_user&.stripeSourceVerified %>
-        <%= link_to "Setup Payment", '/profile', class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' %>
-      <% else %>
-        <% if !@prices.blank? %>
-          <% if !current_user.manager? %>
-            <%= f.submit "Add To Cart", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900", onclick: 'spinnerPage()' %>
-          <% else %>
-            <%= link_to "Edit",'#' %> 
+    <% if !current_user.manager? %>
+      <%= form_for :addToCart, url: cart_path(id: @connectAccount), method: :patch do |f|  %>
+        <div class="input-style has-icon input-style-2 input-required pb-1">
+            <span class="color-highlight input-style-1-active">Price</span>
+            <em>(required)</em>
+            <%= f.select :sellerItem, @prices.sort { |a,b| a['unit_amount'] <=> b['unit_amount'] }.map{|p,i| ["#{number_to_currency(p['unit_amount'].to_f * 0.01, precision: 2)} #{!p['transform_quantity'].blank? ? 'Package Of ' + p['transform_quantity']['divide_by'].to_s : "Single Purchase"}", "#{p['unit_amount']}-#{p['id'][6..p['id'].length]}-#{!p['transform_quantity'].blank? ? "package-#{p['transform_quantity']['divide_by']}" : ""}"  ]}, required: true %>
+            
+        </div>
+        <div class="input-style has-icon input-style-2 input-required pb-1">
+            <span class="color-highlight input-style-1-active">Quantity</span>
+            <em>(required)</em>
+            <%= f.select :quantity, 1..100, required: true %>
+        </div> 
+        <p class="mt-n1 font-12 color-highlight mb-0" id='packageSelected' style="display: none;"><i class="fa fa-info mr-3"></i> Package Selected: Includes </p>
+        <% if current_user&.stripeUserID.blank? || !current_user&.stripeSourceVerified %>
+          <%= link_to "Setup Payment", '/profile', class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' %>
+        <% else %>
+          <% if !@prices.blank? %>
+            <% if !current_user.manager? %>
+              <%= button_tag type: 'submit', class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" do %>
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i> Add To Cart
+              <% end %>
+            <% else %>
+              <%= link_to "Edit",'#' %> 
+            <% end %> 
           <% end %> 
         <% end %> 
       <% end %> 
@@ -145,8 +148,6 @@
 
 
 
-
-
 <script type="text/javascript">
   var priceLoaded = document.querySelector("#uniquePriceChange");
 
@@ -164,9 +165,15 @@
     let index = str.search(re);
     var packageAlert = document.querySelector("#packageSelected");
 
-    if (index > 0) {
+     if (index > 0) {
 
       packageAlert.style.display = 'inline';
+
+      var div = document.getElementById('packageSelected');
+      console.log(selectedV.split("-")[3]);
+      div.innerHTML = '';
+      div.innerHTML += 'Package Selected: Includes ' + selectedV.split("-")[3] + ' Services';
+
     } else {
       packageAlert.style.display = 'none';
     }
@@ -184,14 +191,14 @@
     let str = selectedV;
     let index = str.search(re);
     var packageAlert = document.querySelector("#packageSelected");
+    var div = document.getElementById('packageSelected');
 
     if (index > 0) {
 
       packageAlert.style.display = 'inline';
 
-      var div = document.getElementById('packageSelected');
-      console.log(selectedOnLoad.value.split("-")[2]);
-      div.innerHTML += selectedOnLoad.value.split("-")[2] + ' Services';
+      console.log(selectedV.split("-")[3]);
+      div.innerHTML = 'Package Selected: Includes ' + selectedV.split("-")[3] + ' Services';
 
     } else {
       packageAlert.style.display = 'none';
@@ -200,6 +207,9 @@
   };
 
 </script>
+
+
+
 
 
 

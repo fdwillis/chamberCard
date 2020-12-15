@@ -1,7 +1,7 @@
 class ChargesController < ApplicationController
 	def index
 		if current_user&.authentication_token
-			curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "" -X GET #{SITEurl}/v1/stripe-charges`
+			curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "" -X GET #{SITEurl}/v1/charges`
 			
 	    response = Oj.load(curlCall)
 	    
@@ -28,7 +28,7 @@ class ChargesController < ApplicationController
 		quantity = params[:newCharge][:quantity]
 		desc = params[:newCharge][:desc]
     
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "quantity=#{quantity}&timeSlot=#{timeSlot}&timeSlotCharge=true&description=#{desc}" #{SITEurl}/v1/stripe-charges`
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "quantity=#{quantity}&timeSlot=#{timeSlot}&timeSlotCharge=true&description=#{desc}" #{SITEurl}/v1/charges`
 
 		response = Oj.load(curlCall)
     

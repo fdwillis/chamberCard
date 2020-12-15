@@ -810,7 +810,7 @@ p {
 }
 
 .menu-active {
-  opacity: 1 !important;
+  opacity: 0 !important;
 }
 
 .menu-active-no-click {

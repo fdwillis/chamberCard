@@ -30,7 +30,9 @@
                   <p><%= h[:product]['description'] %></p>
                   <div class="row mb-0">
                     <div class="col-12">
-                      <%= link_to "View", service_path(id: h[:product]['id'][5..h[:product]['id'].size], connectAccount: h[:connectAccount]), class: 'btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm' %>
+                      <%= link_to "/services/#{h[:product]['id'][5..h[:product]['id'].size]}?connectAccount=#{h[:connectAccount]}", class: 'btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm' do %>
+                        <i class="fa fa-eye"></i> View
+                      <% end %>
                     </div>
                   </div>
                   <div class="divider mb-3"></div>
@@ -53,7 +55,9 @@
                   <p><%= h[:product]['description'] %></p>
                   <div class="row mb-0">
                     <div class="col-12">
-                      <%= link_to " View", service_path(id: h[:product]['id'][5..h[:product]['id'].size], connectAccount: h[:connectAccount]), class: 'fa fa-eye btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm' %>
+                      <%= link_to "/services/#{h[:product]['id'][5..h[:product]['id'].size]}?connectAccount=#{h[:connectAccount]}", class: 'btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm' do %>
+                        <i class="fa fa-eye"></i> View
+                      <% end %>
                     </div>
                   </div>
                   <div class="divider mb-3"></div>
@@ -89,7 +93,11 @@
                       <p class="text-center mb-0 pb-3"><i class="fa fa-home mr-2 color-yellow1-dark"></i>15</p>
                     </div>
                     <div class="col-4">
-                      <p class="text-right mb-0 pb-3"><i class="fa fa-eye mr-2 color-green1-dark"></i><%= link_to "View", service_path(id: h[:product]['id'][5..h[:product]['id'].size]) %></p>
+                      <p class="text-right mb-0 pb-3">
+                        <%= link_to "/services/#{h[:product]['id'][5..h[:product]['id'].size]}?connectAccount=#{h[:connectAccount]}", class: 'btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm' do %>
+                        <i class="fa fa-eye"></i> View
+                      <% end %>
+                      </p>
                     </div>
                   </div>
                   <div class="divider mb-3"></div>
