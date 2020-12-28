@@ -33,12 +33,10 @@
                             <input placeholder="1" readonly="true" value="<%= number_to_currency(cart['stripePriceInfo']['unit_amount'] * 0.01, precision: 2) %>">
                         </div>
                     </div>
-                    <div class="col-2 offset-2">
-                        <div class="input-style input-style-2">
-                          <%= link_to "carts/#{@cart['carts'][indx]['connectAccount']}?item=#{cart['stripePriceInfo']['id']}", class: 'btn btn-full bg-red2-dark btn-m text-uppercase font-800 rounded-sm', method: :delete do %>
-                             <i class="fa fa-times"></i>
-                          <% end %>
-                        </div>
+                    <div class="col-4">
+                      <%= link_to "carts/#{@cart['carts'][indx]['connectAccount']}?item=#{cart['stripePriceInfo']['id']}", class: 'btn btn-full bg-red2-dark text-uppercase font-900 rounded-sm', 'style'=>"text-align: center;", method: :delete do %>
+                         <i class="fa fa-times"></i>
+                      <% end %>
                     </div>
                   </div>
 	              </div>

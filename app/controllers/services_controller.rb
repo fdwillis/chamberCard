@@ -91,6 +91,7 @@ class ServicesController < ApplicationController
 				flash[:success] = "Service Created"
 				redirect_to services_path
 			else
+				debugger
 				flash[:alert] = response['message']
 				redirect_to new_service_path
 			end

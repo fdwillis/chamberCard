@@ -1,7 +1,7 @@
-//Loading the Service Worker
+Loading the Service Worker
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/_service-worker.js', {scope: '/'});
+    navigator.serviceWorker.register('/service-worker.js', {scope: '/'});
   });
 }
 

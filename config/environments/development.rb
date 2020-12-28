@@ -11,7 +11,8 @@ Rails.application.configure do
 
   # Do not eager load code on boot.
   config.eager_load = false
-  config.hosts << "warm-bobcat-88.loca.lt"
+  config.hosts << "bad-elephant-79.loca.lt"
+  
 
   # Show full error reports.
   config.consider_all_requests_local = true

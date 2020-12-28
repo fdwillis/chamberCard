@@ -54,7 +54,6 @@ class CartsController < ApplicationController
 			'carts' => @cart
 		}.to_json
 		
-		
 		if current_user&.authentication_token
 			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X POST #{SITEurl}/v1/checkout`
 			

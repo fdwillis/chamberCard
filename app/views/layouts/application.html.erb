@@ -17,6 +17,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900,900i|Source+Sans+Pro:300,300i,400,400i,600,600i,700,700i,900,900i&display=swap" rel="stylesheet">
     <link rel="apple-touch-icon" sizes="512x512" href="/assets/ML_512-01.png">
     <link rel="shortcut icon" href="/assets/ML_512-01.png" />
+    <link rel="manifest" href="/manifest" data-pwa-version="set_in_manifest_and_pwa_js">
   </head>
 
   <body class="theme-light" data-background="none" data-highlight="green1">
@@ -196,15 +197,7 @@
             <div class="mr-3 ml-3 mt-4 pt-2">
                 <span class="text-uppercase font-900 font-11 opacity-30">Settings</span>
                 <div class="list-group list-custom-small list-icon-0">
-                    <a data-toggle-theme="" data-trigger-switch="sidebar-12-switch-1" href="#">
-                        <i class="fa font-14 fa-moon color-gray2-dark"></i>
-                        <span>Dark Mode</span>
-                        <div class="custom-control scale-switch ios-switch">
-                            <input type="checkbox" class="ios-input" id="sidebar-12-switch-1">
-                            <label class="custom-control-label" for="sidebar-12-switch-1"></label>
-                        </div>
-                        <i class="fa fa-angle-right"></i>
-                    </a>        
+                        
                     <!-- <a data-trigger-switch="sidebar-12-switch-2" href="#">
                         <i class="fa font-14 fa-circle color-green1-dark"></i>
                         <span>Active Mode</span>
@@ -326,7 +319,7 @@
       <div class="menu-title"><h1>New Card Source</h1><p class="color-highlight">Enter Card Details</p><a href="#" class="close-menu"><i class="fa fa-times"></i></a></div>
 
       <div class="divider divider-margins mt-3 mb-3"></div>
-      <%= form_for :newStripeToken, url: stripe_tokens_path do |f| %>
+      <%= form_for :newStripeCardToken, url: stripe_tokens_path do |f| %>
               <div class="input-style input-style-2 has-icon input-required">
                   <i class="input-icon fa fa-user"></i>
                   <span class="color-highlight input-style-1-active">Legal Name</span>
@@ -372,7 +365,7 @@
       <div class="menu-title"><h1>New Bank Source</h1><p class="color-highlight">Enter Bank Details</p><a href="#" class="close-menu"><i class="fa fa-times"></i></a></div>
 
       <div class="divider divider-margins mt-3 mb-3"></div>
-        <%= form_for :newStripeToken, url: stripe_tokens_path do |f| %>
+        <%= form_for :newStripeBankToken, url: stripe_tokens_path do |f| %>
           <div class="input-style input-style-2 has-icon input-required mt-4">
               <i class="input-icon fa fa-user"></i>
               <span class="color-highlight input-style-1-active">Full Legal Name</span>
@@ -426,11 +419,8 @@
             <i class="fa-ios-arrow fa fa-caret-down font-40"></i>
         </div>
     </div> -->
-    
-    <script type="text/javascript">
-      location.reload();
-      return false;
-    </script>
-    <!-- <script type="text/javascript" src="/assets/custom.js"></script> -->
+    <script type="text/javascript" src="/assets/jquery.js"></script>
+    <script type="text/javascript" src="/assets/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/assets/custom.js"></script>
   </body>
 </html>

@@ -4,11 +4,11 @@ class ChargesController < ApplicationController
 			curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "" -X GET #{SITEurl}/v1/charges`
 			
 	    response = Oj.load(curlCall)
+				
 	    
 	    if !response.blank? && response['success']
 				@payments = response['payments']
 				@overdue = response['overdue']
-				
 			elsif response['message'] == "No purchases found"
 				@message = response['message']
 			else

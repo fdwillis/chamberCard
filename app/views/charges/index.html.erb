@@ -1,21 +1,12 @@
-<!-- Preferred order:
 
-Customer: name, custID
-“Title of job”
-Date of service
-Customer: name, custID?
-Contact 
-Contact 
-Contact 
-         Total $/charge
-         Net $ (fee shown) -->
+
 <% if current_user.present? %>
 	<div class="card card-style">
     <div class="content mt-3 mb-3">
-      <h3>Payments</h3>
+      <h3>Payment History</h3>
       <p>
         <% if !current_user&.manager? %>
-          View all of your payment history any time anywhere!
+          View your payment history any time anywhere!
         <% end %>
         <% if current_user&.manager? %>
           View past charges &amp; create new invoices on the go!
@@ -43,49 +34,95 @@ Contact
   <% end %>
 
   <div class="card card-style bg-theme pb-0">
-    <div class="content">
-      <div class="tab-controls tabs-round tab-animated tabs-medium tabs-rounded shadow-xl" data-tab-items="2" data-tab-active="bg-green1-dark color-white">
+    <div class="">
+      <div class="tab-controls tabs-round tab-animated tabs-medium tabs-rounded shadow-xl" data-tab-items="1" data-tab-active="bg-green1-dark color-white">
           <!-- <a href="#" data-tab-active data-tab="tab-3"><i class="fa fa-clock"></i> Available Now</a> -->
-          <a href="#" data-tab="tab-1"><i class="fa fa-calendar-check"></i></a>
-          <a href="#" data-tab-active data-tab="tab-2"><i class="fa fa-sync"></i></a>
+          <a href="#" data-tab-active  data-tab="tab-1"><i class="fa fa-calendar-check"></i>  History</a>
       </div>
       <div class="clearfix mb-3"></div>
       
       <div class="tab-content" id="tab-1">
 
 
-      <div class="card card-style">
-          <div class="content mb-0">
-              <h4>Successful Payments</h4>
-              <!-- <p class="mb-2">
-                  Below is a simulated task list, you can add your own tasks here or you can connect to a CMS and add them by admin panel. By default this is a template.
-              </p> -->
-
-              <% if @payments.present? %>
-                <% @payments.each do |h| %>
-<!--                   <%= h %>
- -->                  <div class="list-group list-custom-large mr-2">
-                        <a data-menu="menu-task-item<%= h['stripeOrderID'] %>" href="#">
-                            <i class="fa fa-heart bg-fade-red2-dark rounded-xl color-red2-dark font-12 font-12"></i>
-                            <span>#<%= h['stripeOrderID'][3..15] %></span>
-                            <strong>Essential for Customers</strong>
-                            <span class="badge bg-red2-dark mr-2">VIP</span>
-                            <i class="fa fa-angle-right"></i>
-                        </a>
-
-                        <% if current_user.manager? %>
-                          
-                        <% else %>
-                          
-                        <% end %>
-                  </div> 
+        <div class="content mb-0">
+            
 
 
-                <% end %>
-              <% end %>
 
+          <% if @payments.present? %>
+            <% @payments.each do |h| %>
               
-          </div>
+              <div class="list-group list-custom-small list-icon-0">
+                  <a data-toggle="collapse" href="#collapse-<%= h['invoice'][3..15] %>">
+                      <span class="font-14">Order#<%= h['invoice'][3..h['invoice'].length].truncate(9, omission: '') %></span>
+                      <span class="badge bg-green2-dark mr-2">PAID</span>
+                  </a>        
+              </div>
+              <div class="collapse" id="collapse-<%= h['invoice'][3..15] %>">
+                <!-- <div class="menu-title"><h1>Payment Sent</h1><p class="color-highlight">Transaction Details for Payment</p></div>
+                <div class="divider divider-margins mb-1 mt-3"></div> -->
+                <div class="content">
+                    <div class="row mb-0">
+                        <div class="col-3 icon icon-xl">
+                            <i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark" width='80'></i>
+                        </div>
+                        <div class="col-9 pl-4">
+                            <div class="d-flex">
+                                <div><p class="font-700 color-theme">Seller</p></div>
+                                <div class="ml-auto"><p>John Doe</p></div>
+                            </div>
+                            <div class="d-flex">
+                                <div><p class="font-700 color-theme">Customer</p></div>
+                                <div class="ml-auto"><p>Jane Doe</p></div>
+                            </div>
+                            <div class="d-flex">
+                                <div><p class="font-700 color-theme">Date</p></div>
+                                <div class="ml-auto"><p>15th July 2025</p></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="divider mt-3 mb-3"></div>
+                    <div class="row mb-0">
+                    
+                        <div class="col-4"><h4 class="font-14 text-left"><u>Item</u></h4></div>
+                        <div class="col-4"><h4 class="font-14 text-center"><u>Quantity</u></h4></div>
+                        <div class="col-4"><h4 class="font-14 text-right"><u>Total</u></h4></div>
+                    </div>
+
+
+
+
+
+                  <% h['items'].each do |itm| %>
+                    <div class="row mb-0">
+                   <!--  <%= h %> -->
+                    
+                        <div class="col-4"><h4 class="font-14 text-left"><%= itm[2]['name'] %></h4></div>
+                        <div class="col-4"><h4 class="font-14 text-center"><%= itm[0]['quantity'] %></h4></div>
+                        <div class="col-4"><h4 class="font-14 text-right"><%= number_to_currency(itm[1]['unit_amount']  * 0.01, precision: 2) %></h4></div>
+                        <div class="divider divider-margins w-100 mt-2 mb-2"></div>
+                        <div class="divider divider-margins w-100 mt-2 mb-2"></div>
+                        <div class="col-6"><h4 class="font-14 mt-1">Sub Total</h4></div>
+                        <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency((h['grandTotal'] - h['fee'])  * 0.01, precision: 2) %></h4></div>
+                        <div class="col-6"><h4 class="font-14 mt-1">Fee</h4></div>
+                        <div class="col-6"><h4 class="font-14 text-right mt-1"><i class="fa fa-exclamation-circle font-14 mt-1 color-yellow2-dark scale-icon mr-2" data-toggle="tooltip" data-placement="right" title="" data-original-title="Miser Brands service fee includes processing fees"></i> <%= number_to_currency(h['fee']  * 0.01, precision: 2) %></h4></div>
+
+                        <div class="col-6"><h4 class="font-14 mt-1">Grand Total</h4></div>
+                        <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency(h['grandTotal']  * 0.01, precision: 2) %></h4></div>
+                
+                        <div class="divider divider-margins w-100 mt-2 mb-3"></div>
+                        <div class="col-12"><a href="#" class="close-menu btn btn-full btn-m bg-red2-dark rounded-sm text-uppercase font-800">Refund</a></div>
+                    </div>
+                  <% end %>
+                </div>
+              </div>  
+
+          
+              
+
+
+            <% end %>
+          <% end %>
         </div>
         
       </div>
@@ -120,40 +157,7 @@ Contact
         <% end %>     
       </div>
     </div>
-    
   </div>
-  <% @payments.each do |h| %>
-        <div id="menu-task-item<%= h['stripeOrderID'] %>" class="menu menu-box-bottom menu-box-detached rounded-l" data-menu-height="380" data-menu-effect="menu-over" style="height: 380px; display: block;">
-            <div class="content">
-                <div class="d-flex">
-                    <div class="w-40">
-                        <img data-src="images/icons/18.png" src="images/icons/18.png" class="preload-img mx-auto" width="110">
-                    </div>
-                    <div class="w-60 pl-3">
-                        <h3 class="bolder"><%= h['stripeOrderID'][3..15] %></h3>
-                        <p class="mb-0 pb-0"><strong>Seller:</strong> Enabled</p>
-                        <p class="mb-0 pb-0"><strong>Email:</strong> name@domain.com</p>
-                        <p class="mb-0 pb-0"><strong>Due Date:</strong> 15th Dec 2030</p>
-                    </div>
-                </div>
-                <div class="divider mt-4"></div>
-                <h5 class="bold">Task Notes</h5>
-                <p class="mb-0">
-                    Upgrade StickyMobile to include features requested by customers. Update
-                    is fully compatible with V1.0. 
-                </p>
-                <div class="divider mt-2"></div>
-                <div class="row">
-                    <div class="col-6">
-                        <a href="#" class="close-menu btn btn-s rounded-s shadow-l btn-full text-uppercase font-900 bg-green1-dark">Mark Done</a>
-                    </div>
-                    <div class="col-6">
-                        <a href="#" class="close-menu btn btn-s rounded-s shadow-l btn-full text-uppercase font-900 bg-blue2-dark">Do it later</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <% end %>
 <% else %>
   <div class="page-content header-clear-medium">
         
