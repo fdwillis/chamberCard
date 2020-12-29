@@ -1,9 +1,11 @@
 <div class="card card-style">
     <div class="content mt-3 mb-3">
       <h3>Services</h3>
-      <p>
-          <%= pluralize(@activeProducts.size, "service") %> offered by Messy Lawns
-      </p>
+      <% if !current_user&.manager? %>
+        <p>After you've purchased services, you will need to schedule with the seller at your convenience.</p>
+      <% else %>
+        <%= pluralize(@activeProducts.size, "service") %> uploaded
+      <% end %>
     </div>
     <% if current_user&.stripeSourceVerified && current_user&.manager? %>
       <a href="<%= new_service_path %>" class="float-right btn btn-xs bg-yellow1-dark rounded-xl shadow-xl text-uppercase font-900 mt-2 font-11">Add Service</a>

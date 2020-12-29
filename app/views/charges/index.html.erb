@@ -7,8 +7,7 @@
       <p>
         <% if !current_user&.manager? %>
           View your payment history any time anywhere!
-        <% end %>
-        <% if current_user&.manager? %>
+        <% else%>
           View past charges &amp; create new invoices on the go!
         <% end %>
       </p>
