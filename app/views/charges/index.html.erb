@@ -69,15 +69,15 @@
                         <div class="col-9 pl-4">
                             <div class="d-flex">
                                 <div><p class="font-700 color-theme">Seller</p></div>
-                                <div class="ml-auto"><p>John Doe</p></div>
+                                <div class="ml-auto"><p><%= h['sellerName'] %></p></div>
                             </div>
                             <div class="d-flex">
                                 <div><p class="font-700 color-theme">Customer</p></div>
-                                <div class="ml-auto"><p>Jane Doe</p></div>
+                                <div class="ml-auto"><p><%= h['customer'] %></p></div>
                             </div>
                             <div class="d-flex">
                                 <div><p class="font-700 color-theme">Date</p></div>
-                                <div class="ml-auto"><p>15th July 2025</p></div>
+                                <div class="ml-auto"><p><%= h['date'] %></p></div>
                             </div>
                         </div>
                     </div>
@@ -94,25 +94,40 @@
 
 
                   <% h['items'].each do |itm| %>
-                    <div class="row mb-0">
-                   <!--  <%= h %> -->
+                    <% if current_user&.manager? %>
+                      <div class="row mb-0">
+                        <!--  <%= h %> -->
                     
+                        <div class="col-6"><h4 class="font-14 text-left"><%= itm[2]['name'] %></h4></div>
+                        <div class="col-2"><h4 class="font-14 text-center"><%= itm[0]['quantity'] %></h4></div>
+                        <div class="col-4"><h4 class="font-14 text-right"><%= number_to_currency(itm[1]['unit_amount']  * 0.01, precision: 2) %></h4></div>
+                        
+
+                        <div class="col-6"><h4 class="font-14 mt-1">Grand Total</h4></div>
+                        <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency((h['grandTotal'] - h['fee'])  * 0.01, precision: 2) %></h4></div>
+                
+                        <div class="divider divider-margins w-100 mt-2 mb-3"></div>
+                        <!-- <div class="col-12"><a href="#" class="close-menu btn btn-full btn-m bg-red2-dark rounded-sm text-uppercase font-800">Refund</a></div> -->
+                      </div>
+                    <% else %>
+                      <div class="row mb-0">
                         <div class="col-6"><h4 class="font-14 text-left"><%= itm[2]['name'] %></h4></div>
                         <div class="col-2"><h4 class="font-14 text-center"><%= itm[0]['quantity'] %></h4></div>
                         <div class="col-4"><h4 class="font-14 text-right"><%= number_to_currency(itm[1]['unit_amount']  * 0.01, precision: 2) %></h4></div>
                         <div class="divider divider-margins w-100 mt-2 mb-2"></div>
                         <div class="divider divider-margins w-100 mt-2 mb-2"></div>
+                        <div class="col-6"><h4 class="font-14 mt-1">Fee &nbsp;<i class="fa fa-exclamation-circle font-14 mt-1 color-yellow2-dark scale-icon mr-2" data-toggle="tooltip" data-placement="right" title="" data-original-title="Miser Brands service fee includes processing fees"></i></h4></div>
+                        <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency(h['fee']  * 0.01, precision: 2) %></h4></div>
                         <div class="col-6"><h4 class="font-14 mt-1">Sub Total</h4></div>
                         <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency((h['grandTotal'] - h['fee'])  * 0.01, precision: 2) %></h4></div>
-                        <div class="col-6"><h4 class="font-14 mt-1">Fee</h4></div>
-                        <div class="col-6"><h4 class="font-14 text-right mt-1"><i class="fa fa-exclamation-circle font-14 mt-1 color-yellow2-dark scale-icon mr-2" data-toggle="tooltip" data-placement="right" title="" data-original-title="Miser Brands service fee includes processing fees"></i> <%= number_to_currency(h['fee']  * 0.01, precision: 2) %></h4></div>
 
                         <div class="col-6"><h4 class="font-14 mt-1">Grand Total</h4></div>
                         <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency(h['grandTotal']  * 0.01, precision: 2) %></h4></div>
                 
                         <div class="divider divider-margins w-100 mt-2 mb-3"></div>
                         <!-- <div class="col-12"><a href="#" class="close-menu btn btn-full btn-m bg-red2-dark rounded-sm text-uppercase font-800">Refund</a></div> -->
-                    </div>
+                      </div>
+                    <% end%>
                   <% end %>
                 </div>
               </div>  

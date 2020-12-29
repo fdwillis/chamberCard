@@ -181,7 +181,7 @@
   });
   
 
-  window.onload = function() {
+  window.addEventListener('load', function() {
     var selectedOnLoad = document.getElementById('addToCart_sellerItem');
 
     console.log(selectedOnLoad.value);
@@ -204,7 +204,7 @@
       packageAlert.style.display = 'none';
     }
     console.log(index);
-  };
+  });
 
 </script>
 
