@@ -1,9 +1,37 @@
 <div class="card card-style">
   <div class="content mt-3 mb-3">
-    <h3><%= @productL['name'].titleize %> Price Management</h3>
+    <h3>Price Management</h3>
+    <h5><%= @productL['name'].titleize %></h5>
     <p>
         <%= pluralize(@prices.count, "price") %> listed
     </p>
   </div>
   <a href="<%= new_service_pricing_path %>" class="float-right btn btn-xs bg-yellow1-dark rounded-xl shadow-xl text-uppercase font-900 mt-2 font-11">Add Pricing</a>
+</div>
+
+<div class="card card-style bg-theme pb-0">
+  <div class="">
+    <div class="tab-controls tabs-round tab-animated tabs-medium tabs-rounded shadow-xl" data-tab-items="2" data-tab-active="bg-green1-dark color-white">
+        <a href="#" data-tab-active data-tab="tab-1"><!-- <i class="fa fa-clock"></i> --> Available </a>
+        <a href="#"  data-tab="tab-2"><!-- <i class="fa fa-calendar-check"></i> --> Archived </a>
+    </div>
+    <div class="clearfix mb-3"></div>
+    
+    <div class="tab-content" id="tab-1">
+      <div class="content mb-0">
+        <% @prices.each do |pr| %>
+          <h3><%= number_to_currency((pr['unit_amount'] * 0.01), precision: 2) %></h3>
+        <% end %>
+      </div>
+      
+    </div>
+    
+    <div class="tab-content" id="tab-2">
+      <div class="content mb-0">
+        <% @archived.each do |ar| %>
+          <h3><%= number_to_currency((ar['unit_amount'] * 0.01), precision: 2) %></h3>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>

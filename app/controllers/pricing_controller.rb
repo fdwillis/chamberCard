@@ -15,6 +15,7 @@ class PricingController < ApplicationController
 
 		if !response['product'].blank? && response['success']
 			@prices = response['prices']
+			@archived = response['archived']
 		else
 			flash[:alert] = "Trouble connecting. Try again later."
 			redirect_to services_path

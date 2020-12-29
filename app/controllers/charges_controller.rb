@@ -5,7 +5,6 @@ class ChargesController < ApplicationController
 			
 	    response = Oj.load(curlCall)
 				
-	    
 	    if !response.blank? && response['success']
 				@payments = response['payments']
 				@overdue = response['overdue']
