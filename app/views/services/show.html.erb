@@ -68,6 +68,8 @@
             <em>(required)</em>
             <%= f.select :quantity, 1..100, required: true %>
         </div> 
+        <h5>Description</h5>
+        <p class="mt-n1 font-12 mb-0" ><%= @product['description'] %></p>
         <p class="mt-n1 font-12 color-highlight mb-0" id='packageSelected' style="display: none;"><i class="fa fa-info mr-3"></i> Package Selected: Includes </p>
         <% if current_user&.stripeUserID.blank? || !current_user&.stripeSourceVerified %>
           <%= link_to "Setup Payment", '/profile', class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' %>
@@ -78,14 +80,18 @@
                 <i class="fa fa-shopping-cart" aria-hidden="true"></i> Add To Cart
               <% end %>
             <% else %>
-              <%= link_to "Edit",'#' %> 
+               
             <% end %> 
           <% end %> 
         <% end %> 
       <% end %> 
+    <% else %>
+      <h5>Description</h5>
+      <p class="mt-n1 font-12 mb-0" ><%= @product['description'] %></p>
+      <%= link_to "/services", class: 'btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm' do %>
+        <i class="fa fa-eye"></i> View
+      <% end %>
     <% end %> 
-    <h5>Description</h5>
-    <%= @product['description'] %>
 
     <div class="clearfix"></div>                
     <div class="divider mt-2 mb-3"></div>

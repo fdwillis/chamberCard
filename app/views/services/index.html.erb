@@ -4,7 +4,7 @@
       <% if !current_user&.manager? %>
         <p>After you've purchased services, you will need to schedule with the seller at your convenience.</p>
       <% else %>
-        <%= pluralize(@activeProducts.size, "service") %> uploaded
+        <%= pluralize(@activeProducts.size + @unavailableProducts.size, "service") %> uploaded
       <% end %>
     </div>
     <% if current_user&.stripeSourceVerified && current_user&.manager? %>
