@@ -18,7 +18,7 @@ class ServicesController < ApplicationController
 
 				@store.each do |store|
 					store['products'].each do |product|
-						if product['active'] == true && !Stripe::Price.list({limit: 100, product: product['id']}, {stripe_account: store['connectAccount']})['data'].blank?
+						if product['active'] == true && !Stripe::Price.list({limit: 100, product: product['id'], active: true}, {stripe_account: store['connectAccount']})['data'].blank?
 							activeProducts << [product: product, connectAccount: store['connectAccount']]
 						else
 							unavailableProducts << [product: product, connectAccount: store['connectAccount']]
@@ -28,7 +28,6 @@ class ServicesController < ApplicationController
 
 				@activeProducts = activeProducts.flatten
 				@unavailableProducts = unavailableProducts.flatten
-
 			else
 				# no products
 			end
@@ -75,7 +74,7 @@ class ServicesController < ApplicationController
 				flash[:success] = "Service Created"
 				redirect_to services_path
 			else
-				debugger
+				
 				flash[:alert] = response['message']
 				redirect_to new_service_path
 			end
