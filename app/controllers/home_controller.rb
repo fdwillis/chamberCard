@@ -20,7 +20,7 @@ class HomeController < ApplicationController
 							@pending = true
 						end
 
-						if callCurl['stripeCustomer']['individual']['phone']
+						if !callCurl['stripeCustomer']['individual'].blank?
 							@phone = callCurl['stripeCustomer']['individual']['phone'][2..12]
 							@email = callCurl['stripeCustomer']['individual']['email']
 						end

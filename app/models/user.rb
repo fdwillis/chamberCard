@@ -18,7 +18,7 @@ class User < ApplicationRecord
     
     if !response.blank? && response['success']
       if !response2.blank? && response2['success']
-        self.update_attributes(email: email)
+        self.update(email: email)
         return response
       end
     else
@@ -31,7 +31,7 @@ class User < ApplicationRecord
 
     response = Oj.load(curlCall)
     if !response.blank? && response['success']
-      self.update_attributes(stripeSourceVerified: response['stripeSourceVerified'])
+      self.update(stripeSourceVerified: response['stripeSourceVerified'])
       return response
     else
       return response
@@ -45,7 +45,7 @@ class User < ApplicationRecord
     response = Oj.load(curlCall)
     
     if !response.blank? && response['success']
-      self.update_attributes(stripeSourceVerified: response['stripeSourceVerified'])
+      self.update(stripeSourceVerified: response['stripeSourceVerified'])
       return response
     else
       return response['error']
@@ -92,7 +92,7 @@ class User < ApplicationRecord
     response = Oj.load(curlCall)
     
     if !response.blank? && response['success']
-      self.update_attributes(stripeUserID: response['stripeUserID'] )
+      self.update(stripeUserID: response['stripeUserID'] )
       return response
     else
       return response
@@ -105,7 +105,7 @@ class User < ApplicationRecord
     response = Oj.load(curlCall)
     
     if !response.blank? && response['success']
-      self.update_attributes(accessPin: response['accessPin'] , stripeSourceVerified: response['stripeSourceVerified'] , stripeUserID: response['stripeUserID'], authentication_token: response['authentication_token'], uuid: response['uuid'] )
+      self.update(accessPin: response['accessPin'] , stripeSourceVerified: response['stripeSourceVerified'] , stripeUserID: response['stripeUserID'], authentication_token: response['authentication_token'], uuid: response['uuid'] )
       return response
     else
       return response
@@ -119,7 +119,7 @@ class User < ApplicationRecord
     response = Oj.load(curlCall)
     
     if !response.blank? && response['success']
-      self.update_attributes(uuid: response['uuid'],username: response['username'], accessPin: response['accessPin'] )
+      self.update(uuid: response['uuid'],username: response['username'], accessPin: response['accessPin'] )
       return response
     else
       return response
@@ -147,7 +147,7 @@ class User < ApplicationRecord
     response = Oj.load(curlCall)
     
     if !response.blank? && response['success']
-      self.update_attributes(authentication_token: nil )
+      self.update(authentication_token: nil )
       return response
     else
       return response
