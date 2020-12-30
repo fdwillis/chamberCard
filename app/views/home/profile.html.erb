@@ -52,7 +52,7 @@
 
           <!-- <h2>Payment Information</h2> -->
           <p class="mb-5">
-            <% if current_user&.talent? %>
+            <% if current_user&.customer? %>
               Your account is unable to make purchases. If you would like to purchase services, get started by clicking 'Proceed' below!
             <% end %>
             <% if current_user&.manager? %>
@@ -167,7 +167,7 @@
         <div class="content mb-0">
             <h2 class="text-center">Account Information</h2>
             <p class="mb-5 text-center">
-                <% if current_user&.talent? %>
+                <% if current_user&.customer? %>
                   This information is so that service providers can contact you. Payment receipts will be sent to the email address below.
                 <% end %>
                 <% if current_user&.manager? %>

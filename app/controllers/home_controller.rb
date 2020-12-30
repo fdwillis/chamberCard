@@ -6,7 +6,6 @@ class HomeController < ApplicationController
 				callCurl = current_user.showStripeUserAPI
 
 				if callCurl['success']
-					debugger
 					@sources = !callCurl['source'].blank? ? callCurl['source'] : callCurl['sources']
 					
 					if !current_user.manager?

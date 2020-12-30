@@ -154,8 +154,8 @@ class User < ApplicationRecord
     end
   end
 
-  def talent?
-    talentAccess.include?(accessPin)      
+  def customer?
+    customerAccess.include?(accessPin)      
   end
 
   def virtual?
@@ -196,8 +196,8 @@ class User < ApplicationRecord
 
   private
 
-  def talentAccess
-    return ['talent']
+  def customerAccess
+    return ['customer']
   end
 
   def virtualAccess
