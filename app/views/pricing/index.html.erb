@@ -21,6 +21,10 @@
       <div class="content mb-0">
         <% @prices.each do |pr| %>
           <h3><%= number_to_currency((pr['unit_amount'] * 0.01), precision: 2) %></h3>
+          <%= @productL['id'][6..@productL['id'].size] %>
+          <%= link_to edit_service_pricing_path(service_id: @productL['id'][6..@productL['id'].size], id: pr['id'][6..pr['id'].size], price: pr), class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' do %>
+              <i class="fa fa-pencil"></i> Edit
+            <% end %>
         <% end %>
       </div>
       
@@ -30,6 +34,10 @@
       <div class="content mb-0">
         <% @archived.each do |ar| %>
           <h3><%= number_to_currency((ar['unit_amount'] * 0.01), precision: 2) %></h3>
+          <%= @productL['id'] %>
+          <%= link_to edit_service_pricing_path(service_id: @productL['id'][6..@productL['id'].size], id: pr['id'][6..pr['id'].size], price: pr), class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' do %>
+              <i class="fa fa-pencil"></i> Edit
+            <% end %>
         <% end %>
       </div>
     </div>

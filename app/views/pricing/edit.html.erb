@@ -1,0 +1,19 @@
+<div class="card card-style">
+    <div class="content mt-3 mb-3">
+      <h3>Editing Pricing: </h3>
+      <h5>Price#<%= @price['id'][6..15] %></h5>
+      <p>
+          Enter the service information below. Once you are complete, the service will be updated.
+      </p>
+    </div>
+</div>
+
+
+
+<div class="card card-style">
+  <div class="content mb-0">
+		<%= form_for :newPricing, url: service_pricing_path(service_id: params[:service_id], id: params[:id]), method: :patch do |f| %>
+			<%= render partial: 'form', locals: { f: f } %>
+		<% end %>
+	</div>
+</div>

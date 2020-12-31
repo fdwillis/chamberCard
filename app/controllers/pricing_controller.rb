@@ -62,11 +62,47 @@ class PricingController < ApplicationController
 	end
 
 	def edit
-		
+
+		if !params['price'].blank?
+			@price = params['price']
+		else
+			flash[:error] = "No price found"
+			redirect_to request.referrer
+		end
 	end
 
 	def update
-		
+
+		if !pricingParams['unit_amount'].blank?
+			if current_user&.authentication_token
+				mergedParams = serviceParams.merge(pricingParams)
+				debugger
+				params = {
+					'product' => mergedParams[:service_id],
+					'unit_amount' => pricingParams['unit_amount'].to_i * 100,
+					'connectAccount' => current_user.stripeUserID,
+					'package?' => ActiveModel::Type::Boolean.new.cast(pricingParams['package']),
+					'divide_by' => pricingParams['divide_by'],
+				}.to_json
+				
+				curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X PATCH #{SITEurl}/v1/products/#{mergedParams[:service_id]}/pricing/#{mergedParams[:id]}`
+			else
+
+			end
+
+			response = Oj.load(curlCall)
+
+			if response['success']
+				flash[:success] = "Pricing Added"
+				redirect_to service_pricing_index_path(service_id: @productL['id'][5..@productL['id'].length])
+			else
+				flash[:alert] = "Trouble connecting. Try again later."
+				redirect_to request.referrer
+			end
+		else
+			redirect_to request.referrer
+			flash[:error] = "Price is required"
+		end
 	end
 
 	def destroy
@@ -86,6 +122,11 @@ class PricingController < ApplicationController
 
 	def pricingParams
 		paramsClean = params.require(:newPricing).permit(:unit_amount,:product, :connectAccount, :package, :divide_by)
+		return paramsClean.reject{|_, v| v.blank?}
+	end
+
+	def serviceParams
+		paramsClean = params.permit(:service_id, :id)
 		return paramsClean.reject{|_, v| v.blank?}
 	end
 
