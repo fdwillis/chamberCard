@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 	    
 	    if !response.blank? && response['success']
 	    	@cart = response
-	    	
+	    	return
 	    end
 	  else
 	  	@cart = nil

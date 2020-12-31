@@ -6,4 +6,11 @@
       </p>
     </div>
 </div>
-<%= render partial: 'form' %>
+
+<div class="card card-style">
+  <div class="content mb-0">
+		<%= form_for :newService, url: services_path do |f| %>
+			<%= render partial: 'form', f: f %>
+		<% end %>
+	</div>
+</div>

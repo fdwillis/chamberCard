@@ -63,10 +63,11 @@ class ServicesController < ApplicationController
 			productName = params[:newService][:name]
 			description = params[:newService][:description]
 			type = params[:newService][:type]
+			active = ActiveModel::Type::Boolean.new.cast(params[:newService][:active])
 			connectAccount = ENV['connectAccount']
 
 
-			curlCall = `curl -H "appName: #{ENV['appName']}" -d "name=#{productName}&description=#{description}&active=#{ActiveModel::Type::Boolean.new.cast(params[:newService][:active])}&type=#{type}&connectAccount=#{connectAccount}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X POST #{SITEurl}/v1/products`
+			curlCall = `curl -H "appName: #{ENV['appName']}" -d "name=#{productName}&description=#{description}&active=#{active}&type=#{type}&connectAccount=#{connectAccount}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X POST #{SITEurl}/v1/products`
 			
 			response = Oj.load(curlCall)
 		
@@ -82,18 +83,22 @@ class ServicesController < ApplicationController
 	end
 
 	def update
-		cost = params[:updateService][:cost]
-		title = params[:updateService][:title]
-		desc = params[:updateService][:desc]
+		appName = ENV['appName']
+		productName = params[:updateService][:name]
+		description = params[:updateService][:description]
+		type = params[:updateService][:type]
+		active = ActiveModel::Type::Boolean.new.cast(params[:updateService][:active])
+		connectAccount = ENV['connectAccount']
 
 
-		curlCall = `curl -d "desc=#{desc}&cost=#{cost}&title=#{title}&" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X PATCH #{SITEurl}/v1/time-slots/#{params[:id]}`
+		curlCall = `curl -H "appName: #{ENV['appName']}" -d "name=#{productName}&description=#{description}&active=#{active}&type=#{type}&connectAccount=#{connectAccount}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X PATCH #{SITEurl}/v1/products/#{params[:id]}`
 		
 		response = Oj.load(curlCall)
 		
 		if !response.blank? && response['success']
 			flash[:success] = "Service Updated"
-			redirect_to services_path
+			redirect_to service_path(id: params[:id], connectAccount: connectAccount)
+			return
 		else
 			flash[:alert] = "Trouble connecting. Try again later."
 		end
@@ -114,7 +119,12 @@ class ServicesController < ApplicationController
 	end
 
 	def edit
-		show
+		if !params['product'].blank?
+			@product = params['product']
+		else
+			flash[:error] = "No product found"
+			redirect_to request.referrer
+		end
 	end
 
 	def new

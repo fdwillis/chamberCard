@@ -79,8 +79,6 @@
               <%= button_tag type: 'submit', class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" do %>
                 <i class="fa fa-shopping-cart" aria-hidden="true"></i> Add To Cart
               <% end %>
-            <% else %>
-               
             <% end %> 
           <% end %> 
         <% end %> 
@@ -88,7 +86,7 @@
     <% else %>
       <h5>Description</h5>
       <p class="mt-n1 font-12 mb-0" ><%= @product['description'] %></p>
-      <%= link_to "/services", class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' do %>
+      <%= link_to edit_service_path(id: params[:id], product: @product), class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' do %>
         <i class="fa fa-pencil"></i> Edit
       <% end %>
     <% end %> 

@@ -1,15 +1,13 @@
-<div class="card card-style">
-  <div class="content mb-0">
-		<%= form_for :newService, url: services_path do |f| %>
+
 
 			<div class="input-style has-icon">
 			    <span class="color-highlight input-style-2">Product Name</span>
 			    <em>(required)</em>
-			    <%= f.text_field :name, class: "form-control", required: true %>
+			    <%= f.text_field :name, class: "form-control", required: true, value: !@product['name'].blank? ? @product['name'] : nil %>
 			</div>
 			<div class="input-style has-icon input-required">
 			    <span class="color-highlight input-style-2">Description</span>
-			    <%= f.text_area :description, class: "form-control", size: "10x3" %>
+			    <%= f.text_area :description, class: "form-control", size: "10x3", value: !@product['description'].blank? ? @product['description'] : nil %>
 			</div> 
       <br>
       <br>
@@ -20,7 +18,7 @@
           </div>
           <div class="ml-auto mr-4 pr-2">
               <div class="custom-control ios-switch ios-switch-icon">
-                  <%= f.check_box :active, class: 'ios-input', id: 'toggle-id-2' %>
+                  <%= f.check_box :active, class: 'ios-input', id: 'toggle-id-2', value: !@product['active'].blank? ? @product['active'] : nil %>
                   <label class="custom-control-label" for="toggle-id-2"></label>
                   <i class="fa fa-check font-11 color-white"></i>
                   <i class="fa fa-times font-11 color-white"></i>
@@ -39,6 +37,4 @@
 	    <br>
 		  <%= f.submit "Add Service", class: "btn btn-full bg-yellow1-dark btn-m text-uppercase rounded-sm shadow-l col-12 mb-3 mt-4 font-900"%>
 
-		<% end %>
-	</div>
-</div>
+		
