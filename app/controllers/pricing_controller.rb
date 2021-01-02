@@ -65,6 +65,7 @@ class PricingController < ApplicationController
 
 		if !params['price'].blank?
 			@price = params['price']
+			# debugger
 		else
 			flash[:error] = "No price found"
 			redirect_to request.referrer
@@ -76,7 +77,7 @@ class PricingController < ApplicationController
 		if !pricingParams['unit_amount'].blank?
 			if current_user&.authentication_token
 				mergedParams = serviceParams.merge(pricingParams)
-				debugger
+				
 				params = {
 					'product' => mergedParams[:service_id],
 					'unit_amount' => pricingParams['unit_amount'].to_i * 100,

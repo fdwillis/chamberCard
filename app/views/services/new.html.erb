@@ -10,7 +10,9 @@
 <div class="card card-style">
   <div class="content mb-0">
 		<%= form_for :newService, url: services_path do |f| %>
-			<%= render partial: 'form', f: f %>
+			<%= render partial: 'form', locals: { f: f } %>
+      <%= f.submit "Add Service", class: "btn btn-full bg-yellow1-dark btn-m text-uppercase rounded-sm shadow-l col-12 mb-3 mt-4 font-900"%>
+
 		<% end %>
 	</div>
 </div>

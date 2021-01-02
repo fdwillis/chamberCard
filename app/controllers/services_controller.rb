@@ -64,6 +64,7 @@ class ServicesController < ApplicationController
 			description = params[:newService][:description]
 			type = params[:newService][:type]
 			active = ActiveModel::Type::Boolean.new.cast(params[:newService][:active])
+			debugger
 			connectAccount = ENV['connectAccount']
 
 

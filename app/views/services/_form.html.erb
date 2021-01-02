@@ -16,9 +16,10 @@
           <div class="pt-1">
               <h5 data-activate="toggle-id-2" class="font-600"><strong><em>Available Now</em></strong></h5>
           </div>
+          
           <div class="ml-auto mr-4 pr-2">
               <div class="custom-control ios-switch ios-switch-icon">
-                  <%= f.check_box :active, class: 'ios-input', id: 'toggle-id-2', value: !@product['active'].blank? ? @product['active'] : nil %>
+                  <%= f.check_box :active, class: 'ios-input', id: 'toggle-id-2' %>
                   <label class="custom-control-label" for="toggle-id-2"></label>
                   <i class="fa fa-check font-11 color-white"></i>
                   <i class="fa fa-times font-11 color-white"></i>
@@ -35,6 +36,23 @@
 	    <br>
 	    <br>
 	    <br>
-		  <%= f.submit "Add Service", class: "btn btn-full bg-yellow1-dark btn-m text-uppercase rounded-sm shadow-l col-12 mb-3 mt-4 font-900"%>
 
-		
+<script type="text/javascript">
+  window.onload = packageOrNah;
+  function packageOrNah() {
+    // Get the checkbox
+    var checkBox = document.getElementById("toggle-id-2");
+    var onOffDIV = document.getElementById("one-offprice");
+
+    // If the checkbox is checked, display the output text
+    if (checkBox.checked == true){
+      // text.style.display = "block";
+      console.log("CHECKED");
+      onOffDIV.style.display = "none";
+    } else {
+      console.log("UNCHECKED");
+      onOffDIV.style.display = "block";
+    }
+  }
+
+</script>
