@@ -154,6 +154,10 @@ class User < ApplicationRecord
     end
   end
 
+  def member?
+    !stripeUserID.blank? && !stripeSubscription.blank? && stripeSourceVerified == true
+  end
+
   def customer?
     customerAccess.include?(accessPin)      
   end

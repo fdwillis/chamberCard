@@ -46,38 +46,52 @@
 		          </div>
 					  <% end %>
 				  <% end %>
-          
-		          <div class="divider"></div>
+          <div class="divider"></div>
           <div class="d-flex mb-3">
-              <div class="mr-3">
+              <div class="mr-3 text-left">
                   <h5 class="font-600">Fee &nbsp;<i class="fa fa-exclamation-circle font-14 mt-1 color-yellow2-dark scale-icon mr-2" data-toggle="tooltip" data-placement="right" title="" data-original-title="Miser Brands service fee includes processing fees"></i></h5>
+                  <% if current_user&.stripeSourceVerified && !current_user&.member? %>
+                    <p class="font-600">Save up to <%= number_to_currency((@cart['serviceFee'] * 0.71) * 0.01, precision: 2) %> <i class="fa fa-exclamation-circle font-14 mt-1 color-yellow2-dark scale-icon mr-2" data-toggle="tooltip" data-placement="right" title="" data-original-title="Members can save up to 71% in service fees, choose a monthly plan that works for you!"></i>
+                      <br>
+                      <a href="">Become a Member &amp; Save</a>
+                    </p>
+                  <% elsif current_user&.member? %>
+                    show member savings
+                  <% end %>
+
               </div>
-              <div class="ml-auto">
+              <div class="ml-auto text-right">
                   <h4><%= number_to_currency(@cart['serviceFee'] * 0.01, precision: 2) %></h4>
+
+                  <% if current_user&.stripeSourceVerified && !current_user&.member? %>
+                    <p><%= number_to_currency((@cart['serviceFee'] - (@cart['serviceFee'] * 0.71)) * 0.01, precision: 2) %></p>
+                  <% elsif current_user&.member? %>
+                    show member savings
+                  <% end %>
               </div>
           </div>
           <div class="d-flex">
-              <div class="mr-3">
+              <div class="mr-3 text-left">
                   <h5 class="font-600">Sub Total</h5>
               </div>
-              <div class="ml-auto">
+              <div class="ml-auto text-right">
                   <h4>
-                  	<%= number_to_currency(@cart['subItemsTotal'] * 0.01, precision: 2) %>
+                    <%= number_to_currency(@cart['subItemsTotal'] * 0.01, precision: 2) %>
                   </h4>
               </div>
           </div>
           <div class="divider"></div>
           <div class="d-flex mb-3">
-              <div class="mr-3">
+              <div class="mr-3 text-left">
                   <h4 class="font-20">Grand Total</h4>
               </div>
-              <div class="ml-auto">
+              <div class="ml-auto text-right">
                   <h4 class="font-20">
-                  	<%= number_to_currency(@cart['subTotal'] * 0.01, precision: 2) %>
+                    <%= number_to_currency(@cart['subTotal'] * 0.01, precision: 2) %>
                   </h4>
               </div>
           </div>
-          <div class="divider"></div>
+          
           <% if @cart['carts'].map{|c,i| c['cart']}.flatten.map{|c,i|c['quantity']}.sum != 0 %>
 
             <%= form_for :checkout, url: checkout_path do |f| %>

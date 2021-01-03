@@ -96,26 +96,6 @@
               <% end %>
             <% end %>
           </div>
-<!--           <h2 class='text-center'>New Payment Source</h2>
-          <div class="row text-center">
-              <% if !current_user&.manager? %>
-                <a href="#" data-menu="menu-transaction-transfer" class="col-12">
-                    <div class="card card-style">
-                        <i class="fa fa-credit-card color-highlight fa-2x mt-3"></i>
-                        <h1 class="pt-2 font-18">Card</h1>
-                        <p class="font-11 opacity-50 mt-n2 mb-3">Tap to add another card</p>
-                    </div>
-                </a>
-              <% else %>
-                <a href="#" data-menu="menu-transaction-request" class="col-12">
-                    <div class="card card-style">
-                        <i class="fa fa-university color-highlight fa-2x mt-3"></i>
-                        <h1 class="pt-2 font-18">Bank</h1>
-                        <p class="font-11 opacity-50 mt-n2 mb-3">Tap to add Bank Account</p>
-                    </div>
-                </a>
-              <% end %>
-          </div> -->
         <% else %>
           <div class="row text-center">
             <% if !current_user&.manager? %>
@@ -206,60 +186,6 @@
     </div>   
   <% end %>      
       
-  <!-- <div class="card card-style">
-      <div class="content mb-2">
-          <h2>Social Profiles</h2>
-          <p>
-              Activate options or set different elements here that are different from basic fields.
-          </p>
-          <div class="list-group list-custom-small list-icon-0">      
-              <a href="#">
-                  <i class="fab font-14 fa-facebook-f rounded-s color-facebook"></i>
-                  <span>Facebook</span>
-                  <span class="badge text-uppercase bg-green1-dark">Connected</span>
-                  <i class="fa fa-chevron-right disabled"></i>
-              </a>        
-              <a href="#">
-                  <i class="fab font-14 fa-twitter rounded-s color-twitter"></i>
-                  <span>Twitter</span>
-                  <span class="badge text-uppercase bg-green1-dark">Connected</span>
-                  <i class="fa fa-chevron-right disabled"></i>
-              </a>        
-              <a href="#">
-                  <i class="fab font-14 fa-instagram rounded-s color-instagram"></i>
-                  <span>Instagram</span>
-                  <span class="badge text-uppercase bg-red2-dark">ACCOUNT ERROR</span>
-                  <i class="fa fa-chevron-right disabled"></i>
-              </a>        
-              <a class="border-0" href="#">
-                  <i class="fab font-14 fa-linkedin-in rounded-s color-linkedin"></i>
-                  <span>LinkedIn</span>
-                  <span class="badge text-uppercase bg-yellow1-dark">PENDING APPROVAL</span>
-                  <i class="fa fa-chevron-right disabled"></i>
-              </a>        
-          </div>
-      </div>
-  </div> -->
-  
-  <!-- <div class="card card-style">
-      <div class="content mb-0">
-          <h2 class="mb-0">Account Security</h2>
-          <p class="mb-5">
-              Activate options or set different elements here that are different from basic fields.
-          </p>
-          <div class="input-style input-style-2 input-required">
-              <span class="color-highlight input-style-1-active">Password</span>
-              <em>(required)</em>
-              <input type="password" class="form-control"  placeholder="" value="password here">
-          </div> 
-          <div class="input-style input-style-2 input-required">
-              <span class="color-highlight input-style-1-active">Confirm Password</span>
-              <em>(required)</em>
-              <input type="password" class="form-control"  placeholder="" value="password here">
-          </div> 
-          <a href="#" class="btn btn-full bg-green1-dark btn-m text-uppercase rounded-sm shadow-l mb-3 mt-4 font-900">Save Password</a>
-      </div>
-  </div>  -->
 <% else %>
 	<div class="page-content ">
         <a href="<%= new_user_registration_url %>" class="btn btn-full btn-s rounded-s text-uppercase font-900 bg-green1-dark">CREATE ACCOUNT</a>

@@ -1,2 +1,2 @@
 User.destroy_all
-User.create!(email: 'v@v.com', password: 'vvvvvvvv', username: 'v', uuid: SecureRandom.uuid[0..7])
+manager = User.create!(username: 'manager', stripeSourceVerified: true, stripeUserID: 'acct_1I49yyQnuCIsERus', email: 'm@m.com', password: 'mmmmmmmm', uuid: SecureRandom.uuid[0..7], accessPin: 'manager')
