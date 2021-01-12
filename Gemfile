@@ -34,7 +34,9 @@ gem 'keen'
 gem 'lazy_high_charts'
 gem 'oj'
 gem 'curb'
+gem 'split', require: 'split/dashboard'
 gem 'byebug'
+gem 'redis'
 gem 'rails_12factor', group: :production
 # gem 'webpacker-pwa', group: :development
 

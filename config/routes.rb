@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 	mount Pwa::Engine, at: ''
+	mount Split::Dashboard, at: 'split'
 
 	
   devise_for :users, path: '/', path_names: { sign_in: 'auth/login', sign_out: 'auth/logout', sign_up: 'auth/sign-up' }, controllers: { registrations: 'registrations', sessions: 'sessions'} do

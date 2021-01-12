@@ -39,25 +39,16 @@ class HomeController < ApplicationController
 		# when creating plans add lookup_keys to be able to divide by monthly/annual
 
 		if current_user&.authentication_token
-			curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "" -X GET #{SITEurl}/v1/subscriptions?storeCost=#{ENV['storeCost']}`
+			# low store
+			basicMonthly = ab_test(:basicMonthlyMembership, '1I8T1pHvKdEDURjL2CmrNeGT', {'1I8T1qHvKdEDURjLyI58Lxb4'=> 5}, {'1I8T1qHvKdEDURjLgJjXRvgZ'=> 4})
+			saverMonthly = ab_test(:saverMonthlyMembership, '1I8T4CHvKdEDURjLD0FNULvK' , {'1I8T4CHvKdEDURjLXWM6XXEc' => 5}, {'1I8T4CHvKdEDURjLyg4f2LXK' => 4})
+			eliteMonthly = ab_test(:eliteMonthlyMembership, '1I8T4xHvKdEDURjLtEaXVM8M' , {'1I8T4xHvKdEDURjLp9Os3fqI' => 5}, {'1I8T4xHvKdEDURjLdJNuoxOR' => 4})
+		
 
-	    response = Oj.load(curlCall)
-	    
-# debugger
-	    if !response.blank? && response['success']
-				# @annualPlans = find the annual plan to the monthly plan pulled from A/B test
-				
-				@basicMonthlyMembership = response['basicMonthly']
-				@saverMonthlyMembership = response['saverMonthly']
-				@eliteMonthlyMembership = response['eliteMonthly']
-				
-				
+			@basicMonthlyMembership = Stripe::Price.retrieve("price_#{basicMonthly}")
+			@saverMonthlyMembership = Stripe::Price.retrieve("price_#{saverMonthly}")
+			@eliteMonthlyMembership = Stripe::Price.retrieve("price_#{eliteMonthly}")
 
-				# filter to show for ab pricing
-
-			else
-				flash[:alert] = "Trouble connecting. Try again later."
-			end
 		end
 		
 	end
