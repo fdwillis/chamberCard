@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 2020_09_16_160222) do
     t.string "stripeUserID"
     t.string "stripeSubscription"
     t.boolean "stripeSourceVerified", default: false
+    t.integer "serviceFee", default: 35, null: false
     t.string "accessPin"
     t.string "referredBy"
     t.string "authentication_token"

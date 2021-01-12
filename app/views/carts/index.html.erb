@@ -53,7 +53,7 @@
                   <% if current_user&.stripeSourceVerified && !current_user&.member? %>
                     <p class="font-600">Save up to <%= number_to_currency((@cart['serviceFee'] * 0.71) * 0.01, precision: 2) %> <i class="fa fa-exclamation-circle font-14 mt-1 color-yellow2-dark scale-icon mr-2" data-toggle="tooltip" data-placement="right" title="" data-original-title="Members can save up to 71% in service fees, choose a monthly plan that works for you!"></i>
                       <br>
-                      <a href="">Become a Member &amp; Save</a>
+                      <a href="/membership">Become a Member &amp; Save</a>
                     </p>
                   <% elsif current_user&.member? %>
                     show member savings

@@ -11,7 +11,7 @@ Rails.application.configure do
 
   # Do not eager load code on boot.
   config.eager_load = false
-  config.hosts << "good-cougar-21.loca.lt"
+  config.hosts << "shaggy-rat-52.loca.lt"
   
 
   # Show full error reports.

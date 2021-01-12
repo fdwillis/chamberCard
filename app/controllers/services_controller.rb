@@ -2,7 +2,6 @@ class ServicesController < ApplicationController
 	before_action :authenticate_user!, except: :index
 
 	def index
-		@starter_points = ab_test(:new_user_free_points, '100', '200', '300')
 		if current_user&.authentication_token
 			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/products`
 		else

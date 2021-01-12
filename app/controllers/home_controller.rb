@@ -32,4 +32,33 @@ class HomeController < ApplicationController
 			reset_session
 		end
 	end
+
+	def membership
+		profile
+		# if current member show membership with discount saving
+		# when creating plans add lookup_keys to be able to divide by monthly/annual
+
+		if current_user&.authentication_token
+			curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "" -X GET #{SITEurl}/v1/subscriptions?storeCost=#{ENV['storeCost']}`
+
+	    response = Oj.load(curlCall)
+	    
+# debugger
+	    if !response.blank? && response['success']
+				# @annualPlans = find the annual plan to the monthly plan pulled from A/B test
+				
+				@basicMonthlyMembership = response['basicMonthly']
+				@saverMonthlyMembership = response['saverMonthly']
+				@eliteMonthlyMembership = response['eliteMonthly']
+				
+				
+
+				# filter to show for ab pricing
+
+			else
+				flash[:alert] = "Trouble connecting. Try again later."
+			end
+		end
+		
+	end
 end

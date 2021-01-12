@@ -40,12 +40,11 @@
                 <span class="badge bg-green1-dark" style="width: 30px;"><%= @cart['carts'].map{|c,i| c['cart']}.flatten.map{|c,i|c['quantity']}.sum %></span>
               <% end %>
             <% end %>
-            <%= link_to '#', 'data-menu'=>"menu-sidebar-right-1", class: 'header-icon header-icon-4' do %>
-              <!-- <i class="fa fa-bars"></i> -->
+            
+          <% end %>
 
-                  <i class="fa fa-bars font-14"></i>
-                  <!-- <i class="fa fa-bars font-8 opacity-10"></i> -->
-            <% end %>
+          <%= link_to '#', 'data-menu'=>"menu-sidebar-right-1", class: 'header-icon header-icon-4' do %>
+            <i class="fa fa-bars font-14"></i>
           <% end %>
         </div>
 
@@ -162,11 +161,24 @@
                     </a>        
                 </div>
             </div> -->
+            <% if current_user&.stripeSourceVerified && !current_user&.member? %>
+              <div class="mr-3 ml-3">
+                <span class="text-uppercase font-900 font-11 opacity-30">Membership Savings</span>
+                <div class="list-group list-custom-small list-icon-0">
+                    <a href="/membership">
+                        <i class="fa font-14 fa-users color-green1-dark"></i>
+                        <span>Become a Member</span>
+                        <i class="fa fa-angle-right"></i>
+                    </a>   
+                </div>
+              </div>
+            <% end %>
+
             <div class="mr-3 ml-3">
               <span class="text-uppercase font-900 font-11 opacity-30">Partners | Miser Brands</span>
               <div class="list-group list-custom-small list-icon-0">
                   <a href="#">
-                      <i class="fa font-14 fa-shopping-bag color-green1-dark"></i>
+                      <i class="fa font-14 fa-shopping-bag color-yellow1-dark"></i>
                       <span>Launch A Store</span>
                       <i class="fa fa-angle-right"></i>
                   </a>   
@@ -207,7 +219,7 @@
                         </div>
                         <i class="fa fa-angle-right"></i>
                     </a>         -->
-                    <a data-trigger-switch="sidebar-12-switch-3" href="<%= destroy_user_session_path %>" class="border-0">
+                    <a href="<%= destroy_user_session_path %>">
                         <i class="fa font-14 fa-sign-out color-blue2-dark"></i>
                         <span>Logout</span>
                         

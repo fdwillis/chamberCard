@@ -6,6 +6,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
       t.string :stripeUserID, unique: true
       t.string :stripeSubscription, unique: true
       t.boolean :stripeSourceVerified, default: false
+      t.integer :serviceFee, null: false, default: 35
       ## Database authenticatable
       t.string :accessPin
       t.string :referredBy
