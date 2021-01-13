@@ -24,7 +24,23 @@
                     <div class="col-4">
                         <div class="input-style input-style-2">
                             <span class="input-style-1-active">Quantity</span>
-                            <input type="number" min="1" max="999" style="border-width:1px;" placeholder="1" readonly="true" value="<%= cart['quantity'] %>">
+
+
+
+                            <%= form_for :addToCart, :html => {:id => cart['stripePriceInfo']['id']}, url: updateQuantity_path(id: @cart['carts'][indx]['connectAccount']) do |f| %>
+
+                              <%= f.hidden_field :sellerItem, value: cart['stripePriceInfo']['id'] %>
+                              <%= f.number_field :quantity, id: cart['stripePriceInfo']['id'], onchange: "packageOrNah()", value: cart['quantity'] %>
+                              <div id="one-offprice" class="switch-is-checked" style="display: none;">
+                                <%= f.submit "update", class: 'btn btn-full bg-yellow2-dark text-uppercase font-900 rounded-sm', 'style'=>"text-align: center;"  %>
+                              </div>
+                            <% end %>
+
+
+
+
+
+
                         </div>
                     </div>
                     <div class="col-4">
@@ -46,6 +62,8 @@
               </div>
             <% end %>
           <% end %>
+          
+
           <div class="divider"></div>
           <div class="d-flex mb-3">
               <div class="mr-3 text-left">
@@ -109,3 +127,16 @@
       </div>
   </div>
 </div>
+
+
+<script type="text/javascript">
+  function packageOrNah() {
+    // Get the checkbox
+    var onOffDIV = document.getElementById("one-offprice");
+
+    // If the checkbox is checked, display the output text
+      // text.style.display = "block";
+      onOffDIV.style.display = "block";
+  }
+
+</script>

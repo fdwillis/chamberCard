@@ -28,6 +28,7 @@ Rails.application.routes.draw do
 		post "acceptRequest", to: 'schedule#acceptRequest', as: "acceptRequest"
 	
 		post "checkout", to: 'carts#checkout', as: "checkout"
+		post "updateQuantity", to: 'carts#updateQuantity', as: "updateQuantity"
 		
 		post "join", to: 'home#join', as: "join"
 		

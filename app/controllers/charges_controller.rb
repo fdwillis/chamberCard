@@ -9,7 +9,6 @@ class ChargesController < ApplicationController
 				
 	    if !response.blank? && response['success']
 				@payments = response['payments']
-				debugger
 				@overdue = response['overdue']
 			elsif response['message'] == "No purchases found"
 				@message = response['message']

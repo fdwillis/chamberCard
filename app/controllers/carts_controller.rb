@@ -28,6 +28,29 @@ class CartsController < ApplicationController
 	  end
 	end
 
+	def updateQuantity
+		params = {
+			'line_items' => [
+				{
+					'stripePriceID' => cartParams['sellerItem'],
+				  'quantity' 			=> cartParams['quantity']
+				}
+			]
+		}.to_json
+
+		if current_user&.authentication_token
+			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X PATCH #{SITEurl}/v1/carts/#{grabID}`
+			
+			
+	    response = Oj.load(curlCall)
+
+	    if !response.blank? && response['success']
+	    	flash[:success] = "Cart Updated"
+	    	redirect_to request.referrer
+	    end
+	  end
+	end
+
 	# def show
 	# 	params = {
 	# 		'line_items' => [
