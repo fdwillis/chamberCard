@@ -30,8 +30,8 @@
                             <%= form_for :addToCart, :html => {:id => cart['stripePriceInfo']['id']}, url: updateQuantity_path(id: @cart['carts'][indx]['connectAccount']) do |f| %>
 
                               <%= f.hidden_field :sellerItem, value: cart['stripePriceInfo']['id'] %>
-                              <%= f.number_field :quantity, id: cart['stripePriceInfo']['id'], onchange: "packageOrNah()", value: cart['quantity'] %>
-                              <div id="one-offprice" class="switch-is-checked" style="display: none;">
+                              <%= f.number_field :quantity, id: cart['stripePriceInfo']['id'], onchange: "packageOrNah(#{cart['stripePriceInfo']['id']});", value: cart['quantity'] %>
+                              <div id="showthis<%= cart['stripePriceInfo']['id'] %>" style="display: none;">
                                 <%= f.submit "update", class: 'btn btn-full bg-yellow2-dark text-uppercase font-900 rounded-sm', 'style'=>"text-align: center;"  %>
                               </div>
                             <% end %>
@@ -130,13 +130,14 @@
 
 
 <script type="text/javascript">
-  function packageOrNah() {
+  function packageOrNah(thisID) {
     // Get the checkbox
-    var onOffDIV = document.getElementById("one-offprice");
+    var onOffDIV = document.getElementById("showthis"+thisID.id);
 
     // If the checkbox is checked, display the output text
-      // text.style.display = "block";
       onOffDIV.style.display = "block";
+      console.log(onOffDIV);
+      console.log(thisID.id);
   }
 
 </script>
