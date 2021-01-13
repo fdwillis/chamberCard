@@ -1,17 +1,17 @@
-<div class="page-content header-clear-medium" style="min-height: 511px;">
+<div class="page-content header-clear-medium">
                 
   <div class="card card-style">
       <div class="content">
       	<% if current_user.member? %>
+        
           <div class="d-flex">
               <div class="align-self-center pr-3">
                   <i class="fa fa-check-circle color-green1-dark fa-5x"></i>
               </div>
               <div class="align-self-center">
                   <h4>Valid Membership</h4>
-                  <p class="line-height-s">
-                      Your pack will expires <strong>15th of May, 2025</strong>. It will renew automatically on that day.
-                  </p>
+                  <h2><small>Renews <%= Time.at(@subsc['current_period_end']).strftime("%a %b #{Time.at(@subsc['current_period_end']).day.ordinalize}, %Y") %></small></h2>
+                  <p class="line-height-s">Members save on every transaction fee! This helps keep us in business.</p>
               </div>
           </div>
         <% else %>
@@ -31,7 +31,7 @@
             </div>
             <div class="align-self-center">
               <h4>35% Standard Fee</h4>
-              <p class="line-height-s">Your monthly membership helps reduce the standard transaction fee!</p>
+              <p class="line-height-s">Your monthly membership reduces the standard transaction fee!</p>
             </div>
           </div>
         <% end %>
@@ -42,59 +42,36 @@
   <% if current_user.member? %>
   	<div class="card card-style">
       <div class="content">
-          <h3 class="mb-0">Payment History</h3>
-          <p>
-              Your invoices for your current subscriptions..
-          </p>
-
-          <div class="row mb-0">
-              <div class="col-4">
-                  <h5>Date</h5>
-              </div>
-              <div class="col-4">
-                  <h5>Tax Nr.</h5>
-              </div>
-              <div class="col-4">
-                  <h5>Total</h5>
-              </div>
+<!--         subc <%= @subsc %><br>
+        prod <%= @prod %><br>
+        price <%= @price %><br> -->
+        <h3 class="mb-0"><%= @prod['name'] %></h3>
+        <!-- <p>
+            Basic Plan member holders save 5% on every transaction.
+        </p> -->
+        <div class="row mb-0">
+          <div class="divider w-100 mt-2 mb-2 divider-margins"></div>
+          <div class="col-7">
+              <h5 class="font-600 opacity-80">Non Member Fee</h5>
           </div>
-          <div class="divider mt-2 mb-2"></div>
-          <a href="#" class="row mb-0">
-              <div class="col-4">
-                  <span class="font-13">15.08.2025</span>
-              </div>
-              <div class="col-4">
-                  <span class="font-13">1351624</span>
-              </div>
-              <div class="col-4">
-                  <span class="font-13">$153.15</span>
-              </div>
-          </a>
-          <div class="divider mt-2 mb-2"></div>
-          <a href="#" class="row mb-0">
-              <div class="col-4">
-                  <span class="font-13">15.08.2024</span>
-              </div>
-              <div class="col-4">
-                  <span class="font-13">1253255</span>
-              </div>
-              <div class="col-4">
-                  <span class="font-13">$135.64</span>
-              </div>
-          </a>
-          <div class="divider mt-2 mb-2"></div>
-          <a href="#" class="row mb-0">
-              <div class="col-4">
-                  <span class="font-13">15.08.2023</span>
-              </div>
-              <div class="col-4">
-                  <span class="font-13">1151351</span>
-              </div>
-              <div class="col-4">
-                  <span class="font-13">$146.77</span>
-              </div>
-          </a>
-          
+          <div class="col-5">
+              <h5>35%</h5>
+          </div>
+          <div class="divider w-100 mt-2 mb-2 divider-margins"></div>
+          <div class="col-7">
+              <h5 class="font-600 opacity-80">Member Fee</h5>
+          </div>
+          <div class="col-5  mb-0">
+              <h5><%= current_user.serviceFee %>%</h5>
+          </div>
+          <div class="divider w-100 mt-2 mb-2 divider-margins"></div>
+          <div class="col-7">
+              <h5 class="font-600 opacity-80">Monthly Price</h5>
+          </div>
+          <div class="col-5">
+              <h5><%= number_to_currency((@price['unit_amount'] * 0.01), precision: 2) %></h5>
+          </div>
+        </div>
       </div>
 	  </div>
 	<% else %>
@@ -120,10 +97,12 @@
 	            <div class="col-5  mb-4">
 	                <h5>30%</h5>
 	            </div>
-
-	            <div class="col-8 offset-2  mb-4">
-		            <a href="/services" class="btn btn-full bg-green1-dark btn-m text-uppercase font-800 rounded-sm"><%= number_to_currency(@basicMonthlyMembership['unit_amount'] * 0.01, precision: 2) %> per Month</a>
-		          </div>
+              <div class="col-12 offset-3 mb-4 ">
+                <%= form_for :join, url: join_path do |f| %>
+                  <%= f.hidden_field :plan, value: @basicMonthlyMembership['id'] %>
+                  <%= f.submit "#{number_to_currency(@basicMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm' %>
+                <% end %>
+              </div>
 	          </div>
 	      </div>
 	  </div>
@@ -148,9 +127,13 @@
 	            <div class="col-5  mb-4">
 	                <h5>25%</h5>
 	            </div>
-	            <div class="col-8 offset-2  mb-4">
-		            <a href="/services" class="btn btn-full bg-green1-dark btn-m text-uppercase font-800 rounded-sm col-12"><%= number_to_currency(@saverMonthlyMembership['unit_amount'] * 0.01, precision: 2) %> per Month</a>
-		          </div>
+
+              <div class="col-12 offset-3 mb-4 ">
+                <%= form_for :join, url: join_path do |f| %>
+                  <%= f.hidden_field :plan, value: @saverMonthlyMembership['id'] %>
+                  <%= f.submit "#{number_to_currency(@saverMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm' %>
+                <% end %>
+              </div>
 	          </div>
 	      </div>
 	  </div>
@@ -185,9 +168,12 @@
 	            <div class="col-5 mb-4">
 	                <h5>10%</h5>
 	            </div>
-	            <div class="col-8 offset-2  mb-4">
-		            <a href="/services" class="btn btn-full bg-green1-dark btn-m text-uppercase font-800 rounded-sm col-12"><%= number_to_currency(@eliteMonthlyMembership['unit_amount'] * 0.01, precision: 2) %> per Month</a>
-		          </div>
+              <div class="col-12 offset-3 mb-4 ">
+                <%= form_for :join, url: join_path do |f| %>
+                  <%= f.hidden_field :plan, value: @eliteMonthlyMembership['id'] %>
+                  <%= f.submit "#{number_to_currency(@eliteMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm' %>
+                <% end %>
+              </div>
 	          </div>
 	      </div>
 	  </div>

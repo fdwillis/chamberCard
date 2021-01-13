@@ -158,6 +158,10 @@ class User < ApplicationRecord
     !stripeUserID.blank? && !stripeSubscription.blank? && stripeSourceVerified == true
   end
 
+  def missingSub?
+    !stripeUserID.blank? && stripeSubscription.blank? && stripeSourceVerified == true
+  end
+
   def customer?
     customerAccess.include?(accessPin)      
   end

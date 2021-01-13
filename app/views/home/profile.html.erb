@@ -53,7 +53,6 @@
           <!-- <h2>Payment Information</h2> -->
           <p class="mb-5">
             <% if current_user&.customer? %>
-              Your account is unable to make purchases. If you would like to purchase services, get started by clicking 'Proceed' below!
             <% end %>
             <% if current_user&.manager? %>
               Your account is unable to charge clients &amp; post services for sale. If you would like to activate your account to begin offering services, get started by clicking 'Proceed' below!
@@ -75,13 +74,10 @@
                 <div style="align-items: center;">
                   <% if s['brand'] == "Visa" %>
                     <%= image_tag "pay-1.png","width"=>"50", stlye: '' %>
-                    <h5 class="mb-n2">Visa</h5>
                   <% elsif s['brand'] == "MasterCard" %>
                     <%= image_tag "pay-2.png","width"=>"50" %>
-                    <h5 class="mb-n2">MasterCard</h5>
                   <% elsif s['brand'] == "American Express" %>
                     <%= image_tag "pay-5.png","width"=>"50" %>
-                    <h5 class="mb-n2">American Express</h5>
                   <% end %>
                     <p class="mt-n1 mb-0 font-10">**** <%= s['last4'] %></p>
                 </div>  
@@ -90,7 +86,7 @@
               <% if s['object'] == 'bank_account' %>
                 <div class="text-center card card-style">
                     <i class="fa fa-university color-highlight fa-2x mt-3"></i>
-                    <h1 class="pt-2 font-18"><%= s['last4'] %></h1>
+                    <h1 class="pt-2 font-18">****<%= s['last4'] %></h1>
                     <p class="font-11 opacity-50 mt-n2 mb-3"><%= s['routing_number'] %></p>
                 </div>
               <% end %>

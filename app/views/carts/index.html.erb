@@ -1,5 +1,6 @@
 
-
+<div class="page-content header-clear-medium">
+  
         
   <div class="card card-style text-center">
       <div class="content">
@@ -11,8 +12,7 @@
   </div>
   <div class="card card-style">
       <div class="content">
-				  <% @cart['carts'].map{|c,i| c['cart']}.each_with_index do |stored, indx| %>
-          <%=  %>
+          <% @cart['carts'].map{|c,i| c['cart']}.each_with_index do |stored, indx| %>
             <% stored.each do |cart| %>
               <div class="mb-4">
                 <div class="mr-3">
@@ -39,24 +39,24 @@
                       <% end %>
                     </div>
                   </div>
-	              </div>
-	              <!-- <div class="ml-auto">
-	                  <img src="images/pictures/10s.jpg" class="rounded-m shadow-xl" width="130">
-	              </div> -->
-		          </div>
-					  <% end %>
-				  <% end %>
+                </div>
+                <!-- <div class="ml-auto">
+                    <img src="images/pictures/10s.jpg" class="rounded-m shadow-xl" width="130">
+                </div> -->
+              </div>
+            <% end %>
+          <% end %>
           <div class="divider"></div>
           <div class="d-flex mb-3">
               <div class="mr-3 text-left">
                   <h5 class="font-600">Fee &nbsp;<i class="fa fa-exclamation-circle font-14 mt-1 color-yellow2-dark scale-icon mr-2" data-toggle="tooltip" data-placement="right" title="" data-original-title="Miser Brands service fee includes processing fees"></i></h5>
                   <% if current_user&.stripeSourceVerified && !current_user&.member? %>
-                    <p class="font-600">Save up to <%= number_to_currency((@cart['serviceFee'] * 0.71) * 0.01, precision: 2) %> <i class="fa fa-exclamation-circle font-14 mt-1 color-yellow2-dark scale-icon mr-2" data-toggle="tooltip" data-placement="right" title="" data-original-title="Members can save up to 71% in service fees, choose a monthly plan that works for you!"></i>
-                      <br>
+                    <h4 class="font-600 opacity-50">Save up to <%= number_to_currency((@cart['serviceFee'] * 0.71) * 0.01, precision: 2) %><br>
                       <a href="/membership">Become a Member &amp; Save</a>
-                    </p>
+                    </h4>
                   <% elsif current_user&.member? %>
-                    show member savings
+                    <p class="font-600">You Saved <i class="fa fa-exclamation-circle font-14 mt-1 color-yellow2-dark scale-icon mr-2" data-toggle="tooltip" data-placement="right" title="" data-original-title="Transaction fees are lowered for members, enjoy your savings!"></i>
+                    </p>
                   <% end %>
 
               </div>
@@ -64,9 +64,9 @@
                   <h4><%= number_to_currency(@cart['serviceFee'] * 0.01, precision: 2) %></h4>
 
                   <% if current_user&.stripeSourceVerified && !current_user&.member? %>
-                    <p><%= number_to_currency((@cart['serviceFee'] - (@cart['serviceFee'] * 0.71)) * 0.01, precision: 2) %></p>
+                    <h4 class="opacity-50"><%= number_to_currency((@cart['serviceFee'] - (@cart['serviceFee'] * 0.71)) * 0.01, precision: 2) %></h4>
                   <% elsif current_user&.member? %>
-                    show member savings
+                    <p><%= number_to_currency((((35 * 0.01) * @cart['subItemsTotal']) * 0.01) - ((@cart['servicePercent'] * @cart['subItemsTotal']) * 0.01), precision: 2) %></p>
                   <% end %>
               </div>
           </div>
@@ -108,3 +108,4 @@
           <% end %>
       </div>
   </div>
+</div>

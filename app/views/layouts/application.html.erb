@@ -161,7 +161,7 @@
                     </a>        
                 </div>
             </div> -->
-            <% if current_user&.stripeSourceVerified && !current_user&.member? %>
+            <% if !current_user&.manager? %>
               <div class="mr-3 ml-3">
                 <span class="text-uppercase font-900 font-11 opacity-30">Membership Savings</span>
                 <div class="list-group list-custom-small list-icon-0">

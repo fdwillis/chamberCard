@@ -65,7 +65,6 @@ class PricingController < ApplicationController
 
 		if !params['price'].blank?
 			@price = params['price']
-			# debugger
 		else
 			flash[:error] = "No price found"
 			redirect_to request.referrer

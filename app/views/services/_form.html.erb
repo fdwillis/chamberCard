@@ -3,11 +3,11 @@
 			<div class="input-style has-icon">
 			    <span class="color-highlight input-style-2">Product Name</span>
 			    <em>(required)</em>
-			    <%= f.text_field :name, class: "form-control", required: true, value: !@product['name'].blank? ? @product['name'] : nil %>
+			    <%= f.text_field :name, class: "form-control", required: true, value: !@product.blank? ? @product['name'] : nil %>
 			</div>
 			<div class="input-style has-icon input-required">
 			    <span class="color-highlight input-style-2">Description</span>
-			    <%= f.text_area :description, class: "form-control", size: "10x3", value: !@product['description'].blank? ? @product['description'] : nil %>
+			    <%= f.text_area :description, class: "form-control", size: "10x3", value: !@product.blank? ? @product['description'] : nil %>
 			</div> 
       <br>
       <br>

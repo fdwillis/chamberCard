@@ -29,6 +29,8 @@ Rails.application.routes.draw do
 	
 		post "checkout", to: 'carts#checkout', as: "checkout"
 		
+		post "join", to: 'home#join', as: "join"
+		
 		get "initiateCharge", to: 'charges#initiateCharge', as: "getinitiateCharge"
 		
 		get "destroy", to: 'services#destroy', as: "destroyService"
