@@ -20,41 +20,45 @@
                   <% if !cart['stripePriceInfo']['transform_quantity'].blank? %>
                     <p class="mt-n1 font-12 color-highlight mb-4" id='packageSelected'><i class="fa fa-info mr-3"></i><%= "Package of #{cart['stripePriceInfo']['transform_quantity']['divide_by']}"%></p>
                   <% end %>
-                  <div class="row mb-0">
-                    <div class="col-4">
-                        <div class="input-style input-style-2">
-                            <span class="input-style-1-active">Quantity</span>
+                  <%= form_for :addToCart, :html => {:id => cart['stripePriceInfo']['id']}, url: updateQuantity_path(id: @cart['carts'][indx]['connectAccount']) do |f| %>
+                    <div class="row mb-0">
+                      <div class="col-4">
+                          <div class="input-style input-style-2">
+                              <span class="input-style-1-active">Quantity</span>
 
 
 
-                            <%= form_for :addToCart, :html => {:id => cart['stripePriceInfo']['id']}, url: updateQuantity_path(id: @cart['carts'][indx]['connectAccount']) do |f| %>
 
-                              <%= f.hidden_field :sellerItem, value: cart['stripePriceInfo']['id'] %>
-                              <%= f.number_field :quantity, id: cart['stripePriceInfo']['id'], onchange: "packageOrNah(#{cart['stripePriceInfo']['id']});", value: cart['quantity'] %>
-                              <div id="showthis<%= cart['stripePriceInfo']['id'] %>" style="display: none;">
-                                <%= f.submit "update", class: 'btn btn-full bg-yellow2-dark text-uppercase font-900 rounded-sm', 'style'=>"text-align: center;"  %>
-                              </div>
-                            <% end %>
-
+                                <%= f.hidden_field :sellerItem, value: cart['stripePriceInfo']['id'] %>
+                                <%= f.number_field :quantity, id: cart['stripePriceInfo']['id'], onchange: "packageOrNah(#{cart['stripePriceInfo']['id']});", value: cart['quantity'] %>
+                                
+                              
 
 
 
 
 
-                        </div>
+
+                          </div>
+                      </div>
+                      <div class="col-4">
+                          <div class="input-style input-style-2">
+                              <span class="input-style-1-active">Price</span>
+                              <input placeholder="1" readonly="true" value="<%= number_to_currency(cart['stripePriceInfo']['unit_amount'] * 0.01, precision: 2) %>">
+                          </div>
+                      </div>
+                      <div class="col-4">
+                        <%= link_to "carts/#{@cart['carts'][indx]['connectAccount']}?item=#{cart['stripePriceInfo']['id']}", class: 'btn btn-full bg-red2-dark text-uppercase font-900 rounded-sm', 'style'=>"text-align: center;", method: :delete do %>
+                           <i class="fa fa-times"></i>
+                        <% end %>
+                      </div>
+
+                      <div id="showthis<%= cart['stripePriceInfo']['id'] %>" style="display: none;" class='mb-0 col-12'>
+                        <%= f.submit "update", class: 'btn btn-full bg-yellow2-dark text-uppercase font-900 rounded-sm', 'style'=>"text-align: center;"  %>
+                      </div>
+
                     </div>
-                    <div class="col-4">
-                        <div class="input-style input-style-2">
-                            <span class="input-style-1-active">Price</span>
-                            <input placeholder="1" readonly="true" value="<%= number_to_currency(cart['stripePriceInfo']['unit_amount'] * 0.01, precision: 2) %>">
-                        </div>
-                    </div>
-                    <div class="col-4">
-                      <%= link_to "carts/#{@cart['carts'][indx]['connectAccount']}?item=#{cart['stripePriceInfo']['id']}", class: 'btn btn-full bg-red2-dark text-uppercase font-900 rounded-sm', 'style'=>"text-align: center;", method: :delete do %>
-                         <i class="fa fa-times"></i>
-                      <% end %>
-                    </div>
-                  </div>
+                  <% end %>
                 </div>
                 <!-- <div class="ml-auto">
                     <img src="images/pictures/10s.jpg" class="rounded-m shadow-xl" width="130">

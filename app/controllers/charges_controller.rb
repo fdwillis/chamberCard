@@ -15,6 +15,9 @@ class ChargesController < ApplicationController
 			else
 				flash[:error] = response['message']
 			end
+		else
+			current_user = nil
+      reset_session
 		end
 	end
 
