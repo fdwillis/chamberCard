@@ -21,6 +21,7 @@ class SessionsController < Devise::SessionsController
     response = resource.createUserSessionAPI(params[:user][:password])
   	
     if !response.blank? && response['success']
+      resource.update(stripeUserID:response['stripeUserID'], stripeSourceVerified:response['stripeSourceVerified'], username:response['username'], email:response['email'],)
       response2 = resource.updateUserAPI
       flash[:success] = "Welcome"
     else

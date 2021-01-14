@@ -5,15 +5,15 @@ default: &default
 
 development:
   <<: *default
-  database: miserBrandService_development
+  database: miserBrandGood_development
 
 test:
   <<: *default
-  database: miserBrandService_test
+  database: miserBrandGood_test
 
 
 production:
   <<: *default
-  database: miserBrandService_production
-  username: miserBrandService
-  password: <%= ENV['MISERBRANDSERVICE_DATABASE_PASSWORD'] %>
+  database: miserBrandGood_production
+  username: miserBrandGood
+  password: <%= ENV['MISERBRANDGOOD_DATABASE_PASSWORD'] %>
