@@ -70,8 +70,10 @@ class ServicesController < ApplicationController
 
 			productParams['images'].each do |img|
 				imageMade = productStarted.images.create(source: img)
+				debugger
 				cloudX = Cloudinary::Uploader.upload(imageMade.source.file.file)
 				images.append(cloudX['secure_url'])
+				File.delete(imageMade.source.file.file)
 			end
 			
 

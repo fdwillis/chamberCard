@@ -24,6 +24,7 @@ gem 'geocoder'
 gem "stock_quote"
 gem "iex-ruby-client"
 gem 'cloudinary'
+gem 'carrierwave'
 
 gem 'bootstrap-sass'
 gem "omniauth-google-oauth2"
