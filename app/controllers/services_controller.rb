@@ -70,7 +70,7 @@ class ServicesController < ApplicationController
 
 			productParams['images'].each do |img|
 				imageMade = productStarted.images.create(source: img)
-				debugger
+				
 				cloudX = Cloudinary::Uploader.upload(imageMade.source.file.file)
 				images.append(cloudX['secure_url'])
 				File.delete(imageMade.source.file.file)
@@ -86,7 +86,7 @@ class ServicesController < ApplicationController
 				flash[:success] = "Service Created"
 				redirect_to services_path
 			else
-				debugger
+				
 				flash[:alert] = response['message']
 				redirect_to new_service_path
 			end
