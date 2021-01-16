@@ -47,6 +47,10 @@
           <% @unavailableProducts.each do |h| %>
             <div class="content mb-4">
               <div class="align-self-center">
+                <% if !h[:product]['images'].blank? %>
+                  <%= h[:product]['images'][0].split(",")[0] %>
+                  <img class="shadow-l preload-img" src="<%=h[:product]['images'][0].split(",")[0] %>" data-src="<%=h[:product]['images'][0].split(",")[0] %>" alt="img">
+                <% end %>
                 <h3><%= h[:product]['name'] %></h3>
                 <p><%= h[:product]['description'] %></p>
                 <div class="row mb-0">
