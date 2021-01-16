@@ -43,9 +43,8 @@
               <span class="bg-yellow1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Pending</span>
             <% end %>
             <% if !h[:product]['images'].blank? %>
-              <%= image_tag(h[:product]['images'][0].split(",")[0] , style: "max-height: 246px;max-width: 450px",class: "shadow-l preload-img")%>
+              <%= image_tag(h[:product]['images'][0].split(",")[0],class: "shadow-l preload-img")%>
             <% end %>
-            <img class="shadow-l preload-img" src="images/pictures/32s.jpg" data-src="images/pictures/32s.jpg" alt="img">
             <h1><%= h[:product]['name'] %></h1>
             <p><%= h[:product]['description'] %></p>
             <p class="text-right mb-0 pb-3">
@@ -54,13 +53,13 @@
           </div>
         <% end %>
       <% else %>
-        <% @products.each do |h| %>
+        <% @activeProducts.each do |h| %>
 
           <div data-filter-item="" data-filter-name="all <%= !h[:product]['metadata'].blank? ? h[:product]['metadata']['keywords'] : h[:product]['description'] + " " + h[:product]['name'] %>" class="search-result-list">
 
             
             <% if !h[:product]['images'].blank? %>
-              <%= image_tag(h[:product]['images'][0].split(",")[0] , style: "max-height: 246px;max-width: 450px",class: "shadow-l preload-img")%>
+              <%= image_tag(h[:product]['images'][0].split(",")[0],class: "shadow-l preload-img")%>
             <% end %>
             <img class="shadow-l preload-img" src="images/pictures/32s.jpg" data-src="images/pictures/32s.jpg" alt="img">
             <h1><%= h[:product]['name'] %></h1>

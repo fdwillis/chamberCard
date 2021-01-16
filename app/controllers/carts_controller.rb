@@ -5,6 +5,7 @@ class CartsController < ApplicationController
 		
 	end
 
+
 	def update
 		params = {
 			'line_items' => [
@@ -51,25 +52,25 @@ class CartsController < ApplicationController
 	  end
 	end
 
-	# def show
-	# 	params = {
-	# 		'line_items' => [
-	# 			{
-	# 				'stripePriceID' => grabItem,
-	# 			}
-	# 		]
-	# 	}.to_json
+	def show
+		params = {
+			'line_items' => [
+				{
+					'stripePriceID' => grabItem,
+				}
+			]
+		}.to_json
 
-	# 	if current_user&.authentication_token
-	# 		curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X DELETE #{SITEurl}/v1/carts/#{grabID}`
+		if current_user&.authentication_token
+			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X DELETE #{SITEurl}/v1/carts/#{grabID}`
 			
-	#     response = Oj.load(curlCall)
+	    response = Oj.load(curlCall)
 
-	#     if !response.blank? && response['success']
-	#     	redirect_to carts_path
-	#     end
-	#   end
-	# end
+	    if !response.blank? && response['success']
+	    	redirect_to carts_path
+	    end
+	  end
+	end
 
 	def checkout
 
