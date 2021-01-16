@@ -32,7 +32,7 @@
 
   <div class="search-results card card-style shadow-l">
     <div class="content">
-      <% if current_user %>
+      <% if current_user&.manager? %>
         <% @products.each do |h| %>
 
           <div data-filter-item="" data-filter-name="all <%= !h[:product]['metadata'].blank? ? h[:product]['metadata']['keywords'] : h[:product]['description'] + " " + h[:product]['name'] %>" class="search-result-list">

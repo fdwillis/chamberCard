@@ -39,7 +39,7 @@ $(document).ready(function(){
             ["yellow3","#CCA64F","#996A22","#996A22"], 
             ["green1","#4cbb17","#4cbb17","#4cbb17"], 
             ["green2","#2ECC71","#2ABA66","#0da24b"], 
-            ["mint","#48CFAD","#37BC9B","#0fa781"], 
+            ["white","#000000","#000000","#000000"], 
             ["teal","#A0CECB","#7DB1B1","#158383"], 
             ["aqua","#4FC1E9","#3BAFDA","#0a8ab9"], 
             ["sky","#188FB6","#0F5F79","#0F5F79"], 
