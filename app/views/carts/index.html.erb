@@ -12,8 +12,20 @@
   </div>
   <div class="card card-style">
       <div class="content">
+
           <% @cart['carts'].map{|c,i| c['cart']}.each_with_index do |stored, indx| %>
             <% stored.each do |cart| %>
+              <div data-filter-item="" data-filter-name="all actual product" class="search-result-list">
+                  <span class="bg-green1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Active</span>
+                <img class="shadow-l preload-img" src="<%= cart['stripeProductInfo']['images'][0] %>" data-src="<%= cart['stripeProductInfo']['images'][0] %>" alt="img">
+                <h1>actual product</h1>
+                <p>actual product</p>
+                <p class="text-right mb-0 pb-3">
+                  <a class="btn btn-full bg-blue2-dark" href="/services/Ilg9XsUl8V84Nl?connectAccount=acct_1I9ZIUQhh3tbHkEK">View</a>
+                </p>
+              </div>
+
+
               <div class="mb-4">
                 <div class="mr-3">
                   <h5 class="mb-4 font-600"><%= link_to cart['stripeProductInfo']['name'].titleize, service_path(id: cart['stripeProductInfo']['id'][5..cart['stripeProductInfo']['id'].size], connectAccount: @cart['carts'][indx]['connectAccount'])%></h5>
