@@ -49,7 +49,9 @@
               <div class="align-self-center">
                 <% if !h[:product]['images'].blank? %>
                   <%= h[:product]['images'][0].split(",")[0] %>
-                  <img class="shadow-l preload-img" src="<%=h[:product]['images'][0].split(",")[0] %>" data-src="<%=h[:product]['images'][0].split(",")[0] %>" alt="img">
+                  <!-- <img class="shadow-l preload-img" src="<%=h[:product]['images'][0].split(",")[0] %>" data-src="<%=h[:product]['images'][0].split(",")[0] %>" alt="img"> -->
+
+                  <%= image_tag(h[:product]['images'][0].split(",")[0] , style: "max-height: 246px;max-width: 450px")%>
                 <% end %>
                 <h3><%= h[:product]['name'] %></h3>
                 <p><%= h[:product]['description'] %></p>
