@@ -1,5 +1,6 @@
 Rails.application.configure do
   require "awesome_print"
+
   AwesomePrint.irb!
   # Settings specified here will take precedence over those in config/application.rb.
 

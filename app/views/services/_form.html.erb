@@ -1,6 +1,15 @@
 
 
 			<div class="input-style has-icon">
+          <span class="color-highlight input-style-2">Images</span>
+          <em>(required)</em>
+          <%= f.file_field :images, :multiple => true, :id => 'fileinput', required: true %>
+      </div>
+      <!-- <div class="file-data input-style mb-6">
+          <input multiple="multiple" name="productImages[]" id="fileinput" class="upload-file bg-highlight shadow-s rounded-s" required="required" type="file">
+          <p class="upload-file-text color-white">Upload Images</p>
+      </div> -->
+      <div class="input-style has-icon">
 			    <span class="color-highlight input-style-2">Product Name</span>
 			    <em>(required)</em>
 			    <%= f.text_field :name, class: "form-control", required: true, value: !@product.blank? ? @product['name'] : nil %>
@@ -32,7 +41,7 @@
 			
 
 
-	    <%= f.hidden_field :type, value: 'service' %>
+	    <%= f.hidden_field :type, value: 'good' %>
 	    <br>
 	    <br>
 	    <br>
