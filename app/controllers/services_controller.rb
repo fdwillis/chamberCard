@@ -28,6 +28,7 @@ class ServicesController < ApplicationController
 
 				@activeProducts = activeProducts.flatten
 				@unavailableProducts = unavailableProducts.flatten
+				@products = @activeProducts + @unavailableProducts
 			else
 				# no products
 			end
@@ -64,6 +65,7 @@ class ServicesController < ApplicationController
 			type = productParams[:type]
 			active = ActiveModel::Type::Boolean.new.cast(productParams[:active])
 			connectAccount = ENV['connectAccount']
+			keywords = productParams[:keywords]
 
 			images = []
 			productStarted = Product.create(stripeProductID: response['product'])
@@ -77,7 +79,7 @@ class ServicesController < ApplicationController
 			end
 			
 
-			curlCall = `curl -H "appName: #{ENV['appName']}" -d 'images=#{images.join(",")}&type=#{type}&name=#{productName}&description=#{description}&connectAccount=#{connectAccount}&active=#{active}' -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X POST #{SITEurl}/v1/products`
+			curlCall = `curl -H "appName: #{ENV['appName']}" -d 'keywords=#{keywords}&images=#{images.join(",")}&type=#{type}&name=#{productName}&description=#{description}&connectAccount=#{connectAccount}&active=#{active}' -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X POST #{SITEurl}/v1/products`
 			response = Oj.load(curlCall)
 			
 		
@@ -144,6 +146,6 @@ class ServicesController < ApplicationController
 	private
 
 	def productParams
-		paramsClean = params.require(:product).permit(:name, :description, :type, :active, {images: []})
+		paramsClean = params.require(:product).permit(:name, :description, :type, :active, {images: []}, :keywords)
 	end
 end

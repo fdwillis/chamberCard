@@ -45,25 +45,18 @@
       <div class="clearfix mb-3"></div>
       <div class="tab-content" id="tab-9">
           <% @unavailableProducts.each do |h| %>
-            <div class="content mb-4">
-              <div class="align-self-center">
-                <% if !h[:product]['images'].blank? %>
-                  <%= h[:product]['images'][0].split(",")[0] %>
-                  <!-- <img class="shadow-l preload-img" src="<%=h[:product]['images'][0].split(",")[0] %>" data-src="<%=h[:product]['images'][0].split(",")[0] %>" alt="img"> -->
+            <div class="content">
+                <div data-filter-item="" data-filter-name="all products eazy mobile" class="search-result-list">
+                  <% if !h[:product]['images'].blank? %>
+                    <%= h[:product]['images'][0].split(",")[0] %>
+                    <!-- <img class="shadow-l preload-img" src="<%=h[:product]['images'][0].split(",")[0] %>" data-src="<%=h[:product]['images'][0].split(",")[0] %>" alt="img"> -->
 
-                  <%= image_tag(h[:product]['images'][0].split(",")[0] , style: "max-height: 246px;max-width: 450px")%>
-                <% end %>
-                <h3><%= h[:product]['name'] %></h3>
-                <p><%= h[:product]['description'] %></p>
-                <div class="row mb-0">
-                  <div class="col-12">
-                    <%= link_to "/services/#{h[:product]['id'][5..h[:product]['id'].size]}?connectAccount=#{h[:connectAccount]}", class: 'btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm' do %>
-                      <i class="fa fa-eye"></i> View
-                    <% end %>
-                  </div>
+                    <%= image_tag(h[:product]['images'][0].split(",")[0] , style: "max-height: 246px;max-width: 450px")%>
+                  <% end %>
+                  <h1><%= h[:product]['name'] %></h1>
+                  <p><%= h[:product]['description'] %></p>
+                  <a href="#" class="bg-highlight">VIEW</a>
                 </div>
-                <div class="divider mt-3 mb-3"></div>
-                <!-- <div class="divider"></div> -->
               </div>
             </div>
           <% end %>
@@ -73,14 +66,9 @@
 
       <div class="tab-content" id="tab-0">
           <% @unavailableProducts.each do |h| %>
+            
             <div class="content mb-4">
               <div class="align-self-center">
-                <!-- <h5 class=""><%= h[:product]['name'] %></h5> -->
-
-
-
-
-
                 <h3><%= h[:product]['name'] %></h3>
                 <p><%= h[:product]['description'] %></p>
                 <div class="row mb-0">
@@ -129,22 +117,18 @@
 
   <div class="search-results card card-style shadow-l">
     <div class="content">
-        <div data-filter-item="" data-filter-name="all products eazy mobile" class="search-result-list">
+      <% @products.each do |h| %>
+
+        <div data-filter-item="" data-filter-name="all <%= !h[:product]['metadata'].blank? ? h[:product]['metadata']['keywords'] : h[:product]['description'] + " " + h[:product]['name'] %>" class="search-result-list">
+          <% if !h[:product]['images'].blank? %>
+            <%= image_tag(h[:product]['images'][0].split(",")[0] , style: "max-height: 246px;max-width: 450px",class: "shadow-l preload-img")%>
+          <% end %>
           <img class="shadow-l preload-img" src="images/pictures/32s.jpg" data-src="images/pictures/32s.jpg" alt="img">
-          <h1>Eazy | Mobile Website</h1>
-          <p>
-              Eazy Mobile, a best seller and trending item, loved by all. 
-          </p>
+          <h1><%= h[:product]['name'] %></h1>
+          <p><%= h[:product]['description'] %></p>
           <a href="#" class="bg-highlight">VIEW</a>
         </div>
-        <div data-filter-item="" data-filter-name="all fdwillis" class="search-result-list">
-          <img class="shadow-l preload-img" src="images/pictures/32s.jpg" data-src="images/pictures/32s.jpg" alt="img">
-          <h1>fdwillis</h1>
-          <p>
-              Eazy Mobile, a best seller and trending item, loved by all. 
-          </p>
-          <a href="#" class="bg-highlight">VIEW</a>
-        </div>
+      <% end %>
     </div>
   </div>
 

@@ -15,8 +15,12 @@
 			    <%= f.text_field :name, class: "form-control", required: true, value: !@product.blank? ? @product['name'] : nil %>
 			</div>
 			<div class="input-style has-icon input-required">
-			    <span class="color-highlight input-style-2">Description</span>
-			    <%= f.text_area :description, class: "form-control", size: "10x3", value: !@product.blank? ? @product['description'] : nil %>
+          <span class="color-highlight input-style-2">Description</span>
+          <%= f.text_area :description, class: "form-control", size: "10x3", value: !@product.blank? ? @product['description'] : nil %>
+      </div> 
+      <div class="input-style has-icon input-required">
+			    <span class="color-highlight input-style-2">Keywords</span>
+			    <%= f.text_area :keywords, class: "form-control", size: "10x3", value: !@product.blank? ? @product['keywords'] : nil %>
 			</div> 
       <br>
       <br>
