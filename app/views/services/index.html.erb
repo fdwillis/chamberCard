@@ -1,6 +1,6 @@
 <div class="card card-style">
     <div class="content mt-3 mb-3">
-      <h3>Services</h3>
+      <h3>Shop</h3>
       <% if !current_user&.manager? %>
         <p>After you've purchased services, you will need to schedule with the seller at your convenience.</p>
       <% else %>
@@ -61,7 +61,6 @@
             <% if !h[:product]['images'].blank? %>
               <%= image_tag(h[:product]['images'][0].split(",")[0],class: "shadow-l preload-img")%>
             <% end %>
-            <img class="shadow-l preload-img" src="images/pictures/32s.jpg" data-src="images/pictures/32s.jpg" alt="img">
             <h1><%= h[:product]['name'] %></h1>
             <p><%= h[:product]['description'] %></p>
             <p class="text-right mb-0 pb-3">

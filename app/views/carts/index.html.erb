@@ -12,8 +12,8 @@
 
   <% @cart['carts'].map{|c,i| c['cart']}.each_with_index do |stored, indx| %>
     <div class="search-results card card-style shadow-l">
-      <div class="content">
-        <% stored.each do |cart| %>
+      <% stored.each do |cart| %>
+        <div class="content">
           <div data-filter-item="" data-filter-name="all <%= !cart['stripeProductInfo']['metadata'].blank? ? cart['stripeProductInfo']['metadata']['keywords'] : cart['stripeProductInfo']['description'] + " " + cart['stripeProductInfo']['name'] %>" class="search-result-list">
             
             <%= link_to "carts/#{@cart['carts'][indx]['connectAccount']}?item=#{cart['stripePriceInfo']['id']}", class: '', method: :delete do %>
@@ -22,7 +22,7 @@
             <% end %>
             
             <% if !cart['stripeProductInfo']['images'].blank? %>
-              <%= image_tag(cart['stripeProductInfo']['images'][0].split(",")[0] , style: "max-height: 246px;max-width: 450px",class: "shadow-l preload-img")%>
+              <%= cl_image_tag(cart['stripeProductInfo']['images'][0].split(",")[0], :width=>75, :height=>75) %>
             <% end %>
 
             <h1><%= cart['stripeProductInfo']['name'] %></h1>
@@ -53,9 +53,9 @@
               <% end %>
             </div>
           </div>
-        <% end %>
         
-      </div>
+        </div>
+      <% end %>
     </div>
   <% end %>
 </div>
@@ -116,9 +116,11 @@
           <% if @cart['carts'].map{|c,i| c['cart']}.flatten.map{|c,i|c['quantity']}.sum != 0 %>
 
             <%= form_for :checkout, url: checkout_path do |f| %>
-              <div class="input-style input-style-2">
+              <div class="input-style input-style-2 mb-4">
                 <%= f.submit "Charge Me", class: "btn btn-full bg-green1-dark text-uppercase rounded-sm font-900"%>
               </div>
+
+              <a href="/services" class="btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm">Continue Shopping</a>
                   
             <% end %>
 
