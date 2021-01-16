@@ -1,7 +1,8 @@
 <div class="card card-style">
   <div class="content mt-3 mb-3">
     <h3>Price Management</h3>
-    <h5><%= @productL['name'].titleize %></h5>
+
+    <h5><%= link_to "< Back To #{@productL['name'].titleize}", "/services/#{@productL['id'][5..@productL['id'].size]}?connectAccount=#{current_user.stripeUserID}" %><%=  %></h5>
     <p>
         <%= pluralize(@prices.count, "price") %> listed
     </p>

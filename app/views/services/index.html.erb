@@ -12,91 +12,6 @@
     <% end %>
 </div>
 
-<div class="card card-style bg-theme pb-0">
-  <div class="content">
-    <% if !current_user || !current_user.manager? %>
-      <div class="tab-controls tabs-round tab-animated tabs-medium tabs-rounded shadow-xl" data-tab-items="1" data-tab-active="bg-green1-dark color-white"><a href="#" data-tab-active data-tab="tab-8"><i class="fa fa-check"></i></a>
-      </div>
-    <% else %>
-      <div class="tab-controls tabs-round tab-animated tabs-medium tabs-rounded shadow-xl" data-tab-items="2" data-tab-active="bg-green1-dark color-white"><a href="#" data-tab-active data-tab="tab-8"><i class="fa fa-check"></i></a> <a href="#" data-tab="tab-9"><i class="fa fa-sync"></i></a>
-      </div>
-    <% end %>
-      <div class="clearfix mb-3"></div>
-      <div class="tab-content" id="tab-8">
-          <% @activeProducts.each do |h| %>
-            <div class="content mb-4">
-              <div class="align-self-center">
-                <h3><%= h[:product]['name'] %></h3>
-                <p><%= h[:product]['description'] %></p>
-                <div class="row mb-0">
-                  <div class="col-12">
-                    <%= link_to "/services/#{h[:product]['id'][5..h[:product]['id'].size]}?connectAccount=#{h[:connectAccount]}", class: 'btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm' do %>
-                      <i class="fa fa-eye"></i> View
-                    <% end %>
-                  </div>
-                </div>
-                <div class="divider mt-3 mb-3"></div>
-                <!-- <div class="divider"></div> -->
-              </div>
-            </div>
-          <% end %>
-      </div>
-
-      <div class="clearfix mb-3"></div>
-      <div class="tab-content" id="tab-9">
-          <% @unavailableProducts.each do |h| %>
-            <div class="content">
-                <div data-filter-item="" data-filter-name="all products eazy mobile" class="search-result-list">
-                  <% if !h[:product]['images'].blank? %>
-                    <%= h[:product]['images'][0].split(",")[0] %>
-                    <!-- <img class="shadow-l preload-img" src="<%=h[:product]['images'][0].split(",")[0] %>" data-src="<%=h[:product]['images'][0].split(",")[0] %>" alt="img"> -->
-
-                    <%= image_tag(h[:product]['images'][0].split(",")[0] , style: "max-height: 246px;max-width: 450px")%>
-                  <% end %>
-                  <h1><%= h[:product]['name'] %></h1>
-                  <p><%= h[:product]['description'] %></p>
-                  <a href="#" class="bg-highlight">VIEW</a>
-                </div>
-              </div>
-            </div>
-          <% end %>
-      </div>
-
-
-
-      <div class="tab-content" id="tab-0">
-          <% @unavailableProducts.each do |h| %>
-            
-            <div class="content mb-4">
-              <div class="align-self-center">
-                <h3><%= h[:product]['name'] %></h3>
-                <p><%= h[:product]['description'] %></p>
-                <div class="row mb-0">
-                  <div class="col-4">
-                    <p class="text-left mb-0 pb-3"><i class="fa fa-building color-blue2-dark mr-2"></i>3</p>
-                  </div>
-                  <div class="col-4">
-                    <p class="text-center mb-0 pb-3"><i class="fa fa-home mr-2 color-yellow1-dark"></i>15</p>
-                  </div>
-                  <div class="col-4">
-                    <p class="text-right mb-0 pb-3">
-                      <%= link_to "/services/#{h[:product]['id'][5..h[:product]['id'].size]}?connectAccount=#{h[:connectAccount]}", class: 'btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm' do %>
-                      <i class="fa fa-eye"></i> View
-                    <% end %>
-                    </p>
-                  </div>
-                </div>
-                <div class="divider mt-3 mb-3"></div>
-                <!-- <div class="divider"></div> -->
-              </div>
-            </div>
-          <% end %>
-      </div>
-      
-  </div>
-</div>
-
-
 
 
 
@@ -120,13 +35,21 @@
       <% @products.each do |h| %>
 
         <div data-filter-item="" data-filter-name="all <%= !h[:product]['metadata'].blank? ? h[:product]['metadata']['keywords'] : h[:product]['description'] + " " + h[:product]['name'] %>" class="search-result-list">
+
+          <% if h[:product]['active'] && !Stripe::Price.list({limit: 100, product: h[:product]['id'], active: true}, {stripe_account: current_user.stripeUserID})['data'].blank? %>
+            <span class="bg-green1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Active</span>
+          <% else %>
+            <span class="bg-yellow1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Pending</span>
+          <% end %>
           <% if !h[:product]['images'].blank? %>
             <%= image_tag(h[:product]['images'][0].split(",")[0] , style: "max-height: 246px;max-width: 450px",class: "shadow-l preload-img")%>
           <% end %>
           <img class="shadow-l preload-img" src="images/pictures/32s.jpg" data-src="images/pictures/32s.jpg" alt="img">
           <h1><%= h[:product]['name'] %></h1>
           <p><%= h[:product]['description'] %></p>
-          <a href="#" class="bg-highlight">VIEW</a>
+          <p class="text-right mb-0 pb-3">
+            <%= link_to "View", "/services/#{h[:product]['id'][5..h[:product]['id'].size]}?connectAccount=#{h[:connectAccount]}", class: 'btn btn-full bg-blue2-dark' %>
+          </p>
         </div>
       <% end %>
     </div>

@@ -1,10 +1,12 @@
 
-
+    <% if Product.find_by(stripeProductID: "prod_#{params[:id]}")&.images&.count == 0 %>
 			<div class="input-style has-icon">
           <span class="color-highlight input-style-2">Images</span>
           <em>(required)</em>
           <%= f.file_field :images, :multiple => true, :id => 'fileinput', required: true %>
       </div>
+    <% else %>
+    <% end %>
       <!-- <div class="file-data input-style mb-6">
           <input multiple="multiple" name="productImages[]" id="fileinput" class="upload-file bg-highlight shadow-s rounded-s" required="required" type="file">
           <p class="upload-file-text color-white">Upload Images</p>
@@ -20,26 +22,12 @@
       </div> 
       <div class="input-style has-icon input-required">
 			    <span class="color-highlight input-style-2">Keywords</span>
-			    <%= f.text_area :keywords, class: "form-control", size: "10x3", value: !@product.blank? ? @product['keywords'] : nil %>
+			    <%= f.text_area :keywords, class: "form-control", size: "10x3", value: !@product.blank? && !@product['metadata'].blank? ? @product['metadata']['keywords'] : nil %>
 			</div> 
       <br>
       <br>
       <br>
-      <div class="d-flex">
-          <div class="pt-1">
-              <h5 data-activate="toggle-id-2" class="font-600"><strong><em>Available Now</em></strong></h5>
-          </div>
-          
-          <div class="ml-auto mr-4 pr-2">
-              <div class="custom-control ios-switch ios-switch-icon">
-                  <%= f.check_box :active, class: 'ios-input', id: 'toggle-id-2' %>
-                  <label class="custom-control-label" for="toggle-id-2"></label>
-                  <i class="fa fa-check font-11 color-white"></i>
-                  <i class="fa fa-times font-11 color-white"></i>
-              </div>
-          </div>
-      </div>
-      <div data-switch="toggle-id-2" class="switch-is-unchecked" style="display: none;">
+      <div data-switch="toggle-id-2">
           <p class="mb-0 pb-0 pt-2">This will be available for purchase immediately after adding a price for the first time.</p>
       </div>
 			

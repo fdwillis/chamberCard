@@ -63,12 +63,11 @@ class ServicesController < ApplicationController
 			productName = productParams[:name]
 			description = productParams[:description]
 			type = productParams[:type]
-			active = ActiveModel::Type::Boolean.new.cast(productParams[:active])
 			connectAccount = ENV['connectAccount']
 			keywords = productParams[:keywords]
 
 			images = []
-			productStarted = Product.create(stripeProductID: response['product'])
+			productStarted = Product.create()
 
 			productParams['images'].each do |img|
 				imageMade = productStarted.images.create(source: img)
@@ -79,16 +78,16 @@ class ServicesController < ApplicationController
 			end
 			
 
-			curlCall = `curl -H "appName: #{ENV['appName']}" -d 'keywords=#{keywords}&images=#{images.join(",")}&type=#{type}&name=#{productName}&description=#{description}&connectAccount=#{connectAccount}&active=#{active}' -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X POST #{SITEurl}/v1/products`
+			curlCall = `curl -H "appName: #{ENV['appName']}" -d 'keywords=#{keywords}&images=#{images.join(",")}&type=#{type}&name=#{productName}&description=#{description}&connectAccount=#{connectAccount}&active=true' -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X POST #{SITEurl}/v1/products`
 			response = Oj.load(curlCall)
 			
 		
 			if !response.blank? && response['success']
-
+				productStarted.update(stripeProductID: response['product'])
 				flash[:success] = "Service Created"
 				redirect_to services_path
 			else
-				
+				productStarted.destroy!
 				flash[:alert] = response['message']
 				redirect_to new_service_path
 			end
@@ -97,17 +96,33 @@ class ServicesController < ApplicationController
 
 	def update
 		appName = ENV['appName']
-		productName = params[:updateService][:name]
-		description = params[:updateService][:description]
-		type = params[:updateService][:type]
-		active = ActiveModel::Type::Boolean.new.cast(params[:updateService][:active])
+		productName = productParams[:name]
+		description = productParams[:description]
+		type = productParams[:type]
+		keywords = productParams[:keywords]
+		active = ActiveModel::Type::Boolean.new.cast(productParams[:active])
 		connectAccount = ENV['connectAccount']
 
+		images = []
 
-		curlCall = `curl -H "appName: #{ENV['appName']}" -d "name=#{productName}&description=#{description}&active=#{active}&type=#{type}&connectAccount=#{connectAccount}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X PATCH #{SITEurl}/v1/products/#{params[:id]}`
+		productFound = Product.find_by(stripeProductID: "prod_#{params[:id]}")
+
+		if !productParams['images'].blank?
+			productParams['images'].each do |img|
+				imageMade = productFound.images.create(source: img)
+				
+				cloudX = Cloudinary::Uploader.upload(imageMade.source.file.file)
+				images.append(cloudX['secure_url'])
+				File.delete(imageMade.source.file.file)
+			end
+		end
+
+
+
+		curlCall = `curl -H "appName: #{ENV['appName']}" -d "images=#{images.join(",")}&keywords=#{keywords}&name=#{productName}&description=#{description}&active=#{active}&type=#{type}&connectAccount=#{connectAccount}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X PATCH #{SITEurl}/v1/products/#{params[:id]}`
 		
 		response = Oj.load(curlCall)
-		
+
 		if !response.blank? && response['success']
 			flash[:success] = "Service Updated"
 			redirect_to service_path(id: params[:id], connectAccount: connectAccount)
