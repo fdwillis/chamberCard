@@ -1,0 +1,18 @@
+<div class="card card-style">
+    <div class="content mt-3 mb-3">
+      <h3>Adding Product</h3>
+      <p>
+          Next: Add pricing models available for sale
+      </p>
+    </div>
+</div>
+
+<div class="card card-style">
+  <div class="content mb-0">
+		<%= form_for :product, url: services_path do |f| %>
+			<%= render partial: 'form', locals: { f: f } %>
+      <%= f.submit "Add Service", class: "btn btn-full bg-yellow1-dark btn-m text-uppercase rounded-sm shadow-l col-12 mb-3 mt-4 font-900"%>
+
+		<% end %>
+	</div>
+</div>

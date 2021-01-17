@@ -11,49 +11,41 @@
 <div class="search-page">
 
   <% @cart['carts'].map{|c,i| c['cart']}.each_with_index do |stored, indx| %>
-    <div class="search-results card card-style shadow-l">
+    <div class="card card-style shadow-l">
       <% stored.each do |cart| %>
         <div class="content">
-          <div data-filter-item="" data-filter-name="all <%= !cart['stripeProductInfo']['metadata'].blank? ? cart['stripeProductInfo']['metadata']['keywords'] : cart['stripeProductInfo']['description'] + " " + cart['stripeProductInfo']['name'] %>" class="search-result-list">
-            
-            <%= link_to "carts/#{@cart['carts'][indx]['connectAccount']}?item=#{cart['stripePriceInfo']['id']}", class: '', method: :delete do %>
-              <span class="bg-red1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 ">Remove</span>
-
-            <% end %>
-            
+          <div class="d-flex">
             <% if !cart['stripeProductInfo']['images'].blank? %>
-              <%= cl_image_tag(cart['stripeProductInfo']['images'][0].split(",")[0], :width=>75, :height=>75) %>
+            <div>
+                <%= cl_image_tag(cart['stripeProductInfo']['images'][0].split(",")[0], :width=>100, :height=>100, class: "mr-3") %>
+            </div>
             <% end %>
-
-            <h1><%= cart['stripeProductInfo']['name'] %></h1>
-            <% if !cart['stripePriceInfo']['transform_quantity'].blank? %>
-            <h1 class='color-highlight'><%= "Package of #{cart['stripePriceInfo']['transform_quantity']['divide_by']}"%></h1>
-            <% end %>
-            <div class="float-right">
+            <div class="w-100">
               <%= form_for :addToCart, :html => {:id => cart['stripePriceInfo']['id']}, url: updateQuantity_path(id: @cart['carts'][indx]['connectAccount']) do |f| %>
-                <div class="row mt-8">
-                  <div class="col-6">
-                    <div class="input-style input-style-2">
-                        <span class="input-style-1-active">Quantity</span>
-                          <%= f.hidden_field :sellerItem, value: cart['stripePriceInfo']['id'] %>
-                          <%= f.number_field :quantity, id: cart['stripePriceInfo']['id'], onchange: "packageOrNah(#{cart['stripePriceInfo']['id']});", value: cart['quantity'] %>
-                    </div>
-                  </div>
-                  <div class="col-6">
-                    <div class="input-style input-style-2">
-                        <span class="input-style-1-active">Price</span>
-                        <input placeholder="1" readonly="true" value="<%= number_to_currency(cart['stripePriceInfo']['unit_amount'] * 0.01, precision: 2) %>">
-                    </div>
-                  </div>
+                <h5>
+                  <% if !cart['stripePriceInfo']['transform_quantity'].blank? %>
+                    <span class="bg-green1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Package</span>  
+                  <% end %>
+                  <%= cart['stripeProductInfo']['name'] %>
+                </h5>
+                <div id="showthis<%= cart['stripePriceInfo']['id'] %>" style="display: none;" class=''>
+                  <%= f.submit "update", class: 'btn btn-full bg-yellow2-dark text-uppercase font-900 rounded-sm', 'style'=>"text-align: center;"  %>
+                </div>
                 
-                  <div id="showthis<%= cart['stripePriceInfo']['id'] %>" style="display: none;" class='col-4'>
-                    <%= f.submit "update", class: 'btn btn-full bg-yellow2-dark text-uppercase font-900 rounded-sm', 'style'=>"text-align: center;"  %>
+                <div class="mt-2">
+                  <div class="input-style input-style-2">
+                    <%= f.hidden_field :sellerItem, value: cart['stripePriceInfo']['id'] %>
+                    <%= f.number_field :quantity, id: cart['stripePriceInfo']['id'], onchange: "packageOrNah(#{cart['stripePriceInfo']['id']});", value: cart['quantity'] %>
                   </div>
                 </div>
+                <strong><%= number_to_currency(cart['stripePriceInfo']['unit_amount'] * 0.01, precision: 2) %></strong>
+                <a href="carts/<%= @cart['carts'][indx]['connectAccount'] %>?item=<%= cart['stripePriceInfo']['id']%>" class="d-block float-right color-theme opacity-90"><i class="fa fa-times pr-2 color-highlight"></i>Remove</a>
+       
+
               <% end %>
             </div>
           </div>
-        
+          
         </div>
       <% end %>
     </div>
@@ -147,5 +139,90 @@
 
 </script>
 
+
+<div class="card card-style">
+  <div class="content">
+      <h3>Recommended for You</h3>
+      <p class="mt-n2 color-highlight">
+          Products basd on your preferences
+      </p>
+  </div>
+  <div class="single-slider owl-carousel owl-no-dots owl-loaded owl-drag">
+      
+      
+  <div class="owl-stage-outer"><div class="owl-stage" style="transform: translate3d(-1089px, 0px, 0px); transition: all 0.25s ease 0s; width: 2178px;"><div class="owl-item cloned" style="width: 343px; margin-right: 20px;"><div class="content">
+          <div class="d-flex">
+              <div>
+                  <img src="images/store/1w.png" class="mr-3" style="width:100px!important;">
+              </div>
+              <div class="w-100">
+                  <h4>Space Gray Apple Watch</h4>
+                  <p class="mt-n2 mb-2">Light gray with dark rubber band</p>
+                  <strong>$599.99</strong>
+                  <a href="#" class="d-block float-right color-theme opacity-90"><i class="fa fa-shopping-cart pr-2 color-highlight"></i>Add to Cart</a>
+              </div>
+          </div>
+      </div></div><div class="owl-item cloned" style="width: 343px; margin-right: 20px;"><div class="content">
+          <div class="d-flex">
+              <div>
+                  <img src="images/store/2w.png" class="mr-3" style="width:100px!important;">
+              </div>
+              <div class="w-100">
+                  <h4>Space White Apple Watch</h4>
+                  <p class="mt-n2 mb-2">Light gray with dark rubber band</p>
+                  <strong>$599.99</strong>
+                  <a href="#" class="d-block float-right color-theme opacity-90"><i class="fa fa-shopping-cart pr-2 color-highlight"></i>Add to Cart</a>
+              </div>
+          </div>
+      </div></div><div class="owl-item" style="width: 343px; margin-right: 20px;"><div class="content">
+          <div class="d-flex">
+              <div>
+                  <img src="images/store/1w.png" class="mr-3" style="width:100px!important;">
+              </div>
+              <div class="w-100">
+                  <h4>Space Gray Apple Watch</h4>
+                  <p class="mt-n2 mb-2">Light gray with dark rubber band</p>
+                  <strong>$599.99</strong>
+                  <a href="#" class="d-block float-right color-theme opacity-90"><i class="fa fa-shopping-cart pr-2 color-highlight"></i>Add to Cart</a>
+              </div>
+          </div>
+      </div></div><div class="owl-item active" style="width: 343px; margin-right: 20px;"><div class="content">
+          <div class="d-flex">
+              <div>
+                  <img src="images/store/2w.png" class="mr-3" style="width:100px!important;">
+              </div>
+              <div class="w-100">
+                  <h4>Space White Apple Watch</h4>
+                  <p class="mt-n2 mb-2">Light gray with dark rubber band</p>
+                  <strong>$599.99</strong>
+                  <a href="#" class="d-block float-right color-theme opacity-90"><i class="fa fa-shopping-cart pr-2 color-highlight"></i>Add to Cart</a>
+              </div>
+          </div>
+      </div></div><div class="owl-item cloned" style="width: 343px; margin-right: 20px;"><div class="content">
+          <div class="d-flex">
+              <div>
+                  <img src="images/store/1w.png" class="mr-3" style="width:100px!important;">
+              </div>
+              <div class="w-100">
+                  <h4>Space Gray Apple Watch</h4>
+                  <p class="mt-n2 mb-2">Light gray with dark rubber band</p>
+                  <strong>$599.99</strong>
+                  <a href="#" class="d-block float-right color-theme opacity-90"><i class="fa fa-shopping-cart pr-2 color-highlight"></i>Add to Cart</a>
+              </div>
+          </div>
+      </div></div><div class="owl-item cloned" style="width: 343px; margin-right: 20px;"><div class="content">
+          <div class="d-flex">
+              <div>
+                  <img src="images/store/2w.png" class="mr-3" style="width:100px!important;">
+              </div>
+              <div class="w-100">
+                  <h4>Space White Apple Watch</h4>
+                  <p class="mt-n2 mb-2">Light gray with dark rubber band</p>
+                  <strong>$599.99</strong>
+                  <a href="#" class="d-block float-right color-theme opacity-90"><i class="fa fa-shopping-cart pr-2 color-highlight"></i>Add to Cart</a>
+              </div>
+          </div>
+      </div></div></div></div><div class="owl-nav disabled"><div class="owl-prev"><i class="fa fa-angle-left"></i></div><div class="owl-next"><i class="fa fa-angle-right"></i></div></div><div class="owl-dots"><div class="owl-dot"><span></span></div><div class="owl-dot active"><span></span></div></div></div>
+</div>
 
 

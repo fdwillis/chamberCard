@@ -1,0 +1,20 @@
+<div class="card card-style">
+    <div class="content mt-3 mb-3">
+      <h3>Editing Product: </h3>
+      <h5><%= link_to "< Back To #{@product['name'].titleize}", "/services/#{@product['id'][5..@product['id'].size]}?connectAccount=#{current_user.stripeUserID}" %><%=  %></h5>
+      <p>
+          Enter the Product information below. Once you are complete, the Product will be updated.
+      </p>
+    </div>
+</div>
+
+
+
+<div class="card card-style">
+  <div class="content mb-0">
+		<%= form_for :product, url: service_path, method: :patch do |f| %>
+			<%= render partial: 'form', locals: { f: f } %>
+      <%= f.submit "Edit Product", class: "btn btn-full bg-yellow1-dark btn-m text-uppercase rounded-sm shadow-l col-12 mb-3 mt-4 font-900"%>
+		<% end %>
+	</div>
+</div>
