@@ -65,46 +65,37 @@ Contact
           <div class="row mb-0">
           
               <div class="col-6"><h4 class="font-14 text-left"><u>Item</u></h4></div>
-              <div class="col-3">&nbsp;</div>
-              <div class="col-3"><h4 class="font-14 text-left"><u>Available</u></h4></div>
+              <div class="col-3"><h4 class="font-14 text-center"><u>Package</u></h4></div>
+              <div class="col-3"><h4 class="font-14 text-center"><u>Available</u></h4></div>
           </div>
-          <% h['items'].each do |itm| %>
+          <% h['items'].each_with_index do |itm,indx| %>
             <% if !itm['invoice']['metadata']['claimed'].blank? && (itm['invoice']['quantity'] > itm['invoice']['metadata']['claimed'].to_i) %>
               
               <div class="row mb-2">
                 <div class="col-6"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
-                <div class="col-3">&nbsp;</div>
-                <div class="col-3"><h4 class="font-14 text-center"><%= itm['invoice']['quantity'].to_i - itm['invoice']['metadata']['claimed'].to_i %></h4></div>
+                <% if itm['price']['transform_quantity'] && !itm['price']['transform_quantity']['divide_by'].blank? %>
+                  <div class="col-3"><h4 class="font-14 text-center"><i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark"></i></h4></div>
+                  <div class="col-3"><h4 class="font-14 text-center"><%= (itm['invoice']['quantity'].to_i * itm['price']['transform_quantity']['divide_by']) - itm['invoice']['metadata']['claimed'].to_i %></h4></div>
+                <% else %>
+                  <div class="col-3"><h4 class="font-14 text-center"><i class="fa fa-times bg-fade-red2-dark rounded-xl color-red2-dark"></i></h4></div>
+                  <div class="col-3"><h4 class="font-14 text-center"><%= itm['invoice']['quantity'].to_i - itm['invoice']['metadata']['claimed'].to_i %></h4></div>
+                <% end %>
                 <!-- <div class="col-2"><h4 class="font-14 text-right">Claimed: <%= itm['invoice']['metadata']['claimed'] %></h4></div> -->
               </div>
             <% end %>
           <% end %>
           <a href="#" class="close-menu btn btn-full btn-m bg-yellow1-dark rounded-sm text-uppercase font-800">Schedule</a>
-          <% if current_user&.manager? %>
-            <div class="row mb-0">
-              <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-              <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-              <div class="col-6"><h4 class="font-14 mt-1">Grand Total</h4></div>
-              <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency( h['subTotal']  * 0.01, precision: 2) %></h4></div>
-
-            </div>
-
-          <% else %>
-            <div class="row mb-0">
-              <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-              <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-              <div class="col-6"><h4 class="font-14 mt-1">Fee &nbsp;<i class="fa fa-exclamation-circle font-14 mt-1 color-yellow2-dark scale-icon mr-2" data-toggle="tooltip" data-placement="right" title="" data-original-title="Miser Brands service fee includes processing fees"></i></h4></div>
-              <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency( h['fee']  * 0.01, precision: 2) %></h4></div>
-              <div class="col-6"><h4 class="font-14 mt-1">Sub Total</h4></div>
-              <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency( h['subTotal']  * 0.01, precision: 2) %></h4></div>
-
-              <div class="col-6"><h4 class="font-14 mt-1">Grand Total</h4></div>
-              <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency(h['grandTotal']  * 0.01, precision: 2) %></h4></div>
-      
-              <div class="divider divider-margins w-100 mt-2 mb-3"></div>
-              <!-- <div class="col-12"><a href="#" class="close-menu btn btn-full btn-m bg-red2-dark rounded-sm text-uppercase font-800">Refund</a></div> -->
-            </div>
-          <% end %>
+          <div class="scheduleIt mt-4">
+          
+            <!--     <%= form_for :bookIt, url: service_path(id: 23434), method: :patch do |f| %>
+              <div class="input-style has-icon input-style-2 input-required pb-1">
+                <span class="color-highlight input-style-1-active">Price</span>
+                <em>(required)</em>
+                <%= f.select :sellerItem, h['items'].map{|p,i| (p['price']['transform_quantity'] && !p['price']['transform_quantity']['divide_by'].blank?) ? true : false }, required: true %>
+              </div>
+            <% end %> -->
+          </div>
+          
       </div>
       
     </div>
