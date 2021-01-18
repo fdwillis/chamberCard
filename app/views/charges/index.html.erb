@@ -50,7 +50,7 @@
 
           <% if @payments.present? %>
             <% @payments.each do |h| %>
-              
+              <%= h %>
               <div class="list-group list-custom-small list-icon-0">
                   <a data-toggle="collapse" href="#collapse-<%= h['invoice'][3..15] %>">
                       <span class="font-14">Order#<%= h['invoice'][3..h['invoice'].length].truncate(9, omission: '') %></span>
@@ -61,37 +61,32 @@
                 <!-- <div class="menu-title"><h1>Payment Sent</h1><p class="color-highlight">Transaction Details for Payment</p></div>
                 <div class="divider divider-margins mb-1 mt-3"></div> -->
                 <div class="content">
-                    <div class="row mb-0">
-                        <div class="col-3 icon icon-xl">
-                            <i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark" width='80'></i>
-                        </div>
-                        <div class="col-9 pl-4">
-                            <div class="d-flex">
-                                <div><p class="font-700 color-theme">Seller</p></div>
-                                <div class="ml-auto"><p><%= h['sellerName'] %></p></div>
-                            </div>
-                            <div class="d-flex">
-                                <div><p class="font-700 color-theme">Customer</p></div>
-                                <div class="ml-auto"><p><%= h['customer'] %></p></div>
-                            </div>
-                            <div class="d-flex">
-                                <div><p class="font-700 color-theme">Date</p></div>
-                                <div class="ml-auto"><p><%= h['date'] %></p></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="divider mt-3 mb-3"></div>
-                    <div class="row mb-0">
-                    
-                        <div class="col-4"><h4 class="font-14 text-left"><u>Item</u></h4></div>
-                        <div class="col-4"><h4 class="font-14 text-center"><u>Quantity</u></h4></div>
-                        <div class="col-4"><h4 class="font-14 text-right"><u>Price</u></h4></div>
-                    </div>
-
-
-
-
-
+                  <div class="row mb-0">
+                      <div class="col-3 icon icon-xl">
+                          <i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark" width='80'></i>
+                      </div>
+                      <div class="col-9 pl-4">
+                          <div class="d-flex">
+                              <div><p class="font-700 color-theme">Seller</p></div>
+                              <div class="ml-auto"><p><%= h['sellerName'] %></p></div>
+                          </div>
+                          <div class="d-flex">
+                              <div><p class="font-700 color-theme">Customer</p></div>
+                              <div class="ml-auto"><p><%= h['customer'] %></p></div>
+                          </div>
+                          <div class="d-flex">
+                              <div><p class="font-700 color-theme">Date</p></div>
+                              <div class="ml-auto"><p><%= h['date'] %></p></div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="divider mt-3 mb-3"></div>
+                  <div class="row mb-0">
+                  
+                      <div class="col-4"><h4 class="font-14 text-left"><u>Item</u></h4></div>
+                      <div class="col-4"><h4 class="font-14 text-center"><u>Quantity</u></h4></div>
+                      <div class="col-4"><h4 class="font-14 text-right"><u>Price</u></h4></div>
+                  </div>
                   <% h['items'].each do |itm| %>
                     <div class="row mb-0">
                       <div class="col-6"><h4 class="font-14 text-left"><%= itm[2]['name'] %></h4></div>
