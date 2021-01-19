@@ -35,15 +35,15 @@
       <% if current_user&.manager? %>
         <% @products.each do |h| %>
 
-          <div data-filter-item="" data-filter-name="all <%= !h[:product]['metadata'].blank? ? h[:product]['metadata']['keywords'] : h[:product]['description'] + " " + h[:product]['name'] %>" class="search-result-list">
+          <div data-filter-item="" data-filter-name="all <%= !h[:product]['metadata'].blank? ? h[:product]['metadata']['keywords'] + " " + h[:product]['description'] + " " + h[:product]['name'] : h[:product]['description'] + " " + h[:product]['name'] %>" class="search-result-list">
 
             <% if h[:product]['active'] && !Stripe::Price.list({limit: 100, product: h[:product]['id'], active: true}, {stripe_account: current_user.stripeUserID})['data'].blank? %>
               <span class="bg-green1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Active</span>
             <% else %>
-              <span class="bg-yellow1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Pending</span>
+              <span class="bg-red1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Unavailable</span>
             <% end %>
             <% if !h[:product]['images'].blank? %>
-              <%= image_tag(h[:product]['images'][0].split(",")[0],class: "shadow-l preload-img")%>
+              <%= cl_image_tag(h[:product]['images'][0].split(",")[0], :width=>100, :height=>100, :crop=>"crop", class: "mr-3") %>
             <% end %>
             <h1><%= h[:product]['name'] %></h1>
             <p><%= h[:product]['description'] %></p>
@@ -59,7 +59,7 @@
 
             
             <% if !h[:product]['images'].blank? %>
-              <%= image_tag(h[:product]['images'][0].split(",")[0],class: "shadow-l preload-img")%>
+              <%= cl_image_tag(h[:product]['images'][0].split(",")[0], :width=>100, :height=>100, :crop=>"crop", class: "mr-3") %>
             <% end %>
             <h1><%= h[:product]['name'] %></h1>
             <p><%= h[:product]['description'] %></p>

@@ -18,10 +18,12 @@ class ServicesController < ApplicationController
 
 				@store.each do |store|
 					store['products'].each do |product|
-						if product['active'] == true && !Stripe::Price.list({limit: 100, product: product['id'], active: true}, {stripe_account: store['connectAccount']})['data'].blank?
-							activeProducts << [product: product, connectAccount: store['connectAccount']]
-						else
-							unavailableProducts << [product: product, connectAccount: store['connectAccount']]
+						if product['type'] == 'service'
+							if product['active'] == true && !Stripe::Price.list({limit: 100, product: product['id'], active: true}, {stripe_account: store['connectAccount']})['data'].blank?
+								activeProducts << [product: product, connectAccount: store['connectAccount']]
+							else
+								unavailableProducts << [product: product, connectAccount: store['connectAccount']]
+							end
 						end
 					end
 				end
@@ -68,13 +70,13 @@ class ServicesController < ApplicationController
 
 			images = []
 			productStarted = Product.create()
-
-			productParams['images'].each do |img|
-				imageMade = productStarted.images.create(source: img)
-				
-				cloudX = Cloudinary::Uploader.upload(imageMade.source.file.file)
-				images.append(cloudX['secure_url'])
-				File.delete(imageMade.source.file.file)
+			if !productParams['images'].blank?
+				productParams['images'].each do |img|
+					imageMade = productStarted.images.create(source: img)
+					cloudX = Cloudinary::Uploader.upload(imageMade.source.file.file)
+					images.append(cloudX['secure_url'])
+					File.delete(imageMade.source.file.file)
+				end
 			end
 			
 
@@ -105,10 +107,10 @@ class ServicesController < ApplicationController
 
 		images = []
 
-		productFound = Product.find_by(stripeProductID: "prod_#{params[:id]}")
 
 		if !productParams['images'].blank?
 			productParams['images'].each do |img|
+				productFound = Product.find_by(stripeProductID: params[:id])
 				imageMade = productFound.images.create(source: img)
 				
 				cloudX = Cloudinary::Uploader.upload(imageMade.source.file.file)
@@ -119,14 +121,14 @@ class ServicesController < ApplicationController
 
 
 
-		curlCall = `curl -H "appName: #{ENV['appName']}" -d "images=#{images.join(",")}&keywords=#{keywords}&name=#{productName}&description=#{description}&active=#{active}&type=#{type}&connectAccount=#{connectAccount}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X PATCH #{SITEurl}/v1/products/#{params[:id]}`
+		curlCall = `curl -H "appName: #{ENV['appName']}" -d "images=#{images.join(",")}&keywords=#{keywords}&name=#{productName}&description=#{description}&active=#{active}&type=#{type}&connectAccount=#{connectAccount}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X PATCH #{SITEurl}/v1/products/#{params[:id][5.. params[:id].length]}`
 		
 		response = Oj.load(curlCall)
 
 		if !response.blank? && response['success']
+			
 			flash[:success] = "Service Updated"
-			redirect_to service_path(id: params[:id], connectAccount: connectAccount)
-			return
+			redirect_to services_path
 		else
 			flash[:alert] = "Trouble connecting. Try again later."
 		end
@@ -162,5 +164,6 @@ class ServicesController < ApplicationController
 
 	def productParams
 		paramsClean = params.require(:product).permit(:name, :description, :type, :active, {images: []}, :keywords)
+		return paramsClean.reject{|_, v| v.blank?}
 	end
 end
