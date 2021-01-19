@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 	devise_scope :user do
 		resources :charges
 		resources :schedule
+		resources :orders
 		resources :carts
 		
 		resources :services do

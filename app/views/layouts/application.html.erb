@@ -69,6 +69,12 @@
           <a href="/schedule"><i class="fa fa-address-book"></i><span>Schedule</span></a>
         <% end %>
 
+        <% if request.fullpath.include?('/orders') %>
+          <a href="/orders"><i class="fa fa-truck color-highlight"></i><span>Orders</span></a>
+        <% else %>
+          <a href="/orders"><i class="fa fa-truck"></i><span>Orders</span></a>
+        <% end %>
+
         <% if request.fullpath.include?('/charges') %>
           <a href="/charges"><i class="fa fa-dollar-sign color-highlight"></i><span>Payments</span></a>
         <% else %>
