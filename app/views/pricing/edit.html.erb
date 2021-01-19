@@ -13,7 +13,7 @@
     <%= form_for :newPricing, url: service_pricing_path(service_id: params[:service_id], id: params[:id]), method: :patch do |f| %>
       <div class="input-style has-icon input-required">
         <span class="color-highlight input-style-2">Description</span>
-        <%= f.text_area :description, class: "form-control", size: "10x3", value: (!@price['metadata'].blank? && !@price['metadata']['description'].blank?) ? @price['metadata']['description'] : nil %>
+        <%= f.text_area :description, class: "form-control", size: "10x3", required: true, value: (!@price['metadata'].blank? && !@price['metadata']['description'].blank?) ? @price['metadata']['description'] : nil %>
         <%= f.hidden_field :product, value: @price['product'] %>
         <%= f.hidden_field :price, value: @price['id'] %>
         <%= f.hidden_field :allPrice, value: @price %>

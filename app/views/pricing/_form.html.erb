@@ -13,9 +13,13 @@
 </div>
 <%= !@price.blank? ? (@price['unit_amount'] * 0.01) : nil %>
 <div class="input-style has-icon">
-    <span class="color-highlight input-style-2">Price</span>
-    <%= f.number_field :unit_amount, class: "form-control", value: !@price.blank? ? (@price['unit_amount'].to_f * 0.01).to_f : nil, step: 'any' %>
-	</div> 
+  <span class="color-highlight input-style-2">Description</span>
+  <%= f.text_area :description, class: "form-control", size: "10x3", required: true, value: (@price && @price['metadata'].blank? && !@price['metadata']['description'].blank?) ? @price['metadata']['description'] : nil %>
+</div> 
+<div class="input-style has-icon">
+  <span class="color-highlight input-style-2">Price</span>
+  <%= f.number_field :unit_amount, class: "form-control", value: !@price.blank? ? (@price['unit_amount'].to_f * 0.01).to_f : nil, step: 'any' %>
+</div> 
 <div data-switch="toggle-id-2" class="switch-is-unchecked" style="display: none;">
   <p class="mb-0 pb-0 pt-2"><em><u>One Time Purchase For Multiple Services</u></em></p>
 	
