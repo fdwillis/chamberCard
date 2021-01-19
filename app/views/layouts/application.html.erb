@@ -52,9 +52,15 @@
 
       <div id="footer-bar" class="footer-bar-1">
         <% if request.fullpath.include?('/services') %>
-          <a href="/services"><i class="fa fa-briefcase color-highlight"></i><span>Services</span></a>
+          <a href="/services"><i class="fa fa-handshake color-highlight"></i><span>Services</span></a>
         <% else %>
-          <a href="/services"><i class="fa fa-briefcase"></i><span>Services</span></a>
+          <a href="/services"><i class="fa fa-handshake"></i><span>Services</span></a>
+        <% end %>
+
+        <% if request.fullpath.include?('/products') %>
+          <a href="/products"><i class="fa fa-shopping-bag color-highlight"></i><span>Products</span></a>
+        <% else %>
+          <a href="/products"><i class="fa fa-shopping-bag"></i><span>Products</span></a>
         <% end %>
 
         <% if request.fullpath.include?('/schedule') %>

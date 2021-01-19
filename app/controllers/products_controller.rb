@@ -18,10 +18,12 @@ class ProductsController < ApplicationController
 
 				@store.each do |store|
 					store['products'].each do |product|
-						if product['active'] == true && !Stripe::Price.list({limit: 100, product: product['id'], active: true}, {stripe_account: store['connectAccount']})['data'].blank?
-							activeProducts << [product: product, connectAccount: store['connectAccount']]
-						else
-							unavailableProducts << [product: product, connectAccount: store['connectAccount']]
+						if product['type'] == 'good'
+							if product['active'] == true && !Stripe::Price.list({limit: 100, product: product['id'], active: true}, {stripe_account: store['connectAccount']})['data'].blank?
+								activeProducts << [product: product, connectAccount: store['connectAccount']]
+							else
+								unavailableProducts << [product: product, connectAccount: store['connectAccount']]
+							end
 						end
 					end
 				end
