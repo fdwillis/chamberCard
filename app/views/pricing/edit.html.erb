@@ -11,7 +11,6 @@
 <div class="card card-style">
   <div class="content mb-0">
     <%= form_for :newPricing, url: service_pricing_path(service_id: params[:service_id], id: params[:id]), method: :patch do |f| %>
-      <%= render partial: 'form', locals: { f: f } %>
       <div class="input-style has-icon input-required">
         <span class="color-highlight input-style-2">Description</span>
         <%= f.text_area :description, class: "form-control", size: "10x3", value: (!@price['metadata'].blank? && !@price['metadata']['description'].blank?) ? @price['metadata']['description'] : nil %>
@@ -36,26 +35,4 @@
   
 		<% end %>
 	</div>
-  <div id="one-offprice" class="switch-is-checked" style="display: block;">
-    <p class="mb-0 pb-0 pt-2"><em><u>Single Service Purchase</u></em></p>
-  </div>
 </div>
-<script type="text/javascript">
-  function packageOrNah() {
-    // Get the checkbox
-    var checkBox = document.getElementById("toggle-id-2");
-    var onOffDIV = document.getElementById("one-offprice");
-
-    // If the checkbox is checked, display the output text
-    if (checkBox.checked == true){
-      // text.style.display = "block";
-      console.log("CHECKED");
-      onOffDIV.style.display = "none";
-    } else {
-      console.log("UNCHECKED");
-      onOffDIV.style.display = "block";
-    }
-  }
-
-  window.onload = packageOrNah;
-</script>
