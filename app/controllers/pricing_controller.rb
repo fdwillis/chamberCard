@@ -39,6 +39,8 @@ class PricingController < ApplicationController
 					'connectAccount' => current_user.stripeUserID,
 					'package?' => ActiveModel::Type::Boolean.new.cast(pricingParams['package']),
 					'divide_by' => pricingParams['divide_by'],
+					'description' => pricingParams['description'],
+					
 				}.to_json
 				
 				curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X POST #{SITEurl}/v1/products/#{@productL['id']}/pricing`
@@ -62,46 +64,36 @@ class PricingController < ApplicationController
 	end
 
 	def edit
-
-		if !params['price'].blank?
-			@price = params['price']
-		else
-			flash[:error] = "No price found"
-			redirect_to request.referrer
-		end
+		@price = params['price']
 	end
 
 	def update
 
-		if !pricingParams['unit_amount'].blank?
-			if current_user&.authentication_token
-				mergedParams = serviceParams.merge(pricingParams)
-				
-				params = {
-					'product' => mergedParams[:service_id],
-					'unit_amount' => pricingParams['unit_amount'].to_i * 100,
-					'connectAccount' => current_user.stripeUserID,
-					'package?' => ActiveModel::Type::Boolean.new.cast(pricingParams['package']),
-					'divide_by' => pricingParams['divide_by'],
-				}.to_json
-				
-				curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X PATCH #{SITEurl}/v1/products/#{mergedParams[:service_id]}/pricing/#{mergedParams[:id]}`
-			else
+		if current_user&.authentication_token
+			
+			params = {
+				'product' => serviceParams['service_id'],
+				'unit_amount' => pricingParams['unit_amount'].to_i * 100,
+				'connectAccount' => current_user.stripeUserID,
+				'package?' => ActiveModel::Type::Boolean.new.cast(pricingParams['package']),
+				'divide_by' => pricingParams['divide_by'],
+				'description' => pricingParams['description'],
+				'active' => pricingParams['active'],
+			}.to_json
 
-			end
-
-			response = Oj.load(curlCall)
-
-			if response['success']
-				flash[:success] = "Pricing Added"
-				redirect_to service_pricing_index_path(service_id: @productL['id'][5..@productL['id'].length])
-			else
-				flash[:alert] = "Trouble connecting. Try again later."
-				redirect_to request.referrer
-			end
+			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X PATCH #{SITEurl}/v1/products/#{serviceParams[:service_id]}/pricing/#{serviceParams[:id]}`
 		else
+
+		end
+
+		response = Oj.load(curlCall)
+
+		if response['success']
+			flash[:success] = "Pricing Updated"
+		  redirect_to service_pricing_index_path(service_id: pricingParams[:product][5..pricingParams[:product].length])
+		else
+			flash[:alert] = "Trouble connecting. Try again later."
 			redirect_to request.referrer
-			flash[:error] = "Price is required"
 		end
 	end
 
@@ -121,7 +113,7 @@ class PricingController < ApplicationController
 	private
 
 	def pricingParams
-		paramsClean = params.require(:newPricing).permit(:unit_amount,:product, :connectAccount, :package, :divide_by)
+		paramsClean = params.require(:newPricing).permit(:id, :unit_amount, :price, {allPrice: []}, :product, :connectAccount, :package, :divide_by, :description, :active)
 		return paramsClean.reject{|_, v| v.blank?}
 	end
 
