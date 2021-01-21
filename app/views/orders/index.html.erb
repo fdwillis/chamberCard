@@ -9,7 +9,7 @@ Contact
 Contact 
          Total $/charge
          Net $ (fee shown) -->
-<% if current_user.present? %>
+<% if current_user&.customer? %>
   <div class="card card-style">
     <div class="content mt-3 mb-3">
       <h3>Track Your Orders</h3>
@@ -25,114 +25,83 @@ Contact
       </p>
     </div>
   </div>
-
-<!--  
-
-  <% @payments.map{|p,d| p['items']}.flatten.each do |itm| %>
-    <% if !itm['invoice']['metadata']['claimed'].blank? && (itm['invoice']['quantity'] > itm['invoice']['metadata']['claimed'].to_i) %>
-      <%= itm %>
-    <% end %>
-  <% end %>
--->
-
-<% if @payments.present? %>
-  <% @payments.each do |h| %>
-    <div class="card card-style">
-      <div class="content mb-0">
-          
-          <!-- <div class="menu-title"><h1>Payment Sent</h1><p class="color-highlight">Transaction Details for Payment</p></div>
-          <div class="divider divider-margins mb-1 mt-3"></div> -->
-          <div class="row mb-0">
-              <div class="col-3 icon icon-xl">
-                  <i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark" width='80'></i>
-              </div>
-              <div class="col-9 pl-4">
-                  <div class="d-flex">
-                      <div><p class="font-700 color-theme">Seller</p></div>
-                      <div class="ml-auto"><p><%= h['sellerName'] %></p></div>
-                  </div>
-                  <div class="d-flex">
-                      <div><p class="font-700 color-theme">Customer</p></div>
-                      <div class="ml-auto"><p><%= h['customer'] %></p></div>
-                  </div>
-                  <div class="d-flex">
-                      <div><p class="font-700 color-theme">Date</p></div>
-                      <div class="ml-auto"><p><%= h['date'] %></p></div>
-                  </div>
-              </div>
-          </div>
-          <div class="divider mt-3 mb-3"></div>
-          <div class="row mb-0">
-          
-              <div class="col-6"><h4 class="font-14 text-left"><u>Item</u></h4></div>
-              <div class="col-3"><h4 class="font-14 text-center"><u>Package</u></h4></div>
-              <div class="col-3"><h4 class="font-14 text-center"><u>Available</u></h4></div>
-          </div>
-          <% h['items'].each_with_index do |itm,indx| %>
-            <% if itm['product']['type'] == 'good' %>
-              <% if !itm['invoice']['metadata']['claimed'].blank? && (itm['invoice']['quantity'] > itm['invoice']['metadata']['claimed'].to_i) %>
-                
-                <div class="row mb-2">
-                  <div class="col-6"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
-                  <% if itm['price']['transform_quantity'] && !itm['price']['transform_quantity']['divide_by'].blank? %>
-                    <div class="col-3"><h4 class="font-14 text-center"><i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark"></i></h4></div>
-                    <div class="col-3"><h4 class="font-14 text-center"><%= (itm['invoice']['quantity'].to_i * itm['price']['transform_quantity']['divide_by']) - itm['invoice']['metadata']['claimed'].to_i %></h4></div>
-                  <% else %>
-                    <div class="col-3"><h4 class="font-14 text-center"><i class="fa fa-times bg-fade-red2-dark rounded-xl color-red2-dark"></i></h4></div>
-                    <div class="col-3"><h4 class="font-14 text-center"><%= itm['invoice']['quantity'].to_i - itm['invoice']['metadata']['claimed'].to_i %></h4></div>
-                  <% end %>
-                  <!-- <div class="col-2"><h4 class="font-14 text-right">Claimed: <%= itm['invoice']['metadata']['claimed'] %></h4></div> -->
+  <% if @payments.present? %>
+    <% @payments.each do |h| %>
+      <div class="card card-style">
+        <div class="content mb-0">
+            
+            <!-- <div class="menu-title"><h1>Payment Sent</h1><p class="color-highlight">Transaction Details for Payment</p></div>
+            <div class="divider divider-margins mb-1 mt-3"></div> -->
+            <div class="row mb-0">
+                <div class="col-3 icon icon-xl">
+                    <i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark" width='80'></i>
                 </div>
+                <div class="col-9 pl-4">
+                    <div class="d-flex">
+                        <div><p class="font-700 color-theme">Seller</p></div>
+                        <div class="ml-auto"><p><%= h['sellerName'] %></p></div>
+                    </div>
+                    <div class="d-flex">
+                        <div><p class="font-700 color-theme">Customer</p></div>
+                        <div class="ml-auto"><p><%= h['customer'] %></p></div>
+                    </div>
+                    <div class="d-flex">
+                        <div><p class="font-700 color-theme">Date</p></div>
+                        <div class="ml-auto"><p><%= h['date'] %></p></div>
+                    </div>
+                </div>
+            </div>
+            <div class="divider mt-3 mb-3"></div>
+            <div class="row mb-0">
+            
+                <div class="col-6"><h4 class="font-14 text-left"><u>Item</u></h4></div>
+                <div class="col-3"><h4 class="font-14 text-center"><u>Package</u></h4></div>
+                <div class="col-3"><h4 class="font-14 text-center"><u>Available</u></h4></div>
+            </div>
+            <% h['items'].each_with_index do |itm,indx| %>
+              <% if itm['product']['type'] == 'good' %>
+                <% if !itm['invoice']['metadata']['claimed'].blank? && (itm['invoice']['quantity'] > itm['invoice']['metadata']['claimed'].to_i) %>
+                  
+                  <div class="row mb-2">
+                    <div class="col-6"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
+                    <% if itm['price']['transform_quantity'] && !itm['price']['transform_quantity']['divide_by'].blank? %>
+                      <div class="col-3"><h4 class="font-14 text-center"><i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark"></i></h4></div>
+                      <div class="col-3"><h4 class="font-14 text-center"><%= (itm['invoice']['quantity'].to_i * itm['price']['transform_quantity']['divide_by']) - itm['invoice']['metadata']['claimed'].to_i %></h4></div>
+                    <% else %>
+                      <div class="col-3"><h4 class="font-14 text-center"><i class="fa fa-times bg-fade-red2-dark rounded-xl color-red2-dark"></i></h4></div>
+                      <div class="col-3"><h4 class="font-14 text-center"><%= itm['invoice']['quantity'].to_i - itm['invoice']['metadata']['claimed'].to_i %></h4></div>
+                    <% end %>
+                    <!-- <div class="col-2"><h4 class="font-14 text-right">Claimed: <%= itm['invoice']['metadata']['claimed'] %></h4></div> -->
+                  </div>
+                <% end %>
               <% end %>
             <% end %>
-          <% end %>
-          <a href="#" class="close-menu btn btn-full btn-m bg-yellow1-dark rounded-sm text-uppercase font-800">Schedule</a>
-          <div class="scheduleIt mt-4">
-          
-            <!--     <%= form_for :bookIt, url: service_path(id: 23434), method: :patch do |f| %>
-              <div class="input-style has-icon input-style-2 input-required pb-1">
-                <span class="color-highlight input-style-1-active">Price</span>
-                <em>(required)</em>
-                <%= f.select :sellerItem, h['items'].map{|p,i| (p['price']['transform_quantity'] && !p['price']['transform_quantity']['divide_by'].blank?) ? true : false }, required: true %>
-              </div>
-            <% end %> -->
-          </div>
-          
+            <a href="#" class="close-menu btn btn-full btn-m bg-yellow1-dark rounded-sm text-uppercase font-800">Schedule</a>
+            <div class="scheduleIt mt-4">
+            
+              <!--     <%= form_for :bookIt, url: service_path(id: 23434), method: :patch do |f| %>
+                <div class="input-style has-icon input-style-2 input-required pb-1">
+                  <span class="color-highlight input-style-1-active">Price</span>
+                  <em>(required)</em>
+                  <%= f.select :sellerItem, h['items'].map{|p,i| (p['price']['transform_quantity'] && !p['price']['transform_quantity']['divide_by'].blank?) ? true : false }, required: true %>
+                </div>
+              <% end %> -->
+            </div>
+            
+        </div>
+        
       </div>
-      
-    </div>
+    <% end %>
   <% end %>
+
+
 <% end %>
 
+<% if current_user&.manager? %>
+<% end %>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<% else %>
-<div class="page-content header-clear-medium">
+<% if !current_user %>
+  <div class="page-content header-clear-medium">
         
         <div class="card card-style">
             
@@ -160,5 +129,6 @@ Contact
             
             <div class="divider mt-4 mb-0"></div>
         </div>
-    </div>
+  </div>
 <% end %>
+
