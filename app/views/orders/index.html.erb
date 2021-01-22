@@ -10,6 +10,9 @@ Contact
          Total $/charge
          Net $ (fee shown) -->
 <% if current_user&.customer? %>
+<% end %>
+
+<% if current_user&.manager? %>
   <div class="card card-style">
     <div class="content mt-3 mb-3">
       <h3>Track Your Orders</h3>
@@ -25,88 +28,180 @@ Contact
       </p>
     </div>
   </div>
+<!--   <%= @payments.map{|p,pindx| p['items'].map{|i, iindx| i['product']['type'] == 'good' } } %> -->
+  
 
-  <% if @payments.present? %>
-    <% @payments.each_with_index do |h, hindx| %>
-      <div class="card card-style">
-        <div class="content mb-0">
-            
-            <!-- <div class="menu-title"><h1>Payment Sent</h1><p class="color-highlight">Transaction Details for Payment</p></div>
-            <div class="divider divider-margins mb-1 mt-3"></div> -->
-            <div class="row mb-0">
-                <div class="col-3 icon icon-xl">
-                    <i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark" width='80'></i>
-                </div>
-                <div class="col-9 pl-4">
-                    <div class="d-flex">
-                        <div><p class="font-700 color-theme">Seller</p></div>
-                        <div class="ml-auto"><p><%= h['sellerName'] %></p></div>
-                    </div>
-                    <div class="d-flex">
-                        <div><p class="font-700 color-theme">Customer</p></div>
-                        <div class="ml-auto"><p><%= h['customer'] %></p></div>
-                    </div>
-                    <div class="d-flex">
-                        <div><p class="font-700 color-theme">Date</p></div>
-                        <div class="ml-auto"><p><%= h['date'] %></p></div>
-                    </div>
-                </div>
-            </div>
-            <div class="divider mt-3 mb-3"></div>
-            <div class="row mb-4">
-            
-                <div class="col-5"><h4 class="font-14 text-left"><u>Service</u></h4></div>
-                <!-- <div class="col-3"><h4 class="font-14 text-left"><u>Package</u></h4></div> -->
-                <div class="col-3"><h4 class="font-14 text-justify"><u>Available</u></h4></div>
-                <div>&nbsp;</div>
-            </div>
-            <% h['items'].each_with_index do |itm,indx| %>
-              <% if itm['product']['type'] == 'good' %>
-                <% if !itm['invoiceLine']['metadata']['claimed'].blank? && (itm['invoiceLine']['quantity'] > itm['invoiceLine']['metadata']['claimed'].to_i) %>
-                  
-                  <div class="row mb-6">
-                    <div class="col-5"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
-                    <% if itm['price']['transform_quantity'] && !itm['price']['transform_quantity']['divide_by'].blank? %>
-                      <!-- <div class="col-1"><h4 class="font-14 text-left"><i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark"></i></h4></div> -->
-                      <div class="col-3"><h4 class="font-14 text-justify"><%= (itm['invoiceLine']['quantity'].to_i * itm['price']['transform_quantity']['divide_by']) - itm['invoiceLine']['metadata']['claimed'].to_i %></h4></div>
-                    <% else %>
-                      <!-- <div class="col-1"><h4 class="font-14 text-left"><i class="fa fa-times bg-fade-red2-dark rounded-xl color-red2-dark"></i></h4></div> -->
-                      <div class="col-3"><h4 class="font-14 text-justify"><%= itm['invoiceLine']['quantity'].to_i - itm['invoiceLine']['metadata']['claimed'].to_i %></h4></div>
-                    <% end %>
-                    <div class="col-4">
-                      <button class="btn accordion-btn collapsed col-md-12 btn btn-m btn-full bg-green1-dark text-uppercase font-900" data-toggle="collapse" data-target="#<%= itm['invoiceLine']['id'] %>" aria-expanded="false" style='margin-top:-10px;'>
-                        <i class="fa fa-calendar-check"></i>
-                        Request
-                      </button>
-                          
-                    </div>
-                  </div>
-                  <div class="scheduleIt mt-4">
-                  </div>
-                <% end %>
-                  <div class="accordion" id="accordion-1">
-                    <div class="mb-6">
-                      <div id="<%= itm['invoiceLine']['id'] %>" class="collapse" data-parent="#accordion-1" style="">
-                        <div class="pt-1 pb-2 pl-3 pr-3">
-                            <%= itm['invoiceLine']['id'] %> This is the accordion content. You can add any content you want to it. Really, anything! Add images, text, lists, captions or any element you want.
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-              <% end %>
-            <% end %>
-            <!-- <a href="#" class="close-menu btn btn-full btn-m bg-yellow1-dark rounded-sm text-uppercase font-800">Schedule</a> -->
 
-            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="card card-style">
+    <div class="content mb-0">
+      <% if @payments.present?  %>
+        <div class="row mb-4">
+          <div class="col-5"><h4 class="font-14 text-left"><u>Product</u></h4></div>
+          <div class="col-3"><h4 class="font-14 text-justify"><u>Quantity</u></h4></div>
+          <div>&nbsp;</div>
         </div>
-        
-      </div>
+        <% @payments.each_with_index do |h, hindx| %>
+          <% h['items'].each_with_index do |itm,indx| %>
+            <% if itm['product']['type'] == 'good' %>
+              <% if !itm['invoiceLine']['metadata']['claimed'].blank? && (itm['invoiceLine']['quantity'] > itm['invoiceLine']['metadata']['claimed'].to_i) %>
+                <div class="row mb-6">
+                  <div class="col-5"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
+                  <% if itm['price']['transform_quantity'] && !itm['price']['transform_quantity']['divide_by'].blank? %>
+                    <!-- <div class="col-1"><h4 class="font-14 text-left"><i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark"></i></h4></div> -->
+                    <div class="col-3"><h4 class="font-14 text-justify"><%= (itm['invoiceLine']['quantity'].to_i * itm['price']['transform_quantity']['divide_by']) - itm['invoiceLine']['metadata']['claimed'].to_i %></h4></div>
+                  <% else %>
+                    <!-- <div class="col-1"><h4 class="font-14 text-left"><i class="fa fa-times bg-fade-red2-dark rounded-xl color-red2-dark"></i></h4></div> -->
+                    <div class="col-3"><h4 class="font-14 text-justify"><%= itm['invoiceLine']['quantity'].to_i - itm['invoiceLine']['metadata']['claimed'].to_i %></h4></div>
+                  <% end %>
+                  <div class="col-4">
+                    <button class="btn accordion-btn collapsed col-md-12 btn btn-m btn-full bg-green1-dark text-uppercase font-900" data-toggle="collapse" data-target="#<%= itm['invoiceLine']['id'] %>" aria-expanded="false" style='margin-top:-10px;'>
+                      <i class="fa fa-truck"></i>
+                      Fullfill
+                    </button>
+                  </div>
+                </div>
+                <div class="scheduleIt mt-4">
+                </div>
+              <% end %>
+              <div class="accordion" id="accordion-1">
+                <div class="mb-6">
+                  <div id="<%= itm['invoiceLine']['id'] %>" class="collapse" data-parent="#accordion-1" style="">
+                    <div class="pt-1 pb-2 pl-3 pr-3">
+                        <%= itm['invoiceLine']['id'] %> This is the accordion content. You can add any content you want to it. Really, anything! Add images, text, lists, captions or any element you want.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
 
-    <% end %>
-  <% end %>
-<% end %>
 
-<% if current_user&.manager? %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <% end %>
 
 <% if !current_user %>
