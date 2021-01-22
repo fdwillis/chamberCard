@@ -60,18 +60,18 @@ Contact
             </div>
             <% h['items'].each_with_index do |itm,indx| %>
               <% if itm['product']['type'] == 'good' %>
-                <% if !itm['invoice']['metadata']['claimed'].blank? && (itm['invoice']['quantity'] > itm['invoice']['metadata']['claimed'].to_i) %>
+                <% if !itm['invoiceLine']['metadata']['claimed'].blank? && (itm['invoiceLine']['quantity'] > itm['invoiceLine']['metadata']['claimed'].to_i) %>
                   
                   <div class="row mb-2">
                     <div class="col-6"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
                     <% if itm['price']['transform_quantity'] && !itm['price']['transform_quantity']['divide_by'].blank? %>
                       <div class="col-3"><h4 class="font-14 text-center"><i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark"></i></h4></div>
-                      <div class="col-3"><h4 class="font-14 text-center"><%= (itm['invoice']['quantity'].to_i * itm['price']['transform_quantity']['divide_by']) - itm['invoice']['metadata']['claimed'].to_i %></h4></div>
+                      <div class="col-3"><h4 class="font-14 text-center"><%= (itm['invoiceLine']['quantity'].to_i * itm['price']['transform_quantity']['divide_by']) - itm['invoiceLine']['metadata']['claimed'].to_i %></h4></div>
                     <% else %>
                       <div class="col-3"><h4 class="font-14 text-center"><i class="fa fa-times bg-fade-red2-dark rounded-xl color-red2-dark"></i></h4></div>
-                      <div class="col-3"><h4 class="font-14 text-center"><%= itm['invoice']['quantity'].to_i - itm['invoice']['metadata']['claimed'].to_i %></h4></div>
+                      <div class="col-3"><h4 class="font-14 text-center"><%= itm['invoiceLine']['quantity'].to_i - itm['invoiceLine']['metadata']['claimed'].to_i %></h4></div>
                     <% end %>
-                    <!-- <div class="col-2"><h4 class="font-14 text-right">Claimed: <%= itm['invoice']['metadata']['claimed'] %></h4></div> -->
+                    <!-- <div class="col-2"><h4 class="font-14 text-right">Claimed: <%= itm['invoiceLine']['metadata']['claimed'] %></h4></div> -->
                   </div>
                 <% end %>
               <% end %>
