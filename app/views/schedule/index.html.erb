@@ -29,18 +29,17 @@ Contact
   
 
 
-    <% if @payments.present?  %>
-      <% @payments.each_with_index do |h, hindx| %>
-        <div class="card card-style">
-          <div class="content mb-0">
-            <div class="divider mt-3 mb-3"></div>
-            <div class="row mb-4">
-              <div class="col-5"><h4 class="font-14 text-left"><u>Product</u></h4></div>
-              <div class="col-3"><h4 class="font-14 text-justify"><u>Quantity</u></h4></div>
-              <div>&nbsp;</div>
-            </div>
+    <div class="card card-style">
+      <div class="content mb-0">
+        <% if @payments.present?  %>
+          <div class="row mb-4">
+            <div class="col-5"><h4 class="font-14 text-left"><u>Service</u></h4></div>
+            <div class="col-3"><h4 class="font-14 text-justify"><u>Quantity</u></h4></div>
+            <div>&nbsp;</div>
+          </div>
+          <% @payments.each_with_index do |h, hindx| %>
             <% h['items'].each_with_index do |itm,indx| %>
-              <% if itm['product']['type'] == 'good' %>
+              <% if itm['product']['type'] == 'service' %>
                 <% if !itm['invoiceLine']['metadata']['claimed'].blank? && (itm['invoiceLine']['quantity'] > itm['invoiceLine']['metadata']['claimed'].to_i) %>
                   <div class="row mb-6">
                     <div class="col-5"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
@@ -53,8 +52,8 @@ Contact
                     <% end %>
                     <div class="col-4">
                       <button class="btn accordion-btn collapsed col-md-12 btn btn-m btn-full bg-green1-dark text-uppercase font-900" data-toggle="collapse" data-target="#<%= itm['invoiceLine']['id'] %>" aria-expanded="false" style='margin-top:-10px;'>
-                        <i class="fa fa-truck"></i>
-                        Fullfill
+                        <i class="fa fa-calendar-check"></i>
+                        Schedule
                       </button>
                     </div>
                   </div>
@@ -72,10 +71,10 @@ Contact
                 </div>
               <% end %>
             <% end %>
-          </div>
-        </div>
-      <% end %>
-    <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
 
 
 

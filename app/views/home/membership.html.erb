@@ -5,14 +5,18 @@
       	<% if current_user.member? %>
         
           <div class="d-flex">
-              <div class="align-self-center pr-3">
-                  <i class="fa fa-check-circle color-green1-dark fa-5x"></i>
-              </div>
-              <div class="align-self-center">
-                  <h4>Valid Membership</h4>
-                  <h2><small>Renews <%= Time.at(@subsc['current_period_end']).strftime("%a %b #{Time.at(@subsc['current_period_end']).day.ordinalize}, %Y") %></small></h2>
-                  <p class="line-height-s">Members save on every transaction fee! This helps keep us in business.</p>
-              </div>
+            <div class="align-self-center pr-3">
+                <i class="fa fa-check-circle color-green1-dark fa-5x"></i>
+            </div>
+            <div class="align-self-center">
+                <h4>Valid Membership</h4>
+                <h2><small>Renews <%= Time.at(@subsc['current_period_end']).strftime("%a %b #{Time.at(@subsc['current_period_end']).day.ordinalize}, %Y") %></small></h2>
+                <p class="line-height-s">Members save on every transaction fee! This helps keep us in business.</p>
+            </div>
+            <div class="align-self-center">
+              <h4>35% Standard Fee</h4>
+              <p class="line-height-s">Your monthly membership reduces the standard transaction fee to as low as 10%!</p>
+            </div>
           </div>
         <% else %>
           <div class="d-flex mb-4">

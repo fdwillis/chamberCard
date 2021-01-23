@@ -95,15 +95,11 @@
         <% else %>
           <div class="row text-center">
             <% if !current_user&.manager? %>
-              <p class="mb-5">
-
-                  You're almost there! Please add your default source and contact details. 
-              </p>
               <a href="#" data-menu="menu-transaction-transfer" class="col-12">
                   <div class="card card-style ml-2 mb-3">
                       <i class="fa fa-credit-card color-highlight fa-2x mt-3"></i>
                       <h1 class="pt-2 font-18">Card</h1>
-                      <p class="font-11 opacity-50 mt-n2 mb-3">Tap to add another card</p>
+                      <p class="font-11 opacity-50 mt-n2 mb-3">Tap to add a card</p>
                   </div>
               </a>
             <% else %>
