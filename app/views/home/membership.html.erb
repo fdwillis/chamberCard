@@ -13,10 +13,6 @@
                 <h2><small>Renews <%= Time.at(@subsc['current_period_end']).strftime("%a %b #{Time.at(@subsc['current_period_end']).day.ordinalize}, %Y") %></small></h2>
                 <p class="line-height-s">Members save on every transaction fee! This helps keep us in business.</p>
             </div>
-            <div class="align-self-center">
-              <h4>35% Standard Fee</h4>
-              <p class="line-height-s">Your monthly membership reduces the standard transaction fee to as low as 10%!</p>
-            </div>
           </div>
         <% else %>
           <div class="d-flex mb-4">
@@ -46,13 +42,6 @@
   <% if current_user.member? %>
   	<div class="card card-style">
       <div class="content">
-<!--         subc <%= @subsc %><br>
-        prod <%= @prod %><br>
-        price <%= @price %><br> -->
-        <h3 class="mb-0"><%= @prod['name'] %></h3>
-        <!-- <p>
-            Basic Plan member holders save 5% on every transaction.
-        </p> -->
         <div class="row mb-0">
           <div class="divider w-100 mt-2 mb-2 divider-margins"></div>
           <div class="col-7">
@@ -77,6 +66,7 @@
           </div>
         </div>
       </div>
+      <h4 class="mb-6 text-center mt-4">To update your membership <%= link_to "Call Us Now", "tel:#{ENV["supportNumber"]}" %> (compelte with webhook for when user updates via stripe. here we will need to change the subscription ID)</h4>
 	  </div>
 	<% else %>
 
@@ -89,10 +79,10 @@
 	          <div class="row mb-0">
 	            <div class="divider w-100 mt-2 mb-2 divider-margins"></div>
 	            <div class="col-7">
-	                <h5 class="font-600 opacity-80">Fee Savings</h5>
+	                <h5 class="font-600 opacity-80">Non Member Fee</h5>
 	            </div>
 	            <div class="col-5">
-	                <h5>5%</h5>
+	                <h5>35%</h5>
 	            </div>
 	            <div class="divider w-100 mt-2 mb-2 divider-margins"></div>
 	            <div class="col-7">
@@ -119,10 +109,10 @@
 	          <div class="row mb-0">
 	            <div class="divider w-100 mt-2 mb-2 divider-margins"></div>
 	            <div class="col-7">
-	                <h5 class="font-600 opacity-80">Fee Savings</h5>
+	                <h5 class="font-600 opacity-80">Non Member Fee</h5>
 	            </div>
 	            <div class="col-5">
-	                <h5>10%</h5>
+	                <h5>35%</h5>
 	            </div>
 	            <div class="divider w-100 mt-2 mb-2 divider-margins"></div>
 	            <div class="col-7">
@@ -160,10 +150,10 @@
 	            
 	            <div class="divider w-100 mt-2 mb-2 divider-margins"></div> -->
 	            <div class="col-7">
-	                <h5 class="font-600 opacity-80">Fee Savings</h5>
+	                <h5 class="font-600 opacity-80">Non Member Fee</h5>
 	            </div>
 	            <div class="col-5">
-	                <h5>25%</h5>
+	                <h5>35%</h5>
 	            </div>
 	            <div class="divider w-100 mt-2 mb-2 divider-margins"></div>
 	            <div class="col-7">
