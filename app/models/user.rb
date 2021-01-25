@@ -153,11 +153,7 @@ class User < ApplicationRecord
   end
 
   def member?
-    !stripeUserID.blank? && !stripeSubscription.blank? && checkStripeSource
-  end
-
-  def missingSub?
-    !stripeUserID.blank? && stripeSubscription.blank? && checkStripeSource
+    !stripeUserID.blank? && stripeSubscription && checkStripeSource
   end
 
   def customer?

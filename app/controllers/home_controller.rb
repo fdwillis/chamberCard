@@ -64,24 +64,19 @@ class HomeController < ApplicationController
 
 	def join
 
-		if current_user.missingSub?
 
-			params = {price: joinParams[:plan]}.to_json
-			
-			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X POST #{SITEurl}/v1/subscriptions`
-			
-			response = Oj.load(curlCall)
+		params = {price: joinParams[:plan]}.to_json
+		
+		curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X POST #{SITEurl}/v1/subscriptions`
+		
+		response = Oj.load(curlCall)
 
-			if !response.blank? && response['success'] && current_user.update_attributes(stripeSubscription:  response['stripeSubscription'], serviceFee: response['serviceFee'])
-				flash[:success] = "You are now a member!"
-	      redirect_to membership_path
-	    else
-				flash[:error] = response['error']
-	      redirect_to membership_path
-	    end
-	  else
-			flash[:error] = "Payment required to become a member"
-      redirect_to profile_path
+		if !response.blank? && response['success'] && current_user.update_attributes(stripeSubscription:  response['stripeSubscription'], serviceFee: response['serviceFee'])
+			flash[:success] = "You are now a member!"
+      redirect_to membership_path
+    else
+			flash[:error] = response['error']
+      redirect_to membership_path
     end
 	end
 
