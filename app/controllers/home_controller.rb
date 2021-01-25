@@ -44,9 +44,9 @@ class HomeController < ApplicationController
 			loadSaver = ENV["saverMonthlyMembership"].split(",")
 			loadElite = ENV["eliteMonthlyMembership"].split(",")
 
-			basicMonthly = ab_test(:basicMonthlyMembership, loadBasic[0] , {loadBasic[1]=> 5}, {loadBasic[2]=> 4})
-			saverMonthly = ab_test(:saverMonthlyMembership, loadSaver[0] , {loadSaver[1] => 5}, {loadSaver[2] => 4})
-			eliteMonthly = ab_test(:eliteMonthlyMembership, loadElite[0] , {loadElite[1] => 5}, {loadElite[2] => 4})
+			basicMonthly = ab_test(:basicMonthlyMembership, {loadBasic[0] => 2} , {loadBasic[1]=> 6}, {loadBasic[2]=> 2})
+			saverMonthly = ab_test(:saverMonthlyMembership, {loadSaver[0] => 2} , {loadSaver[1] => 6}, {loadSaver[2] => 2})
+			eliteMonthly = ab_test(:eliteMonthlyMembership, {loadElite[0] => 2} , {loadElite[1] => 6}, {loadElite[2] => 2})
 		
 			@basicMonthlyMembership = Stripe::Price.retrieve("price_#{basicMonthly}")
 			@saverMonthlyMembership = Stripe::Price.retrieve("price_#{saverMonthly}")

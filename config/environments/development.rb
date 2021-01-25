@@ -12,7 +12,7 @@ Rails.application.configure do
 
   # Do not eager load code on boot.
   config.eager_load = false
-  config.hosts << "hungry-yak-7.loca.lt"
+  config.hosts << "modern-panther-13.loca.lt"
   
 
   # Show full error reports.
