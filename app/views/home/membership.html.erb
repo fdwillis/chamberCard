@@ -14,6 +14,8 @@
                 <p class="line-height-s">Members save on every transaction fee! This helps keep us in business.</p>
             </div>
           </div>
+          <%= 
+           %>
         <% else %>
           <div class="d-flex mb-4">
             <div class="align-self-center pr-3">
@@ -68,6 +70,71 @@
       </div>
       <h4 class="mb-6 text-center mt-4">To update your membership <%= link_to "Call Us Now", "tel:#{ENV["supportNumber"]}" %> (compelte with webhook for when user updates via stripe. here we will need to change the subscription ID)</h4>
 	  </div>
+
+
+
+
+
+
+
+    <% Stripe::Subscription.list(customer: current_user&.stripeUserID)['data'].map{|s| s['items']}.flatten.map{|d| d['data']}.flatten.each do |s| %>
+      <div class="card card-style">
+        <div class="content">
+          <p class="font-600 font-11"><%= Stripe::Product.retrieve(s['plan']['product'])['name'] %></p>
+          <div class="row mt-6">
+              <div class="col-3 icon icon-xl">
+                  <i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark" width='80'></i>
+              </div>
+              <div class="col-9 pl-4">
+                  <div class="d-flex">
+                      <div><p class="font-700 color-theme">Starts</p></div>
+                      <div class="ml-auto"><p><%= Time.at(Stripe::Subscription.retrieve(s['subscription'])['current_period_start']).strftime("%b #{Time.at(Stripe::Subscription.retrieve(s['subscription'])['current_period_start']).day.ordinalize} %Y") %></p></div>
+
+
+                  </div>
+                  <div class="d-flex">
+                      <div><p class="font-700 color-theme">Ends</p></div>
+                      <div class="ml-auto"><p><%= Time.at(Stripe::Subscription.retrieve(s['subscription'])['current_period_end']).strftime("%b #{Time.at(Stripe::Subscription.retrieve(s['subscription'])['current_period_end']).day.ordinalize} %Y") %></p></div>
+                  </div>
+              </div>
+          </div>
+          <div class="divider mt-3 mb-3"></div>
+        </div>
+      </div>
+    <% end %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	<% end %>
 
   <div class="card card-style">
