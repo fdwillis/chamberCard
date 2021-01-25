@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 2021_01_16_021555) do
 
   create_table "users", force: :cascade do |t|
     t.string "stripeUserID"
-    t.string "stripeSubscription"
+    t.boolean "stripeSubscription", default: false
     t.boolean "stripeSourceVerified", default: false
     t.integer "serviceFee", default: 35, null: false
     t.string "accessPin"

@@ -105,7 +105,7 @@ class User < ApplicationRecord
     response = Oj.load(curlCall)
     
     if !response.blank? && response['success']
-      self.update(accessPin: response['accessPin'] , stripeSourceVerified: response['stripeSourceVerified'] , stripeUserID: response['stripeUserID'], authentication_token: response['authentication_token'], uuid: response['uuid'] )
+      self.update(username: response['username'] ,accessPin: response['accessPin'] , stripeUserID: response['stripeUserID'], authentication_token: response['authentication_token'], uuid: response['uuid'] )
       return response
     else
       return response
