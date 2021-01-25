@@ -73,9 +73,16 @@
                   <div class="d-flex">
                       <div><p class="font-700 color-theme"><%= number_to_currency((pr['unit_amount'] * 0.01), precision: 2) %></p></div>
                       <div class="ml-auto"><p>
-                        <%= link_to edit_product_pricing_path(product_id: @productL['id'][6..@productL['id'].size], id: pr['id'][6..pr['id'].size], price: pr), class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' do %>
+                      <% if request.fullpath.include?('?product_id') %>
+                      <%= link_to edit_pricing_path(product_id: @productL['id'][6..@productL['id'].size], id: pr['id'][6..pr['id'].size], price: pr), class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' do %>
                           <i class="fa fa-pencil"></i> Edit
                         <% end %>
+                      <% end %>
+                      <% if request.fullpath.include?('?service_id') %>
+                        <%= link_to edit_pricing_path(service_id: @productL['id'][6..@productL['id'].size], id: pr['id'][6..pr['id'].size], price: pr), class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' do %>
+                          <i class="fa fa-pencil"></i> Edit
+                        <% end %>
+                      <% end %>
                       </p></div>
                   </div>
                   <div class="d-flex">

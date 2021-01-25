@@ -75,7 +75,7 @@ class PricingController < ApplicationController
 		if current_user&.authentication_token
 			
 			params = {
-				'product' => pricingParams[:product],
+				'product' => "prod_#{pricingParams[:product]}",
 				'unit_amount' => pricingParams['unit_amount'].to_i * 100,
 				'connectAccount' => current_user.stripeUserID,
 				'package?' => ActiveModel::Type::Boolean.new.cast(pricingParams['package']),
@@ -116,7 +116,7 @@ class PricingController < ApplicationController
 	private
 
 	def pricingParams
-		paramsClean = params.require(:newPricing).permit(:service_id, :product_id, :id, :unit_amount, :price, {allPrice: []}, :product, :connectAccount, :package, :divide_by, :description, :active)
+		paramsClean = params.require(:newPricing).permit(:service_id, :product_id, :id, :unit_amount, :product, :connectAccount, :package, :divide_by, :description, :active)
 		return paramsClean.reject{|_, v| v.blank?}
 	end
 
