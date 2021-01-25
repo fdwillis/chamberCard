@@ -32,7 +32,6 @@ class PricingController < ApplicationController
 	end
 
 	def create
-		
 		if !pricingParams['unit_amount'].blank?
 			if current_user&.authentication_token
 				
