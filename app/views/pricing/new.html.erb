@@ -1,6 +1,6 @@
 <div class="card card-style">
   <div class="content mb-0">
-		<h3>New Pricing For <%= @productL['name'].titleize %></h3>
+		<h3>New Pricing For '<%= @productL['name'].titleize %>'</h3>
 		<%= form_for :newPricing, url: pricing_index_path do |f| %>
 
 		<% if request.fullpath.include?('?product_id') %>

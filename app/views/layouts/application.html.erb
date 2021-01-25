@@ -51,13 +51,13 @@
 
 
       <div id="footer-bar" class="footer-bar-1">
-        <% if request.fullpath.include?('/services') %>
+        <% if request.fullpath.include?('/services') || request.fullpath.include?('?service_id') %>
           <a href="/services"><i class="fa fa-handshake color-highlight"></i><span>Services</span></a>
         <% else %>
           <a href="/services"><i class="fa fa-handshake"></i><span>Services</span></a>
         <% end %>
 
-        <% if request.fullpath.include?('/products') %>
+        <% if request.fullpath.include?('/products') || request.fullpath.include?('?product_id') %>
           <a href="/products"><i class="fa fa-shopping-bag color-highlight"></i><span>Products</span></a>
         <% else %>
           <a href="/products"><i class="fa fa-shopping-bag"></i><span>Products</span></a>
