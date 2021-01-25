@@ -2,12 +2,12 @@
   <div class="content mt-3 mb-3">
     <h3>Price Management</h3>
 
-    <h5><%= link_to "< Back To #{@productL['name'].titleize}", "/services/#{@productL['id'][5..@productL['id'].size]}?connectAccount=#{current_user.stripeUserID}" %><%=  %></h5>
+    <h5><%= link_to "< Back To #{@productL['name'].titleize}", "/products/#{@productL['id'][5..@productL['id'].size]}?connectAccount=#{current_user.stripeUserID}" %><%=  %></h5>
     <p>
         <%= pluralize(@prices.count, "price") %> listed
     </p>
   </div>
-  <a href="<%= new_service_pricing_path %>" class="float-right btn btn-xs bg-yellow1-dark rounded-xl shadow-xl text-uppercase font-900 mt-2 font-11">Add Pricing</a>
+  <a href="<%= new_pricing_path(product_id: params[:product_id]) %>" class="float-right btn btn-xs bg-yellow1-dark rounded-xl shadow-xl text-uppercase font-900 mt-2 font-11">Add Pricing</a>
 </div>
 
 <div class="card card-style bg-theme pb-0">
@@ -30,7 +30,7 @@
                   <div class="d-flex">
                       <div><p class="font-700 color-theme"><%= number_to_currency((pr['unit_amount'] * 0.01), precision: 2) %></p></div>
                       <div class="ml-auto"><p>
-                        <%= link_to edit_service_pricing_path(service_id: @productL['id'][6..@productL['id'].size], id: pr['id'][6..pr['id'].size], price: pr), class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' do %>
+                        <%= link_to edit_product_pricing_path(product_id: @productL['id'][6..@productL['id'].size], id: pr['id'][6..pr['id'].size], price: pr), class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' do %>
                           <i class="fa fa-pencil"></i> Edit
                         <% end %>
                       </p></div>
@@ -61,7 +61,7 @@
                   <div class="d-flex">
                       <div><p class="font-700 color-theme"><%= number_to_currency((pr['unit_amount'] * 0.01), precision: 2) %></p></div>
                       <div class="ml-auto"><p>
-                        <%= link_to edit_service_pricing_path(service_id: @productL['id'][6..@productL['id'].size], id: pr['id'][6..pr['id'].size], price: pr), class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' do %>
+                        <%= link_to edit_product_pricing_path(product_id: @productL['id'][6..@productL['id'].size], id: pr['id'][6..pr['id'].size], price: pr), class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' do %>
                           <i class="fa fa-pencil"></i> Edit
                         <% end %>
                       </p></div>

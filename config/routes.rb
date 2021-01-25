@@ -12,14 +12,10 @@ Rails.application.routes.draw do
 		resources :schedule
 		resources :orders
 		resources :carts
-		
-		resources :services do
-			resources :pricing, :path => '/pricing'
-		end
-
-		resources :products do
-			resources :pricing, :path => '/pricing'
-		end
+	
+		resources :services
+		resources :products
+		resources :pricing
 
 		resources :stripe_customers, :path => '/stripe-customers'
 		resources :stripe_tokens, :path => '/stripe-tokens'

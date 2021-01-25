@@ -1,7 +1,7 @@
 <div class="card card-style">
   <div class="content mb-0">
 		<h3>New Pricing For <%= @productL['name'].titleize %></h3>
-		<%= form_for :newPricing, url: service_pricing_index_path do |f| %>
+		<%= form_for :newPricing, url: pricing_index_path do |f| %>
 			
       <%= render partial: 'form', locals: { f: f } %>
 

@@ -54,7 +54,7 @@ class ProductsController < ApplicationController
 			@prices = response['prices']
 		else
 			flash[:alert] = "Trouble connecting. Try again later."
-			redirect_to services_path
+			redirect_to products_path
 		end
 
 	end
@@ -126,8 +126,8 @@ class ProductsController < ApplicationController
 		response = Oj.load(curlCall)
 
 		if !response.blank? && response['success']
-			flash[:success] = "Service Updated"
-			redirect_to service_path(id: params[:id], connectAccount: connectAccount)
+			flash[:success] = "product Updated"
+			redirect_to product_path(id: params[:id], connectAccount: connectAccount)
 			return
 		else
 			flash[:alert] = "Trouble connecting. Try again later."
@@ -140,11 +140,11 @@ class ProductsController < ApplicationController
 		response = Oj.load(curlCall)
 		
 		if !response.blank? && response['success']
-			flash[:success] = "Service removed. No longer for sale"
-			redirect_to services_path
+			flash[:success] = "product removed. No longer for sale"
+			redirect_to products_path
 		else
 			flash[:alert] = "Trouble connecting. Try again later."
-			redirect_to services_path
+			redirect_to products_path
 		end
 	end
 

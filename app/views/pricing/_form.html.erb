@@ -26,6 +26,7 @@
 	<div class="input-style has-icon">
     <span class="color-highlight input-style-2">Number of Services Included With Purchase</span>
     <%= f.number_field :divide_by, class: "form-control", placeholder: '0', value: !@price.blank? ? @price['transform_quantity'] : nil %>
+    <%= f.hidden_field :product, value: !params["product_id"].blank? ? params["product_id"] : params["service_id"] %>
 	</div> 
 </div>
 

@@ -39,12 +39,11 @@
             </p>
         </div>
         <div class="flex-shrink-1 mt-1">
-
-            <span class="bg-yellow2-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2" style="color: white;"><%= link_to "Manage", service_pricing_index_path(service_id: @product['id'][5..@product['id'].size]), style: "color: white;" %></span>
+          <span class="bg-yellow2-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2" style="color: white;"><%= link_to "Manage", pricing_index_path(product_id: @product['id'][5..@product['id'].size]), style: "color: white;" %></span>
         </div>
       </div>
       <div class="divider"></div>
-      <%= link_to edit_service_path(id: params[:id], product: @product), class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' do %>
+      <%= link_to edit_product_path(id: params[:id], product: @product), class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' do %>
         <i class="fa fa-pencil"></i> Edit
       <% end %>
     </div>
@@ -190,7 +189,7 @@
       var div = document.getElementById('packageSelected');
       console.log(selectedV.split("-")[3]);
       div.innerHTML = '';
-      div.innerHTML += 'Package Selected: Includes ' + selectedV.split("-")[3] + ' Services';
+      div.innerHTML += 'Package Selected: Includes ' + selectedV.split("-")[3] + ' Products';
 
     } else {
       packageAlert.style.display = 'none';
@@ -216,7 +215,7 @@
       packageAlert.style.display = 'inline';
 
       console.log(selectedV.split("-")[3]);
-      div.innerHTML = 'Package Selected: Includes ' + selectedV.split("-")[3] + ' Services';
+      div.innerHTML = 'Package Selected: Includes ' + selectedV.split("-")[3] + ' Products';
 
     } else {
       packageAlert.style.display = 'none';
