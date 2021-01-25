@@ -2,7 +2,7 @@
   <div class="content mb-0">
 		<h3>New Pricing For <%= @productL['name'].titleize %></h3>
 		<%= form_for :newPricing, url: pricing_index_path do |f| %>
-			
+			<%= link_to "< Back To Pricing", "/pricing?product_id=#{@productL['id'][5..@productL['id'].size]}" %>
       <%= render partial: 'form', locals: { f: f } %>
 
 		  <%= f.submit "Add Pricing", class: "btn btn-full bg-yellow1-dark btn-m text-uppercase rounded-sm shadow-l col-12 mb-3 mt-4 font-900"%>

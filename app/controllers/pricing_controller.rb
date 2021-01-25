@@ -6,7 +6,7 @@ class PricingController < ApplicationController
 		# showing all prices for one product
 		
 		if current_user&.authentication_token
-			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/products/prod_#{!productParams[:product_id].blank? ? productParams[:product_id] : serviceParams[:service_id]}/pricing`
+			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/products/prod_#{!productParams.blank? ? productParams[:product_id] : serviceParams[:service_id]}/pricing`
 		else
 
 		end
@@ -32,11 +32,12 @@ class PricingController < ApplicationController
 	end
 
 	def create
+		
 		if !pricingParams['unit_amount'].blank?
 			if current_user&.authentication_token
-				debugger
+				
 				params = {
-					'product' => pricingParams[:product],
+					'product' => "prod_#{pricingParams[:product]}",
 					'unit_amount' => pricingParams['unit_amount'].to_i * 100,
 					'connectAccount' => current_user.stripeUserID,
 					'package?' => ActiveModel::Type::Boolean.new.cast(pricingParams['package']),
@@ -105,7 +106,7 @@ class PricingController < ApplicationController
 	end
 
 	def grabProduct
-		curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/products/prod_#{pricingParams[:product]}?connectAccount=#{current_user.stripeUserID}`
+		curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/products/prod_#{!productParams[:product_id].blank? ? productParams[:product_id] : serviceParams[:service_id]}?connectAccount=#{current_user.stripeUserID}`
 		response = Oj.load(curlCall)
 
 		if !response['product'].blank? && response['success']
@@ -116,7 +117,7 @@ class PricingController < ApplicationController
 	private
 
 	def pricingParams
-		paramsClean = params.permit(:product_id, :id, :unit_amount, :price, {allPrice: []}, :product, :connectAccount, :package, :divide_by, :description, :active)
+		paramsClean = params.require(:newPricing).permit(:service_id, :product_id, :id, :unit_amount, :price, {allPrice: []}, :product, :connectAccount, :package, :divide_by, :description, :active)
 		return paramsClean.reject{|_, v| v.blank?}
 	end
 

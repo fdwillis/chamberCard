@@ -39,8 +39,7 @@
             </p>
         </div>
         <div class="flex-shrink-1 mt-1">
-
-            <span class="bg-yellow2-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2" style="color: white;"><%= link_to "Manage", service_pricing_index_path(service_id: @product['id'][5..@product['id'].size]), style: "color: white;" %></span>
+          <span class="bg-yellow2-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2" style="color: white;"><%= link_to "Manage", pricing_index_path(service_id: @product['id'][5..@product['id'].size]), style: "color: white;" %></span>
         </div>
       </div>
       <div class="divider"></div>
