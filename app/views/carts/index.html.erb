@@ -81,7 +81,7 @@
           <div class="d-flex mb-3">
               <div class="mr-3 text-left">
                   <h5 class="font-600">Fee &nbsp;<i class="fa fa-exclamation-circle font-14 mt-1 color-yellow2-dark scale-icon mr-2" data-toggle="tooltip" data-placement="right" title="" data-original-title="Miser Brands service fee includes processing fees"></i></h5>
-                  <% if current_user&.stripeSourceVerified && !current_user&.member? %>
+                  <% if !current_user&.member? %>
                     <h4 class="font-600 opacity-50">Save up to <%= number_to_currency((@cart['serviceFee'] * 0.71) * 0.01, precision: 2) %><br>
                       <a href="/membership">Become a Member &amp; Save</a>
                     </h4>
@@ -95,7 +95,7 @@
               <div class="ml-auto text-right">
                   <h4><%= number_to_currency(@cart['serviceFee'] * 0.01, precision: 2) %></h4>
 
-                  <% if current_user&.stripeSourceVerified && !current_user&.member? %>
+                  <% if !current_user&.member? %>
                     <h4 class="opacity-50"><%= number_to_currency((@cart['serviceFee'] - (@cart['serviceFee'] * 0.71)) * 0.01, precision: 2) %></h4>
                   <% elsif current_user&.member? %>
                     <p><%= number_to_currency((((35 * 0.01) * @cart['subItemsTotal']) * 0.01) - ((@cart['servicePercent'] * @cart['subItemsTotal']) * 0.01), precision: 2) %></p>

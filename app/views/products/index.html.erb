@@ -5,12 +5,12 @@
         <h3>Shop</h3>
         <p>After you've purchased products, you will need to schedule with the seller at your convenience.</p>
       <% else %>
-        <%= pluralize(@activeProducts.size + @unavailableProducts.size, "service") %> uploaded
+        <%= pluralize(@activeProducts.size + @unavailableProducts.size, "product") %> uploaded
 
     </div>
       <% end %> -->
     <% if current_user&.stripeSourceVerified && current_user&.manager? %>
-      <a href="<%= new_service_path %>" class="float-right btn btn-xs bg-yellow1-dark rounded-xl shadow-xl text-uppercase font-900 mt-2 font-11">Add Product</a>
+      <a href="<%= new_product_path %>" class="float-right btn btn-xs bg-yellow1-dark rounded-xl shadow-xl text-uppercase font-900 mt-2 font-11">Add Product</a>
     <% end %>
 </div>
 

@@ -31,13 +31,13 @@ Rails.application.routes.draw do
 		post "newInvoice", to: 'charges#newInvoice', as: "newInvoice"
 		post "acceptInvoice", to: 'charges#acceptInvoice', as: "acceptInvoice"
 		
-		post "cancel", to: 'schedule#cancel', as: "cancel"
 		post "acceptRequest", to: 'schedule#acceptRequest', as: "acceptRequest"
 	
 		post "checkout", to: 'carts#checkout', as: "checkout"
 		post "updateQuantity", to: 'carts#updateQuantity', as: "updateQuantity"
 		
 		post "join", to: 'home#join', as: "join"
+		post "cancel", to: 'home#cancel', as: "cancel"
 		
 		get "initiateCharge", to: 'charges#initiateCharge', as: "getinitiateCharge"
 		

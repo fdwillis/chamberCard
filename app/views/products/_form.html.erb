@@ -1,12 +1,9 @@
 
-    <% if Product.find_by(stripeProductID: "prod_#{params[:id]}")&.images&.count == 0 %>
 			<div class="input-style has-icon">
           <span class="color-highlight input-style-2">Images</span>
           <em>(required)</em>
           <%= f.file_field :images, :multiple => true, :id => 'fileinput', required: true %>
       </div>
-    <% else %>
-    <% end %>
       <!-- <div class="file-data input-style mb-6">
           <input multiple="multiple" name="productImages[]" id="fileinput" class="upload-file bg-highlight shadow-s rounded-s" required="required" type="file">
           <p class="upload-file-text color-white">Upload Images</p>

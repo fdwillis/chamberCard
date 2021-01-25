@@ -86,12 +86,12 @@ class ProductsController < ApplicationController
 		
 			if !response.blank? && response['success']
 				productStarted.update(stripeProductID: response['product'])
-				flash[:success] = "Service Created"
-				redirect_to services_path
+				flash[:success] = "Product Created"
+				redirect_to products_path
 			else
 				productStarted.destroy!
 				flash[:alert] = response['message']
-				redirect_to new_service_path
+				redirect_to new_product_path
 			end
 		end
 	end

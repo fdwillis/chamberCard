@@ -54,8 +54,7 @@ class HomeController < ApplicationController
 
 			if current_user.member?
 				@subsc = Stripe::Subscription.list({customer: current_user.stripeUserID})['data'][0]
-				@prod = Stripe::Product.retrieve(@subsc ['items']['data'][0]['price']['product'])
-				@price = Stripe::Price.retrieve(@subsc ['items']['data'][0]['price']['id'])
+				@price = Stripe::Price.retrieve(!@subsc.blank? ? @subsc['items']['data'][0]['price']['id'] : nil)
 			end
 
 		end
@@ -64,20 +63,30 @@ class HomeController < ApplicationController
 
 	def join
 
-
 		params = {price: joinParams[:plan]}.to_json
 		
 		curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X POST #{SITEurl}/v1/subscriptions`
 		
 		response = Oj.load(curlCall)
 
-		if !response.blank? && response['success'] && current_user.update_attributes(stripeSubscription:  response['stripeSubscription'], serviceFee: response['serviceFee'])
+		if !response.blank? && response['success'] && current_user.update_attributes(stripeSubscription:  response['stripeSubscription'])
 			flash[:success] = "You are now a member!"
       redirect_to membership_path
     else
 			flash[:error] = response['error']
       redirect_to membership_path
     end
+	end
+
+	def cancel
+		if Stripe::Subscription.delete(params[:cancel][:subscription])
+			current_user.update(stripeSubscription: false)
+			flash[:success] = "Subscription removed"
+      redirect_to membership_path
+		else
+			flash[:error] = "Something went wrong"
+      redirect_to membership_path
+		end
 	end
 
 	private

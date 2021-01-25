@@ -1,3 +1,23 @@
+<%= Stripe::Subscription.list({customer: current_user.stripeUserID})['data'].map{|s| {subscription: s['id'], price: s['plan']['id'][6..s['plan']['id'].length]}} %> 
+
+<% 
+
+basicMonthlyMemberships = ENV['basicMonthlyMembership'].split(",")
+saverMonthlyMemberships = ENV['saverMonthlyMembership'].split(",")
+eliteMonthlyMemberships = ENV['eliteMonthlyMembership'].split(",") %>
+
+<% if !(Stripe::Subscription.list({customer: current_user.stripeUserID})['data'].map{|s| s['plan']['id'][6..s['plan']['id'].length] }.flatten & basicMonthlyMemberships).blank?  %> 
+  <% serviceFee = 30 %>
+<% end %>
+
+<% if !(Stripe::Subscription.list({customer: current_user.stripeUserID})['data'].map{|s| s['plan']['id'][6..s['plan']['id'].length] }.flatten & saverMonthlyMemberships).blank? %> 
+  <% serviceFee = 25 %>
+<% end %>
+
+<% if !(Stripe::Subscription.list({customer: current_user.stripeUserID})['data'].map{|s| s['plan']['id'][6..s['plan']['id'].length] }.flatten & eliteMonthlyMemberships).blank? %> 
+  <% serviceFee = 10 %>
+<% end %>
+
 <div class="page-content">
                 
   <div class="card card-style">
@@ -57,7 +77,7 @@
               <h5 class="font-600 opacity-80">Member Fee</h5>
           </div>
           <div class="col-5">
-              <h5><%= current_user.serviceFee %>%</h5>
+              <h5><%= serviceFee %>%</h5>
           </div>
           <div class="divider w-100 mt-2 mb-2 divider-margins"></div>
           <div class="col-7">
@@ -68,7 +88,6 @@
           </div>
         </div>
       </div>
-      <h4 class="mb-6 text-center mt-4">To update your membership <%= link_to "Call Us Now", "tel:#{ENV["supportNumber"]}" %> (compelte with webhook for when user updates via stripe. here we will need to change the subscription ID)</h4>
 	  </div>
 
 
@@ -99,6 +118,10 @@
               </div>
           </div>
           <div class="divider mt-3 mb-3"></div>
+          <%= form_for :cancel, url: cancel_path do |f| %>
+            <%= f.hidden_field :subscription, value: s['subscription'] %>
+            <%= f.submit "Cancel", class: 'btn btn-full bg-red1-dark text-uppercase font-800 rounded-sm  col-4' %>
+          <% end %>
         </div>
       </div>
     <% end %>
@@ -161,7 +184,11 @@
             <div class="col-12 offset-3 mb-4 ">
               <%= form_for :join, url: join_path do |f| %>
                 <%= f.hidden_field :plan, value: @basicMonthlyMembership['id'] %>
-                <%= f.submit "#{number_to_currency(@basicMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm' %>
+                <% if !current_user&.member? %>
+                  <%= f.submit "#{number_to_currency(@basicMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm' %>
+                <% else %>
+                  <%= f.submit "#{number_to_currency(@basicMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm', disabled: true, readonly: true %>
+                <% end %>
               <% end %>
             </div>
           </div>
@@ -192,7 +219,11 @@
             <div class="col-12 offset-3 mb-4 ">
               <%= form_for :join, url: join_path do |f| %>
                 <%= f.hidden_field :plan, value: @saverMonthlyMembership['id'] %>
-                <%= f.submit "#{number_to_currency(@saverMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm' %>
+                <% if !current_user&.member? %>
+                  <%= f.submit "#{number_to_currency(@saverMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm' %>
+                <% else %>
+                  <%= f.submit "#{number_to_currency(@saverMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm', disabled: true, readonly: true %>
+                <% end %>
               <% end %>
             </div>
           </div>
@@ -232,7 +263,11 @@
             <div class="col-12 offset-3 mb-4 ">
               <%= form_for :join, url: join_path do |f| %>
                 <%= f.hidden_field :plan, value: @eliteMonthlyMembership['id'] %>
-                <%= f.submit "#{number_to_currency(@eliteMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm' %>
+                <% if !current_user&.member? %>
+                  <%= f.submit "#{number_to_currency(@eliteMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm' %>
+                <% else %>
+                  <%= f.submit "#{number_to_currency(@eliteMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm', disabled: true, readonly: true %>
+                <% end %>
               <% end %>
             </div>
           </div>
