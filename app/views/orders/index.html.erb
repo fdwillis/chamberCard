@@ -2,146 +2,78 @@
 
 Customer: name, custID
 “Title of job”
-Date of service
+Date of product
 Customer: name, custID?
 Contact 
 Contact 
 Contact 
          Total $/charge
          Net $ (fee shown) -->
-<% if current_user&.customer? %>
-<% end %>
-
-<% if current_user&.manager? %>
+<% if current_user&.manager? || current_user&.customer? %>
   <div class="card card-style">
     <div class="content mt-3 mb-3">
       <h3>Track Your Orders</h3>
       <p class='text-justify'>
           <% if !current_user&.manager? %>
-            Schedule your purchased service, see the status of your pending service requests, and see all available times by service providers!
+            Schedule your purchased product, see the status of your pending product requests, and see all available times by product providers!
           <% end %>
           <% if current_user&.manager? %>
-            As clients purchase your services the 'Pending' section will show you which clients have requested their service be complete. <br><br>
+            As clients purchase your products the 'Pending' section will show you which clients have requested their product be complete. <br><br>
 
-            After you have accepted the date and time to complete a service, it will be show in the 'Upcoming' section
+            After you have accepted the date and time to complete a product, it will be show in the 'Upcoming' section
           <% end %>
       </p>
     </div>
   </div>
-<!--   <%= @payments.map{|p,pindx| p['items'].map{|i, iindx| i['product']['type'] == 'good' } } %> -->
+
   
 
 
-
-
-
-  <div class="card card-style">
-    <div class="content">
-      <h4>Classic Accordion</h4>
-      <p>
-          Simple accordions, you can use them with or without icons, it's incredibly simple.
-      </p>
-    </div>
-    <% @payments.each_with_index do |h, hindx| %>
-      <% if Stripe::Invoice.retrieve(h['invoice'], {stripe_account: current_user.stripeUserID})['metadata']['goodOrService'] == 'good' %>
-          <div class="accordion" id="<%= h['invoice'] %>2skju">
-              <div class="mb-0">
-                  <button class="btn accordion-btn collapsed" data-toggle="collapse" data-target="#<%= h['invoice'] %>" aria-expanded="false">
-                      <i class="fa fa-heart color-red2-dark mr-2"></i>
-                      Order# <%= h['invoice'] %>
-                      <i class="fa fa-truck font-10 accordion-icon"></i>
-                  </button>
-                  <div id="<%= h['invoice'] %>" class="collapse" data-parent="#<%= h['invoice'] %>2skju" style="">
-                      <div class="pt-1 pb-2 pl-3 pr-3">
-                        <div class="row mb-4">
-                          <div class="col-8"><h4 class="font-14 text-left"><u>Product</u></h4></div>
-                          <div class="col-4"><h4 class="font-14 text-justify"><u>Quantity</u></h4></div>
-                        </div>
-
-                        <%= Stripe::Invoice.retrieve(h['invoice'], {stripe_account: current_user.stripeUserID})['metadata'] %>
-
-
-
-
-                        <% h['items'].each_with_index do |itm,indx| %>
-                          <% if itm['product']['type'] == 'good' %>
-                            <% if !itm['invoiceLine']['metadata']['claimed'].blank? && (itm['invoiceLine']['quantity'] > itm['invoiceLine']['metadata']['claimed'].to_i) %>
-                              <div class="row">
-                                <div class="col-8"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
-                                <% if itm['price']['transform_quantity'] && !itm['price']['transform_quantity']['divide_by'].blank? %>
-                                  <!-- <div class="col-1"><h4 class="font-14 text-left"><i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark"></i></h4></div> -->
-                                  <div class="col-4"><h4 class="font-14 text-justify"><%= (itm['invoiceLine']['quantity'].to_i * itm['price']['transform_quantity']['divide_by'])%></h4></div>
-                                <% else %>
-                                  <!-- <div class="col-1"><h4 class="font-14 text-left"><i class="fa fa-times bg-fade-red2-dark rounded-xl color-red2-dark"></i></h4></div> -->
-                                  <div class="col-4"><h4 class="font-14 text-justify"><%= itm['invoiceLine']['quantity'] %></h4></div>
-                                <% end %>
-                              </div>
-                            <% end %>
-                          <% end %>
-                        <% end %>
-
-                        filll it to: 333 w washington ave madison wi 53703 (google verified?)
-                      </div>
-                  </div>
-              </div>
+    <div class="card card-style">
+      <div class="content mb-0">
+        <% if @payments.present?  %>
+          <div class="row mb-4">
+            <div class="col-5"><h4 class="font-14 text-left"><u>product</u></h4></div>
+            <div class="col-3"><h4 class="font-14 text-justify"><u>Quantity</u></h4></div>
+            <div>&nbsp;</div>
           </div>
-      <% end %>
-    <% end %>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          <% @payments.each_with_index do |h, hindx| %>
+              <% h['items'].each_with_index do |itm,indx| %>
+                <% if itm['product']['type'] == 'good' %>
+                  <% if !itm['invoiceLine']['metadata']['claimed'].blank? && (itm['invoiceLine']['quantity'] > itm['invoiceLine']['metadata']['claimed'].to_i) %>
+                    <div class="row mb-6">
+                      <div class="col-5"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
+                      <% if itm['price']['transform_quantity'] && !itm['price']['transform_quantity']['divide_by'].blank? %>
+                        <!-- <div class="col-1"><h4 class="font-14 text-left"><i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark"></i></h4></div> -->
+                        <div class="col-3"><h4 class="font-14 text-justify"><%= (itm['invoiceLine']['quantity'].to_i * itm['price']['transform_quantity']['divide_by']) - itm['invoiceLine']['metadata']['claimed'].to_i %></h4></div>
+                      <% else %>
+                        <!-- <div class="col-1"><h4 class="font-14 text-left"><i class="fa fa-times bg-fade-red2-dark rounded-xl color-red2-dark"></i></h4></div> -->
+                        <div class="col-3"><h4 class="font-14 text-justify"><%= itm['invoiceLine']['quantity'].to_i - itm['invoiceLine']['metadata']['claimed'].to_i %></h4></div>
+                      <% end %>
+                      <div class="col-4">
+                        <button class="accordion-btn  btn btn-m btn-full bg-green1-dark text-uppercase font-900" data-toggle="collapse" data-target="#<%= itm['invoiceLine']['id'] %>" aria-expanded="false" style='margin-top:-10px;'>
+                          <i class="fa fa-calendar-check"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="scheduleIt mt-4">
+                    </div>
+                  <% end %>
+                  <div class="accordion" id="accordion-1">
+                    <div class="mb-6">
+                      <div id="<%= itm['invoiceLine']['id'] %>" class="collapse" data-parent="#accordion-1" style="">
+                        <div class="pt-1 pb-2 pl-3 pr-3">
+                            <%= itm['invoiceLine']['id'] %> This is the accordion content. You can add any content you want to it. Really, anything! Add images, text, lists, captions or any element you want.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
 
 
 
@@ -149,6 +81,10 @@ Contact
 
 
 <% end %>
+
+
+
+
 
 <% if !current_user %>
   <div class="page-content header-clear-medium">
