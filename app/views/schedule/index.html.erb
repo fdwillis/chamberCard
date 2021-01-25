@@ -51,9 +51,8 @@ Contact
                       <div class="col-3"><h4 class="font-14 text-justify"><%= itm['invoiceLine']['quantity'].to_i - itm['invoiceLine']['metadata']['claimed'].to_i %></h4></div>
                     <% end %>
                     <div class="col-4">
-                      <button class="btn accordion-btn collapsed col-md-12 btn btn-m btn-full bg-green1-dark text-uppercase font-900" data-toggle="collapse" data-target="#<%= itm['invoiceLine']['id'] %>" aria-expanded="false" style='margin-top:-10px;'>
+                      <button class="accordion-btn  btn btn-m btn-full bg-green1-dark text-uppercase font-900" data-toggle="collapse" data-target="#<%= itm['invoiceLine']['id'] %>" aria-expanded="false" style='margin-top:-10px;'>
                         <i class="fa fa-calendar-check"></i>
-                        Schedule
                       </button>
                     </div>
                   </div>
