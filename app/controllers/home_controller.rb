@@ -70,7 +70,7 @@ class HomeController < ApplicationController
 		response = Oj.load(curlCall)
 
 		if !response.blank? && response['success'] && current_user.update_attributes(stripeSubscription:  response['stripeSubscription'])
-			flash[:success] = "You are now a member!"
+			flash[:success] = "You are now a member! Enjoy the savings!"
       redirect_to membership_path
     else
 			flash[:error] = response['error']
@@ -79,14 +79,22 @@ class HomeController < ApplicationController
 	end
 
 	def cancel
-		if Stripe::Subscription.delete(params[:cancel][:subscription])
-			current_user.update(stripeSubscription: false)
-			flash[:success] = "Subscription removed"
+
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X DELETE #{SITEurl}/v1/subscriptions/#{params[:cancel][:subscription]}`
+
+		response = Oj.load(curlCall)
+
+    if !response.blank? && response['success']
+    	
+    	current_user.update(stripeSubscription: false)
+			flash[:success] = response['message']
+			
       redirect_to membership_path
-		else
-			flash[:error] = "Something went wrong"
+    else
+			flash[:error] = response['message']
       redirect_to membership_path
-		end
+    end
+
 	end
 
 	private
