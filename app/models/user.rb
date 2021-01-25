@@ -31,7 +31,6 @@ class User < ApplicationRecord
 
     response = Oj.load(curlCall)
     if !response.blank? && response['success']
-      self.update(stripeSourceVerified: response['stripeSourceVerified'])
       return response
     else
       return response
@@ -45,7 +44,6 @@ class User < ApplicationRecord
     response = Oj.load(curlCall)
     
     if !response.blank? && response['success']
-      self.update(stripeSourceVerified: response['stripeSourceVerified'])
       return response
     else
       return response['error']
@@ -155,11 +153,11 @@ class User < ApplicationRecord
   end
 
   def member?
-    !stripeUserID.blank? && !stripeSubscription.blank? && stripeSourceVerified == true
+    !stripeUserID.blank? && !stripeSubscription.blank? && checkStripeSource
   end
 
   def missingSub?
-    !stripeUserID.blank? && stripeSubscription.blank? && stripeSourceVerified == true
+    !stripeUserID.blank? && stripeSubscription.blank? && checkStripeSource
   end
 
   def customer?
@@ -176,6 +174,30 @@ class User < ApplicationRecord
 
   def admin?
     adminAccess.include?(accessPin)     
+  end
+
+  def checkStripeSource
+    if !stripeUserID.blank?
+      if manager?
+        accountCapabilities = Stripe::Account.retrieve(stripeUserID)['capabilities']
+
+        if accountCapabilities['card_payments'] == "active" && accountCapabilities['transfers'] == "active" #charge stripeSubscription to cover heroku fees
+          return true
+        else
+          return false
+        end
+      else
+        stripeCustomer = Stripe::Customer.retrieve(stripeUserID)
+        #make phone number required for purchase
+        if stripeCustomer['default_source']
+          return true
+        else
+          return false
+        end
+      end
+    else
+      return false
+    end
   end
 
   def self.stripeAmount(string)
