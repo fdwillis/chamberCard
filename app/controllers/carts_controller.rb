@@ -22,7 +22,7 @@ class CartsController < ApplicationController
 			
 	    response = Oj.load(curlCall)
 
-	    if !response.blank? && response['success']
+	    if response['success']
 	    	flash[:success] = "Added to cart"
 	    	redirect_to request.referrer
 	    end
@@ -45,7 +45,7 @@ class CartsController < ApplicationController
 			
 	    response = Oj.load(curlCall)
 
-	    if !response.blank? && response['success']
+	    if response['success']
 	    	flash[:success] = "Cart Updated"
 	    	redirect_to request.referrer
 	    end
@@ -66,7 +66,7 @@ class CartsController < ApplicationController
 			
 	    response = Oj.load(curlCall)
 
-	    if !response.blank? && response['success']
+	    if response['success']
 	    	flash[:success] = "Removed from cart"
 	    	redirect_to carts_path
 	    end
@@ -83,7 +83,7 @@ class CartsController < ApplicationController
 			
 	    response = Oj.load(curlCall)
 
-	    if !response.blank? && response['success']
+	    if response['success']
 	    	flash[:success] = "Purchase Complete"
 	    	redirect_to charges_path
 	    end
