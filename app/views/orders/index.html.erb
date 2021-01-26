@@ -10,22 +10,24 @@ Contact
          Total $/charge
          Net $ (fee shown) -->
 <% if current_user&.manager? || current_user&.customer? %>
-  <div class="card card-style">
-    <div class="content mt-3 mb-3">
-      <h3>Track Your Orders</h3>
-      <p class='text-justify'>
-          <% if !current_user&.manager? %>
-            Schedule your purchased product, see the status of your pending product requests, and see all available times by product providers!
-          <% end %>
-          <% if current_user&.manager? %>
-            As clients purchase your products the 'Pending' section will show you which clients have requested their product be complete. <br><br>
 
-            After you have accepted the date and time to complete a product, it will be show in the 'Upcoming' section
-          <% end %>
-      </p>
+
+    <div class="card card-style">
+      <div class="content mt-3 mb-3">
+        <% if current_user&.customer? %>
+              <h3>Track Your Orders</h3>
+              <p class='text-justify'>
+                Check on your orders anytime by clicking your Tracking Number(s)
+              </p>
+        <% end %>
+        <% if current_user&.manager? %>
+          <h3>Order Fulfillment</h3>
+            <p class='text-justify'>
+              Once you receive your tracking numbers, enter them below!
+            </p>
+        <% end %>
+      </div>
     </div>
-  </div>
-
   
 
 
