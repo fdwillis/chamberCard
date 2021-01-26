@@ -70,7 +70,7 @@ class ChargesController < ApplicationController
 			curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"  -d 'invoice=#{invoice}&trackingIDs=#{trackingIDs}' -X POST #{SITEurl}/v1/tracking`
 				
 	    response = Oj.load(curlCall)
-	    debugger
+
 	    if !response.blank? && response['success']
 				flash[:success] = "Tracking Number Updated"
 				redirect_to request.referrer
