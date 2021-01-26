@@ -62,6 +62,25 @@ class ChargesController < ApplicationController
 		end
 	end
 
+	def trackingNumber
+		if request.post?
+			trackingIDs = params[:trackingNumber][:trackingIDs]
+			invoice = params[:trackingNumber][:invoice]
+
+			curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"  -d 'invoice=#{invoice}&trackingIDs=#{trackingIDs}' -X POST #{SITEurl}/v1/tracking`
+				
+	    response = Oj.load(curlCall)
+	    debugger
+	    if !response.blank? && response['success']
+				flash[:success] = "Tracking Number Updated"
+				redirect_to request.referrer
+			else
+				flash[:error] = "Something went wrong"
+				redirect_to request.referrer
+			end
+		end
+	end
+
 
 	def newInvoice
 		customer = params[:newInvoice][:customer]

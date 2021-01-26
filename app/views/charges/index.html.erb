@@ -86,7 +86,6 @@
                       <div class="col-3"><h4 class="font-14 text-center"><u>Price</u></h4></div>
                   </div>
                   <% h['items'].each_with_index do |itm,indx| %>
-                    <% if !itm['invoiceLine']['metadata']['claimed'].blank? && (itm['invoiceLine']['quantity'] > itm['invoiceLine']['metadata']['claimed'].to_i) %>
                       
                       <div class="row mb-2">
                         <div class="col-6"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
@@ -96,7 +95,6 @@
                         
                         <!-- <div class="col-2"><h4 class="font-14 text-right">Claimed: <%= itm['invoiceLine']['metadata']['claimed'] %></h4></div> -->
                       </div>
-                    <% end %>
                   <% end %>
                   <% if current_user&.manager? %>
                     <div class="row mb-0">
