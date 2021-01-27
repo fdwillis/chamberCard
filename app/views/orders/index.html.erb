@@ -46,12 +46,10 @@ Contact
 
                   <% if itm['product']['type'] == 'good' %>
                     <div class="row mb-4">
-                      <div class="col-5"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
+                      <div class="col-5"><h4 class="font-14 text-left"><%= itm['product']['name'].titleize %></h4></div>
                       <% if itm['price']['transform_quantity'] && !itm['price']['transform_quantity']['divide_by'].blank? %>
-                        <!-- <div class="col-1"><h4 class="font-14 text-left"><i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark"></i></h4></div> -->
                         <div class="col-3"><h4 class="font-14 text-justify"><%= (itm['invoiceLine']['quantity'].to_i * itm['price']['transform_quantity']['divide_by']) - itm['invoiceLine']['metadata']['claimed'].to_i %></h4></div>
                       <% else %>
-                        <!-- <div class="col-1"><h4 class="font-14 text-left"><i class="fa fa-times bg-fade-red2-dark rounded-xl color-red2-dark"></i></h4></div> -->
                         <div class="col-3"><h4 class="font-14 text-justify"><%= itm['invoiceLine']['quantity'].to_i - itm['invoiceLine']['metadata']['claimed'].to_i %></h4></div>
                       <% end %>
                       <div class="col-4">
@@ -93,7 +91,13 @@ Contact
                             <div class="row">
                               show checkbox for received order and order issue. if order issue, make text field to describe issue and mark metadata (orderIssue, customerConfirmed)
                             </div>
+                            <%= form_for :updateInvoice, id: "#{h['customer']}#{h['invoice']}", url: trackingNumber_path do |f| %>
+                              <div class="input-style input-style-2 mt-2 ">
+                                <%= f.select :orderStatus, ['Yes', 'Yes, But theres an issue'], {:include_blank => 'Did you receive your order?'}, id: "#{h['customer']}#{h['invoice']}", onchange: "showReport(#{h['customer']}#{h['invoice']});" %>
 
+                              </div>
+                              <%= f.submit "Update", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
+                            <% end %>
                           <% end %>
                         <% end %>
                         </div>
@@ -149,3 +153,14 @@ Contact
         </div>
   </div>
 <% end %>
+
+
+<script type="text/javascript">
+  function showReport(thisID) {
+    var select = document.getElementById(thisID);
+
+    console.log(thisID);
+    // console.log(select.value);
+  }
+
+</script>

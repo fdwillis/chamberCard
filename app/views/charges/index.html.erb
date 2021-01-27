@@ -13,7 +13,7 @@
       </p>
     </div>
   </div>
-  <% if current_user&.manager? && current_user&.stripeSourceVerified %>
+  <% if current_user&.manager? && current_user&.checkStripeSource %>
     <div class="card card-style bg-theme pb-0">
       <div class="content">
         <h3>New Invoice</h3>

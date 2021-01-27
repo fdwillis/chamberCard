@@ -3,11 +3,11 @@
     <h3>Price Management</h3>
 
     <% if request.fullpath.include?('?product_id') %>
-      <%= link_to "< Back To #{@productL['name'].titleize}", "/products/#{@productL['id'][5..@productL['id'].size]}?connectAccount=#{current_user.stripeUserID}" %>
+      <%= link_to "< Back To #{@productL['name'].titleize}", "/products/#{@productL['id'][5..@productL['id'].size]}?connectAccount=#{current_user.stripeMerchantID}" %>
     <% end %>
 
     <% if request.fullpath.include?('?service_id') %>
-      <%= link_to "< Back To #{@productL['name'].titleize}", "/services/#{@productL['id'][5..@productL['id'].size]}?connectAccount=#{current_user.stripeUserID}" %>
+      <%= link_to "< Back To #{@productL['name'].titleize}", "/services/#{@productL['id'][5..@productL['id'].size]}?connectAccount=#{current_user.stripeMerchantID}" %>
     <% end %>
     <p>
         <%= pluralize(@prices.count, "price") %> listed

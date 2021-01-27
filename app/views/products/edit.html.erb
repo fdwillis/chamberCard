@@ -1,7 +1,7 @@
 <div class="card card-style">
     <div class="content mt-3 mb-3">
       <h3>Editing Product: </h3>
-      <h5><%= link_to "< Back To #{@product['name'].titleize}", "/products/#{@product['id'][5..@product['id'].size]}?connectAccount=#{current_user.stripeUserID}" %><%=  %></h5>
+      <h5><%= link_to "< Back To #{@product['name'].titleize}", "/products/#{@product['id'][5..@product['id'].size]}?connectAccount=#{current_user.stripeMerchantID}" %><%=  %></h5>
       <p>
           Enter the Product information below. Once you are complete, the Product will be updated.
       </p>

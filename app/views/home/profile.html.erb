@@ -44,36 +44,39 @@
           </div>
       </div>
   </div> 
+  <% if current_user&.customer? %>
+    <div class="card card-style text-center">
+      <div class="content mb-0">
+        <h2>Payment Information</h2>
 
-  <div class="card card-style text-center">
-    <div class="content mb-0">
-      <h2>Payment Information</h2>
-      <% if current_user&.stripeUserID.blank? %>
+          <% if current_user&.customer? && current_user.stripeCustomerID.blank? %>
+            <!-- <h2>Payment Information</h2> -->
+            <p class="mb-5">
+                Your account is unable to purchase products &amp; services. If you would like to begin making purchases, get started by clicking 'Proceed' below!
+            </p>
 
-          <!-- <h2>Payment Information</h2> -->
-          <p class="mb-5">
-            <% if current_user&.customer? %>
-              Your account is unable to purchase products &amp; services. If you would like to begin making purchases, get started by clicking 'Proceed' below!
+            <%= form_for :newStripeCustomer, url: stripe_customers_path do |f| %>
+              <%= f.submit "Proceed", class: "btn btn-full bg-yellow1-dark btn-m text-uppercase rounded-sm shadow-l col-12 mb-3 mt-4 font-900"%>
+
             <% end %>
-            
-            <% if current_user&.manager? %>
-              Your account is unable to charge clients &amp; post services for sale. If you would like to activate your account to begin offering services, get started by clicking 'Proceed' below!
-            <% end %>
-          </p>
-
-          <%= form_for :newStripeCustomer, url: stripe_customers_path do |f| %>
-            <%= f.submit "Proceed", class: "btn btn-full bg-yellow1-dark btn-m text-uppercase rounded-sm shadow-l col-12 mb-3 mt-4 font-900"%>
-
           <% end %>
-          
-      <% end %>
+            
 
-      <% if !current_user&.stripeUserID.blank? %>
-        <% if current_user&.stripeSourceVerified %>
-          <div class="content">
+        <% if current_user&.customer? %>
+            <div class="content row text-center">
+              <% if current_user&.customer? && !current_user&.checkStripeSource %>
+                <a href="#" data-menu="menu-transaction-transfer" class="col-12">
+                    <div class="card card-style ml-2 mb-3">
+                        <i class="fa fa-credit-card color-highlight fa-2x mt-3"></i>
+                        <h1 class="pt-2 font-18">Card</h1>
+                        <p class="font-11 opacity-50 mt-n2 mb-3">Tap to add a card</p>
+                    </div>
+                </a>
+              <% end %>
+            </div>
             <% @sources&.each do |s| %>
               <% if s['object'] == 'card' %>
-                <div style="align-items: center;">
+                <div style="align-items: center;" class="mb-4">
                   <% if s['brand'] == "Visa" %>
                     <%= image_tag "pay-1.png","width"=>"50", stlye: '' %>
                   <% elsif s['brand'] == "MasterCard" %>
@@ -93,50 +96,12 @@
                 </div>
               <% end %>
             <% end %>
-          </div>
-        <% else %>
-          <div class="row text-center">
-            <% if !current_user&.manager? %>
-              <a href="#" data-menu="menu-transaction-transfer" class="col-12">
-                  <div class="card card-style ml-2 mb-3">
-                      <i class="fa fa-credit-card color-highlight fa-2x mt-3"></i>
-                      <h1 class="pt-2 font-18">Card</h1>
-                      <p class="font-11 opacity-50 mt-n2 mb-3">Tap to add a card</p>
-                  </div>
-              </a>
-            <% else %>
-              <% if (!@phone.blank? && !@email.blank?) %>
-                <p class="mb-5">
-                
-                    We will contact you soon to verify your contact details &amp; complete your account activation!  
-                </p>
-                <a href="#" class="col-12">
-                    <div class="card card-style">
-                        <i class="fa fa-university color-highlight fa-2x mt-3"></i>
-                        <h1 class="pt-2 font-18">Bank</h1>
-                        <p class="font-11 opacity-50 mt-n2 mb-3">PENDING</p>
-                    </div>
-                </a>
-              <% else %>
-                <p class="mb-5">
-                
-                    You're almost there! Please add your default source and contact details. 
-                </p>
-                <a href="#" data-menu="menu-transaction-request" class="col-12">
-                    <div class="card card-style">
-                        <i class="fa fa-university color-highlight fa-2x mt-3"></i>
-                        <h1 class="pt-2 font-18">Bank</h1>
-                        <p class="font-11 opacity-50 mt-n2 mb-3">Tap to add Bank Account</p>
-                    </div>
-                </a>
-              <% end %>
-            <% end %>
-          </div>  
         <% end %>
-      <% end %>
+      </div>
     </div>
-  </div>
-  <% if !current_user&.stripeUserID.blank? %>
+  <% end %>
+
+  <% if !current_user&.stripeCustomerID.blank? || !current_user&.stripeMerchantID.blank? %>
     <div class="card card-style">
         <div class="content mb-0">
             <h2 class="text-center">Account Information</h2>
@@ -144,20 +109,15 @@
                 <% if current_user&.customer? %>
                   This information is so that service providers can contact you. Payment receipts will be sent to the email address below.
                 <% end %>
-                <% if current_user&.manager? %>
-                  This information is so that Messy Services can contact you to verify your bank account &amp; contact details on your clients behalf. Payment receipts will be sent to the email address below.
-                <% end %>
             </p>
-            <%= form_for :updateCustomer, url: stripe_customer_path(id: current_user&.stripeUserID), method: :put do |f| %>
+            <%= form_for :updateCustomer, url: stripe_customer_path(id: !current_user&.stripeCustomerID.blank? ? current_user&.stripeCustomerID : current_user&.stripeMerchantID), method: :put do |f| %>
 
-              <% if !current_user&.manager? %>
-                <div class="input-style input-style-2 has-icon input-required">
-                    <i class="input-icon fa fa-user"></i>
-                    <span class="color-highlight input-style-1-active">Name</span>
-                    <em>(required)</em>
-                    <%= f.text_field :name, placeholder: "Legal Name", class: "form-control", value: @name, required: true %>
-                </div> 
-              <% end %>
+              <div class="input-style input-style-2 has-icon input-required">
+                  <i class="input-icon fa fa-user"></i>
+                  <span class="color-highlight input-style-1-active">Name</span>
+                  <em>(required)</em>
+                  <%= f.text_field :name, placeholder: "Legal Name", class: "form-control", value: @name, required: true %>
+              </div> 
               <div class="input-style input-style-2 has-icon input-required mt-4">
                   <i class="input-icon fa fa-at"></i>
                   <span class="color-highlight input-style-1-active">Email Address</span>

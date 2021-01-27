@@ -38,7 +38,7 @@ class PricingController < ApplicationController
 				params = {
 					'product' => "prod_#{pricingParams[:product]}",
 					'unit_amount' => pricingParams['unit_amount'].to_i * 100,
-					'connectAccount' => current_user.stripeUserID,
+					'connectAccount' => current_user.stripeMerchantID,
 					'package?' => ActiveModel::Type::Boolean.new.cast(pricingParams['package']),
 					'divide_by' => pricingParams['divide_by'],
 					'description' => pricingParams['description'],
@@ -77,7 +77,7 @@ class PricingController < ApplicationController
 			params = {
 				'product' => "prod_#{pricingParams[:product]}",
 				'unit_amount' => pricingParams['unit_amount'].to_i * 100,
-				'connectAccount' => current_user.stripeUserID,
+				'connectAccount' => current_user.stripeMerchantID,
 				'package?' => ActiveModel::Type::Boolean.new.cast(pricingParams['package']),
 				'divide_by' => pricingParams['divide_by'],
 				'description' => pricingParams['description'],
@@ -105,7 +105,7 @@ class PricingController < ApplicationController
 	end
 
 	def grabProduct
-		curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/products/prod_#{!productParams[:product_id].blank? ? productParams[:product_id] : serviceParams[:service_id]}?connectAccount=#{current_user.stripeUserID}`
+		curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/products/prod_#{!productParams[:product_id].blank? ? productParams[:product_id] : serviceParams[:service_id]}?connectAccount=#{current_user.stripeMerchantID}`
 		response = Oj.load(curlCall)
 
 		if !response['product'].blank? && response['success']

@@ -3,7 +3,7 @@ class HomeController < ApplicationController
 
 	def profile
 		if current_user
-			if current_user&.stripeUserID
+			if !current_user&.stripeCustomerID.blank? || !current_user&.stripeMerchantID.blank?
 				callCurl = current_user.showStripeUserAPI
 
 				if callCurl['success']
@@ -53,7 +53,7 @@ class HomeController < ApplicationController
 			@eliteMonthlyMembership = Stripe::Price.retrieve("price_#{eliteMonthly}")
 
 			if current_user.member?
-				@subsc = Stripe::Subscription.list({customer: current_user.stripeUserID})['data'][0]
+				@subsc = Stripe::Subscription.list({customer: current_user.stripeCustomerID})['data'][0]
 				@price = Stripe::Price.retrieve(!@subsc.blank? ? @subsc['items']['data'][0]['price']['id'] : nil)
 			end
 

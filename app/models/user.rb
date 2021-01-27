@@ -90,7 +90,7 @@ class User < ApplicationRecord
     response = Oj.load(curlCall)
     
     if !response.blank? && response['success']
-      self.update(stripeUserID: response['stripeUserID'] )
+      self.update(stripeCustomerID: response['stripeCustomerID'] )
       return response
     else
       return response
@@ -103,7 +103,7 @@ class User < ApplicationRecord
     response = Oj.load(curlCall)
     
     if !response.blank? && response['success']
-      self.update(username: response['username'] ,accessPin: response['accessPin'] , stripeUserID: response['stripeUserID'], authentication_token: response['authentication_token'], uuid: response['uuid'] )
+      self.update(username: response['username'] ,accessPin: response['accessPin'] , stripeMerchantID: response['stripeMerchantID'], stripeCustomerID: response['stripeCustomerID'], authentication_token: response['authentication_token'], uuid: response['uuid'] )
       return response
     else
       return response
@@ -153,11 +153,11 @@ class User < ApplicationRecord
   end
 
   def member?
-    !stripeUserID.blank? && stripeSubscription && checkStripeSource
+    !stripeCustomerID.blank? && stripeSubscription && checkStripeSource
   end
 
   def customer?
-    customerAccess.include?(accessPin)      
+    customerAccess.include?(accessPin)
   end
 
   def virtual?
@@ -165,7 +165,7 @@ class User < ApplicationRecord
   end
 
   def manager?
-    managerAccess.include?(accessPin)     
+    managerAccess.include?(accessPin) && !stripeMerchantID.blank?     
   end
 
   def admin?
@@ -173,9 +173,9 @@ class User < ApplicationRecord
   end
 
   def checkStripeSource
-    if !stripeUserID.blank?
+    if !stripeCustomerID.blank?
       if manager?
-        accountCapabilities = Stripe::Account.retrieve(stripeUserID)['capabilities']
+        accountCapabilities = Stripe::Account.retrieve(stripeCustomerID)['capabilities']
 
         if accountCapabilities['card_payments'] == "active" && accountCapabilities['transfers'] == "active" #charge stripeSubscription to cover heroku fees
           return true
@@ -183,7 +183,7 @@ class User < ApplicationRecord
           return false
         end
       else
-        stripeCustomer = Stripe::Customer.retrieve(stripeUserID)
+        stripeCustomer = Stripe::Customer.retrieve(stripeCustomerID)
         #make phone number required for purchase
         if stripeCustomer['default_source']
           return true

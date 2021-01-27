@@ -1,4 +1,4 @@
-<%= Stripe::Subscription.list({customer: current_user.stripeUserID})['data'].map{|s| {subscription: s['id'], price: s['plan']['id'][6..s['plan']['id'].length]}} %> 
+<%= Stripe::Subscription.list({customer: current_user.stripeCustomerID})['data'].map{|s| {subscription: s['id'], price: s['plan']['id'][6..s['plan']['id'].length]}} %> 
 
 <% 
 
@@ -6,15 +6,15 @@ basicMonthlyMemberships = ENV['basicMonthlyMembership'].split(",")
 saverMonthlyMemberships = ENV['saverMonthlyMembership'].split(",")
 eliteMonthlyMemberships = ENV['eliteMonthlyMembership'].split(",") %>
 
-<% if !(Stripe::Subscription.list({customer: current_user.stripeUserID})['data'].map{|s| s['plan']['id'][6..s['plan']['id'].length] }.flatten & basicMonthlyMemberships).blank?  %> 
+<% if !(Stripe::Subscription.list({customer: current_user.stripeCustomerID})['data'].map{|s| s['plan']['id'][6..s['plan']['id'].length] }.flatten & basicMonthlyMemberships).blank?  %> 
   <% serviceFee = 30 %>
 <% end %>
 
-<% if !(Stripe::Subscription.list({customer: current_user.stripeUserID})['data'].map{|s| s['plan']['id'][6..s['plan']['id'].length] }.flatten & saverMonthlyMemberships).blank? %> 
+<% if !(Stripe::Subscription.list({customer: current_user.stripeCustomerID})['data'].map{|s| s['plan']['id'][6..s['plan']['id'].length] }.flatten & saverMonthlyMemberships).blank? %> 
   <% serviceFee = 25 %>
 <% end %>
 
-<% if !(Stripe::Subscription.list({customer: current_user.stripeUserID})['data'].map{|s| s['plan']['id'][6..s['plan']['id'].length] }.flatten & eliteMonthlyMemberships).blank? %> 
+<% if !(Stripe::Subscription.list({customer: current_user.stripeCustomerID})['data'].map{|s| s['plan']['id'][6..s['plan']['id'].length] }.flatten & eliteMonthlyMemberships).blank? %> 
   <% serviceFee = 10 %>
 <% end %>
 
@@ -96,7 +96,7 @@ eliteMonthlyMemberships = ENV['eliteMonthlyMembership'].split(",") %>
 
 
 
-    <% Stripe::Subscription.list(customer: current_user&.stripeUserID)['data'].map{|s| s['items']}.flatten.map{|d| d['data']}.flatten.each do |s| %>
+    <% Stripe::Subscription.list(customer: current_user&.stripeCustomerID)['data'].map{|s| s['items']}.flatten.map{|d| d['data']}.flatten.each do |s| %>
       <div class="card card-style">
         <div class="content">
           <p class="font-600 font-11"><%= Stripe::Product.retrieve(s['plan']['product'])['name'] %></p>
