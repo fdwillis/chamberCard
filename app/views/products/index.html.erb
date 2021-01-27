@@ -1,28 +1,8 @@
 <div class="card card-style">
-<!--       <% if !current_user&.manager? %>
-    <div class="content mt-3 mb-3">
-
-        <h3>Shop</h3>
-        <p>After you've purchased products, you will need to schedule with the seller at your convenience.</p>
-      <% else %>
-        <%= pluralize(@activeProducts.size + @unavailableProducts.size, "product") %> uploaded
-
-    </div>
-      <% end %> -->
     <% if current_user&.manager? %>
       <a href="<%= new_product_path %>" class="float-right btn btn-xs bg-yellow1-dark rounded-xl shadow-xl text-uppercase font-900 mt-2 font-11">Add Product</a>
     <% end %>
 </div>
-
-
-
-
-
-
-
-
-
-
 
 <div class="search-page">
             <!-- auto fill with all using JS for when user clicks off behavior -->

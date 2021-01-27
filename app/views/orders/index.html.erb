@@ -88,9 +88,11 @@ Contact
                                 </div>
                               <% end %>
                             </div>
-                            <%= form_for :updateInvoice, id: "#{h['customer']}#{h['invoice']}", url: trackingNumber_path do |f| %>
+                            <%= form_for :trackingNumber, id: "#{h['customer']}#{h['invoice']}", url: trackingNumber_path do |f| %>
                               <div class="input-style input-style-2 mt-2 ">
-                                <%= f.select :orderStatus, ['Yes', 'Yes, But theres an issue'], {:include_blank => 'Did you receive your order?'}, id: "#{h['customer']}#{h['invoice']}", onchange: "showReport(#{h['customer']}#{h['invoice']});" %>
+                                <%= f.select :orderIssueStatus, [['Yes', 0], ['Yes, But theres an issue',1]], id: "#{h['customer']}#{h['invoice']}", onchange: "showReport(#{h['customer']}#{h['invoice']});" %>
+                                <%= f.hidden_field :invoice, value: h['invoice'] %>
+                                <%= f.hidden_field :sellerStripeID, value: h['sellerStripeID'] %>
 
                               </div>
                               <%= f.submit "Update Status", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>

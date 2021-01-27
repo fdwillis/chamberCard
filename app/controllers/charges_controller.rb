@@ -64,18 +64,28 @@ class ChargesController < ApplicationController
 
 	def trackingNumber
 		if request.post?
-			trackingIDs = params[:trackingNumber][:trackingIDs]
 			invoice = params[:trackingNumber][:invoice]
+			
+			if !params[:trackingNumber][:trackingIDs].blank?
+				trackingIDs = params[:trackingNumber][:trackingIDs]
 
-			curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"  -d 'invoice=#{invoice}&trackingIDs=#{trackingIDs}' -X POST #{SITEurl}/v1/tracking`
-				
+				curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"  -d 'invoice=#{invoice}&trackingIDs=#{trackingIDs}' -X POST #{SITEurl}/v1/tracking`
+			elsif !params[:trackingNumber][:orderIssueStatus].blank?
+				orderIssueStatus = ActiveModel::Type::Boolean.new.cast(params[:trackingNumber][:orderIssueStatus])
+				sellerStripeID = params[:trackingNumber][:sellerStripeID]
+				curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"  -d 'invoice=#{invoice}&orderIssueStatus=#{orderIssueStatus}&sellerStripeID=#{sellerStripeID}' -X POST #{SITEurl}/v1/tracking`
+			else
+				flash[:error] = "Something was missing"
+				redirect_to request.referrer
+				return
+			end
+
 	    response = Oj.load(curlCall)
 
 	    if !response.blank? && response['success']
-				flash[:success] = "Tracking Number Updated"
+				flash[:success] = response['message']
 				redirect_to request.referrer
 			else
-				debugger
 				flash[:error] = "Something went wrong"
 				redirect_to request.referrer
 			end
