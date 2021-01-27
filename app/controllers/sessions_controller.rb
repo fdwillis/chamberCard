@@ -7,12 +7,12 @@ class SessionsController < Devise::SessionsController
   def after_logout
     logoutAtt = current_user.deleteUserSessionAPI
     if logoutAtt['success']
-      current_user = nil
       reset_session
+      current_user = nil
       flash[:success] = "See ya later"
     else
-      current_user = nil
       reset_session
+      current_user = nil
       flash[:alert] = "You've been signed out"
     end
   end
