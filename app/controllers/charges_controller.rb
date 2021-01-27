@@ -75,6 +75,7 @@ class ChargesController < ApplicationController
 				flash[:success] = "Tracking Number Updated"
 				redirect_to request.referrer
 			else
+				debugger
 				flash[:error] = "Something went wrong"
 				redirect_to request.referrer
 			end

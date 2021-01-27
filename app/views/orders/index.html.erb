@@ -88,15 +88,12 @@ Contact
                                 </div>
                               <% end %>
                             </div>
-                            <div class="row">
-                              show checkbox for received order and order issue. if order issue, make text field to describe issue and mark metadata (orderIssue, customerConfirmed)
-                            </div>
                             <%= form_for :updateInvoice, id: "#{h['customer']}#{h['invoice']}", url: trackingNumber_path do |f| %>
                               <div class="input-style input-style-2 mt-2 ">
                                 <%= f.select :orderStatus, ['Yes', 'Yes, But theres an issue'], {:include_blank => 'Did you receive your order?'}, id: "#{h['customer']}#{h['invoice']}", onchange: "showReport(#{h['customer']}#{h['invoice']});" %>
 
                               </div>
-                              <%= f.submit "Update", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
+                              <%= f.submit "Update Status", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
                             <% end %>
                           <% end %>
                         <% end %>
