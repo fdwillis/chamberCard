@@ -62,7 +62,7 @@ class HomeController < ApplicationController
 	end
 
 	def join
-		if !current_user&.paymentOn?
+		if current_user&.paymentOn?
 			params = {price: joinParams[:plan]}.to_json
 			
 			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X POST #{SITEurl}/v1/subscriptions`
