@@ -169,8 +169,12 @@ class User < ApplicationRecord
     [street, city, state, country].compact.join(', ')
   end
 
+  def paymentOn?
+    stripeCustomerID && checkStripeSource
+  end
+ 
   def member?
-    stripeCustomerID && !Stripe::Subscription.list({customer: stripeCustomerID})['data'][0].blank? && checkStripeSource
+    paymentOn? && !Stripe::Subscription.list({customer: stripeCustomerID})['data'][0].blank?
   end
 
   def customer?

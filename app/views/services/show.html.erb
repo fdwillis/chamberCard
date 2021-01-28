@@ -94,9 +94,7 @@
 
 
 
-        <% if current_user&.stripeCustomerID.blank? || !current_user&.checkStripeSource %>
-          <%= link_to "Setup Payment", '/profile', class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' %>
-        <% else %>
+        <% if current_user&.paymentOn? %>
           <% if !@prices.blank? %>
             <% if !current_user.manager? %>
               <%= button_tag type: 'submit', class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" do %>
@@ -104,6 +102,8 @@
               <% end %>
             <% end %> 
           <% end %> 
+        <% else %>
+          <%= link_to "Setup Payment", '/profile', class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' %>
         <% end %> 
       <% end %> 
     </div>

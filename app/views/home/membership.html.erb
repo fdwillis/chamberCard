@@ -5,16 +5,18 @@ basicMonthlyMemberships = ENV['basicMonthlyMembership'].split(",")
 saverMonthlyMemberships = ENV['saverMonthlyMembership'].split(",")
 eliteMonthlyMemberships = ENV['eliteMonthlyMembership'].split(",") %>
 
-<% if !(Stripe::Subscription.list({customer: current_user.stripeCustomerID})['data'].map{|s| s['plan']['id'][6..s['plan']['id'].length] }.flatten & basicMonthlyMemberships).blank?  %> 
-  <% serviceFee = 30 %>
-<% end %>
+<% if current_user&.stripeCustomerID %>
+  <% if !(Stripe::Subscription.list({customer: current_user&.stripeCustomerID})['data'].map{|s| s['plan']['id'][6..s['plan']['id'].length] }.flatten & basicMonthlyMemberships).blank?  %> 
+    <% serviceFee = 30 %>
+  <% end %>
 
-<% if !(Stripe::Subscription.list({customer: current_user.stripeCustomerID})['data'].map{|s| s['plan']['id'][6..s['plan']['id'].length] }.flatten & saverMonthlyMemberships).blank? %> 
-  <% serviceFee = 25 %>
-<% end %>
+  <% if !(Stripe::Subscription.list({customer: current_user&.stripeCustomerID})['data'].map{|s| s['plan']['id'][6..s['plan']['id'].length] }.flatten & saverMonthlyMemberships).blank? %> 
+    <% serviceFee = 25 %>
+  <% end %>
 
-<% if !(Stripe::Subscription.list({customer: current_user.stripeCustomerID})['data'].map{|s| s['plan']['id'][6..s['plan']['id'].length] }.flatten & eliteMonthlyMemberships).blank? %> 
-  <% serviceFee = 10 %>
+  <% if !(Stripe::Subscription.list({customer: current_user&.stripeCustomerID})['data'].map{|s| s['plan']['id'][6..s['plan']['id'].length] }.flatten & eliteMonthlyMemberships).blank? %> 
+    <% serviceFee = 10 %>
+  <% end %>
 <% end %>
 
 <div class="page-content">

@@ -52,7 +52,7 @@
           <% if current_user&.customer? && current_user.stripeCustomerID.blank? %>
             <!-- <h2>Payment Information</h2> -->
             <p class="mb-5">
-                Your account is unable to purchase products &amp; services. If you would like to begin making purchases, get started by clicking 'Proceed' below!
+                Your account is unable to purchase products &amp; services. If you would like to begin making purchases or setup your <%= link_to "Membership", membership_path %>, get started by clicking 'Proceed' below!
             </p>
 
             <%= form_for :newStripeCustomer, url: stripe_customers_path do |f| %>
@@ -104,7 +104,7 @@
   <% if !current_user&.stripeCustomerID.blank? || !current_user&.stripeMerchantID.blank? %>
     <div class="card card-style">
         <div class="content mb-0">
-            <h2 class="text-center">Account Information</h2>
+            <h4 class="text-center"><i class="input-icon fa fa-pencil"></i> &nbsp; &nbsp; Account Information</h4>
             <p class="mb-5 text-center">
                 <% if current_user&.customer? %>
                   This information is so that service providers can contact you. Payment receipts will be sent to the email address below.
@@ -130,9 +130,9 @@
                   <em>(required)</em>
                   <%= f.text_field :phone, placeholder: "2628547895", class: "form-control", value: @phone, required: true %>
               </div>
-              Address
-              <div class="input-style input-style-2 has-icon input-required mt-4">
-                  <i class="input-icon fa fa-home"></i>
+
+              <h3 class="text-center"><i class="input-icon fa fa-home"></i> &nbsp; &nbsp; Address <%= current_user&.manager? ? "Business" : "Shipping" %></h3>
+              <div class="input-style input-style-2 input-required mt-4">
                   <span class="color-highlight input-style-1-active">Street Address</span>
                   <em>(required)</em>
                   <%= f.text_field :street, placeholder: "333 W Washington", class: "form-control", required: true %>
@@ -145,17 +145,17 @@
               <div class="input-style input-style-2 input-required mt-4">
                   <span class="color-highlight input-style-1-active">City</span>
                   <em>(required)</em>
-                  <%= f.text_field :city, placeholder: "333 W Washington", class: "form-control", required: true %>
+                  <%= f.text_field :city, placeholder: "Milwaukee", class: "form-control", required: true %>
               </div>
               <div class="input-style input-style-2 input-required mt-4">
                   <span class="color-highlight input-style-1-active">State</span>
                   <em>(required)</em>
-                  <%= f.text_field :state, placeholder: "333 W Washington", class: "form-control", required: true %>
+                  <%= f.text_field :state, placeholder: "California", class: "form-control", required: true %>
               </div>
               <div class="input-style input-style-2 input-required mt-4">
                   <span class="color-highlight input-style-1-active">Country</span>
                   <em>(required)</em>
-                  <%= f.text_field :country, placeholder: "333 W Washington", class: "form-control", value: "USA", disabled: true, readonly: true, required: true %>
+                  <%= f.text_field :country, class: "form-control", value: "USA", disabled: true, readonly: true, required: true %>
               </div>
 
               <div class="col-12">

@@ -52,15 +52,15 @@
 
       <div id="footer-bar" class="footer-bar-1">
         <% if request.fullpath.include?('/services') || request.fullpath.include?('?service_id') %>
-          <a href="/services"><i class="fa fa-handshake color-highlight"></i><span>Services</span></a>
+          <a href="/services"><i class="fa fa-shopping-bag color-highlight"></i><span>Services</span></a>
         <% else %>
-          <a href="/services"><i class="fa fa-handshake"></i><span>Services</span></a>
+          <a href="/services"><i class="fa fa-shopping-bag"></i><span>Services</span></a>
         <% end %>
 
         <% if request.fullpath.include?('/products') || request.fullpath.include?('?product_id') %>
-          <a href="/products"><i class="fa fa-shopping-bag color-highlight"></i><span>Shop</span></a>
+          <a href="/products"><i class="fa fa-shopping-basket color-highlight"></i><span>Shop</span></a>
         <% else %>
-          <a href="/products"><i class="fa fa-shopping-bag"></i><span>Shop</span></a>
+          <a href="/products"><i class="fa fa-shopping-basket"></i><span>Shop</span></a>
         <% end %>
 
         <% if request.fullpath.include?('/schedule') %>
@@ -81,7 +81,7 @@
           <a href="/charges"><i class="fa fa-dollar-sign"></i><span>Payments</span></a>
         <% end %>
 
-        <% if request.fullpath.include?('/profile') || request.fullpath.include?('/auth/login')|| request.fullpath.include?('/auth/sign-up') %>
+        <% if request.fullpath.include?('/profile') || request.fullpath.include?('/auth/login')|| request.fullpath.include?('/auth/sign-up')|| request.fullpath.include?('/membership') %>
           <a href="/profile"><i class="fa fa-user color-highlight"></i><span>Profile</span></a>
         <% else %>
           <a href="/profile"><i class="fa fa-user"></i><span>Profile</span></a>

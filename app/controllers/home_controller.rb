@@ -62,19 +62,23 @@ class HomeController < ApplicationController
 	end
 
 	def join
+		if !current_user&.paymentOn?
+			params = {price: joinParams[:plan]}.to_json
+			
+			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X POST #{SITEurl}/v1/subscriptions`
+			
+			response = Oj.load(curlCall)
 
-		params = {price: joinParams[:plan]}.to_json
-		
-		curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X POST #{SITEurl}/v1/subscriptions`
-		
-		response = Oj.load(curlCall)
-
-		if !response.blank? && response['success']
-			flash[:success] = "You are now a member! Enjoy the savings!"
-      redirect_to membership_path
-    else
-			flash[:error] = response['error']
-      redirect_to membership_path
+			if !response.blank? && response['success']
+				flash[:success] = "You are now a member! Enjoy the savings!"
+	      redirect_to membership_path
+	    else
+				flash[:error] = response['error']
+	      redirect_to membership_path
+	    end
+	  else
+			flash[:alert] = "Click 'Proceed' below to start setting up membership"
+      redirect_to profile_path
     end
 	end
 
