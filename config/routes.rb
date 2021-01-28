@@ -25,6 +25,7 @@ Rails.application.routes.draw do
 		
 		post "initiateCharge", to: 'charges#initiateCharge', as: "initiateCharge"
 		post "trackingNumber", to: 'charges#trackingNumber', as: "trackingNumber"
+		post "requestBooking", to: 'charges#requestBooking', as: "requestBooking"
 		post "newInvoice", to: 'charges#newInvoice', as: "newInvoice"
 		post "acceptInvoice", to: 'charges#acceptInvoice', as: "acceptInvoice"
 		

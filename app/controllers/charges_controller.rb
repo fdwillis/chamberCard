@@ -92,6 +92,39 @@ class ChargesController < ApplicationController
 		end
 	end
 
+	def requestBooking
+		if request.post?
+			invoice = params[:requestBooking][:invoice]
+
+			year = params[:requestBooking]["dateRequested(1i)"]
+			month = params[:requestBooking]["dateRequested(2i)"]
+			day = params[:requestBooking]["dateRequested(3i)"]
+
+			buildDate = "#{year}/#{month}/#{day}"
+
+			if !year.blank? && !month.blank? && !day.blank?
+				dateRequested = params[:requestBooking][:dateRequested]
+				sellerStripeID = params[:requestBooking][:sellerStripeID]
+				
+				curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"  -d 'invoice=#{invoice}&dateRequested=#{buildDate}&sellerStripeID=#{sellerStripeID}' -X POST #{SITEurl}/v1/booking-request`
+			else
+				flash[:error] = "Something was missing"
+				redirect_to request.referrer
+				return
+			end
+
+	    response = Oj.load(curlCall)
+
+	    if !response.blank? && response['success']
+				flash[:success] = "Request Submitted"
+				redirect_to request.referrer
+			else
+				flash[:error] = "Something went wrong"
+				redirect_to request.referrer
+			end
+		end
+	end
+
 
 	def newInvoice
 		customer = params[:newInvoice][:customer]
