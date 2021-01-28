@@ -5,9 +5,16 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
     create_table :users do |t|
       t.string :stripeCustomerID, unique: true
       t.string :stripeMerchantID, unique: true
-      t.boolean :stripeSubscription, default: false
       ## Database authenticatable
       t.string :accessPin
+
+      t.string :street
+      t.string :city
+      t.string :state
+      t.string :country
+      t.float  :latitude
+      t.float  :longitude
+
       t.string :referredBy
       t.string :authentication_token, unique: true
       t.string :username, unique: true, null: false

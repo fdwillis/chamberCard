@@ -69,7 +69,7 @@ class HomeController < ApplicationController
 		
 		response = Oj.load(curlCall)
 
-		if !response.blank? && response['success'] && current_user.update_attributes(stripeSubscription:  response['stripeSubscription'])
+		if !response.blank? && response['success']
 			flash[:success] = "You are now a member! Enjoy the savings!"
       redirect_to membership_path
     else
@@ -86,7 +86,6 @@ class HomeController < ApplicationController
 
     if !response.blank? && response['success']
     	
-    	current_user.update(stripeSubscription: false)
 			flash[:success] = response['message']
 			
       redirect_to membership_path

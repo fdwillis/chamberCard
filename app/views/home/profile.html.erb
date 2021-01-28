@@ -129,7 +129,35 @@
                   <span class="color-highlight input-style-1-active">Phone Number</span>
                   <em>(required)</em>
                   <%= f.text_field :phone, placeholder: "2628547895", class: "form-control", value: @phone, required: true %>
+              </div>
+              Address
+              <div class="input-style input-style-2 has-icon input-required mt-4">
+                  <i class="input-icon fa fa-home"></i>
+                  <span class="color-highlight input-style-1-active">Street Address</span>
+                  <em>(required)</em>
+                  <%= f.text_field :street, placeholder: "333 W Washington", class: "form-control", required: true %>
               </div> 
+              <!-- <div class="input-style input-style-2 has-icon input-required mt-4">
+                  <i class="input-icon fa fa-home"></i>
+                  <span class="color-highlight input-style-1-active">Suite or Apt</span>
+                  <%= f.text_field :aptSuite, placeholder: "suite 1", class: "form-control" %>
+              </div>  -->
+              <div class="input-style input-style-2 input-required mt-4">
+                  <span class="color-highlight input-style-1-active">City</span>
+                  <em>(required)</em>
+                  <%= f.text_field :city, placeholder: "333 W Washington", class: "form-control", required: true %>
+              </div>
+              <div class="input-style input-style-2 input-required mt-4">
+                  <span class="color-highlight input-style-1-active">State</span>
+                  <em>(required)</em>
+                  <%= f.text_field :state, placeholder: "333 W Washington", class: "form-control", required: true %>
+              </div>
+              <div class="input-style input-style-2 input-required mt-4">
+                  <span class="color-highlight input-style-1-active">Country</span>
+                  <em>(required)</em>
+                  <%= f.text_field :country, placeholder: "333 W Washington", class: "form-control", value: "USA", disabled: true, readonly: true, required: true %>
+              </div>
+
               <div class="col-12">
                 <div class="input-style input-style-2">
                   <%= f.submit "Save Information", class: "btn bg-green1-dark text-uppercase rounded-sm font-900"%>

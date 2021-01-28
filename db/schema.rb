@@ -32,8 +32,13 @@ ActiveRecord::Schema.define(version: 2021_01_16_021555) do
   create_table "users", force: :cascade do |t|
     t.string "stripeCustomerID"
     t.string "stripeMerchantID"
-    t.boolean "stripeSubscription", default: false
     t.string "accessPin"
+    t.string "street"
+    t.string "city"
+    t.string "state"
+    t.string "country"
+    t.float "latitude"
+    t.float "longitude"
     t.string "referredBy"
     t.string "authentication_token"
     t.string "username", null: false

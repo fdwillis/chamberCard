@@ -4,11 +4,24 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable  
 
+  geocoded_by :address
+
   def updateStripeCustomerAPI(params)
     email = params[:email] ? params[:email] : self.email
     stripeName = params[:name]
     phone = params[:phone]
     source = params[:source]
+
+    street = params[:street]
+
+    city = params[:city]
+    state = params[:state]
+    country = "USA"
+
+    update(street: street, city: city, state: state, country: country)
+
+
+# build the address by saving to user and passing param
 
     curlCall  = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "email=#{email}&name=#{stripeName}&phone=#{phone}&source=#{source}" -X PATCH #{SITEurl}/v1/stripe-customers/#{self.uuid}`
     curlCall2 = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "email=#{email}" -X PATCH #{SITEurl}/v1/users/#{self.uuid}`
@@ -152,12 +165,16 @@ class User < ApplicationRecord
     end
   end
 
+  def address
+    [street, city, state, country].compact.join(', ')
+  end
+
   def member?
-    !stripeCustomerID.blank? && stripeSubscription && checkStripeSource
+    stripeCustomerID && !Stripe::Subscription.list({customer: stripeCustomerID})['data'][0].blank? && checkStripeSource
   end
 
   def customer?
-    customerAccess.include?(accessPin)
+    customerAccess.include?(accessPin) && address
   end
 
   def virtual?
