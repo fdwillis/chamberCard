@@ -51,7 +51,7 @@
 
 
       <div id="footer-bar" class="footer-bar-1">
-        <% if request.fullpath.include?('/services') || request.fullpath.include?('?service_id')|| request.fullpath.include?('/') %>
+        <% if request.fullpath.include?('/services') || request.fullpath.include?('?service_id') %>
           <a href="/services"><i class="fa fa-handshake color-highlight"></i><span>Services</span></a>
         <% else %>
           <a href="/services"><i class="fa fa-handshake"></i><span>Services</span></a>

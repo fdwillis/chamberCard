@@ -130,9 +130,10 @@ class ServicesController < ApplicationController
 		if !response.blank? && response['success']
 			
 			flash[:success] = "Service Updated"
-			redirect_to services_path
+			redirect_to service_path(id: params[:id][5..params[:id].length], connectAccount: connectAccount)
 		else
 			flash[:alert] = "Trouble connecting. Try again later."
+			redirect_to request.referrer
 		end
 	end
 

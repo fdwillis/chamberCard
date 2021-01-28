@@ -121,16 +121,16 @@ class ProductsController < ApplicationController
 
 
 
-		curlCall = `curl -H "appName: #{ENV['appName']}" -d "images=#{images.join(",")}&keywords=#{keywords}&name=#{productName}&description=#{description}&active=#{active}&type=#{type}&connectAccount=#{connectAccount}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X PATCH #{SITEurl}/v1/products/#{params[:id]}`
+		curlCall = `curl -H "appName: #{ENV['appName']}" -d "images=#{images.join(",")}&keywords=#{keywords}&name=#{productName}&description=#{description}&active=#{active}&type=#{type}&connectAccount=#{connectAccount}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X PATCH #{SITEurl}/v1/products/#{ params[:id][5..params[:id].length]}`
 		
 		response = Oj.load(curlCall)
 
 		if !response.blank? && response['success']
-			flash[:success] = "product Updated"
-			redirect_to product_path(id: params[:id], connectAccount: connectAccount)
-			return
+			flash[:success] = "Product Updated"
+			redirect_to product_path(id: params[:id][5..params[:id].length], connectAccount: connectAccount)
 		else
 			flash[:alert] = "Trouble connecting. Try again later."
+			redirect_to request.referrer
 		end
 	end
 
