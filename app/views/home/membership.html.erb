@@ -1,4 +1,3 @@
-<%= Stripe::Subscription.list({customer: current_user.stripeCustomerID})['data'].map{|s| {subscription: s['id'], price: s['plan']['id'][6..s['plan']['id'].length]}} %> 
 
 <% 
 
