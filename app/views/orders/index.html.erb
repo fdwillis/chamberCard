@@ -31,9 +31,9 @@ Contact
   
 
 
-    <div class="card card-style">
-      <div class="content mb-0">
-        <% if @payments.present?  %>
+    <% if @payments.present?  %>
+      <div class="card card-style">
+        <div class="content mb-0">
           <div class="row mb-4">
             <div class="col-5"><h4 class="font-14 text-left"><u>Product</u></h4></div>
             <div class="col-3"><h4 class="font-14 text-justify"><u>QTY</u></h4></div>
@@ -106,9 +106,13 @@ Contact
                 <% end %>
               <% end %>
           <% end %>
-        <% end %>
+        </div>
       </div>
+    <% else %>
+    <div class="content mb-0 text-center">
+      <h5>You have not purchased any products</h5>
     </div>
+    <% end %>
 
 
 

@@ -32,111 +32,88 @@
     </div>
   <% end %>
 
-  <div class="card card-style bg-theme pb-0">
-    <div class="">
-      <div class="tab-controls tabs-round tab-animated tabs-medium tabs-rounded shadow-xl" data-tab-items="1" data-tab-active="bg-green1-dark color-white">
-          <!-- <a href="#" data-tab-active data-tab="tab-3"><i class="fa fa-clock"></i> Available Now</a> -->
-          <a href="#" data-tab-active  data-tab="tab-1"><i class="fa fa-calendar-check"></i>  History</a>
-      </div>
+  <% if @overdue || @payments %>
+    <div class="card card-style bg-theme pb-0">
       <div class="clearfix mb-3"></div>
-      
-      <div class="tab-content" id="tab-1">
+      <div class="content mb-0">
+        <% if @payments.present? %>
+          <% @payments.each do |h| %> 
 
-
-        <div class="content mb-0">
-            
-
-
-
-          <% if @payments.present? %>
-            <% @payments.each do |h| %>              <div class="list-group list-custom-small list-icon-0">
-                  <a data-toggle="collapse" href="#collapse-<%= h['invoice'][3..15] %>">
-                      <span class="font-14">Order#<%= h['invoice'][3..h['invoice'].length].truncate(9, omission: '') %></span>
-                      <span class="badge bg-green2-dark mr-2">PAID</span>
-                  </a>        
+            Order#<%= h['invoice'][3..h['invoice'].length].truncate(9, omission: '') %>
+            <!-- <div class="menu-title"><h1>Payment Sent</h1><p class="color-highlight">Transaction Details for Payment</p></div>
+            <div class="divider divider-margins mb-1 mt-3"></div> -->
+            <div class="content">
+              <div class="row mb-0">
+                  <div class="col-3 icon icon-xl">
+                      <i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark" width='80'></i>
+                  </div>
+                  <div class="col-9 pl-4">
+                      <div class="d-flex">
+                          <div><p class="font-700 color-theme">Seller</p></div>
+                          <div class="ml-auto"><p><%= h['sellerName'] %></p></div>
+                      </div>
+                      <div class="d-flex">
+                          <div><p class="font-700 color-theme">Customer</p></div>
+                          <div class="ml-auto"><p><%= h['customer'] %></p></div>
+                      </div>
+                      <div class="d-flex">
+                          <div><p class="font-700 color-theme">Date</p></div>
+                          <div class="ml-auto"><p><%= h['date'] %></p></div>
+                      </div>
+                  </div>
               </div>
-              <div class="collapse" id="collapse-<%= h['invoice'][3..15] %>">
-                <!-- <div class="menu-title"><h1>Payment Sent</h1><p class="color-highlight">Transaction Details for Payment</p></div>
-                <div class="divider divider-margins mb-1 mt-3"></div> -->
-                <div class="content">
-                  <div class="row mb-0">
-                      <div class="col-3 icon icon-xl">
-                          <i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark" width='80'></i>
-                      </div>
-                      <div class="col-9 pl-4">
-                          <div class="d-flex">
-                              <div><p class="font-700 color-theme">Seller</p></div>
-                              <div class="ml-auto"><p><%= h['sellerName'] %></p></div>
-                          </div>
-                          <div class="d-flex">
-                              <div><p class="font-700 color-theme">Customer</p></div>
-                              <div class="ml-auto"><p><%= h['customer'] %></p></div>
-                          </div>
-                          <div class="d-flex">
-                              <div><p class="font-700 color-theme">Date</p></div>
-                              <div class="ml-auto"><p><%= h['date'] %></p></div>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="divider mt-3 mb-3"></div>
-                  <div class="row mb-0">
+              <div class="divider mt-3 mb-3"></div>
+              <div class="row mb-0">
+              
+                  <div class="col-6"><h4 class="font-14 text-left"><u>Item</u></h4></div>
+                  <div class="col-3"><h4 class="font-14 text-center"><u>QTY</u></h4></div>
+                  <div class="col-3"><h4 class="font-14 text-center"><u>Price</u></h4></div>
+              </div>
+              <% h['items'].each_with_index do |itm,indx| %>
                   
-                      <div class="col-6"><h4 class="font-14 text-left"><u>Item</u></h4></div>
-                      <div class="col-3"><h4 class="font-14 text-center"><u>QTY</u></h4></div>
-                      <div class="col-3"><h4 class="font-14 text-center"><u>Price</u></h4></div>
+                  <div class="row mb-2">
+                    <div class="col-6"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
+                    <div class="col-3"><h4 class="font-14 text-center"><%= itm['invoiceLine']['quantity'] %></h4></div>
+                    <div class="col-3"><h4 class="font-14 text-center"><%= number_to_currency((itm['price']['unit_amount'] * 0.01), precision: 2) %></h4></div>
+
+                    
+                    <!-- <div class="col-2"><h4 class="font-14 text-right">Claimed: <%= itm['invoiceLine']['metadata']['claimed'] %></h4></div> -->
                   </div>
-                  <% h['items'].each_with_index do |itm,indx| %>
-                      
-                      <div class="row mb-2">
-                        <div class="col-6"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
-                        <div class="col-3"><h4 class="font-14 text-center"><%= itm['invoiceLine']['quantity'] %></h4></div>
-                        <div class="col-3"><h4 class="font-14 text-center"><%= number_to_currency((itm['price']['unit_amount'] * 0.01), precision: 2) %></h4></div>
+              <% end %>
+              <% if current_user&.manager? %>
+                <div class="row mb-0">
+                  <div class="divider divider-margins w-100 mt-2 mb-2"></div>
+                  <div class="divider divider-margins w-100 mt-2 mb-2"></div>
+                  <div class="col-6"><h4 class="font-14 mt-1">Grand Total</h4></div>
+                  <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency( h['subTotal']  * 0.01, precision: 2) %></h4></div>
 
-                        
-                        <!-- <div class="col-2"><h4 class="font-14 text-right">Claimed: <%= itm['invoiceLine']['metadata']['claimed'] %></h4></div> -->
-                      </div>
-                  <% end %>
-                  <% if current_user&.manager? %>
-                    <div class="row mb-0">
-                      <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-                      <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-                      <div class="col-6"><h4 class="font-14 mt-1">Grand Total</h4></div>
-                      <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency( h['subTotal']  * 0.01, precision: 2) %></h4></div>
-
-                      <!-- <div class="col-12"><a href="#" class="close-menu btn btn-full btn-m bg-red2-dark rounded-sm text-uppercase font-800">Refund</a></div> -->
-                    </div>
-
-                  <% else %>
-                    <div class="row mb-0">
-                      <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-                      <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-                      <div class="col-6"><h4 class="font-14 mt-1">Fee &nbsp;<i class="fa fa-exclamation-circle font-14 mt-1 color-yellow2-dark scale-icon mr-2" data-toggle="tooltip" data-placement="right" title="" data-original-title="Miser Brands service fee includes processing fees"></i></h4></div>
-                      <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency( h['fee']  * 0.01, precision: 2) %></h4></div>
-                      <div class="col-6"><h4 class="font-14 mt-1">Sub Total</h4></div>
-                      <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency( h['subTotal']  * 0.01, precision: 2) %></h4></div>
-
-                      <div class="col-6"><h4 class="font-14 mt-1">Grand Total</h4></div>
-                      <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency(h['grandTotal']  * 0.01, precision: 2) %></h4></div>
-              
-                      <div class="divider divider-margins w-100 mt-2 mb-3"></div>
-                      <!-- <div class="col-12"><a href="#" class="close-menu btn btn-full btn-m bg-red2-dark rounded-sm text-uppercase font-800">Refund</a></div> -->
-                    </div>
-                  <% end%>
+                  <!-- <div class="col-12"><a href="#" class="close-menu btn btn-full btn-m bg-red2-dark rounded-sm text-uppercase font-800">Refund</a></div> -->
                 </div>
-              </div>  
 
+              <% else %>
+                <div class="row mb-0">
+                  <div class="divider divider-margins w-100 mt-2 mb-2"></div>
+                  <div class="divider divider-margins w-100 mt-2 mb-2"></div>
+                  <div class="col-6"><h4 class="font-14 mt-1">Fee &nbsp;<i class="fa fa-exclamation-circle font-14 mt-1 color-yellow2-dark scale-icon mr-2" data-toggle="tooltip" data-placement="right" title="" data-original-title="Miser Brands service fee includes processing fees"></i></h4></div>
+                  <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency( h['fee']  * 0.01, precision: 2) %></h4></div>
+                  <div class="col-6"><h4 class="font-14 mt-1">Sub Total</h4></div>
+                  <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency( h['subTotal']  * 0.01, precision: 2) %></h4></div>
+
+                  <div class="col-6"><h4 class="font-14 mt-1">Grand Total</h4></div>
+                  <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency(h['grandTotal']  * 0.01, precision: 2) %></h4></div>
           
-              
-
-
-            <% end %>
+                  <div class="divider divider-margins w-100 mt-2 mb-3"></div>
+                  <!-- <div class="col-12"><a href="#" class="close-menu btn btn-full btn-m bg-red2-dark rounded-sm text-uppercase font-800">Refund</a></div> -->
+                </div>
+              <% end%>
+            </div>
           <% end %>
-        </div>
-        
+        <% end %>
       </div>
-      
+    </div>
 
-      <div class="tab-content" id="tab-2">
+    <div class="card card-style bg-theme pb-0">
+      <div class="content mb-0">
         <% if @overdue.present? %>
           <% @overdue.each do |h| %>
           <div class="align-self-center">
@@ -165,7 +142,12 @@
         <% end %>     
       </div>
     </div>
-  </div>
+
+  <% else %>
+    <div class="content mb-0 text-center">
+      <h5>You have not been charged</h5>
+    </div>
+  <% end %>
 <% else %>
   <div class="page-content header-clear-medium">
         

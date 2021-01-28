@@ -64,7 +64,7 @@
 
         <% if current_user&.customer? %>
             <div class="content row text-center">
-              <% if current_user&.customer? && !current_user&.checkStripeSource %>
+              <% if current_user&.customer? && !current_user&.checkStripeSource && !current_user&.stripeCustomerID.blank? %>
                 <a href="#" data-menu="menu-transaction-transfer" class="col-12">
                     <div class="card card-style ml-2 mb-3">
                         <i class="fa fa-credit-card color-highlight fa-2x mt-3"></i>
