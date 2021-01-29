@@ -14,14 +14,7 @@ Contact
     <div class="content mt-3 mb-3">
       <h3>Schedule Services</h3>
       <p class='text-justify'>
-          <% if !current_user&.manager? %>
-            Schedule your purchased services &amp; see the status of your pending service requests here!
-          <% end %>
-          <% if current_user&.manager? %>
-            As clients purchase your services the 'Pending' section will show you which clients have requested their service be complete. <br><br>
-
-            After you have accepted the date and time to complete a service, it will be show in the 'Upcoming' section
-          <% end %>
+        Schedule your purchased services &amp; see the status of your pending service requests here!
       </p>
     </div>
   </div>
@@ -29,77 +22,207 @@ Contact
   
 
 
-    <% if @payments.present?  %>
-      <div class="card card-style">
-        <div class="content mb-0">
-          <div class="row mb-4">
-            <div class="col-5"><h4 class="font-14 text-left"><u>Service</u></h4></div>
-            <div class="col-3"><h4 class="font-14 text-justify"><u>QTY</u></h4></div>
-            <div>&nbsp;</div>
-          </div>
-          <% @payments.each_with_index do |h, hindx| %>
-              <% h['items'].each_with_index do |itm,indx| %>
-                <% if itm['product']['type'] == 'service' %>
-                  <% if !itm['invoiceLine']['metadata']['claimed'].blank? && (itm['invoiceLine']['quantity'].to_i > itm['invoiceLine']['metadata']['claimed'].to_i) %>
-                  Claimed: <%= itm['invoiceLine']['metadata']['claimed'].to_i %>
-                    <div class="row mb-6">
-                      <div class="col-5"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
-                      <% if itm['price']['transform_quantity'] && !itm['price']['transform_quantity']['divide_by'].blank? %>
-                        <!-- <div class="col-1"><h4 class="font-14 text-left"><i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark"></i></h4></div> -->
-                        <div class="col-3"><h4 class="font-14 text-justify"><%= (itm['invoiceLine']['quantity'].to_i * itm['price']['transform_quantity']['divide_by']) - itm['invoiceLine']['metadata']['claimed'].to_i %></h4></div>
-                      <% else %>
-                        <!-- <div class="col-1"><h4 class="font-14 text-left"><i class="fa fa-times bg-fade-red2-dark rounded-xl color-red2-dark"></i></h4></div> -->
-                        <div class="col-3"><h4 class="font-14 text-justify"><%= itm['invoiceLine']['quantity'].to_i - itm['invoiceLine']['metadata']['claimed'].to_i %></h4></div>
-                      <% end %>
-                      <div class="col-4">
-                        <button class="accordion-btn  btn btn-m btn-full bg-green1-dark text-uppercase font-900" data-toggle="collapse" data-target="#<%= itm['invoiceLine']['id'] %>" aria-expanded="false" style='margin-top:-10px;'>
-                          <i class="fa fa-calendar-check"></i>
-                        </button>
-                      </div>
-                    </div>
-                    <div class="scheduleIt mt-4">
-                    </div>
-                  <% end %>
-                  <div class="accordion" id="accordion-1">
-                    <div class="mb-6">
-                      <div id="<%= itm['invoiceLine']['id'] %>" class="collapse" data-parent="#accordion-1" style="">
-                        
-                        <div class="pt-1 pb-2 pl-3 pr-3">
-                            <%= itm['invoiceLine']['id'] %> This is the accordion content. You can add any content you want to it. Really, anything! Add images, text, lists, captions or any element you want.
-                        </div>
-
-                        <%= form_for :requestBooking, id: "#{h['customer']}#{h['invoice']}", url: requestBooking_path do |f| %>
-                          <div class="input-style input-style-2 mt-2 ">
-                            <%= f.date_select(:dateRequested, :default => { day: DateTime.now.strftime("%d") , year: DateTime.now.strftime("%Y"), month: DateTime.now.strftime("%m") }) %>
-
-                            <%= f.hidden_field :invoice, value: h['invoice'] %>
-                            <%= f.hidden_field :sellerStripeID, value: h['sellerStripeID'] %>
-
-                          </div>
-                          <%= f.submit "Request Booking", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
-                        <% end %>
-                      </div>
+  <% if @payments.present?  %>
+    <div class="card card-style">
+      <div class="content mb-0">
+        <div class="row mb-4">
+          <div class="col-5"><h4 class="font-14 text-left"><u>Service</u></h4></div>
+          <div class="col-3"><h4 class="font-14 text-justify"><u>QTY</u></h4></div>
+          <div>&nbsp;</div>
+        </div>
+        <% @payments.each_with_index do |h, hindx| %>
+            <% h['items'].each_with_index do |itm,indx| %>
+              <% if itm['product']['type'] == 'service' %>
+                <% if !itm['invoiceLine']['metadata']['claimed'].blank? && (itm['invoiceLine']['quantity'].to_i > itm['invoiceLine']['metadata']['claimed'].to_i) %>
+                Claimed: <%= itm['invoiceLine']['metadata']['claimed'].to_i %>
+                  <div class="row mb-6">
+                    <div class="col-5"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
+                    <% if itm['price']['transform_quantity'] && !itm['price']['transform_quantity']['divide_by'].blank? %>
+                      <!-- <div class="col-1"><h4 class="font-14 text-left"><i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark"></i></h4></div> -->
+                      <div class="col-3"><h4 class="font-14 text-justify"><%= (itm['invoiceLine']['quantity'].to_i * itm['price']['transform_quantity']['divide_by']) - itm['invoiceLine']['metadata']['claimed'].to_i %></h4></div>
+                    <% else %>
+                      <!-- <div class="col-1"><h4 class="font-14 text-left"><i class="fa fa-times bg-fade-red2-dark rounded-xl color-red2-dark"></i></h4></div> -->
+                      <div class="col-3"><h4 class="font-14 text-justify"><%= itm['invoiceLine']['quantity'].to_i - itm['invoiceLine']['metadata']['claimed'].to_i %></h4></div>
+                    <% end %>
+                    <div class="col-4">
+                      <button class="accordion-btn  btn btn-m btn-full bg-green1-dark text-uppercase font-900" data-toggle="collapse" data-target="#<%= itm['invoiceLine']['id'] %>" aria-expanded="false" style='margin-top:-10px;'>
+                        <i class="fa fa-calendar-check"></i>
+                      </button>
                     </div>
                   </div>
+                  <div class="scheduleIt mt-4">
+                  </div>
                 <% end %>
+                <div class="accordion" id="accordion-1">
+                  <div id="<%= itm['invoiceLine']['id'] %>" class="collapse" data-parent="#accordion-1" style="">
+                    <%= form_for :requestBooking, id: "#{h['customer']}#{h['invoice']}", url: requestBooking_path do |f| %>
+                      <div class="row">
+                        <div class="input-style input-style-2 mt-2 col-6">
+                          Date
+                          <%= f.date_select(:dateRequested, :default => { day: DateTime.now.strftime("%d") , year: DateTime.now.strftime("%Y"), month: DateTime.now.strftime("%m") }) %>
+
+                        </div>
+                        <div class="input-style input-style-2 mt-2 col-6">
+                          Time
+                          <%= f.time_select(:my_time, start_hour: 8, end_hour: 20,minute_step: 15, ampm: true) %>
+                        </div>
+                      </div>
+
+                      <%= f.hidden_field :invoice, value: h['invoice'] %>
+
+                      <%= f.hidden_field :sellerStripeID, value: h['sellerStripeID'] %>
+
+                      <%= f.hidden_field :serviceToBook, value: itm['invoiceLine']['invoice_item'] %>
+
+                      <%= f.submit "Request Booking", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
+                    <% end %>
+                  </div>
+                </div>
               <% end %>
-          <% end %>
-        </div>
+            <% end %>
+        <% end %>
       </div>
-    <% else %>
-      <div class="content mb-0 text-center">
-        <h5>You have not purchased any services</h5>
-      </div>
-    <% end %>
-
-
-
-
-
-
+    </div>
+  <% else %>
+    <div class="content mb-0 text-center">
+      <h5>You have not purchased any services</h5>
+    </div>
+  <% end %>
 <% end %>
 
 <% if current_user&.manager? %>
+  <div class="card card-style">
+    <div class="content mt-3 mb-3">
+      <h3>Schedule Services</h3>
+      <p class='text-justify'>
+            As clients purchase your services the 'Pending' section will show you which clients have requested their service be complete. <br><br>
+
+            After you have accepted the date and time to complete a service, it will be show in the 'Upcoming' section
+      </p>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <% @payments.each do |h| %> 
+    <% if Stripe::Invoice.retrieve(h['invoice'], {stripe_account: current_user&.stripeMerchantID})['metadata']['goodOrService'] == 'service' %>
+      <% h['items'].each_with_index do |itm,indx| %>
+        <% if Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'],{stripe_account: current_user&.stripeMerchantID })['metadata']['requesting'].to_i > 0 %>
+          <!--<%= Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'],{stripe_account: current_user&.stripeMerchantID }) %>-->
+
+
+
+
+
+          <div class="card card-style bg-theme pb-0">
+            <div class="content mb-0">
+              Order#<%= h['invoice'][3..h['invoice'].length].truncate(9, omission: '') %>
+              <div class="row mb-0">
+                  <div class="col-3 icon icon-xl">
+                      <i class="fa fa-exclamation bg-fade-yellow1-dark rounded-xl color-yellow2-dark" width='80'></i>
+                  </div>
+                  <div class="col-9 pl-4">
+                      <div class="d-flex">
+                          <div><p class="font-700 color-theme">Date</p></div>
+                          <div class="ml-auto">
+                            <p>
+                              <%= DateTime.parse(Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'], {stripe_account: current_user&.stripeMerchantID})['metadata']['startDate']).strftime("%a, %B %e") %>
+                              
+                            </p>
+                          </div>
+                      </div>
+                      <div class="d-flex">
+                          <div><p class="font-700 color-theme">Time</p></div>
+                          <div class="ml-auto">
+                            <p>
+                              <%= DateTime.parse(Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'], {stripe_account: current_user&.stripeMerchantID})['metadata']['startDate']).strftime("%l:%M %p") %>
+                            </p>
+                          </div>
+                      </div>
+                      <div class="d-flex">
+                          <div><p class="font-700 color-theme">Customer</p></div>
+                          <div class="ml-auto"><p><%= h['customer'] %></p></div>
+                      </div>
+                      <div class="d-flex">
+                          <div><p class="font-700 color-theme">Email</p></div>
+                          <div class="ml-auto"><p><%= link_to "Email Customer", "mailto:#{h['customerStripeInfo']['email']}"  %></p></div>
+                      </div>
+                      <div class="d-flex">
+                          <div><p class="font-700 color-theme">Phone</p></div>
+                          <div class="ml-auto"><p><%= link_to "Call Customer", "tel:#{h['customerStripeInfo']['phone']}"  %></p></div>
+                      </div>
+
+                      <div class="d-flex">
+                        <a href="/services" class="btn btn-full col-12 bg-green2-dark btn-m text-uppercase font-800 rounded-sm">Accept Booking</a>
+                      </div>
+                  </div>
+              </div>
+              <div class="divider mt-3 mb-3"></div>
+              <div class="row mb-0">
+              
+                  <div class="col-6"><h4 class="font-14 text-left"><u>Item</u></h4></div>
+                  <div class="col-3"><h4 class="font-14 text-center"><u>Purchased</u></h4></div>
+                  <div class="col-3"><h4 class="font-14 text-center"><u>Claimed</u></h4></div>
+              </div>
+                  <div class="row mb-2">
+                    <div class="col-6"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
+                    <div class="col-3"><h4 class="font-14 text-center"><%= itm['invoiceLine']['quantity'] %></h4></div>
+                    <div class="col-3"><h4 class="font-14 text-center"><%= itm['invoiceLine']['metadata']['claimed'].to_i %></h4></div>
+                  </div>
+
+
+
+              <%= form_for :requestBooking, id: "#{h['customer']}#{h['invoice']}", url: requestBooking_path do |f| %>
+                <div class="row">
+                  <div class="input-style input-style-2 mt-2 col-6">
+                    Date
+                    <%= f.date_select(:dateRequested, :default => { day: DateTime.now.strftime("%d") , year: DateTime.now.strftime("%Y"), month: DateTime.now.strftime("%m") }) %>
+
+                  </div>
+                  <div class="input-style input-style-2 mt-2 col-6">
+                    Time
+                    <%= f.time_select(:my_time, start_hour: 8, end_hour: 20,minute_step: 15, ampm: true) %>
+                  </div>
+                </div>
+
+                <%= f.hidden_field :invoice, value: h['invoice'] %>
+                <%= f.hidden_field :sellerStripeID, value: h['sellerStripeID'] %>
+                <%= f.submit "Change Date", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
+              <% end %>
+
+
+
+            </div>
+          </div>
+
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+
+
+
+
+
 <% end %>
 
 <% if !current_user %>

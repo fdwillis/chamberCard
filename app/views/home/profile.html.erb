@@ -131,11 +131,11 @@
                   <%= f.text_field :phone, placeholder: "2628547895", class: "form-control", value: @phone, required: true %>
               </div>
 
-              <h3 class="text-center"><i class="input-icon fa fa-home"></i> &nbsp; &nbsp; Address <%= current_user&.manager? ? "Business" : "Shipping" %></h3>
+              <h3 class="text-center"><i class="input-icon fa fa-home"></i> &nbsp; &nbsp; <%= current_user&.manager? ? "Business" : "Shipping" %> Address </h3>
               <div class="input-style input-style-2 input-required mt-4">
                   <span class="color-highlight input-style-1-active">Street Address</span>
                   <em>(required)</em>
-                  <%= f.text_field :street, placeholder: "333 W Washington", class: "form-control", required: true %>
+                  <%= f.text_field :street, placeholder: "333 W Washington", class: "form-control", required: true, value: current_user&.street %>
               </div> 
               <!-- <div class="input-style input-style-2 has-icon input-required mt-4">
                   <i class="input-icon fa fa-home"></i>
@@ -145,12 +145,12 @@
               <div class="input-style input-style-2 input-required mt-4">
                   <span class="color-highlight input-style-1-active">City</span>
                   <em>(required)</em>
-                  <%= f.text_field :city, placeholder: "Milwaukee", class: "form-control", required: true %>
+                  <%= f.text_field :city, placeholder: "Milwaukee", class: "form-control", required: true, value: current_user&.city %>
               </div>
               <div class="input-style input-style-2 input-required mt-4">
                   <span class="color-highlight input-style-1-active">State</span>
                   <em>(required)</em>
-                  <%= f.text_field :state, placeholder: "California", class: "form-control", required: true %>
+                  <%= f.text_field :state, placeholder: "California", class: "form-control", required: true, value: current_user&.state %>
               </div>
               <div class="input-style input-style-2 input-required mt-4">
                   <span class="color-highlight input-style-1-active">Country</span>

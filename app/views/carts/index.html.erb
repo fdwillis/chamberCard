@@ -120,8 +120,10 @@
 
             <%= form_for :checkout, url: checkout_path do |f| %>
               <div class="input-style input-style-2 mb-4">
-              <% if current_user&.address %>
+              <% if !current_user&.address.blank? %>
                 <%= f.submit "Charge Me", class: "btn btn-full bg-green1-dark text-uppercase rounded-sm font-900"%>
+              <% else %>
+                <h4 class="font-20"><%= link_to "Click here", profile_path %> to add shipping address</h4>
               <% end %>
               </div>
 

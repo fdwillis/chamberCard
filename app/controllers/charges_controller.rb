@@ -94,19 +94,21 @@ class ChargesController < ApplicationController
 
 	def requestBooking
 		if request.post?
-			invoice = params[:requestBooking][:invoice]
+			serviceToBook = params[:requestBooking][:serviceToBook]
 
 			year = params[:requestBooking]["dateRequested(1i)"]
 			month = params[:requestBooking]["dateRequested(2i)"]
 			day = params[:requestBooking]["dateRequested(3i)"]
 
-			buildDate = "#{year}/#{month}/#{day}"
+			hour = params[:requestBooking]["my_time(4i)"]
+			minute = params[:requestBooking]["my_time(5i)"]
 
+			buildDate = "#{year}/#{month}/#{day} #{hour}:#{minute}"
 			if !year.blank? && !month.blank? && !day.blank?
 				dateRequested = params[:requestBooking][:dateRequested]
 				sellerStripeID = params[:requestBooking][:sellerStripeID]
 				
-				curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"  -d 'invoice=#{invoice}&dateRequested=#{buildDate}&sellerStripeID=#{sellerStripeID}' -X POST #{SITEurl}/v1/booking-request`
+				curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"  -d 'serviceToBook=#{serviceToBook}&dateRequested=#{buildDate}&sellerStripeID=#{sellerStripeID}' -X POST #{SITEurl}/v1/booking-request`
 			else
 				flash[:error] = "Something was missing"
 				redirect_to request.referrer

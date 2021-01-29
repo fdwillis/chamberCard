@@ -18,9 +18,6 @@ class User < ApplicationRecord
     state = params[:state]
     country = "USA"
 
-    update(street: street, city: city, state: state, country: country)
-
-
 # build the address by saving to user and passing param
 
     curlCall  = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "email=#{email}&name=#{stripeName}&phone=#{phone}&source=#{source}" -X PATCH #{SITEurl}/v1/stripe-customers/#{self.uuid}`
@@ -31,7 +28,7 @@ class User < ApplicationRecord
     
     if !response.blank? && response['success']
       if !response2.blank? && response2['success']
-        self.update(email: email)
+        self.update(email: email, street: street, city: city, state: state, country: country)
         return response
       end
     else
@@ -166,7 +163,11 @@ class User < ApplicationRecord
   end
 
   def address
-    [street, city, state, country].compact.join(', ')
+    if !street.blank? && !city.blank? && !state.blank? && !country.blank?
+      [street, city, state, country].compact.join(', ')
+    else
+      return false
+    end
   end
 
   def paymentOn?
@@ -215,6 +216,30 @@ class User < ApplicationRecord
     else
       return false
     end
+  end
+
+  def phoneCheck
+    # if !stripeCustomerID.blank?
+    #   if manager?
+    #     accountCapabilities = Stripe::Account.retrieve(stripeCustomerID)['capabilities']
+
+    #     if accountCapabilities['card_payments'] == "active" && accountCapabilities['transfers'] == "active" #charge stripeSubscription to cover heroku fees
+    #       return true
+    #     else
+    #       return false
+    #     end
+    #   else
+    #     stripeCustomer = Stripe::Customer.retrieve(stripeCustomerID)
+    #     #make phone number required for purchase
+    #     if stripeCustomer['default_source']
+    #       return true
+    #     else
+    #       return false
+    #     end
+    #   end
+    # else
+    #   return false
+    # end
   end
 
   def self.stripeAmount(string)
