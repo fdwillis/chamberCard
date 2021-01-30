@@ -72,8 +72,8 @@ class ChargesController < ApplicationController
 				curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"  -d 'invoice=#{invoice}&trackingIDs=#{trackingIDs}' -X POST #{SITEurl}/v1/tracking`
 			elsif !params[:trackingNumber][:orderIssueStatus].blank?
 				orderIssueStatus = ActiveModel::Type::Boolean.new.cast(params[:trackingNumber][:orderIssueStatus])
-				sellerStripeID = params[:trackingNumber][:sellerStripeID]
-				curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"  -d 'invoice=#{invoice}&orderIssueStatus=#{orderIssueStatus}&sellerStripeID=#{sellerStripeID}' -X POST #{SITEurl}/v1/tracking`
+				merchantStripeID = params[:trackingNumber][:merchantStripeID]
+				curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"  -d 'invoice=#{invoice}&orderIssueStatus=#{orderIssueStatus}&merchantStripeID=#{merchantStripeID}' -X POST #{SITEurl}/v1/tracking`
 			else
 				flash[:error] = "Something was missing"
 				redirect_to request.referrer
@@ -106,9 +106,9 @@ class ChargesController < ApplicationController
 			buildDate = "#{year}/#{month}/#{day} #{hour}:#{minute}"
 			if !year.blank? && !month.blank? && !day.blank?
 				dateRequested = params[:requestBooking][:dateRequested]
-				sellerStripeID = params[:requestBooking][:sellerStripeID]
+				merchantStripeID = params[:requestBooking][:merchantStripeID]
 				
-				curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"  -d 'serviceToBook=#{serviceToBook}&dateRequested=#{buildDate}&sellerStripeID=#{sellerStripeID}' -X POST #{SITEurl}/v1/booking-request`
+				curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"  -d 'serviceToBook=#{serviceToBook}&dateRequested=#{buildDate}&merchantStripeID=#{merchantStripeID}' -X POST #{SITEurl}/v1/booking-request`
 			else
 				flash[:error] = "Something was missing"
 				redirect_to request.referrer

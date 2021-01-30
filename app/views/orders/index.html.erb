@@ -41,7 +41,7 @@ Contact
           </div>
           <% @payments.each_with_index do |h, hindx| %>
               <% h['items'].each_with_index do |itm,indx| %>
-                <% if !Stripe::Invoice.retrieve(h['invoice'], {stripe_account: h['sellerStripeID']})['metadata']['customerConfirmed'].blank? && Stripe::Invoice.retrieve(h['invoice'], {stripe_account: h['sellerStripeID']})['metadata']['customerConfirmed'] == 'false' %>
+                <% if !Stripe::Invoice.retrieve(h['invoice'], {stripe_account: h['merchantStripeID']})['metadata']['customerConfirmed'].blank? && Stripe::Invoice.retrieve(h['invoice'], {stripe_account: h['merchantStripeID']})['metadata']['customerConfirmed'] == 'false' %>
 
 
                   <% if itm['product']['type'] == 'good' %>
@@ -68,7 +68,7 @@ Contact
                                 <i class="input-icon fa fa-truck color-theme"></i>
                                 <span class="color-highlight input-style-1-active">Tracking Numbers</span>
                                 <em>(required)</em>
-                                <%= f.text_field :trackingIDs, placeholder: "1ZSD6756...", required: true, value: !Stripe::Invoice.retrieve(h['invoice'], {stripe_account: h['sellerStripeID']})['metadata']['trackingNumbers'].blank? ? Stripe::Invoice.retrieve(h['invoice'], {stripe_account: h['sellerStripeID']})['metadata']['trackingNumbers'] : nil %>
+                                <%= f.text_field :trackingIDs, placeholder: "1ZSD6756...", required: true, value: !Stripe::Invoice.retrieve(h['invoice'], {stripe_account: h['merchantStripeID']})['metadata']['trackingNumbers'].blank? ? Stripe::Invoice.retrieve(h['invoice'], {stripe_account: h['merchantStripeID']})['metadata']['trackingNumbers'] : nil %>
                                 <%= f.hidden_field :invoice, value: h['invoice'] %>
                             </div> 
                             <p class="text-center">Seperate Tracking Numbers By Comma</p>
@@ -78,11 +78,11 @@ Contact
 
 
                         <% if current_user&.customer?  %>
-                          <% if Stripe::Invoice.retrieve(h['invoice'], {stripe_account: h['sellerStripeID']})['metadata']['trackingNumbers'].blank? %>
+                          <% if Stripe::Invoice.retrieve(h['invoice'], {stripe_account: h['merchantStripeID']})['metadata']['trackingNumbers'].blank? %>
                             <p>Your order ahas been received. Check back for tracking updates</p>
                           <% else %>
                             <div class="row">
-                              <% Stripe::Invoice.retrieve(h['invoice'], {stripe_account: h['sellerStripeID']})['metadata']['trackingNumbers'].split(",").each do |t| %>
+                              <% Stripe::Invoice.retrieve(h['invoice'], {stripe_account: h['merchantStripeID']})['metadata']['trackingNumbers'].split(",").each do |t| %>
                                 <div class="text-left col-12">
                                   Tracking Number - <%= link_to t, "https://www.google.com/search?q=#{t}&oq=#{t}", 'target' => '_blank' %>
                                 </div>
@@ -92,7 +92,7 @@ Contact
                               <div class="input-style input-style-2 mt-2 ">
                                 <%= f.select :orderIssueStatus, [['Yes', 0], ['Yes, But theres an issue',1]], id: "#{h['customer']}#{h['invoice']}", onchange: "showReport(#{h['customer']}#{h['invoice']});" %>
                                 <%= f.hidden_field :invoice, value: h['invoice'] %>
-                                <%= f.hidden_field :sellerStripeID, value: h['sellerStripeID'] %>
+                                <%= f.hidden_field :merchantStripeID, value: h['merchantStripeID'] %>
 
                               </div>
                               <%= f.submit "Update Status", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>

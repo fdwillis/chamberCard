@@ -70,7 +70,7 @@ Contact
 
                       <%= f.hidden_field :invoice, value: h['invoice'] %>
 
-                      <%= f.hidden_field :sellerStripeID, value: h['sellerStripeID'] %>
+                      <%= f.hidden_field :merchantStripeID, value: h['merchantStripeID'] %>
 
                       <%= f.hidden_field :serviceToBook, value: itm['invoiceLine']['invoice_item'] %>
 
@@ -129,7 +129,7 @@ Contact
 
 
 
-        <% if Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'],{stripe_account: current_user&.stripeMerchantID })['metadata']['sellerConfirmed'] == "true" %>
+        <% if Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'],{stripe_account: current_user&.stripeMerchantID })['metadata']['merchantConfirmed'] == "true" %>
             confirmed by seller
             <div class="card card-style bg-theme pb-0">
               <div class="content mb-0">
@@ -157,10 +157,6 @@ Contact
                             </div>
                         </div>
                         <div class="d-flex">
-                            <div><p class="font-700 color-theme">Customer</p></div>
-                            <div class="ml-auto"><p><%= h['customer'] %></p></div>
-                        </div>
-                        <div class="d-flex">
                             <div><p class="font-700 color-theme">Email</p></div>
                             <div class="ml-auto"><p><%= link_to "Email Customer", "mailto:#{h['customerStripeInfo']['email']}"  %></p></div>
                         </div>
@@ -168,27 +164,21 @@ Contact
                             <div><p class="font-700 color-theme">Phone</p></div>
                             <div class="ml-auto"><p><%= link_to "Call Customer", "tel:#{h['customerStripeInfo']['phone']}"  %></p></div>
                         </div>
+                        <div class="d-flex">
+                            <div><p class="font-700 color-theme">Customer</p></div>
+                            <div class="ml-auto"><p><%= h['customer'] %></p></div>
+                        </div>
 
                         <%= form_for :acceptBooking, url: acceptBooking_path do |f| %>
                           <div class="d-flex mt-4">
                             <%= f.hidden_field :serviceToAccept, value: itm['invoiceLine']['invoice_item'] %>
-                            <%= f.submit "Accept Booking", class: "btn btn-full bg-green1-dark col-12 text-uppercase rounded-sm font-900"%>
+                            <%= f.submit "Cancel Booking", class: "btn btn-full bg-red1-dark col-12 text-uppercase rounded-sm font-900"%>
                           </div>
                         <% end %>
                     </div>
                 </div>
                 <div class="divider mt-3 mb-3"></div>
-                <div class="row mb-0">
                 
-                    <div class="col-6"><h4 class="font-14 text-left"><u>Item</u></h4></div>
-                    <div class="col-3"><h4 class="font-14 text-center"><u>Purchased</u></h4></div>
-                    <div class="col-3"><h4 class="font-14 text-center"><u>Claimed</u></h4></div>
-                </div>
-                    <div class="row mb-2">
-                      <div class="col-6"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
-                      <div class="col-3"><h4 class="font-14 text-center"><%= itm['invoiceLine']['quantity'] %></h4></div>
-                      <div class="col-3"><h4 class="font-14 text-center"><%= itm['invoiceLine']['metadata']['claimed'].to_i %></h4></div>
-                    </div>
 
 
 
@@ -206,12 +196,10 @@ Contact
                   </div>
 
                   <%= f.hidden_field :invoice, value: h['invoice'] %>
-                  <%= f.hidden_field :sellerStripeID, value: h['sellerStripeID'] %>
+                  <%= f.hidden_field :merchantStripeID, value: h['merchantStripeID'] %>
+                  <%= f.hidden_field :serviceToBook, value: itm['invoiceLine']['invoice_item'] %>
                   <%= f.submit "Change Date", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
                 <% end %>
-
-
-
               </div>
             </div>
         <% end %>
@@ -220,7 +208,7 @@ Contact
 
 
 
-        <% if Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'],{stripe_account: current_user&.stripeMerchantID })['metadata']['requesting'].to_i > 0 && Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'],{stripe_account: current_user&.stripeMerchantID })['metadata']['sellerConfirmed'] == "false"%>
+        <% if Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'],{stripe_account: current_user&.stripeMerchantID })['metadata']['requesting'].to_i > 0 && Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'],{stripe_account: current_user&.stripeMerchantID })['metadata']['merchantConfirmed'] == "false"%>
 
           not confirmed by seller
           <div class="card card-style bg-theme pb-0">
@@ -232,13 +220,13 @@ Contact
                   </div>
                   <div class="col-9 pl-4">
                       <div class="d-flex">
-                          <div><p class="font-700 color-theme">Date</p></div>
-                          <div class="ml-auto">
-                            <p>
-                              <%= DateTime.parse(Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'], {stripe_account: current_user&.stripeMerchantID})['metadata']['startDate']).strftime("%a, %B %e") %>
-                              
-                            </p>
-                          </div>
+                        <div><p class="font-700 color-theme">Date</p></div>
+                        <div class="ml-auto">
+                          <p>
+                            <%= DateTime.parse(Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'], {stripe_account: current_user&.stripeMerchantID})['metadata']['startDate']).strftime("%a, %B %e") %>
+                            
+                          </p>
+                        </div>
                       </div>
                       <div class="d-flex">
                           <div><p class="font-700 color-theme">Time</p></div>
@@ -249,16 +237,16 @@ Contact
                           </div>
                       </div>
                       <div class="d-flex">
-                          <div><p class="font-700 color-theme">Customer</p></div>
-                          <div class="ml-auto"><p><%= h['customer'] %></p></div>
-                      </div>
-                      <div class="d-flex">
                           <div><p class="font-700 color-theme">Email</p></div>
                           <div class="ml-auto"><p><%= link_to "Email Customer", "mailto:#{h['customerStripeInfo']['email']}"  %></p></div>
                       </div>
                       <div class="d-flex">
                           <div><p class="font-700 color-theme">Phone</p></div>
                           <div class="ml-auto"><p><%= link_to "Call Customer", "tel:#{h['customerStripeInfo']['phone']}"  %></p></div>
+                      </div>
+                      <div class="d-flex">
+                          <div><p class="font-700 color-theme">Customer</p></div>
+                          <div class="ml-auto"><p><%= h['customer'] %></p></div>
                       </div>
 
                       <%= form_for :acceptBooking, url: acceptBooking_path do |f| %>
@@ -298,7 +286,7 @@ Contact
                 </div>
 
                 <%= f.hidden_field :invoice, value: h['invoice'] %>
-                <%= f.hidden_field :sellerStripeID, value: h['sellerStripeID'] %>
+                <%= f.hidden_field :merchantStripeID, value: h['merchantStripeID'] %>
                 <%= f.submit "Change Date", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
               <% end %>
 
