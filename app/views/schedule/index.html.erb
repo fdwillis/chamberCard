@@ -176,9 +176,9 @@ Contact
                               <div class="ml-auto"><p><%= h['customer'] %></p></div>
                           </div>
 
-                          <%= form_for :acceptBooking, url: acceptBooking_path do |f| %>
+                          <%= form_for :cancel, url: cancel_path do |f| %>
                             <div class="d-flex mt-4">
-                              <%= f.hidden_field :serviceToAccept, value: itm['invoiceLine']['invoice_item'] %>
+                              <%= f.hidden_field :serviceToCancel, value: itm['invoiceLine']['invoice_item'] %>
                               <%= f.submit "Cancel Booking", class: "btn btn-full bg-red1-dark col-12 text-uppercase rounded-sm font-900"%>
                             </div>
                           <% end %>

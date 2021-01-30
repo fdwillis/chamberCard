@@ -20,24 +20,23 @@ Rails.application.routes.draw do
 		resources :stripe_customers, :path => '/stripe-customers'
 		resources :stripe_tokens, :path => '/stripe-tokens'
 		resources :book_it, :path => '/book-it'
-		
-		post "bookingRequest", to: 'book_it#bookingRequest', as: "bookingRequest"
-		
+				
 		post "initiateCharge", to: 'charges#initiateCharge', as: "initiateCharge"
-		post "trackingNumber", to: 'charges#trackingNumber', as: "trackingNumber"
-		post "requestBooking", to: 'charges#requestBooking', as: "requestBooking"
 		post "newInvoice", to: 'charges#newInvoice', as: "newInvoice"
 		post "acceptInvoice", to: 'charges#acceptInvoice', as: "acceptInvoice"
-		post "acceptBooking", to: 'charges#acceptBooking', as: "acceptBooking"
 		
-		get "initiateCharge", to: 'charges#initiateCharge', as: "getinitiateCharge"
-	
+		post "trackingNumber", to: 'products#trackingNumber', as: "trackingNumber"
+		
 		post "checkout", to: 'carts#checkout', as: "checkout"
 		post "updateQuantity", to: 'carts#updateQuantity', as: "updateQuantity"
 		
 		post "join", to: 'home#join', as: "join"
-		post "cancel", to: 'home#cancel', as: "cancel"
 		
+		post "requestBooking", to: 'schedule#requestBooking', as: "requestBooking"
+		post "acceptBooking", to: 'schedule#acceptBooking', as: "acceptBooking"
+		post "cancel", to: 'schedule#cancel', as: "cancel"
+		
+		get "initiateCharge", to: 'charges#initiateCharge', as: "getinitiateCharge"
 		
 		get "destroy", to: 'services#destroy', as: "destroyService"
 

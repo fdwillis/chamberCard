@@ -21,6 +21,9 @@ class ScheduleController < ApplicationController
 
 	def cancel
 		# canceling session
+		debugger
+		return
+
 		cancelIt = params[:cancel][:uuid]
 		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "" -X PATCH #{SITEurl}/v1/available-times/#{cancelIt}/cancel`
     
@@ -36,18 +39,57 @@ class ScheduleController < ApplicationController
 		end
 	end
 
-	def acceptRequest
-		# canceling session
-		acceptIt = params[:accept][:uuid]
-		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "acceptRequest=true" -X PATCH #{SITEurl}/v1/available-times/#{acceptIt}`
-    
-    response = Oj.load(curlCall)
+	def acceptBooking
+		# for manager to accept proposed time by client without change
+		serviceToAccept = params[:acceptBooking][:serviceToAccept]
 		
-		if !response.blank? && response['success']
-			flash[:alert] = response['message']
-			redirect_to request.referrer
-		else
-			flash[:alert] = "Trouble connecting. Try again later."
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d 'serviceToAccept=#{serviceToAccept}' -X POST #{SITEurl}/v1/booking-request`
+
+		response = Oj.load(curlCall)
+
+    if !response.blank? && response['success']
+			flash[:success] = "Booking Scheduled"
+			
+      redirect_to request.referrer
+    else
+			flash[:error] = response['message']
+      redirect_to request.referrer
+    end
+		
+	end
+
+	def requestBooking
+		if request.post?
+			serviceToBook = params[:requestBooking][:serviceToBook]
+
+			year = params[:requestBooking]["dateRequested(1i)"]
+			month = params[:requestBooking]["dateRequested(2i)"]
+			day = params[:requestBooking]["dateRequested(3i)"]
+
+			hour = params[:requestBooking]["my_time(4i)"]
+			minute = params[:requestBooking]["my_time(5i)"]
+
+			buildDate = "#{year}/#{month}/#{day} #{hour}:#{minute}"
+			if !year.blank? && !month.blank? && !day.blank?
+				dateRequested = params[:requestBooking][:dateRequested]
+				merchantStripeID = params[:requestBooking][:merchantStripeID]
+				
+				curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"  -d 'serviceToBook=#{serviceToBook}&dateRequested=#{buildDate}&merchantStripeID=#{merchantStripeID}' -X POST #{SITEurl}/v1/booking-request`
+			else
+				flash[:error] = "Something was missing"
+				redirect_to request.referrer
+				return
+			end
+
+	    response = Oj.load(curlCall)
+
+	    if !response.blank? && response['success']
+				flash[:success] = "Request Submitted"
+				redirect_to request.referrer
+			else
+				flash[:error] = "Something went wrong"
+				redirect_to request.referrer
+			end
 		end
 	end
 end
