@@ -9,7 +9,7 @@ Contact
 Contact 
          Total $/charge
          Net $ (fee shown) -->
-<% if current_user&.manager? || current_user&.customer? %>
+<% if current_user&.manager? || (current_user&.customer? && current_user&.paymentOn?) %>
 
 
     <div class="card card-style">
@@ -28,10 +28,8 @@ Contact
         <% end %>
       </div>
     </div>
-  
 
-
-    <% if @payments.present?  %>
+    <% if @payments&.present?  %>
       <div class="card card-style">
         <div class="content mb-0">
           <div class="row mb-4">
@@ -128,6 +126,8 @@ Contact
 
 
 
+<% else %>
+  <%= link_to "Setup Payment", '/profile', class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' %>
 <% end %>
 
 

@@ -179,7 +179,7 @@ class User < ApplicationRecord
   end
 
   def customer?
-    customerAccess.include?(accessPin) && address
+    customerAccess.include?(accessPin)
   end
 
   def virtual?

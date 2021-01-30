@@ -10,108 +10,109 @@ Contact
          Total $/charge
          Net $ (fee shown) -->
 <% if current_user&.customer? %>
-  <div class="card card-style">
-    <div class="content mt-3 mb-3">
-      <h3>Schedule Services</h3>
-      <p class='text-justify'>
-        Schedule your purchased services &amp; see the status of your pending service requests here!
-      </p>
-    </div>
-  </div>
-
-  
-
-
-  <% if @payments&.present?  %>
+  <% if current_user&.paymentOn? %>
     <div class="card card-style">
-      <div class="content mb-0">
-        <div class="row mb-4">
-          <div class="col-5"><h4 class="font-14 text-left"><u>Service</u></h4></div>
-          <div class="col-3"><h4 class="font-14 text-justify"><u>QTY</u></h4></div>
-          <div>&nbsp;</div>
-        </div>
-        <% @payments.each_with_index do |h, hindx| %>
-            <% h['items'].each_with_index do |itm,indx| %>
-              <% if itm['product']['type'] == 'service' %>
-                <% if !itm['invoiceLine']['metadata']['claimed'].blank? && (itm['invoiceLine']['quantity'].to_i > itm['invoiceLine']['metadata']['claimed'].to_i) %>
-                Claimed: <%= itm['invoiceLine']['metadata']['claimed'].to_i %>
-
-                  <% if itm['invoiceLine']['metadata']['merchantConfirmed'] == 'true' %>
-                  <span class="bg-blue2-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Scheduled</span>
-                  <% end %>
-
-                  <% if itm['invoiceLine']['metadata']['merchantConfirmed'] == 'false' && itm['invoiceLine']['metadata']['requesting'].to_i > 0 %>
-                  <span class="bg-yellow1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Requested</span>
-                  <% end %>
-
-
-                  <div class="row mb-6">
-                    <div class="col-5"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
-                    <% if itm['price']['transform_quantity'] && !itm['price']['transform_quantity']['divide_by'].blank? %>
-                      <!-- <div class="col-1"><h4 class="font-14 text-left"><i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark"></i></h4></div> -->
-                      <div class="col-3"><h4 class="font-14 text-justify"><%= (itm['invoiceLine']['quantity'].to_i * itm['price']['transform_quantity']['divide_by']) - itm['invoiceLine']['metadata']['claimed'].to_i %></h4></div>
-                    <% else %>
-                      <!-- <div class="col-1"><h4 class="font-14 text-left"><i class="fa fa-times bg-fade-red2-dark rounded-xl color-red2-dark"></i></h4></div> -->
-                      <div class="col-3"><h4 class="font-14 text-justify"><%= itm['invoiceLine']['quantity'].to_i - itm['invoiceLine']['metadata']['claimed'].to_i %></h4></div>
-                    <% end %>
-                    <div class="col-4">
-                      <button class="accordion-btn  btn btn-m btn-full bg-green1-dark text-uppercase font-900" data-toggle="collapse" data-target="#<%= itm['invoiceLine']['id'] %>" aria-expanded="false" style='margin-top:-10px;'>
-                        <i class="fa fa-calendar-check"></i>
-                      </button>
-                    </div>
-                  </div>
-                  <div class="scheduleIt mt-4">
-                  </div>
-                <% end %>
-                <div class="accordion" id="accordion-1">
-                  <div id="<%= itm['invoiceLine']['id'] %>" class="collapse" data-parent="#accordion-1" style="">
-                    <% if itm['invoiceLine']['metadata']['merchantConfirmed'] == 'true' %>
-                    <div class="text-center">
-                      <h4>Upcoming</h4>
-                      <p class="mb-4"><%= DateTime.parse(itm['invoiceLine']['metadata']['startDate']).strftime("%a, %B %e") %><br><%= DateTime.parse(itm['invoiceLine']['metadata']['startDate']).strftime("%l:%M %p") %></p>
-                    </div>
-                    <% end %>
-                    <% if itm['invoiceLine']['metadata']['merchantConfirmed'] == 'false' || itm['invoiceLine']['metadata']['startDate'] == 'false' %>
-                      <%= form_for :requestBooking, id: "#{h['customer']}#{h['invoice']}", url: requestBooking_path do |f| %>
-                        <div class="row">
-                          <div class="input-style input-style-2 mt-2 col-6">
-                            Date
-                            <%= f.date_select(:dateRequested, :default => { day: DateTime.now.strftime("%d") , year: DateTime.now.strftime("%Y"), month: DateTime.now.strftime("%m") }) %>
-
-                          </div>
-                          <div class="input-style input-style-2 mt-2 col-6">
-                            Time
-                            <%= f.time_select(:my_time, start_hour: 8, end_hour: 20,minute_step: 15, ampm: true) %>
-                          </div>
-                        </div>
-
-                        <%= f.hidden_field :invoice, value: h['invoice'] %>
-
-                        <%= f.hidden_field :merchantStripeID, value: h['merchantStripeID'] %>
-
-                        <%= f.hidden_field :serviceToBook, value: itm['invoiceLine']['invoice_item'] %>
-
-                        
-                        <%= f.submit "Reschedule Booking", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
-                      <% end %>
-                    <% else %>
-                      <div class="mb-6">
-                        cancel scheduled appt
-                      </div>
-
-                    <% end %>
-                  </div>
-                </div>
-              <% end %>
-            <% end %>
-        <% end %>
+      <div class="content mt-3 mb-3">
+        <h3>Schedule Services</h3>
+        <p class='text-justify'>
+          Schedule your purchased services &amp; see the status of your pending service requests here!
+        </p>
       </div>
     </div>
+    <% if @payments&.present?  %>
+      <div class="card card-style">
+        <div class="content mb-0">
+          <div class="row mb-4">
+            <div class="col-5"><h4 class="font-14 text-left"><u>Service</u></h4></div>
+            <div class="col-3"><h4 class="font-14 text-justify"><u>QTY</u></h4></div>
+            <div>&nbsp;</div>
+          </div>
+          <% @payments.each_with_index do |h, hindx| %>
+              <% h['items'].each_with_index do |itm,indx| %>
+                <% if itm['product']['type'] == 'service' %>
+                  <% if !itm['invoiceLine']['metadata']['claimed'].blank? && (itm['invoiceLine']['quantity'].to_i > itm['invoiceLine']['metadata']['claimed'].to_i) %>
+                  Claimed: <%= itm['invoiceLine']['metadata']['claimed'].to_i %>
+
+                    <% if itm['invoiceLine']['metadata']['merchantConfirmed'] == 'true' %>
+                    <span class="bg-blue2-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Scheduled</span>
+                    <% end %>
+
+                    <% if itm['invoiceLine']['metadata']['merchantConfirmed'] == 'false' && itm['invoiceLine']['metadata']['requesting'].to_i > 0 %>
+                    <span class="bg-yellow1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Requested</span>
+                    <% end %>
+
+
+                    <div class="row mb-6">
+                      <div class="col-5"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
+                      <% if itm['price']['transform_quantity'] && !itm['price']['transform_quantity']['divide_by'].blank? %>
+                        <!-- <div class="col-1"><h4 class="font-14 text-left"><i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark"></i></h4></div> -->
+                        <div class="col-3"><h4 class="font-14 text-justify"><%= (itm['invoiceLine']['quantity'].to_i * itm['price']['transform_quantity']['divide_by']) - itm['invoiceLine']['metadata']['claimed'].to_i %></h4></div>
+                      <% else %>
+                        <!-- <div class="col-1"><h4 class="font-14 text-left"><i class="fa fa-times bg-fade-red2-dark rounded-xl color-red2-dark"></i></h4></div> -->
+                        <div class="col-3"><h4 class="font-14 text-justify"><%= itm['invoiceLine']['quantity'].to_i - itm['invoiceLine']['metadata']['claimed'].to_i %></h4></div>
+                      <% end %>
+                      <div class="col-4">
+                        <button class="accordion-btn  btn btn-m btn-full bg-green1-dark text-uppercase font-900" data-toggle="collapse" data-target="#<%= itm['invoiceLine']['id'] %>" aria-expanded="false" style='margin-top:-10px;'>
+                          <i class="fa fa-calendar-check"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="scheduleIt mt-4">
+                    </div>
+                  <% end %>
+                  <div class="accordion" id="accordion-1">
+                    <div id="<%= itm['invoiceLine']['id'] %>" class="collapse" data-parent="#accordion-1" style="">
+                      <% if itm['invoiceLine']['metadata']['merchantConfirmed'] == 'true' %>
+                      <div class="text-center">
+                        <h4>Upcoming</h4>
+                        <p class="mb-4"><%= DateTime.parse(itm['invoiceLine']['metadata']['startDate']).strftime("%a, %B %e") %><br><%= DateTime.parse(itm['invoiceLine']['metadata']['startDate']).strftime("%l:%M %p") %></p>
+                      </div>
+                      <% end %>
+                      <% if itm['invoiceLine']['metadata']['merchantConfirmed'] == 'false' || itm['invoiceLine']['metadata']['startDate'] == 'false' %>
+                        <%= form_for :requestBooking, id: "#{h['customer']}#{h['invoice']}", url: requestBooking_path do |f| %>
+                          <div class="row">
+                            <div class="input-style input-style-2 mt-2 col-6">
+                              Date
+                              <%= f.date_select(:dateRequested, :default => { day: DateTime.now.strftime("%d") , year: DateTime.now.strftime("%Y"), month: DateTime.now.strftime("%m") }) %>
+
+                            </div>
+                            <div class="input-style input-style-2 mt-2 col-6">
+                              Time
+                              <%= f.time_select(:my_time, start_hour: 8, end_hour: 20,minute_step: 15, ampm: true) %>
+                            </div>
+                          </div>
+
+                          <%= f.hidden_field :invoice, value: h['invoice'] %>
+
+                          <%= f.hidden_field :merchantStripeID, value: h['merchantStripeID'] %>
+
+                          <%= f.hidden_field :serviceToBook, value: itm['invoiceLine']['invoice_item'] %>
+
+                          
+                          <%= f.submit "Reschedule Booking", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
+                        <% end %>
+                      <% else %>
+                        <div class="mb-6">
+                          cancel scheduled appt
+                        </div>
+
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% else %>
+      <div class="content mb-0 text-center">
+        <h5>You have not purchased any services</h5>
+      </div>
+    <% end %>
   <% else %>
-    <div class="content mb-0 text-center">
-      <h5>You have not purchased any services</h5>
-    </div>
+    <%= link_to "Setup Payment", '/profile', class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' %>
   <% end %>
+
 <% end %>
 
 <% if current_user&.manager? %>
@@ -125,24 +126,6 @@ Contact
       </p>
     </div>
   </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   <% if @payments&.present? %>
@@ -326,17 +309,17 @@ Contact
       <% end %>
     <% end %>
   <% else %>
+
+
+
     <div class="content mb-0 text-center">
       <h5>No services scheduled</h5>
     </div>
   <% end %>
 
-
-
-
-
-
 <% end %>
+
+
 
 <% if !current_user %>
   <div class="page-content header-clear-medium">

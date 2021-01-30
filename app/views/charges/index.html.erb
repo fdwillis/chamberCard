@@ -141,10 +141,16 @@
 
   <% else %>
     <% if current_user&.customer? %>
-      <div class="content mb-0 text-center">
-        <h5>You have not been charged</h5>
-      </div>
+      <% if  current_user&.paymentOn?%>
+        <div class="content mb-0 text-center">
+          <h5>You have not been charged</h5>
+        </div>
+
+      <% else %>
+        <%= link_to "Setup Payment", '/profile', class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' %>
+      <% end %>
     <% end %>
+
     <% if current_user&.manager? %>
       <div class="content mb-0 text-center">
         <h5>No payments posted</h5>
@@ -161,7 +167,7 @@
                 <div class="flex-grow-1">
                     <h1 class="font-700">Book Now</h1>
                     <p class="mb-2">
-                    	Once you've created an account and have made a successful payment, it will be posted here.
+                      Once you've created an account and have made a successful payment, it will be posted here.
                     </p>
                 </div>
                 <!-- right side of profile. increase image width to increase column size-->
