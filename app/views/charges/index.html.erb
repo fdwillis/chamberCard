@@ -140,9 +140,16 @@
     <% end %>     
 
   <% else %>
-    <div class="content mb-0 text-center">
-      <h5>You have not been charged</h5>
-    </div>
+    <% if current_user&.customer? %>
+      <div class="content mb-0 text-center">
+        <h5>You have not been charged</h5>
+      </div>
+    <% end %>
+    <% if current_user&.manager? %>
+      <div class="content mb-0 text-center">
+        <h5>No payments posted</h5>
+      </div>
+    <% end %>
   <% end %>
 <% else %>
   <div class="page-content header-clear-medium">

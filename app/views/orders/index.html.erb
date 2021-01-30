@@ -109,9 +109,18 @@ Contact
         </div>
       </div>
     <% else %>
-    <div class="content mb-0 text-center">
-      <h5>You have not purchased any products</h5>
-    </div>
+
+      <% if current_user&.customer? %>
+        <div class="content mb-0 text-center">
+          <h5>You have not purchased any products</h5>
+        </div>
+      <% end %>
+      <% if current_user&.manager? %>
+        <div class="content mb-0 text-center">
+          <h5>No orders listed</h5>
+        </div>
+      <% end %>
+
     <% end %>
 
 
