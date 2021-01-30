@@ -42,6 +42,7 @@
           <span class="bg-yellow2-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2" style="color: white;"><%= link_to "Manage", pricing_index_path(product_id: @product['id'][5..@product['id'].size]), style: "color: white;" %></span>
         </div>
       </div>
+      <p><%= @product['description'] %></p>
       <div class="divider"></div>
       <%= link_to edit_product_path(id: params[:id], product: @product), class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' do %>
         <i class="fa fa-pencil"></i> Edit
@@ -58,6 +59,7 @@
 <% if !current_user&.manager? %>
   <div class="card card-overflow card-style">
     <div class="content">
+      <p><%= @product['description'] %></p>
       <%= form_for :addToCart, url: cart_path(id: @connectAccount), method: :patch do |f|  %>
         <div class="input-style has-icon input-style-2 input-required pb-1">
             <span class="color-highlight input-style-1-active">Price</span>

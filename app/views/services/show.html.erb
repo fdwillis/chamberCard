@@ -43,6 +43,8 @@
         </div>
       </div>
       <div class="divider"></div>
+      <p><%= @product['description'] %></p>
+      <div class="divider"></div>
       <%= link_to edit_service_path(id: params[:id], product: @product), class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' do %>
         <i class="fa fa-pencil"></i> Edit
       <% end %>
@@ -58,6 +60,7 @@
 <% if !current_user.manager? %>
   <div class="card card-overflow card-style">
     <div class="content">
+      <p><%= @product['description'] %></p>
       <%= form_for :addToCart, url: cart_path(id: @connectAccount), method: :patch do |f|  %>
         <div class="input-style has-icon input-style-2 input-required pb-1">
             <span class="color-highlight input-style-1-active">Price</span>
