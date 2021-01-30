@@ -154,7 +154,6 @@ class ChargesController < ApplicationController
     curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X PATCH #{SITEurl}/v1/stripe-charges/#{charge}`
 
 		response = Oj.load(curlCall)
-
     if !response.blank? && response['success']
 			flash[:notice] = "Invoice Paid"
 			
@@ -170,7 +169,7 @@ class ChargesController < ApplicationController
 		# for manager to accept proposed time by client without change
 		serviceToAccept = params[:acceptBooking][:serviceToAccept]
 		
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X PATCH #{SITEurl}/v1/booking-request/#{serviceToAccept}`
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d 'serviceToAccept=#{serviceToAccept}' -X POST #{SITEurl}/v1/booking-request`
 
 		response = Oj.load(curlCall)
 
