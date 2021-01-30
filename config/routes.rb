@@ -28,8 +28,9 @@ Rails.application.routes.draw do
 		post "requestBooking", to: 'charges#requestBooking', as: "requestBooking"
 		post "newInvoice", to: 'charges#newInvoice', as: "newInvoice"
 		post "acceptInvoice", to: 'charges#acceptInvoice', as: "acceptInvoice"
+		post "acceptBooking", to: 'charges#acceptBooking', as: "acceptBooking"
 		
-		post "acceptRequest", to: 'schedule#acceptRequest', as: "acceptRequest"
+		get "initiateCharge", to: 'charges#initiateCharge', as: "getinitiateCharge"
 	
 		post "checkout", to: 'carts#checkout', as: "checkout"
 		post "updateQuantity", to: 'carts#updateQuantity', as: "updateQuantity"
@@ -37,7 +38,6 @@ Rails.application.routes.draw do
 		post "join", to: 'home#join', as: "join"
 		post "cancel", to: 'home#cancel', as: "cancel"
 		
-		get "initiateCharge", to: 'charges#initiateCharge', as: "getinitiateCharge"
 		
 		get "destroy", to: 'services#destroy', as: "destroyService"
 

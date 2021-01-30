@@ -165,4 +165,23 @@ class ChargesController < ApplicationController
     end
 		
 	end
+
+	def acceptBooking
+		# for manager to accept proposed time by client without change
+		serviceToAccept = params[:acceptBooking][:serviceToAccept]
+		
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X PATCH #{SITEurl}/v1/booking-request/#{serviceToAccept}`
+
+		response = Oj.load(curlCall)
+
+    if !response.blank? && response['success']
+			flash[:success] = "Booking Scheduled"
+			
+      redirect_to request.referrer
+    else
+			flash[:error] = response['message']
+      redirect_to request.referrer
+    end
+		
+	end
 end
