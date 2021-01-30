@@ -62,12 +62,29 @@ Contact
                   <% end %>
                   <div class="accordion" id="accordion-1">
                     <div id="<%= itm['invoiceLine']['id'] %>" class="collapse" data-parent="#accordion-1" style="">
+                      
                       <% if itm['invoiceLine']['metadata']['merchantConfirmed'] == 'true' %>
                       <div class="text-center">
                         <h4>Upcoming</h4>
                         <p class="mb-4"><%= DateTime.parse(itm['invoiceLine']['metadata']['startDate']).strftime("%a, %B %e") %><br><%= DateTime.parse(itm['invoiceLine']['metadata']['startDate']).strftime("%l:%M %p") %></p>
+                        <% if itm['invoiceLine']['metadata']['customerConfirmed'] == 'false' %>
+                          <%= form_for :confirm, url: confirm_path do |f| %>
+                            <div class="d-flex mt-4">
+                              <%= f.hidden_field :serviceToConfirm, value: itm['invoiceLine']['invoice_item'] %>
+                              <%= f.submit "Confirm Appointment", class: "btn btn-full bg-blue2-dark col-12 text-uppercase rounded-sm font-900 mb-0"%>
+                            </div>
+                          <% end %>
+                        <% end %>
+
+                        <%= form_for :cancel, url: cancel_path do |f| %>
+                          <div class="d-flex mt-4">
+                            <%= f.hidden_field :serviceToCancel, value: itm['invoiceLine']['invoice_item'] %>
+                            <%= f.submit "Cancel Appointment", class: "btn btn-full bg-red1-dark col-12 text-uppercase rounded-sm font-900 mb-4"%>
+                          </div>
+                        <% end %>
                       </div>
                       <% end %>
+                      
                       <% if itm['invoiceLine']['metadata']['merchantConfirmed'] == 'false' || itm['invoiceLine']['metadata']['startDate'] == 'false' %>
                         <%= form_for :requestBooking, id: "#{h['customer']}#{h['invoice']}", url: requestBooking_path do |f| %>
                           <div class="row">
@@ -91,11 +108,6 @@ Contact
                           
                           <%= f.submit "Reschedule Booking", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
                         <% end %>
-                      <% else %>
-                        <div class="mb-6">
-                          cancel scheduled appt
-                        </div>
-
                       <% end %>
                     </div>
                   </div>
@@ -185,27 +197,26 @@ Contact
                       </div>
                   </div>
                   <div class="divider mt-3 mb-3"></div>
-                  
+                  <% if Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'],{stripe_account: current_user&.stripeMerchantID })['metadata']['customerConfirmed'] == 'false' %>
 
+                    <%= form_for :requestBooking, id: "#{h['customer']}#{h['invoice']}", url: requestBooking_path do |f| %>
+                      <div class="row">
+                        <div class="input-style input-style-2 mt-2 col-6">
+                          Date
+                          <%= f.date_select(:dateRequested, :default => { day: DateTime.now.strftime("%d") , year: DateTime.now.strftime("%Y"), month: DateTime.now.strftime("%m") }) %>
 
-
-                  <%= form_for :requestBooking, id: "#{h['customer']}#{h['invoice']}", url: requestBooking_path do |f| %>
-                    <div class="row">
-                      <div class="input-style input-style-2 mt-2 col-6">
-                        Date
-                        <%= f.date_select(:dateRequested, :default => { day: DateTime.now.strftime("%d") , year: DateTime.now.strftime("%Y"), month: DateTime.now.strftime("%m") }) %>
-
+                        </div>
+                        <div class="input-style input-style-2 mt-2 col-6">
+                          Time
+                          <%= f.time_select(:my_time, start_hour: 8, end_hour: 20,minute_step: 15, ampm: true) %>
+                        </div>
                       </div>
-                      <div class="input-style input-style-2 mt-2 col-6">
-                        Time
-                        <%= f.time_select(:my_time, start_hour: 8, end_hour: 20,minute_step: 15, ampm: true) %>
-                      </div>
-                    </div>
 
-                    <%= f.hidden_field :invoice, value: h['invoice'] %>
-                    <%= f.hidden_field :merchantStripeID, value: h['merchantStripeID'] %>
-                    <%= f.hidden_field :serviceToBook, value: itm['invoiceLine']['invoice_item'] %>
-                    <%= f.submit "Change Date", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
+                      <%= f.hidden_field :invoice, value: h['invoice'] %>
+                      <%= f.hidden_field :merchantStripeID, value: h['merchantStripeID'] %>
+                      <%= f.hidden_field :serviceToBook, value: itm['invoiceLine']['invoice_item'] %>
+                      <%= f.submit "Change Date", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
+                    <% end %>
                   <% end %>
                 </div>
               </div>

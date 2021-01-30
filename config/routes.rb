@@ -35,6 +35,7 @@ Rails.application.routes.draw do
 		post "requestBooking", to: 'schedule#requestBooking', as: "requestBooking"
 		post "acceptBooking", to: 'schedule#acceptBooking', as: "acceptBooking"
 		post "cancel", to: 'schedule#cancel', as: "cancel"
+		post "confirm", to: 'schedule#confirm', as: "confirm"
 		
 		get "initiateCharge", to: 'charges#initiateCharge', as: "getinitiateCharge"
 		
