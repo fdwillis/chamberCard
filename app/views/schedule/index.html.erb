@@ -35,6 +35,16 @@ Contact
               <% if itm['product']['type'] == 'service' %>
                 <% if !itm['invoiceLine']['metadata']['claimed'].blank? && (itm['invoiceLine']['quantity'].to_i > itm['invoiceLine']['metadata']['claimed'].to_i) %>
                 Claimed: <%= itm['invoiceLine']['metadata']['claimed'].to_i %>
+
+                  <% if itm['invoiceLine']['metadata']['merchantConfirmed'] == 'true' %>
+                  <span class="bg-blue2-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Scheduled</span>
+                  <% end %>
+
+                  <% if itm['invoiceLine']['metadata']['merchantConfirmed'] == 'false' && itm['invoiceLine']['metadata']['requesting'].to_i > 0 %>
+                  <span class="bg-yellow1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Requested</span>
+                  <% end %>
+
+
                   <div class="row mb-6">
                     <div class="col-5"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
                     <% if itm['price']['transform_quantity'] && !itm['price']['transform_quantity']['divide_by'].blank? %>
@@ -55,26 +65,40 @@ Contact
                 <% end %>
                 <div class="accordion" id="accordion-1">
                   <div id="<%= itm['invoiceLine']['id'] %>" class="collapse" data-parent="#accordion-1" style="">
-                    <%= form_for :requestBooking, id: "#{h['customer']}#{h['invoice']}", url: requestBooking_path do |f| %>
-                      <div class="row">
-                        <div class="input-style input-style-2 mt-2 col-6">
-                          Date
-                          <%= f.date_select(:dateRequested, :default => { day: DateTime.now.strftime("%d") , year: DateTime.now.strftime("%Y"), month: DateTime.now.strftime("%m") }) %>
+                    <% if itm['invoiceLine']['metadata']['merchantConfirmed'] == 'true' %>
+                    <div class="text-center">
+                      <h4>Upcoming</h4>
+                      <p class="mb-4"><%= DateTime.parse(itm['invoiceLine']['metadata']['startDate']).strftime("%a, %B %e") %><br><%= DateTime.parse(itm['invoiceLine']['metadata']['startDate']).strftime("%l:%M %p") %></p>
+                    </div>
+                    <% end %>
+                    <% if itm['invoiceLine']['metadata']['merchantConfirmed'] == 'false' || itm['invoiceLine']['metadata']['startDate'] == 'false' %>
+                      <%= form_for :requestBooking, id: "#{h['customer']}#{h['invoice']}", url: requestBooking_path do |f| %>
+                        <div class="row">
+                          <div class="input-style input-style-2 mt-2 col-6">
+                            Date
+                            <%= f.date_select(:dateRequested, :default => { day: DateTime.now.strftime("%d") , year: DateTime.now.strftime("%Y"), month: DateTime.now.strftime("%m") }) %>
 
+                          </div>
+                          <div class="input-style input-style-2 mt-2 col-6">
+                            Time
+                            <%= f.time_select(:my_time, start_hour: 8, end_hour: 20,minute_step: 15, ampm: true) %>
+                          </div>
                         </div>
-                        <div class="input-style input-style-2 mt-2 col-6">
-                          Time
-                          <%= f.time_select(:my_time, start_hour: 8, end_hour: 20,minute_step: 15, ampm: true) %>
-                        </div>
+
+                        <%= f.hidden_field :invoice, value: h['invoice'] %>
+
+                        <%= f.hidden_field :merchantStripeID, value: h['merchantStripeID'] %>
+
+                        <%= f.hidden_field :serviceToBook, value: itm['invoiceLine']['invoice_item'] %>
+
+                        
+                        <%= f.submit "Reschedule Booking", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
+                      <% end %>
+                    <% else %>
+                      <div class="mb-6">
+                        cancel scheduled appt
                       </div>
 
-                      <%= f.hidden_field :invoice, value: h['invoice'] %>
-
-                      <%= f.hidden_field :merchantStripeID, value: h['merchantStripeID'] %>
-
-                      <%= f.hidden_field :serviceToBook, value: itm['invoiceLine']['invoice_item'] %>
-
-                      <%= f.submit "Request Booking", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
                     <% end %>
                   </div>
                 </div>
