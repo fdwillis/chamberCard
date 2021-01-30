@@ -1,5 +1,6 @@
 class ScheduleController < ApplicationController
 	before_action :authenticate_user!
+	
 	def index
 		if current_user&.authentication_token
 			curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "" -X GET #{SITEurl}/v1/charges`
@@ -16,6 +17,24 @@ class ScheduleController < ApplicationController
 		else
 			current_user = nil
       reset_session
+		end
+	end
+
+	def confirm
+		# canceling session
+
+		confirm = params[:confirm][:serviceToConfirm]
+		merchantStripeID = params[:confirm][:merchantStripeID]
+
+		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"   -d 'confirm=#{confirm}&merchantStripeID=#{merchantStripeID}' -X POST #{SITEurl}/v1/booking-accept`
+    
+    response = Oj.load(curlCall)
+		
+		if !response.blank? && response['success']
+			flash[:alert] = response['message']
+			redirect_to request.referrer
+		else
+			flash[:alert] = "Trouble connecting. Try again later."
 		end
 	end
 

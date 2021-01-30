@@ -6,6 +6,31 @@ class User < ApplicationRecord
 
   geocoded_by :address
 
+
+  def self.timeKit
+    t = `curl --request 'GET' --header 'Content-Type: application/json' --url 'https://api.timekit.io/v2/projects' --user ':test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9'`
+    json = Oj.load(t)['data']
+
+    resources = []
+
+    json.each do |j|
+      grabResource = `curl --request GET --url "https://api.timekit.io/v2/projects/#{j['id']}/resources" --header 'Content-Type: application/json' --user :test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9 `
+
+      if !Oj.load(grabResource)['data'].blank? 
+        resourceLoaded = Oj.load(grabResource)['data']
+        
+        availability = `curl --request POST --url https://api.timekit.io/v2/availability --header 'Content-Type: application/json' --user :test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9 --data '{"project_id":"#{j['id']}"}'`
+        debugger
+        availabilityLoaded = Oj.load(availability)['data']
+        resources << {json: j, resource: resourceLoaded, availability: availabilityLoaded}
+      end
+    end
+
+    return resources.flatten
+
+
+  end
+
   def updateStripeCustomerAPI(params)
     email = params[:email] ? params[:email] : self.email
     stripeName = params[:name]
