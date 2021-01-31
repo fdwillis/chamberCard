@@ -297,16 +297,9 @@ Contact
 
                           <%= form_for :acceptBooking, url: acceptBooking_path do |f| %>
                             <div class="d-flex mt-4">
-                            <%=  DateTime.parse(Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'], {stripe_account: current_user&.stripeMerchantID})['metadata']['startDate']).strftime %>
-                            <%= itm['price']['metadata']['description'] %>
-                            <%= itm['product']['description'] %>
-                            <%  User::TIMEKITResources.each do |tk| %>
-                              <% if tk == current_user&.timeKitID %>
-                                <% f.hidden_field :resource_id, value: current_user&.timeKitID  %>
-                              <% end %>
-                            <% end %>
+                              <%= f.hidden_field :resource_id, value: current_user&.timeKitID  %>
                               <%= f.hidden_field :serviceToAccept, value: itm['invoiceLine']['invoice_item'] %>
-                              <%= f.hidden_field :start, value: "#{itm['product']['name']}: #{itm['product']['description']}" %>
+                              <%= f.hidden_field :start, value: DateTime.parse(Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'], {stripe_account: current_user&.stripeMerchantID})['metadata']['startDate']).strftime %>
                               <%= f.hidden_field :what, value: "#{itm['product']['name']}: #{itm['product']['description']}" %>
                               <%= f.hidden_field :where, value: current_user&.address %>
                               <%= f.hidden_field :description, value: itm['price']['metadata']['description'] %>

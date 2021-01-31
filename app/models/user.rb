@@ -7,27 +7,19 @@ class User < ApplicationRecord
   geocoded_by :address
 
 
-  def self.syncTimekit
-#     curl --request POST \
-#   --header 'Content-Type: application/json' \
-#   --url https://api.timekit.io/v2/bookings \
-#   --user :live_api_key_7nzvc7wsBQQISLeFSVhROys9V1bUJ1z7 \
-#   --data '{
-#   "resource_id": "d187d6e0-d6cb-409a-ae60-45a8fd0ec879",
-#   "graph": "confirm",
-#   "start": "2018-08-12T21:30:00-07:00",
-#   "end": "2018-08-12T22:15:00-07:00",
-#   "what": "Catch the lightning",
-#   "where": "Courthouse, Hill Valley, CA 95420, USA",
-#   "description": "The lightning strikes at 10:04 PM exactly! I need you to be there Doc!",
-#   "customer": {
-#     "name": "Marty McFly",
-#     "email": "marty.mcfly@timekit.io",
-#     "phone": "(916) 555-4385",
-#     "voip": "McFly",
-#     "timezone": "America/Los_Angeles"
-#   }
-# }'
+  def syncTimekit(params)
+    resource_id = nil
+    start = nil
+    endAt = nil
+    what = nil
+    where = nil
+    description = nil
+    customerName = nil
+    customerEmail = nil
+    customerPhone = nil
+
+    timeKitPost = `curl --request POST --header 'Content-Type: application/json' --url https://api.timekit.io/v2/bookings --user :test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9 --data '{"resource_id": "#{resource_id}","graph": "confirm","start": "#{start}","end": "#{endAt}","what": "#{what}","where": "#{where}","description": "#{description}","customer": {"name": "#{customerName}","email": "#{customerEmail}","phone": "#{customerPhone}"}}'`
+    debugger
   end
 
 

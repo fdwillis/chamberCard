@@ -60,7 +60,7 @@ class ScheduleController < ApplicationController
 
 	def acceptBooking
 		# sync booking to manager calendar
-		
+		current_user&.syncTimekit(params[:acceptBooking])
 =begin
 		serviceToAccept = params[:acceptBooking][:serviceToAccept]
 		
