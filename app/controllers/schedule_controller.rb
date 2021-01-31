@@ -25,7 +25,7 @@ class ScheduleController < ApplicationController
 
 		confirm = params[:confirm][:serviceToConfirm]
 		merchantStripeID = params[:confirm][:merchantStripeID]
-
+		
 		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"   -d 'confirm=#{confirm}&merchantStripeID=#{merchantStripeID}' -X POST #{SITEurl}/v1/booking-accept`
     
     response = Oj.load(curlCall)
@@ -33,8 +33,10 @@ class ScheduleController < ApplicationController
 		if !response.blank? && response['success']
 			flash[:alert] = response['message']
 			redirect_to request.referrer
+			return
 		else
 			flash[:alert] = "Trouble connecting. Try again later."
+			return
 		end
 	end
 
@@ -53,30 +55,35 @@ class ScheduleController < ApplicationController
 			redirect_to request.referrer
 		elsif response['message'] == "Invalid Token"
 			flash[:alert] = "To authorize your account, logout then login again."
+			redirect_to request.referrer
 		else
 			flash[:alert] = "Trouble connecting. Try again later."
+			redirect_to request.referrer
 		end
 	end
 
 	def acceptBooking
 		# sync booking to manager calendar
-		current_user&.syncTimekit(params[:acceptBooking])
-=begin
-		serviceToAccept = params[:acceptBooking][:serviceToAccept]
-		
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d 'serviceToAccept=#{serviceToAccept}' -X POST #{SITEurl}/v1/booking-request`
+		bookingDone = current_user&.syncTimekit(params[:acceptBooking])
 
-		response = Oj.load(curlCall)
-
-    if !response.blank? && response['success']
-			flash[:success] = "Booking Scheduled"
+		if bookingDone[:success]
+			serviceToAccept = params[:acceptBooking][:serviceToAccept]
+			timeKitBookingID = bookingDone[:timeKitBookingID]
 			
-      redirect_to request.referrer
-    else
-			flash[:error] = response['message']
-      redirect_to request.referrer
-    end
-=end
+	    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d 'timeKitBookingID=#{timeKitBookingID}&serviceToAccept=#{serviceToAccept}' -X POST #{SITEurl}/v1/booking-request`
+
+			response = Oj.load(curlCall)
+	    if !response.blank? && response['success']
+				flash[:success] = "Booking Scheduled"
+				
+	      redirect_to request.referrer
+	    else
+				flash[:error] = response['message']
+	      redirect_to request.referrer
+	    end
+		else
+
+		end
 	end
 
 	def requestBooking

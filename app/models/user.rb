@@ -8,18 +8,28 @@ class User < ApplicationRecord
 
 
   def syncTimekit(params)
-    resource_id = nil
-    start = nil
-    endAt = nil
-    what = nil
-    where = nil
-    description = nil
-    customerName = nil
-    customerEmail = nil
-    customerPhone = nil
+    resource_id = params['resource_id'] == timeKitID ? ( (Rails.env.development? || Rails.env.test?) ? "f8abca72-ec4d-4812-b4b2-156855462017" : timeKitID) : nil
+    
+    start = DateTime.parse(params['start']).rfc3339
+    endAt = (DateTime.parse(params['start']) + params['duration'].to_i.minutes).rfc3339
 
-    timeKitPost = `curl --request POST --header 'Content-Type: application/json' --url https://api.timekit.io/v2/bookings --user :test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9 --data '{"resource_id": "#{resource_id}","graph": "confirm","start": "#{start}","end": "#{endAt}","what": "#{what}","where": "#{where}","description": "#{description}","customer": {"name": "#{customerName}","email": "#{customerEmail}","phone": "#{customerPhone}"}}'`
-    debugger
+    what = params['what']
+    where = params['where']
+    description = "Item Purchased: #{params['description']}"
+    customerName = params['customerName']
+    customerEmail = !params['customerEmail'].blank? ? ( (Rails.env.development? || Rails.env.test?) ? "fdwillis7@gmail.com" : params['customerEmail']) : nil
+    customerPhone = params['customerPhone']
+
+    timeKitPost = `curl --request POST --header 'Content-Type: application/json' --url https://api.timekit.io/v2/bookings --user :test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9 --data '{"buffer":"30 minutes","resource_id": "#{resource_id}","graph": "instant","start": "#{start}","end": "#{endAt}","what": "#{what}","where": "#{where}","description": "#{description}","customer": {"name": "#{customerName}","email": "#{customerEmail}","phone": "#{customerPhone}"}}'`
+   
+    resourceLoaded = Oj.load(timeKitPost)['data']
+    
+    if resourceLoaded['state'] == 'confirmed'
+      return {success: true, timeKitBookingID: resourceLoaded['id']}
+    else
+      debugger
+      return false
+    end
   end
 
 
@@ -36,17 +46,11 @@ class User < ApplicationRecord
 
         if !resourceLoaded.blank? 
           resourceLoaded.each do |res|
-            res
-
-
 
             availability = `curl --request POST --url https://api.timekit.io/v2/availability --header 'Content-Type: application/json' --user :test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9 --data '{"mode": "roundrobin_random","resources": ["#{res}"],"length": "4 hours","from": "3 days","to": "4 weeks","buffer": "30 minutes","ignore_all_day_events": true}'`
 
-
-
             availabilityLoaded = Oj.load(availability)['data']
 
-            debugger
             resources << {project: j, resource: resourceLoaded, availability: availabilityLoaded}
           end
         end
