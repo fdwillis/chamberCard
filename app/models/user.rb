@@ -7,11 +7,6 @@ class User < ApplicationRecord
   geocoded_by :address
 
 
-  TIMEKITResources = [
-    "7e2c060a-bcfa-4e29-a8e0-8fe7e0e1a4db",
-  ]
-
-
   def self.syncTimekit
 #     curl --request POST \
 #   --header 'Content-Type: application/json' \
