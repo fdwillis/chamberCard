@@ -7,6 +7,12 @@ class User < ApplicationRecord
   geocoded_by :address
 
 
+  TIMEKITResources = [{
+    "id" => "7e2c060a-bcfa-4e29-a8e0-8fe7e0e1a4db",
+    "name" => "Maricel Osorio"
+  }]
+
+
   def self.timeKit
     t = `curl --request 'GET' --header 'Content-Type: application/json' --url 'https://api.timekit.io/v2/projects' --user ':test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9'`
     json = Oj.load(t)['data']
@@ -14,15 +20,26 @@ class User < ApplicationRecord
     resources = []
 
     json.each do |j|
-      grabResource = `curl --request GET --url "https://api.timekit.io/v2/projects/#{j['id']}/resources" --header 'Content-Type: application/json' --user :test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9 `
-
-      if !Oj.load(grabResource)['data'].blank? 
+      if j['name'] == ENV['appName']
+        grabResource = `curl --request GET --url "https://api.timekit.io/v2/projects/#{j['id']}/resources" --header 'Content-Type: application/json' --user :test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9 `
         resourceLoaded = Oj.load(grabResource)['data']
-        
-        availability = `curl --request POST --url https://api.timekit.io/v2/availability --header 'Content-Type: application/json' --user :test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9 --data '{"project_id":"#{j['id']}"}'`
-        debugger
-        availabilityLoaded = Oj.load(availability)['data']
-        resources << {json: j, resource: resourceLoaded, availability: availabilityLoaded}
+
+        if !resourceLoaded.blank? 
+          resourceLoaded.each do |res|
+            res
+
+
+
+            availability = `curl --request POST --url https://api.timekit.io/v2/availability --header 'Content-Type: application/json' --user :test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9 --data '{"mode": "roundrobin_random","resources": ["#{res}"],"length": "4 hours","from": "3 days","to": "4 weeks","buffer": "30 minutes","ignore_all_day_events": true}'`
+
+
+
+            availabilityLoaded = Oj.load(availability)['data']
+
+            debugger
+            resources << {project: j, resource: resourceLoaded, availability: availabilityLoaded}
+          end
+        end
       end
     end
 
@@ -196,7 +213,7 @@ class User < ApplicationRecord
   end
 
   def paymentOn?
-    stripeCustomerID && checkStripeSource
+    !stripeCustomerID.blank? && !checkStripeSource.blank?
   end
  
   def member?

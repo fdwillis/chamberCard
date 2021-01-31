@@ -41,10 +41,10 @@ class ScheduleController < ApplicationController
 	def cancel
 		# canceling session
 		debugger
-		return
+		# return
 
-		cancelIt = params[:cancel][:uuid]
-		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "" -X PATCH #{SITEurl}/v1/available-times/#{cancelIt}/cancel`
+		cancelIt = params[:cancel][:serviceToCancel]
+		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "serviceToCancel=#{cancelIt}" -X POST #{SITEurl}/v1/booking-cancel`
     
     response = Oj.load(curlCall)
 		
@@ -59,7 +59,7 @@ class ScheduleController < ApplicationController
 	end
 
 	def acceptBooking
-		# for manager to accept proposed time by client without change
+		# sync booking to manager calendar
 		serviceToAccept = params[:acceptBooking][:serviceToAccept]
 		
     curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d 'serviceToAccept=#{serviceToAccept}' -X POST #{SITEurl}/v1/booking-request`
