@@ -60,6 +60,8 @@ class ScheduleController < ApplicationController
 
 	def acceptBooking
 		# sync booking to manager calendar
+		
+=begin
 		serviceToAccept = params[:acceptBooking][:serviceToAccept]
 		
     curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d 'serviceToAccept=#{serviceToAccept}' -X POST #{SITEurl}/v1/booking-request`
@@ -74,7 +76,7 @@ class ScheduleController < ApplicationController
 			flash[:error] = response['message']
       redirect_to request.referrer
     end
-		
+=end
 	end
 
 	def requestBooking

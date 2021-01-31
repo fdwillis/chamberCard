@@ -13,6 +13,30 @@ class User < ApplicationRecord
   }]
 
 
+  def self.syncTimekit
+#     curl --request POST \
+#   --header 'Content-Type: application/json' \
+#   --url https://api.timekit.io/v2/bookings \
+#   --user :live_api_key_7nzvc7wsBQQISLeFSVhROys9V1bUJ1z7 \
+#   --data '{
+#   "resource_id": "d187d6e0-d6cb-409a-ae60-45a8fd0ec879",
+#   "graph": "confirm",
+#   "start": "2018-08-12T21:30:00-07:00",
+#   "end": "2018-08-12T22:15:00-07:00",
+#   "what": "Catch the lightning",
+#   "where": "Courthouse, Hill Valley, CA 95420, USA",
+#   "description": "The lightning strikes at 10:04 PM exactly! I need you to be there Doc!",
+#   "customer": {
+#     "name": "Marty McFly",
+#     "email": "marty.mcfly@timekit.io",
+#     "phone": "(916) 555-4385",
+#     "voip": "McFly",
+#     "timezone": "America/Los_Angeles"
+#   }
+# }'
+  end
+
+
   def self.timeKit
     t = `curl --request 'GET' --header 'Content-Type: application/json' --url 'https://api.timekit.io/v2/projects' --user ':test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9'`
     json = Oj.load(t)['data']
@@ -60,19 +84,14 @@ class User < ApplicationRecord
     state = params[:state]
     country = "USA"
 
-# build the address by saving to user and passing param
+    saved = self.update(street: street, city: city, state: state, country: country)
+    # build the address by saving to user and passing param
 
     curlCall  = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "email=#{email}&name=#{stripeName}&phone=#{phone}&source=#{source}" -X PATCH #{SITEurl}/v1/stripe-customers/#{self.uuid}`
-    curlCall2 = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "email=#{email}" -X PATCH #{SITEurl}/v1/users/#{self.uuid}`
 
     response = Oj.load(curlCall)
-    response2 = Oj.load(curlCall2)
-    
-    if !response.blank? && response['success']
-      if !response2.blank? && response2['success']
-        self.update(email: email, street: street, city: city, state: state, country: country)
-        return response
-      end
+    if response['success']
+      return response
     else
       return response
     end
