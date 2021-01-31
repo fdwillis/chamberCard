@@ -7,10 +7,9 @@ class User < ApplicationRecord
   geocoded_by :address
 
 
-  TIMEKITResources = [{
-    "id" => "7e2c060a-bcfa-4e29-a8e0-8fe7e0e1a4db",
-    "name" => "Maricel Osorio"
-  }]
+  TIMEKITResources = [
+    "7e2c060a-bcfa-4e29-a8e0-8fe7e0e1a4db",
+  ]
 
 
   def self.syncTimekit
@@ -90,10 +89,11 @@ class User < ApplicationRecord
     curlCall  = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "email=#{email}&name=#{stripeName}&phone=#{phone}&source=#{source}" -X PATCH #{SITEurl}/v1/stripe-customers/#{self.uuid}`
 
     response = Oj.load(curlCall)
-    if response['success']
+
+    if response['success'] && saved
       return response
     else
-      return response
+      return false
     end
   end
 
@@ -258,7 +258,7 @@ class User < ApplicationRecord
   def checkStripeSource
     if !stripeCustomerID.blank?
       if manager?
-        accountCapabilities = Stripe::Account.retrieve(stripeCustomerID)['capabilities']
+        accountCapabilities = Stripe::Account.retrieve(stripeMerchantID)['capabilities']
 
         if accountCapabilities['card_payments'] == "active" && accountCapabilities['transfers'] == "active" #charge stripeSubscription to cover heroku fees
           return true

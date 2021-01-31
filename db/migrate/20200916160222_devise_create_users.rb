@@ -5,6 +5,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
     create_table :users do |t|
       t.string :stripeCustomerID, unique: true
       t.string :stripeMerchantID, unique: true
+      t.string :timeKitID, unique: true
       ## Database authenticatable
       t.string :accessPin
 
