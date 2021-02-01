@@ -44,7 +44,6 @@ class ScheduleController < ApplicationController
 
 
 	def timeKitCancel
-		debugger
 		
 		metaData = params['meta']
 		timeKitID = params['id']
@@ -54,26 +53,31 @@ class ScheduleController < ApplicationController
 
 		stripeInvoiceItem = Stripe::InvoiceItem.retrieve(invoiceItem, {stripe_account: connectAccount})
 		stripeMetaData = stripeInvoiceItem['metadata']
+		claimedInt = stripeMetaData['claimed'].to_i
 
 		ogTimekitString = stripeMetaData['timeKitBookingID']
 		ogTimekitArray = ogTimekitString.split(",")
 		
-		debugger
-
-
 		# edit metadata by removing timekitID of meeting passed
+		if ogTimekitArray.include?(timeKitID)
+			ogTimekitArray.delete(timeKitID)
+			
+			invoiceUpdated = Stripe::InvoiceItem.update(
+			  stripeInvoiceItem['id'],
+			  {
+			  	metadata: {
+
+						timeKitBookingID: ogTimekitArray.join(","),
+						claimed: "#{claimedInt -= 1}"
+					}
+				}, {stripe_account: connectAccount}
+			)
+		end
+
+		render json: {
+			success: true
+		}
 		return
-
-		invoiceUpdated = Stripe::InvoiceItem.update(
-		  stripeInvoiceItem['id'],
-		  {
-		  	metadata: {
-
-					timeKitBookingID: "",
-				}
-			}, {stripe_account: stripeAllowed[:merchantStripeID]}
-		)
-
 	end
 
 	def cancel
@@ -103,6 +107,7 @@ class ScheduleController < ApplicationController
 		bookingDone = current_user&.syncTimekit(params[:acceptBooking])
 
 		if bookingDone[:success]
+
 			serviceToAccept = params[:acceptBooking][:serviceToAccept]
 			merchantStripeID = params[:acceptBooking][:merchantStripeID]
 			timeKitBookingID = bookingDone[:timeKitBookingID]
@@ -110,6 +115,7 @@ class ScheduleController < ApplicationController
 	    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d 'timeKitBookingID=#{timeKitBookingID}&serviceToAccept=#{serviceToAccept}&merchantStripeID=#{merchantStripeID}' -X POST #{SITEurl}/v1/booking-request`
 
 			response = Oj.load(curlCall)
+			
 	    if !response.blank? && response['success']
 				flash[:success] = "Booking Scheduled"
 				
