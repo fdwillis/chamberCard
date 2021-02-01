@@ -7,4 +7,28 @@ class Service < ApplicationRecord
 			return `curl -H "appName: #{ENV['appName']}" -X GET #{SITEurl}/v1/products`
 		end
 	end
+
+	def self.APIshow(userX)
+		if userX&.class == User
+			return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{userX&.authentication_token}" -X GET #{SITEurl}/v1/products`
+		end
+	end
+
+	def self.APIcreate(userX)
+		if userX&.class == User
+			return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{userX&.authentication_token}" -X GET #{SITEurl}/v1/products`
+		end
+	end
+
+	def self.APIupdate(userX)
+		if userX&.class == User
+			return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{userX&.authentication_token}" -X GET #{SITEurl}/v1/products`
+		end
+	end
+
+	def self.APIdestroy(userX)
+		if userX&.class == User
+			return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{userX&.authentication_token}" -X GET #{SITEurl}/v1/products`
+		end
+	end
 end

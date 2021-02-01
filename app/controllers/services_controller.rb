@@ -31,11 +31,9 @@ class ServicesController < ApplicationController
 				@activeProducts = activeProducts.flatten
 				@unavailableProducts = unavailableProducts.flatten
 				@products = @activeProducts + @unavailableProducts
-			else
-				# no products
 			end
 		else
-			flash[:alert] = "Trouble connecting. Try again later."
+			flash[:alert] = "Trouble connecting. Try again."
 			redirect_to new_user_session_path
 		end
 	end
@@ -51,7 +49,7 @@ class ServicesController < ApplicationController
 				@connectAccount = response['connectAccount']
 				@prices = response['prices']
 			else
-				flash[:alert] = "Trouble connecting. Try again later."
+				flash[:alert] = "Trouble connecting. Try again."
 				redirect_to services_path
 			end
 		else
@@ -132,7 +130,7 @@ class ServicesController < ApplicationController
 			flash[:success] = "Service Updated"
 			redirect_to service_path(id: params[:id][5..params[:id].length], connectAccount: connectAccount)
 		else
-			flash[:alert] = "Trouble connecting. Try again later."
+			flash[:alert] = "Trouble connecting. Try again."
 			redirect_to request.referrer
 		end
 	end
@@ -146,7 +144,7 @@ class ServicesController < ApplicationController
 			flash[:success] = "Service removed. No longer for sale"
 			redirect_to services_path
 		else
-			flash[:alert] = "Trouble connecting. Try again later."
+			flash[:alert] = "Trouble connecting. Try again."
 			redirect_to services_path
 		end
 	end
