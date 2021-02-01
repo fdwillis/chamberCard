@@ -37,6 +37,8 @@ Rails.application.routes.draw do
 		post "cancel", to: 'schedule#cancel', as: "cancel"
 		post "confirm", to: 'schedule#confirm', as: "confirm"
 		
+		put "cancel-timekit", to: 'schedule#timeKitCancel', as: "cancel-timekit"
+		
 		get "initiateCharge", to: 'charges#initiateCharge', as: "getinitiateCharge"
 		
 		get "destroy", to: 'services#destroy', as: "destroyService"

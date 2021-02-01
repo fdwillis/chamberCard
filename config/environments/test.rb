@@ -25,7 +25,7 @@ Rails.application.configure do
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
   config.cache_store = :null_store
-  config.hosts << "ordinary-badger-29.loca.lt"
+  config.hosts << "417e8b99a6c0.ngrok.io"
 
   # Raise exceptions instead of rendering exception templates.
   config.action_dispatch.show_exceptions = false

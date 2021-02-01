@@ -85,16 +85,6 @@ Contact
                       <div class="text-center">
                         <h4>Upcoming</h4>
                         <p class="mb-4"><%= DateTime.parse(itm['invoiceLine']['metadata']['startDate']).strftime("%a, %B %e, %Y") %><br><%= DateTime.parse(itm['invoiceLine']['metadata']['startDate']).strftime("%l:%M %p") %></p>
-                        <% if itm['invoiceLine']['metadata']['customerConfirmed'] == 'false' %>
-                          <%= form_for :confirm, url: confirm_path do |f| %>
-                            <div class="d-flex mt-4">
-                              <%= f.hidden_field :serviceToConfirm, value: itm['invoiceLine']['invoice_item'] %>
-                              <%= f.hidden_field :merchantStripeID, value: h['merchantStripeID'] %>
-                              <%= f.submit "Confirm Appointment", class: "btn btn-full bg-blue2-dark col-12 text-uppercase rounded-sm font-900 mb-0"%>
-                            </div>
-                          <% end %>
-                        <% end %>
-
 
                         <%= form_for :cancel, url: cancel_path do |f| %>
                           <div class="d-flex mt-4">

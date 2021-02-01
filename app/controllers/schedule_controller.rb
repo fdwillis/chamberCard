@@ -1,5 +1,7 @@
 class ScheduleController < ApplicationController
-	before_action :authenticate_user!
+	before_action :authenticate_user!, except: :timeKitCancel
+
+	protect_from_forgery with: :null_session, only: :timeKitCancel
 	
 	def index
 		if current_user&.authentication_token
@@ -40,24 +42,41 @@ class ScheduleController < ApplicationController
 		end
 	end
 
+
+	def timeKitCancel
+		debugger
+		metaData = params['meta']
+		timeKitID = params['id']
+		connectAccount = metaData['connectAccount']
+		invoiceItem = metaData['invoiceItem']
+		stripeInvoiceItem = Stripe::InvoiceItem.retrieve(invoiceItem, {stripe_account: connectAccount})
+
+		stripeMetaData = stripeInvoiceItem['metadata']
+		stripeTimeKitIDs = stripeMetaData['timeKitBookingID']
+
+		timeKitIDsArray = stripeTimeKitIDs.split(",")
+
+	end
+
 	def cancel
 		# cancel via timeKit
-
-		cancelIt = params[:cancel][:serviceToCancel]
-		merchantStripeID = params[:cancel][:merchantStripeID]
-		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "merchantStripeID=#{merchantStripeID}&serviceToCancel=#{cancelIt}" -X POST #{SITEurl}/v1/booking-cancel`
-    
-    response = Oj.load(curlCall)
-		
-		if !response.blank? && response['success']
-			flash[:alert] = response['message']
-			redirect_to request.referrer
-		elsif response['message'] == "Invalid Token"
-			flash[:alert] = "To authorize your account, logout then login again."
-			redirect_to request.referrer
-		else
-			flash[:alert] = "Trouble connecting. Try again later."
-			redirect_to request.referrer
+		if request.post?
+			cancelIt = params[:cancel][:serviceToCancel]
+			merchantStripeID = params[:cancel][:merchantStripeID]
+			curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "merchantStripeID=#{merchantStripeID}&serviceToCancel=#{cancelIt}" -X POST #{SITEurl}/v1/booking-cancel`
+	    
+	    response = Oj.load(curlCall)
+			
+			if !response.blank? && response['success']
+				flash[:alert] = response['message']
+				redirect_to request.referrer
+			elsif response['message'] == "Invalid Token"
+				flash[:alert] = "To authorize your account, logout then login again."
+				redirect_to request.referrer
+			else
+				flash[:alert] = "Trouble connecting. Try again later."
+				redirect_to request.referrer
+			end
 		end
 	end
 
