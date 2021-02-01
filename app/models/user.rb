@@ -22,13 +22,12 @@ class User < ApplicationRecord
 
     timeKitPost = `curl --request POST --header 'Content-Type: application/json' --url https://api.timekit.io/v2/bookings --user :test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9 --data '{"buffer":"30 minutes","resource_id": "#{resource_id}","graph": "instant","start": "#{start}","end": "#{endAt}","what": "#{what}","where": "#{where}","description": "#{description}","customer": {"name": "#{customerName}","email": "#{customerEmail}","phone": "#{customerPhone}"}}'`
    
-    resourceLoaded = Oj.load(timeKitPost)['data']
-    
-    if resourceLoaded['state'] == 'confirmed'
-      return {success: true, timeKitBookingID: resourceLoaded['id']}
+    resourceLoaded = Oj.load(timeKitPost)
+
+    if !resourceLoaded['error']
+      return {success: true, timeKitBookingID: resourceLoaded['data']['id']}
     else
-      debugger
-      return false
+      return {success: false, message: resourceLoaded['error']}
     end
   end
 

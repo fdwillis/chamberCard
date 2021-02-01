@@ -41,12 +41,11 @@ class ScheduleController < ApplicationController
 	end
 
 	def cancel
-		# canceling session
-		debugger
-		# return
+		# cancel via timeKit
 
 		cancelIt = params[:cancel][:serviceToCancel]
-		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "serviceToCancel=#{cancelIt}" -X POST #{SITEurl}/v1/booking-cancel`
+		merchantStripeID = params[:cancel][:merchantStripeID]
+		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "merchantStripeID=#{merchantStripeID}&serviceToCancel=#{cancelIt}" -X POST #{SITEurl}/v1/booking-cancel`
     
     response = Oj.load(curlCall)
 		
@@ -68,9 +67,10 @@ class ScheduleController < ApplicationController
 
 		if bookingDone[:success]
 			serviceToAccept = params[:acceptBooking][:serviceToAccept]
+			merchantStripeID = params[:acceptBooking][:merchantStripeID]
 			timeKitBookingID = bookingDone[:timeKitBookingID]
 			
-	    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d 'timeKitBookingID=#{timeKitBookingID}&serviceToAccept=#{serviceToAccept}' -X POST #{SITEurl}/v1/booking-request`
+	    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d 'timeKitBookingID=#{timeKitBookingID}&serviceToAccept=#{serviceToAccept}&merchantStripeID=#{merchantStripeID}' -X POST #{SITEurl}/v1/booking-request`
 
 			response = Oj.load(curlCall)
 	    if !response.blank? && response['success']
@@ -82,7 +82,8 @@ class ScheduleController < ApplicationController
 	      redirect_to request.referrer
 	    end
 		else
-
+			flash[:error] = "Please don't double book: #{bookingDone[:message]}"
+      redirect_to request.referrer
 		end
 	end
 
