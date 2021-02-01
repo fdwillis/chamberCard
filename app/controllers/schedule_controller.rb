@@ -45,16 +45,34 @@ class ScheduleController < ApplicationController
 
 	def timeKitCancel
 		debugger
+		
 		metaData = params['meta']
 		timeKitID = params['id']
 		connectAccount = metaData['connectAccount']
 		invoiceItem = metaData['invoiceItem']
+
+
 		stripeInvoiceItem = Stripe::InvoiceItem.retrieve(invoiceItem, {stripe_account: connectAccount})
-
 		stripeMetaData = stripeInvoiceItem['metadata']
-		stripeTimeKitIDs = stripeMetaData['timeKitBookingID']
 
-		timeKitIDsArray = stripeTimeKitIDs.split(",")
+		ogTimekitString = stripeMetaData['timeKitBookingID']
+		ogTimekitArray = ogTimekitString.split(",")
+		
+		debugger
+
+
+		# edit metadata by removing timekitID of meeting passed
+		return
+
+		invoiceUpdated = Stripe::InvoiceItem.update(
+		  stripeInvoiceItem['id'],
+		  {
+		  	metadata: {
+
+					timeKitBookingID: "",
+				}
+			}, {stripe_account: stripeAllowed[:merchantStripeID]}
+		)
 
 	end
 
