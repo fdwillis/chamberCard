@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
 			
 	    response = Oj.load(curlCall)
 	    
-	    if !response.blank? && response['success']
+	    if response['success']
 	    	@cart = response
 	    	return
 	    end

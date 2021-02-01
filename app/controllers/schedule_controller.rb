@@ -9,7 +9,7 @@ class ScheduleController < ApplicationController
 			
 	    response = Oj.load(curlCall)
 				
-	    if !response.blank? && response['success']
+	    if response['success']
 				@payments = response['payments']
 			elsif response['message'] == "No purchases found"
 				@message = response['message']
@@ -32,7 +32,7 @@ class ScheduleController < ApplicationController
     
     response = Oj.load(curlCall)
 		
-		if !response.blank? && response['success']
+		if response['success']
 			flash[:alert] = response['message']
 			redirect_to request.referrer
 			return
@@ -89,7 +89,7 @@ class ScheduleController < ApplicationController
 	    
 	    response = Oj.load(curlCall)
 			
-			if !response.blank? && response['success']
+			if response['success']
 				flash[:alert] = response['message']
 				redirect_to request.referrer
 			elsif response['message'] == "Invalid Token"
@@ -116,7 +116,7 @@ class ScheduleController < ApplicationController
 
 			response = Oj.load(curlCall)
 			
-	    if !response.blank? && response['success']
+	    if response['success']
 				flash[:success] = "Booking Scheduled"
 				
 	      redirect_to request.referrer
@@ -155,7 +155,7 @@ class ScheduleController < ApplicationController
 
 	    response = Oj.load(curlCall)
 
-	    if !response.blank? && response['success']
+	    if response['success']
 				flash[:success] = "Request Submitted"
 				redirect_to request.referrer
 			else

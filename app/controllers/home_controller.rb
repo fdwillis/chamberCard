@@ -54,7 +54,7 @@ class HomeController < ApplicationController
 			
 			response = Oj.load(curlCall)
 
-			if !response.blank? && response['success']
+			if response['success']
 				flash[:success] = "You are now a member! Enjoy the savings!"
 	      redirect_to membership_path
 	    else
@@ -73,7 +73,7 @@ class HomeController < ApplicationController
 
 		response = Oj.load(curlCall)
 
-    if !response.blank? && response['success']
+    if response['success']
     	
 			flash[:success] = response['message']
 			

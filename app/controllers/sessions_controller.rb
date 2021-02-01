@@ -19,7 +19,7 @@ class SessionsController < Devise::SessionsController
 
   def after_login
     response = resource.createUserSessionAPI(params[:user][:password])
-    if !response.blank? && response['success']
+    if response['success']
       flash[:success] = "Welcome"
     else
       flash[:alert] = "Trouble Connecting. Some data will not display."

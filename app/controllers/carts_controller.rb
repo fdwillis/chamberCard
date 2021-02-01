@@ -96,10 +96,6 @@ class CartsController < ApplicationController
 		paramsClean = params.require(:addToCart).permit(:sellerItem, :quantity)
 	end
 
-	def checkoutParams
-		paramsClean = params.require(:checkout).permit(:cart)
-	end
-
 	def grabID
 		paramsClean = params.require(:id)
 	end

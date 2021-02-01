@@ -10,7 +10,7 @@ class ProductsController < ApplicationController
 
     response = Oj.load(curlCall)
 
-    if !response.blank? && response['success']
+    if response['success']
 			
 			if @store = response['store']
 				activeProducts = []
@@ -84,7 +84,7 @@ class ProductsController < ApplicationController
 			response = Oj.load(curlCall)
 			
 		
-			if !response.blank? && response['success']
+			if response['success']
 				productStarted.update(stripeProductID: response['product'])
 				flash[:success] = "Product Created"
 				redirect_to products_path
@@ -125,7 +125,7 @@ class ProductsController < ApplicationController
 		
 		response = Oj.load(curlCall)
 
-		if !response.blank? && response['success']
+		if response['success']
 			flash[:success] = "Product Updated"
 			redirect_to product_path(id: params[:id][5..params[:id].length], connectAccount: connectAccount)
 		else
@@ -139,7 +139,7 @@ class ProductsController < ApplicationController
 		
 		response = Oj.load(curlCall)
 		
-		if !response.blank? && response['success']
+		if response['success']
 			flash[:success] = "product removed. No longer for sale"
 			redirect_to products_path
 		else
@@ -180,7 +180,7 @@ class ProductsController < ApplicationController
 
 	    response = Oj.load(curlCall)
 
-	    if !response.blank? && response['success']
+	    if response['success']
 				flash[:success] = response['message']
 				redirect_to request.referrer
 			else

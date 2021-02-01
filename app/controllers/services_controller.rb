@@ -3,14 +3,14 @@ class ServicesController < ApplicationController
 
 	def index
 		if current_user&.authentication_token
-			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/products`
+			curlCall = Service.APIindex(current_user)
 		else
-			curlCall = `curl -H "appName: #{ENV['appName']}" -X GET #{SITEurl}/v1/products`
+			curlCall = Service.APIindex(nil)
 		end
 
     response = Oj.load(curlCall)
 
-    if !response.blank? && response['success']
+    if response['success']
 			
 			if @store = response['store']
 				activeProducts = []
@@ -86,7 +86,7 @@ class ServicesController < ApplicationController
 			response = Oj.load(curlCall)
 			
 		
-			if !response.blank? && response['success']
+			if response['success']
 				productStarted.update(stripeProductID: response['product'])
 				flash[:success] = "Service Created"
 				redirect_to services_path
@@ -127,7 +127,7 @@ class ServicesController < ApplicationController
 		
 		response = Oj.load(curlCall)
 
-		if !response.blank? && response['success']
+		if response['success']
 			
 			flash[:success] = "Service Updated"
 			redirect_to service_path(id: params[:id][5..params[:id].length], connectAccount: connectAccount)
@@ -142,7 +142,7 @@ class ServicesController < ApplicationController
 		
 		response = Oj.load(curlCall)
 		
-		if !response.blank? && response['success']
+		if response['success']
 			flash[:success] = "Service removed. No longer for sale"
 			redirect_to services_path
 		else
