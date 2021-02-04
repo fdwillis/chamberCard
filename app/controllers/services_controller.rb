@@ -3,9 +3,9 @@ class ServicesController < ApplicationController
 
 	def index
 		if current_user&.authentication_token
-			curlCall = Service.APIindex(current_user)
+			curlCall = Product.APIindex(current_user)
 		else
-			curlCall = Service.APIindex(nil)
+			curlCall = Product.APIindex(nil)
 		end
 
     response = Oj.load(curlCall)
@@ -40,7 +40,7 @@ class ServicesController < ApplicationController
 
 	def show
 		if current_user&.authentication_token
-			curlCall = Service.APIshow(current_user, params)
+			curlCall = Product.APIshow(current_user, params)
 		
 			response = Oj.load(curlCall)
 			
@@ -62,7 +62,7 @@ class ServicesController < ApplicationController
 	def create
 		if current_user&.manager?
 
-			curlCall = Service.APIcreate(current_user, productParams)
+			curlCall = Product.APIcreate(current_user, productParams)
 
 			response = Oj.load(curlCall)
 
@@ -102,7 +102,7 @@ class ServicesController < ApplicationController
 
 
 		if current_user&.manager?
-			curlCall = Service.APIupdate(current_user, productParams)
+			curlCall = Product.APIupdate(current_user, productParams)
 			response = Oj.load(curlCall)
 
 			if response['success']
