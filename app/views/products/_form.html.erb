@@ -31,6 +31,8 @@
 
 
 	    <%= f.hidden_field :type, value: 'good' %>
+      <%= f.hidden_field :id, value: params[:id] %>
+      <%= f.hidden_field :connectAccount, value: current_user&.stripeMerchantID %>
 	    <br>
 	    <br>
 	    <br>
