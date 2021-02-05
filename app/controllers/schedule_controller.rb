@@ -88,9 +88,7 @@ class ScheduleController < ApplicationController
 	def requestBooking
 		if request.post?
 
-			Schedule.APIrequest(current_user, params[:requestBooking])
-
-			
+			curlCall = Schedule.APIrequest(current_user, params[:requestBooking])
 
 	    response = Oj.load(curlCall)
 
