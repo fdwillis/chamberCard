@@ -44,7 +44,7 @@ class ScheduleController < ApplicationController
 
 
 	def timeKitCancel
-		
+		#  place in webhook controller
 		metaData = params['meta']
 		timeKitID = params['id']
 		connectAccount = metaData['connectAccount']
@@ -80,27 +80,6 @@ class ScheduleController < ApplicationController
 		return
 	end
 
-	def cancel
-		# cancel via timeKit
-		if request.post?
-			cancelIt = params[:cancel][:serviceToCancel]
-			merchantStripeID = params[:cancel][:merchantStripeID]
-			curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "merchantStripeID=#{merchantStripeID}&serviceToCancel=#{cancelIt}" -X POST #{SITEurl}/v1/booking-cancel`
-	    
-	    response = Oj.load(curlCall)
-			
-			if response['success']
-				flash[:alert] = response['message']
-				redirect_to request.referrer
-			elsif response['message'] == "Invalid Token"
-				flash[:alert] = "To authorize your account, logout then login again."
-				redirect_to request.referrer
-			else
-				flash[:alert] = "Trouble connecting. Try again later."
-				redirect_to request.referrer
-			end
-		end
-	end
 
 	def acceptBooking
 		# sync booking to manager calendar
