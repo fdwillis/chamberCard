@@ -4,22 +4,19 @@ class PricingController < ApplicationController
 
 	def index
 		# showing all prices for one product
-		
 		if current_user&.authentication_token
 			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/products/prod_#{!productParams.blank? ? productParams[:product_id] : serviceParams[:service_id]}/pricing`
-		else
-
-		end
 		
-		response = Oj.load(curlCall)
+			response = Oj.load(curlCall)
 
-		if !response['product'].blank? && response['success']
-			@prices = response['prices']
-			@productL = response['product']
-			@archived = response['archived']
-		else
-			flash[:alert] = "Trouble connecting. Try again later."
-			redirect_to services_path
+			if !response['product'].blank? && response['success']
+				@prices = response['prices']
+				@productL = response['product']
+				@archived = response['archived']
+			else
+				flash[:alert] = "Trouble connecting. Try again later."
+				redirect_to services_path
+			end
 		end
 
 	end
@@ -46,19 +43,18 @@ class PricingController < ApplicationController
 				}.to_json
 				
 				curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X POST #{SITEurl}/v1/products/prod_#{pricingParams[:product]}/pricing`
-			else
 
-			end
 
-			response = Oj.load(curlCall)
+				response = Oj.load(curlCall)
 
-			if response['success']
-				flash[:success] = "Pricing Added"
-				redirect_to request.referrer
-				# redirect_to pricing_index_path(service_id: @productL['id'][5..@productL['id'].length])
-			else
-				flash[:alert] = "Trouble connecting. Try again later."
-				redirect_to request.referrer
+				if response['success']
+					flash[:success] = "Pricing Added"
+					redirect_to request.referrer
+					# redirect_to pricing_index_path(service_id: @productL['id'][5..@productL['id'].length])
+				else
+					flash[:alert] = "Trouble connecting. Try again later."
+					redirect_to request.referrer
+				end
 			end
 		else
 			redirect_to request.referrer
@@ -85,18 +81,16 @@ class PricingController < ApplicationController
 			}.to_json
 
 			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X PATCH #{SITEurl}/v1/products/#{pricingParams[:product]}/pricing/#{serviceParams[:id]}`
-		else
 
-		end
+			response = Oj.load(curlCall)
 
-		response = Oj.load(curlCall)
-
-		if response['success']
-			flash[:success] = "Pricing Updated"
-		  redirect_to pricing_index_path(service_id: pricingParams[:product][5..pricingParams[:product].length])
-		else
-			flash[:alert] = "Trouble connecting. Try again later."
-			redirect_to request.referrer
+			if response['success']
+				flash[:success] = "Pricing Updated"
+			  redirect_to pricing_index_path(service_id: pricingParams[:product][5..pricingParams[:product].length])
+			else
+				flash[:alert] = "Trouble connecting. Try again later."
+				redirect_to request.referrer
+			end
 		end
 	end
 
