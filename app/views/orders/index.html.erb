@@ -39,7 +39,7 @@ Contact
           </div>
           <% @payments.each_with_index do |h, hindx| %>
               <% h['items'].each_with_index do |itm,indx| %>
-                <% if !Stripe::Invoice.retrieve(h['invoice'], {stripe_account: h['merchantStripeID']})['metadata']['customerConfirmed'].blank? && Stripe::Invoice.retrieve(h['invoice'], {stripe_account: h['merchantStripeID']})['metadata']['customerConfirmed'] == 'false' %>
+                <% if !Stripe::Invoice.retrieve(h['invoice'], {stripe_account: h['merchantStripeID']})['metadata']['customerConfirmed'].blank? && Stripe::Invoice.retrieve(h['invoice'], {stripe_account: h['merchantStripeID']})['metadata']['trackingNumbers'] == 'false' %>
 
 
                   <% if itm['product']['type'] == 'good' %>

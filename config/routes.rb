@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-	mount Pwa::Engine, at: ''
+	mount Pwa::Engine, at: '/'
 	mount Split::Dashboard, at: 'split'
 
 	

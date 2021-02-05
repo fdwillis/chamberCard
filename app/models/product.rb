@@ -53,7 +53,7 @@ class Product < ApplicationRecord
 
 		if !productParams['images'].blank?
 			productParams['images'].each do |img|
-				productFound = Product.find_by(stripeProductID: productParams[:id])
+				productFound = Product.find_by(stripeProductID: "prod_#{productParams[:id]}")
 				imageMade = productFound.images.create(source: img)
 				
 				cloudX = Cloudinary::Uploader.upload(imageMade.source.file.file)
@@ -64,12 +64,6 @@ class Product < ApplicationRecord
 
 		if userX&.class == User
 			return `curl -H "appName: #{ENV['appName']}" -d "images=#{images.join(",")}&keywords=#{keywords}&name=#{productName}&description=#{description}&active=#{active}&type=#{type}&connectAccount=#{userX&.stripeMerchantID}" -H "bxxkxmxppAuthtoken: #{userX&.authentication_token}" -X PATCH #{SITEurl}/v1/products/#{productParams[:id]}`
-		end
-	end
-
-	def self.APIdestroy(userX)
-		if userX&.class == User
-			return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{userX&.authentication_token}" -X GET #{SITEurl}/v1/products`
 		end
 	end
 end

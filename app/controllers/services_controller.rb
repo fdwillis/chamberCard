@@ -78,29 +78,6 @@ class ServicesController < ApplicationController
 	end
 
 	def update
-		# appName = ENV['appName']
-		# productName = productParams[:name]
-		# description = productParams[:description]
-		# type = productParams[:type]
-		# keywords = productParams[:keywords]
-		# active = ActiveModel::Type::Boolean.new.cast(productParams[:active])
-		# connectAccount = ENV['connectAccount']
-
-		# images = []
-
-
-		# if !productParams['images'].blank?
-		# 	productParams['images'].each do |img|
-		# 		productFound = Product.find_by(stripeProductID: params[:id])
-		# 		imageMade = productFound.images.create(source: img)
-				
-		# 		cloudX = Cloudinary::Uploader.upload(imageMade.source.file.file)
-		# 		images.append(cloudX['secure_url'])
-		# 		File.delete(imageMade.source.file.file)
-		# 	end
-		# end
-
-
 		if current_user&.manager?
 			curlCall = Product.APIupdate(current_user, productParams)
 			response = Oj.load(curlCall)
@@ -113,20 +90,6 @@ class ServicesController < ApplicationController
 				flash[:alert] = "Trouble connecting. Try again."
 				redirect_to request.referrer
 			end
-		end
-	end
-
-	def destroy
-		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X DELETE #{SITEurl}/v1/time-slots/#{params[:id]}`
-		
-		response = Oj.load(curlCall)
-		
-		if response['success']
-			flash[:success] = "Service removed. No longer for sale"
-			redirect_to services_path
-		else
-			flash[:alert] = "Trouble connecting. Try again."
-			redirect_to services_path
 		end
 	end
 
