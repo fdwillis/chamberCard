@@ -3,10 +3,10 @@ class ChargesController < ApplicationController
 	
 	def index
 		if current_user&.authentication_token
-			curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "" -X GET #{SITEurl}/v1/charges`
+			curlCall = Charge.APIindex(current_user)
 			
 	    response = Oj.load(curlCall)
-				
+
 	    if response['success']
 				@payments = response['payments']
 				@overdue = response['overdue']

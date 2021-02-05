@@ -5,7 +5,7 @@ class ScheduleController < ApplicationController
 	
 	def index
 		if current_user&.authentication_token
-			curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "" -X GET #{SITEurl}/v1/charges`
+			curlCall = Charge.APIindex(current_user)
 			
 	    response = Oj.load(curlCall)
 				
@@ -22,27 +22,7 @@ class ScheduleController < ApplicationController
 		end
 	end
 
-	def confirm
-		# canceling session
-
-		confirm = params[:confirm][:serviceToConfirm]
-		merchantStripeID = params[:confirm][:merchantStripeID]
-		
-		curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"   -d 'confirm=#{confirm}&merchantStripeID=#{merchantStripeID}' -X POST #{SITEurl}/v1/booking-accept`
-    
-    response = Oj.load(curlCall)
-		
-		if response['success']
-			flash[:alert] = response['message']
-			redirect_to request.referrer
-			return
-		else
-			flash[:alert] = "Trouble connecting. Try again later."
-			return
-		end
-	end
-
-
+	# webhook
 	def timeKitCancel
 		#  place in webhook controller
 		metaData = params['meta']
