@@ -67,14 +67,10 @@ class ScheduleController < ApplicationController
 
 		if bookingDone[:success]
 
-			serviceToAccept = params[:acceptBooking][:serviceToAccept]
-			merchantStripeID = params[:acceptBooking][:merchantStripeID]
-			timeKitBookingID = bookingDone[:timeKitBookingID]
-			
-	    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d 'timeKitBookingID=#{timeKitBookingID}&serviceToAccept=#{serviceToAccept}&merchantStripeID=#{merchantStripeID}' -X POST #{SITEurl}/v1/booking-request`
+			curlCall = Schedule.APIaccept(current_user, params[:acceptBooking], bookingDone[:timeKitBookingID])
 
 			response = Oj.load(curlCall)
-			
+
 	    if response['success']
 				flash[:success] = "Booking Scheduled"
 				
@@ -91,26 +87,10 @@ class ScheduleController < ApplicationController
 
 	def requestBooking
 		if request.post?
-			serviceToBook = params[:requestBooking][:serviceToBook]
 
-			year = params[:requestBooking]["dateRequested(1i)"]
-			month = params[:requestBooking]["dateRequested(2i)"]
-			day = params[:requestBooking]["dateRequested(3i)"]
+			Schedule.APIrequest(current_user, params[:requestBooking])
 
-			hour = params[:requestBooking]["my_time(4i)"]
-			minute = params[:requestBooking]["my_time(5i)"]
-
-			buildDate = "#{year}/#{month}/#{day} #{hour}:#{minute}"
-			if !year.blank? && !month.blank? && !day.blank?
-				dateRequested = params[:requestBooking][:dateRequested]
-				merchantStripeID = params[:requestBooking][:merchantStripeID]
-				
-				curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"  -d 'serviceToBook=#{serviceToBook}&dateRequested=#{buildDate}&merchantStripeID=#{merchantStripeID}' -X POST #{SITEurl}/v1/booking-request`
-			else
-				flash[:error] = "Something was missing"
-				redirect_to request.referrer
-				return
-			end
+			
 
 	    response = Oj.load(curlCall)
 

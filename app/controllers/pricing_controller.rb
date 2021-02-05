@@ -100,10 +100,6 @@ class PricingController < ApplicationController
 		end
 	end
 
-	def destroy
-		
-	end
-
 	def grabProduct
 		curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/products/prod_#{!productParams[:product_id].blank? ? productParams[:product_id] : serviceParams[:service_id]}?connectAccount=#{current_user.stripeMerchantID}`
 		response = Oj.load(curlCall)

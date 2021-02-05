@@ -168,7 +168,7 @@ Contact
                               <div><p class="font-700 color-theme">Date</p></div>
                               <div class="ml-auto">
                                 <p>
-                                  <%= startDateX %>
+                                  <%= startDateX.to_datetime.strftime("%A, %B %d, %Y") %>
                                   
                                 </p>
                               </div>
@@ -177,7 +177,7 @@ Contact
                               <div><p class="font-700 color-theme">Time</p></div>
                               <div class="ml-auto">
                                 <p>
-                                  <%= startDateX %>
+                                  <%= startDateX.to_datetime.strftime("%I:%M %p") %>
                                 </p>
                               </div>
                           </div>
@@ -241,7 +241,7 @@ Contact
                               <div><p class="font-700 color-theme">Date</p></div>
                               <div class="ml-auto">
                                 <p>
-                                  <%= startDateX %>
+                                 <%= startDateX.to_datetime.strftime("%A, %B %d, %Y") %>
                                   
                                 </p>
                               </div>
@@ -250,7 +250,7 @@ Contact
                                 <div><p class="font-700 color-theme">Time</p></div>
                                 <div class="ml-auto">
                                   <p>
-                                    <%= startDateX%>
+                                    <%= startDateX.to_datetime.strftime("%I:%M %p") %>
                                   </p>
                                 </div>
                             </div>
