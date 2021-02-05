@@ -272,6 +272,7 @@ class User < ApplicationRecord
   end
 
   def phoneCheck
+    # twilio
     # if !stripeCustomerID.blank?
     #   if manager?
     #     accountCapabilities = Stripe::Account.retrieve(stripeCustomerID)['capabilities']
