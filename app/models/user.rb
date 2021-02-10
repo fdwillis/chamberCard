@@ -165,7 +165,7 @@ class User < ApplicationRecord
     
     response = Oj.load(curlCall)
     
-    if !response.blank? && response['success']
+    if response['success']
       self.update(username: response['username'] ,accessPin: response['accessPin'] , stripeMerchantID: response['stripeMerchantID'], stripeCustomerID: response['stripeCustomerID'], authentication_token: response['authentication_token'], uuid: response['uuid'] )
       return response
     else
@@ -235,8 +235,8 @@ class User < ApplicationRecord
     customerAccess.include?(accessPin)
   end
 
-  def virtual?
-    virtualAccess.include?(accessPin)     
+  def trustee?
+    trusteeAccess.include?(accessPin)     
   end
 
   def manager?
@@ -326,8 +326,8 @@ class User < ApplicationRecord
     return ['customer']
   end
 
-  def virtualAccess
-    return ['virtual']
+  def trusteeAccess
+    return ['trustee']
   end
 
   def managerAccess
@@ -335,6 +335,6 @@ class User < ApplicationRecord
   end
   
   def adminAccess
-    return ['admin' , 'trustee']
+    return ['admin' , 'virtual']
   end
 end

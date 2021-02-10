@@ -22,7 +22,8 @@ class SessionsController < Devise::SessionsController
     if response['success']
       flash[:success] = "Welcome"
     else
-      flash[:alert] = "Trouble Connecting. Some data will not display."
+      flash[:alert] = response['message']
+      reset_session
     end
   end
 end
