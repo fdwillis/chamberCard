@@ -6,7 +6,6 @@ ruby '2.7.0'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.3'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 4.1'
-gem 'sass-rails', '>= 6'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.7'
 gem 'uglifier'
@@ -26,7 +25,6 @@ gem "iex-ruby-client"
 gem 'cloudinary'
 gem 'carrierwave'
 
-gem 'bootstrap-sass'
 gem "omniauth-google-oauth2"
 gem 'font-awesome-rails'
 gem 'friendly_id'
