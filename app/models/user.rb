@@ -176,7 +176,6 @@ class User < ApplicationRecord
   def createUserAPI(params)
 
     curlCall = `curl -d "appName=#{ENV['appName']}&phone=#{params['phone']}&accessPin=#{params['accessPin']}&email=#{self.email}&username=#{self.username}&password=#{self.password}&password_confirmation=#{self.password}" #{SITEurl}/v1/users`
-
     response = Oj.load(curlCall)
     if !response.blank? && response['success']
       self.update(uuid: response['uuid'],username: response['username'], accessPin: response['accessPin'], phone: response['phone'] )
