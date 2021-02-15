@@ -17,7 +17,7 @@ before_action :authenticate_user!
 		callCurl = current_user.updateStripeCustomerAPI(params[:updateCustomer])
 
 		if callCurl['success']
-			flash[:success] = "Payment Details Updated"
+			flash[:success] = "Account Updated"
 			redirect_to request.referrer
 		else
 			flash[:error] = callCurl['error']

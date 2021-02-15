@@ -33,8 +33,9 @@ class ServicesController < ApplicationController
 				@products = @activeProducts + @unavailableProducts
 			end
 		else
-			flash[:alert] = "Trouble connecting. Try again."
-			redirect_to new_user_session_path
+
+			flash[:alert] = response['message']
+			redirect_to profile_path
 		end
 	end
 

@@ -7,6 +7,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[6.0]
       t.string :stripeMerchantID, unique: true
       t.string :timeKitID, unique: true
       ## Database authenticatable
+      t.string :phone
       t.string :accessPin
 
       t.string :street

@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 2021_01_16_021555) do
     t.string "stripeCustomerID"
     t.string "stripeMerchantID"
     t.string "timeKitID"
+    t.string "phone"
     t.string "accessPin"
     t.string "street"
     t.string "city"

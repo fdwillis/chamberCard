@@ -128,7 +128,7 @@
                   <i class="input-icon fa fa-phone"></i>
                   <span class="color-highlight input-style-1-active">Phone Number</span>
                   <em>(required)</em>
-                  <%= f.text_field :phone, placeholder: "2628547895", class: "form-control", value: @phone, required: true %>
+                  <%= f.text_field :phone, placeholder: "2628547895", class: "form-control", value: current_user&.phone ? current_user&.phone : @phone, required: true %>
               </div>
 
               <h3 class="text-center"><i class="input-icon fa fa-home"></i> &nbsp; &nbsp; <%= current_user&.manager? ? "Business" : "Shipping" %> Address </h3>

@@ -75,7 +75,7 @@ class User < ApplicationRecord
     state = params[:state]
     country = "USA"
 
-    saved = self.update(street: street, city: city, state: state, country: country)
+    saved = self.update(street: street, city: city, state: state, country: country, phone: phone)
     # build the address by saving to user and passing param
 
     curlCall  = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "email=#{email}&name=#{stripeName}&phone=#{phone}&source=#{source}" -X PATCH #{SITEurl}/v1/stripe-customers/#{self.uuid}`
@@ -173,14 +173,13 @@ class User < ApplicationRecord
     end
   end
 
-  def createUserAPI(accessPin)
+  def createUserAPI(params)
 
-    curlCall = `curl -d "appName=#{ENV['appName']}&accessPin=#{accessPin}&email=#{self.email}&username=#{self.username}&password=#{self.password}&password_confirmation=#{self.password}" #{SITEurl}/v1/users`
+    curlCall = `curl -d "appName=#{ENV['appName']}&phone=#{params['phone']}&accessPin=#{params['accessPin']}&email=#{self.email}&username=#{self.username}&password=#{self.password}&password_confirmation=#{self.password}" #{SITEurl}/v1/users`
 
     response = Oj.load(curlCall)
-    
     if !response.blank? && response['success']
-      self.update(uuid: response['uuid'],username: response['username'], accessPin: response['accessPin'] )
+      self.update(uuid: response['uuid'],username: response['username'], accessPin: response['accessPin'], phone: response['phone'] )
       return response
     else
       return response
@@ -240,7 +239,7 @@ class User < ApplicationRecord
   end
 
   def manager?
-    managerAccess.include?(accessPin) && !stripeMerchantID.blank?     
+    managerAccess.include?(accessPin)
   end
 
   def admin?

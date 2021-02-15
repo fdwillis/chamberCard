@@ -15,17 +15,12 @@ gem 'jquery'
 gem 'pwa'
 
 gem 'stripe'
-gem 'mini_magick'
 gem 'simple_token_authentication'
 gem 'figaro'
 gem 'activesupport'
 gem 'geocoder'
-gem "stock_quote"
-gem "iex-ruby-client"
 gem 'cloudinary'
 gem 'carrierwave'
-
-gem "omniauth-google-oauth2"
 gem 'font-awesome-rails'
 gem 'friendly_id'
 gem 'devise'

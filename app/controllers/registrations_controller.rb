@@ -6,14 +6,14 @@ class RegistrationsController < Devise::RegistrationsController
   def createAccount
     if resource.persisted? && !params[:user][:accessPin].blank? # user is created successfuly
       
-      createAtt = resource.createUserAPI(params[:user][:accessPin])
+      createAtt = resource.createUserAPI(params[:user])
 
       if createAtt['success']
         auth = resource.createUserSessionAPI(params[:user][:password])
         
-      	if auth['success']
-	      	flash[:success] = "Created account"
-	      else
+        if auth['success']
+          flash[:success] = "Created account"
+        else
           flash[:alert] = "You will need to verify later"
         end
       else
@@ -21,8 +21,8 @@ class RegistrationsController < Devise::RegistrationsController
         flash[:alert] = createAtt['error']
       end
     else
+      flash[:alert] = resource.errors.full_messages.join(", ")
       resource.destroy!
-      flash[:alert] = "Please Choose An Account Type"
     end
   end
 end

@@ -35,8 +35,8 @@ class ProductsController < ApplicationController
 				# no products
 			end
 		else
-			flash[:alert] = "Trouble connecting. Try again later."
-			redirect_to new_user_session_path
+			flash[:alert] = response['message']
+			redirect_to profile_path
 		end
 	end
 
