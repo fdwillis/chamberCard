@@ -51,7 +51,7 @@ Rails.application.routes.draw do
 	  end
 
 	  unauthenticated :user do
-	    root 'services#index', as: :unauthenticated_root
+	    root 'home#welcome', as: :unauthenticated_root
 	  end
 	end	
 end

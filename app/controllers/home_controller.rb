@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-	before_action :authenticate_user!
+	before_action :authenticate_user!, except: :welcome
 
 	def profile
 		if current_user&.authentication_token
@@ -83,6 +83,10 @@ class HomeController < ApplicationController
       redirect_to membership_path
     end
 
+	end
+
+	def welcome
+		render :layout => "landing1"
 	end
 
 	private

@@ -21,6 +21,7 @@ class SessionsController < Devise::SessionsController
     response = resource.createUserSessionAPI(params[:user][:password])
     if response['success']
       flash[:success] = "Welcome"
+      
     else
       flash[:alert] = response['message']
       reset_session

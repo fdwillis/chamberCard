@@ -1,0 +1,199 @@
+<div class="lp-element lp-pom-root" id="lp-pom-root">
+  <div id="lp-pom-root-color-overlay"></div>
+  <div class="lp-positioned-content">
+    <div class="lp-element lp-pom-box" id="lp-pom-box-14">
+      <div id="lp-pom-box-14-color-overlay"></div>
+      <div class="lp-element lp-pom-image" id="lp-pom-image-15">
+        <div class="lp-pom-image-container" style="overflow: hidden;"><img alt="" data-src-desktop-1x="//d9hhrg4mnvzow.cloudfront.net/templates.unbounce.com/education/17jzy7m-education-logo_03l02803l028000000001.png" data-src-mobile-1x="//d9hhrg4mnvzow.cloudfront.net/templates.unbounce.com/education/17jzy7m-education-logo_03l02803l028000000001.png" src="//d9hhrg4mnvzow.cloudfront.net/templates.unbounce.com/education/17jzy7m-education-logo_03l02803l028000000001.png" srcset=""></div>
+      </div>
+      <div class="lp-element lp-pom-box" id="lp-pom-box-21">
+        <div id="lp-pom-box-21-color-overlay"></div>
+        <div class="lp-element lp-pom-text nlh" id="lp-pom-text-20" style="height: auto;">
+          <p class="lplh-29" style="text-align: center;"><span style="color: rgb(207, 199, 185); font-family: merriweather;"><span style="font-size: 18px;">Make a free account today! (Start Selling For Free)</span></span></p>
+          <p class="lplh-29" style="text-align: center;">
+          <span style="color: rgb(207, 199, 185); font-family: merriweather;"><span style="font-size: 16px;"><%= link_to "Or Login",new_user_session_path %></span></span></p>
+        </div>
+      </div>
+      <div class="lp-element lp-pom-form has-axis" id="lp-pom-form-61">
+        <%= form_for(User.new, as: User.new, url: registration_path(User.new)) do |f| %>
+          <div class="fields">
+            <div class="lp-pom-form-field single-line-text" id="container_first_name">
+              <label class="main lp-form-label" for="accessPin" id="label_accessPin" style="height: auto;"><span class="label-style">Account Type</span></label>
+              <%= f.select :accessPin, [['I want to shop', 'customer'], ['I want to sell', 'manager']], required: true, class: 'lp-pom-form-field', style: 'background-color: #1b6a62;' %>
+            </div>
+            <div class="lp-pom-form-field single-line-text" id="container_last_name">
+              <label class="main lp-form-label" for="email" id="label_email" style="height: auto;"><span class="label-style">Email</span></label>
+              <%= f.email_field :email, autocomplete: "email", required: true, class: 'ub-input-item single text form_elem_email' %>
+            </div>
+
+            <div class="lp-pom-form-field single-line-text" id="container_email">
+              <label class="main lp-form-label" for="email" id="label_email" style="height: auto;"><span class="label-style">Phone</span></label>
+              <%= f.text_field :phone, required: true, class: 'ub-input-item single text form_elem_email' %>
+            </div>
+
+            <div class="lp-pom-form-field email" id="container_phone_number">
+            <label class="main lp-form-label" for="email" id="label_phone_number" style="height: auto;"><span class="label-style">Username</span></label>
+            <%= f.text_field :username, autocomplete: "username", required: true, class: "ub-input-item single text form_elem_current_eduction_level", id: "current_eduction_level"  %>
+            </div>
+            <div class="lp-pom-form-field single-line-text" id="container_current_eduction_level">
+            <label class="main lp-form-label" for="phone_number" id="label_current_eduction_level" style="height: auto;"><span class="label-style">Password</span></label>
+            <%= f.password_field :password, autocomplete: "current-password", class: 'ub-input-item single text form_elem_phone_number', required: true %>
+            </div>
+            <div class="lp-pom-form-field single-line-text" id="container_passwordConfirm">
+            <label class="main lp-form-label" for="passwordConfirm" id="label_passwordConfirm" style="height: auto;"><span class="label-style">Password Confirm</span></label>
+
+            <%= f.password_field :password_confirmation, autocomplete: "current-password", required: true, class: 'ub-input-item single text form_elem_phone_number' %>
+
+            </div>
+          </div>
+
+              <!--
+              <%= f.password_field :password, autocomplete: "current-password", placeholder: 'Password', required: true %>
+              <%= f.password_field :password_confirmation, autocomplete: "current-password", placeholder: 'Confirm Password', required: true %> -->
+
+        
+          <%= f.submit "Create Free Account", class: "lp-element lp-pom-button", id: "lp-pom-button-62" %>
+        <% end %>
+      </div>
+    </div>
+    <div class="lp-element lp-pom-text nlh" id="lp-pom-text-22" style="height: auto;">
+      <div class="lplh-77">
+        <span style="font-size:82px;"><span style="font-family:merriweather;"><span style="color:#ffffff;">Unique, Custom, Designer</span><span style="color:#01d9b8;">!</span></span></span>
+      </div>
+      <div class="lplh-32">
+        <span style="font-size:20px;"><span style="font-family:merriweather;"><span style="color:#ffffff;">Browse &amp; shop online designers<br>All designers are welcomed &amp; sell for free</span></span></span>
+      </div>
+      <div>
+        &nbsp;
+      </div>
+    </div>
+    <div class="lp-element lp-pom-box" id="lp-pom-box-23">
+      <div id="lp-pom-box-23-color-overlay"></div>
+    </div>
+    <div class="lp-element lp-pom-text nlh" id="lp-pom-text-24" style="height: auto;">
+      <div class="lplh-32" style="text-align: justify; line-height: 25px;">
+        <span style="font-size:21px;"><span style="font-family:lato;">Shop new talents, accomplished sewers, &amp; upcoming entrepreneurs. Ma'ari Co is the digital platform that empowers, inspires, and supports the people who want to make it in the fashion industry.</span></span>
+      </div>
+      <!-- <div class="lplh-32">
+        <span style="font-size:21px;"><span style="font-family:lato;">Our online marketplace offers our emerging designers the tools and features they need to sell their exclusive lines and styles.</span></span>
+      </div> -->
+      <br>
+      <div class="lplh-32" style="text-align: justify;">
+        <span style="font-size:21px;"><strong><span style="font-family:lato;"> A boutique filled with treasures from the finest emerging designers. For custom orders, simply schedule a consultation!</span></strong></span>
+      </div>
+    </div>
+    <div class="lp-element lp-pom-text nlh" id="lp-pom-text-26" style="height: auto;">
+      <div class="lplh-29" style="text-align: center;">
+        <span style="font-size:22px;"><span style="color:#1d5151;"><strong><span style="font-family:merriweather;">New Designers</span></strong></span></span>
+      </div>
+        <div class="lplh-29" style="text-align: center;">
+          <span style="font-size:14px;"><span style="font-family:lato;">New desingers are added to ensure you're able to continue to shop the newest trends &amp; find the rarest looks!</span></span>
+        </div>
+      <div>
+        &nbsp;
+      </div>
+    </div>
+    <div class="lp-element lp-pom-text nlh" id="lp-pom-text-27" style="height: auto;">
+      <div class="lplh-29" style="text-align: center;">
+        <span style="font-size:22px;"><span style="color:#1d5151;"><strong><span style="font-family:merriweather;">Exclusive Lines</span></strong></span></span>
+      </div>
+        <div class="lplh-29" style="text-align: center;">
+          <span style="font-size:14px;"><span style="font-family: lato;">From hand made pieces to custom branded sets. If we don't have what you're looking for, we'll make it!</span></span>
+        </div>
+      <div>
+        &nbsp;
+      </div>
+    </div>
+    <div class="lp-element lp-pom-text nlh" id="lp-pom-text-28" style="height: auto;">
+      <div class="lplh-29" style="text-align: center;">
+        <span style="font-size:22px;"><span style="color:#1d5151;"><strong><span style="font-family:merriweather;">Members Save</span></strong></span></span>
+      </div>
+        <div class="lplh-22" style="text-align: center;">
+          <span style="font-size:14px;"><span style="font-family:lato;">Become a member &amp; save with a monthly plan that fits in your budget. Member or not we've got whats hot!</span></span>
+        </div>
+      <div>
+        &nbsp;
+      </div>
+    </div>
+    <div class="lp-element lp-pom-box" id="lp-pom-box-39">
+      <div id="lp-pom-box-39-color-overlay"></div>
+      <div class="lp-element lp-pom-image" id="lp-pom-image-19">
+        <div class="lp-pom-image-container" style="overflow: hidden;"><img alt="" data-src-desktop-1x="/assets/FullSizeRender.jpeg" data-src-mobile-1x="/assets/FullSizeRender.jpeg" src="/assets/FullSizeRender.jpeg" srcset=""></div>
+      </div>
+    </div>
+    <div class="lp-element lp-pom-text nlh" id="lp-pom-text-40" style="height: auto;">
+      <p class="lplh-16" style="text-align: center;"><span style="color:#ffffff;"><span style="font-size:10px;"><span style="font-family:open sans;">Copyright © 2020 - <%= DateTime.now.strftime("%Y") %> Ma'ari Co. All rights reserved and other such important stuff.</span></span></span></p>
+    </div>
+    <div class="lp-element lp-pom-text nlh" id="lp-pom-text-41" style="height: auto;">
+      <p class="lplh-8" style="text-align: center;"><strong><span style="font-family:merriweather;"><span style="color:#2b4e4d;"><span style="font-size:14px;">THE OWNER</span></span></span></strong></p>
+      <p class="lplh-8" style="text-align: center;"><span style="color:#4a3942;"><span style="font-size:20px;"><strong><span style="font-family:merriweather;">MARI OSORIO</span></strong></span></span></p>
+      <div class="lplh-19" style="text-align: center;">
+        <span style="font-size:13px;"><span style="color:#e5e3d7;"><span style="font-family:lato;">STYLIST</span>
+      </div>
+      <div class="lplh-19" style="text-align: center;">
+        <span style="font-size:13px;"><span style="color:#e5e3d7;"><span style="font-family:lato;">SEAMSTRESS</span>
+      </div>
+      <div class="lplh-19" style="text-align: center;">
+        <span style="font-size:13px;"><span style="color:#e5e3d7;"><strong><span style="font-family:lato;">FASHION DESIGNER</span></strong></span></span>
+      </div>
+      <div class="lplh-29" style="text-align: center;">
+        &nbsp;
+      </div>
+      <div class="lplh-22" style="text-align: center;">
+        <em><span style="font-size:18px;"><span style="color:#ffffff;"><span style="font-family:merriweather;">“I took the 6-month systems administration course and in the first week I was working with a group of programmers so I was learning from real people with real problems. When I applied for a job after the course, I beat our 50 people because I had the equivalent of half a year’s real experience.”</span></span></span></em>
+      </div>
+    </div>
+    <div class="lp-element lp-pom-box" id="lp-pom-box-42">
+      <div id="lp-pom-box-42-color-overlay"></div>
+      <div class="lp-element lp-pom-image" id="lp-pom-image-16">
+        <div class="lp-pom-image-container" style="overflow: hidden;"><img alt="" data-src-desktop-1x="/assets/user-check-solid.svg" data-src-mobile-1x="/assets/user-check-solid.svg" src="/assets/user-check-solid.svg" srcset=""></div>
+      </div>
+      <div class="lp-element lp-pom-box" id="lp-pom-box-29">
+        <div id="lp-pom-box-29-color-overlay"></div>
+      </div>
+      <div class="lp-element lp-pom-box" id="lp-pom-box-35">
+        <div id="lp-pom-box-35-color-overlay"></div>
+      </div>
+    </div>
+    <div class="lp-element lp-pom-box" id="lp-pom-box-43">
+      <div id="lp-pom-box-43-color-overlay"></div>
+      <div class="lp-element lp-pom-image" id="lp-pom-image-17">
+        <div class="lp-pom-image-container" style="overflow: hidden;"><img alt="" data-src-desktop-1x="/assets/key-solid.svg" data-src-mobile-1x="/assets/key-solid.svg" src="/assets/key-solid.svg" srcset=""></div>
+      </div>
+      <div class="lp-element lp-pom-box" id="lp-pom-box-32">
+        <div id="lp-pom-box-32-color-overlay"></div>
+      </div>
+      <div class="lp-element lp-pom-box" id="lp-pom-box-37">
+        <div id="lp-pom-box-37-color-overlay"></div>
+      </div>
+    </div>
+    <div class="lp-element lp-pom-box" id="lp-pom-box-44">
+      <div id="lp-pom-box-44-color-overlay"></div>
+      <div class="lp-element lp-pom-image" id="lp-pom-image-18">
+        <div class="lp-pom-image-container" style="overflow: hidden;"><img alt="" data-src-desktop-1x="/assets/percent-solid.svg" data-src-mobile-1x="/assets/percent-solid.svg" src="/assets/percent-solid.svg" srcset=""></div>
+      </div>
+      <div class="lp-element lp-pom-box" id="lp-pom-box-33">
+        <div id="lp-pom-box-33-color-overlay"></div>
+      </div>
+      <div class="lp-element lp-pom-box" id="lp-pom-box-34">
+        <div id="lp-pom-box-34-color-overlay"></div>
+      </div>
+    </div>
+  </div>
+  <div class="lp-element lp-pom-block" id="lp-pom-block-8">
+    <div id="lp-pom-block-8-color-overlay"></div>
+    <div class="lp-pom-block-content"></div>
+  </div>
+  <div class="lp-element lp-pom-block" id="lp-pom-block-9">
+    <div id="lp-pom-block-9-color-overlay"></div>
+    <div class="lp-pom-block-content"></div>
+  </div>
+  <div class="lp-element lp-pom-block" id="lp-pom-block-10">
+    <div id="lp-pom-block-10-color-overlay"></div>
+    <div class="lp-pom-block-content"></div>
+  </div>
+  <div class="lp-element lp-pom-block" id="lp-pom-block-11">
+    <div id="lp-pom-block-11-color-overlay"></div>
+    <div class="lp-pom-block-content"></div>
+  </div>
+</div>
