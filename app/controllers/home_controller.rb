@@ -2,7 +2,7 @@ class HomeController < ApplicationController
 	before_action :authenticate_user!
 
 	def profile
-		if current_user
+		if current_user&.authentication_token
 			if !current_user&.stripeCustomerID.blank? || !current_user&.stripeMerchantID.blank?
 				callCurl = current_user.showStripeUserAPI
 

@@ -72,6 +72,7 @@ class ProductsController < ApplicationController
 				flash[:success] = "Product Created"
 				redirect_to products_path
 			else
+				debugger
 				productStarted.destroy!
 				flash[:alert] = response['message']
 				redirect_to new_product_path

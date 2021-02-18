@@ -1,6 +1,12 @@
 <div class="card card-style">
-    <% if current_user&.manager? %>
+    <% if current_user&.manager? && current_user&.checkStripeSource%>
       <a href="<%= new_service_path %>" class="float-right btn btn-xs bg-yellow1-dark rounded-xl shadow-xl text-uppercase font-900 mt-2 font-11">Add Service</a>
+    <% end %>
+
+    <% if !current_user&.checkStripeSource %>
+      <p class="mb-5 text-center">
+        Your Brand Idea has partnerd with ScaledIt.co for all its technology needs.<br>  A representative from ScaledIt.co will contact you at <%= number_to_phone(current_user&.phone) %> or <%= current_user&.email %> shortly to get your account setup. 
+      </p>
     <% end %>
 </div>
 
@@ -26,47 +32,66 @@
     <div class="content">
       <% if current_user&.manager? %>
         <% @products.each do |h| %>
+          <% if h[:connectAccount] && h[:connectAccount] == current_user&.stripeMerchantID %>
 
-          <div data-filter-item="" data-filter-name="all <%= !h[:product]['metadata'].blank? ? h[:product]['metadata']['keywords'] + " " + h[:product]['description'] + " " + h[:product]['name'] : h[:product]['description'] + " " + h[:product]['name'] %>" class="search-result-list">
+            <div data-filter-item="" data-filter-name="all <%= !h[:product]['metadata'].blank? ? h[:product]['metadata']['keywords'] : h[:product][:name] %>" class="search-result-list">
 
-            <% if h[:product]['active'] && !Stripe::Price.list({limit: 100, product: h[:product]['id'], active: true}, {stripe_account: current_user.stripeMerchantID})['data'].blank? %>
-              <span class="bg-green1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Active</span>
-            <% else %>
-              <span class="bg-red1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Unavailable</span>
-            <% end %>
-            <% if !h[:product]['images'].blank? %>
-              <%= cl_image_tag(h[:product]['images'][0].split(",")[0], :width=>100, :height=>100, :crop=>"crop", class: "mr-3") %>
-            <% end %>
-            <h1><%= h[:product]['name'] %></h1>
-            <p><%= h[:product]['description'] %></p>
-            <p class="text-right mb-0 pb-3">
-              <%= link_to "View", "/services/#{h[:product]['id'][5..h[:product]['id'].size]}?connectAccount=#{h[:connectAccount]}", class: 'btn btn-full bg-blue2-dark' %>
-            </p>
-          </div>
+              <% if h[:product]['active'] && !Stripe::Price.list({limit: 100, product: h[:product]['id'], active: true}, {stripe_account: current_user.stripeMerchantID})['data'].blank? %>
+                <span class="bg-green1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Active</span>
+              <% else %>
+                <span class="bg-red1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Unavailable</span>
+              <% end %>
+              <% if !h[:product]['images'].blank? %>
+                <%= cl_image_tag(h[:product]['images'][0].split(",")[0], :width=>100, :height=>100, :crop=>"crop", class: "mr-3") %>
+              <% end %>
+              <h1><%= h[:product]['name'] %></h1>
+              <p><%= h[:product]['description'] %></p>
+              <p class="text-right mb-0 pb-3">
+                <%= link_to "View", "/services/#{h[:product]['id'][5..h[:product]['id'].size]}?connectAccount=#{h[:connectAccount]}", class: 'btn btn-full bg-blue2-dark' %>
+              </p>
+            </div>
+          <% end %>
         <% end %>
       <% else %>
         <% @activeProducts.each do |h| %>
+          <% if h[:connectAccount] %>
 
-          <div data-filter-item="" data-filter-name="all <%= !h[:product]['metadata'].blank? ? h[:product]['metadata']['keywords'] : h[:product]['description'] + " " + h[:product]['name'] %>" class="search-result-list">
+            <div data-filter-item="" data-filter-name="all <%= !h[:product]['metadata'].blank? ? h[:product]['metadata']['keywords'] : h[:product][:name] %>" class="search-result-list">
 
-            
-            <% if !h[:product]['images'].blank? %>
-              <%= cl_image_tag(h[:product]['images'][0].split(",")[0], :width=>100, :height=>100, :crop=>"crop", class: "mr-3") %>
-            <% end %>
-            <h1><%= h[:product]['name'] %></h1>
-            <p><%= h[:product]['description'] %></p>
-            <p class="text-right mb-0 pb-3">
-              <%= link_to "View", "/services/#{h[:product]['id'][5..h[:product]['id'].size]}?connectAccount=#{h[:connectAccount]}", class: 'btn btn-full bg-blue2-dark' %>
-            </p>
-          </div>
+              
+              <% if !h[:product]['images'].blank? %>
+                <%= cl_image_tag(h[:product]['images'][0].split(",")[0], :width=>100, :height=>100, :crop=>"crop", class: "mr-3") %>
+              <% end %>
+              <h1><%= h[:product]['name'] %></h1>
+              <p><%= h[:product]['description'] %></p>
+              <p class="text-right mb-0 pb-3">
+                <%= link_to "View", "/services/#{h[:product]['id'][5..h[:product]['id'].size]}?connectAccount=#{h[:connectAccount]}", class: 'btn btn-full bg-blue2-dark' %>
+              </p>
+            </div>
+          <% end %>
         <% end %>
       <% end %>
     </div>
   </div>
 
 
-<!-- keen data of most searched (using JS) and bought(via controller)? -->
-
+  <!-- keen data of most searched (using JS) and bought(via controller)? -->
+  <div class="search-trending card card-style disabled">
+    <div class="content mb-2">
+      <h3>Shop Searches</h3>
+      <p class="font-11 mt-n2">What others are Searching for.</p>
+    </div>
+    <div class="list-group list-custom-small mr-3 ml-3">
+      <a href="#">
+        <span class="font-400 color-blue2-dark">View All</span>
+        <i class="color-gray2-dark fa fa-angle-right"></i>
+      </a>        
+      <a href="#">
+        <span class="font-400 color-blue2-dark">Willis</span>
+        <i class="color-gray2-dark fa fa-angle-right"></i>
+      </a>        
+    </div>
+  </div>
 
 
 <script type="text/javascript">
