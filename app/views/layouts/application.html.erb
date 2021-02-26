@@ -74,7 +74,7 @@
             <% end %>
 
             <% if !current_user&.twilioPhoneVerify %>
-              <%= link_to '/carts', class: 'font-14 header-icon header-icon-3' do %>
+              <%= link_to '/verify-phone', class: 'font-14 header-icon header-icon-3' do %>
                 <i class="fa fa-check-circle color-yellow2-dark" data-toggle="tooltip" data-placement="right" title="" data-original-title="To verify your account, please enter the code we sent to the phone number on file."></i>
               <% end %>
             <% end %>

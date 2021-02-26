@@ -75,7 +75,9 @@ class User < ApplicationRecord
     state = params[:state]
     country = "USA"
 
-    saved = self.update(street: street, city: city, state: state, country: country, phone: phone)
+    if street.present?
+      saved = self.update(street: street, city: city, state: state, country: country, phone: phone)
+    end
     # build the address by saving to user and passing param
 
     curlCall  = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "email=#{email}&name=#{stripeName}&phone=#{phone}&source=#{source}" -X PATCH #{SITEurl}/v1/stripe-customers/#{self.uuid}`

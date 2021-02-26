@@ -30,6 +30,7 @@ Rails.application.routes.draw do
 		post "updateQuantity", to: 'carts#updateQuantity', as: "updateQuantity"
 		
 		post "join", to: 'home#join', as: "join"
+		post "verify-phone", to: 'home#verifyPhone', as: "verifyPhone"
 		
 		post "requestBooking", to: 'schedule#requestBooking', as: "requestBooking"
 		post "acceptBooking", to: 'schedule#acceptBooking', as: "acceptBooking"
@@ -42,8 +43,9 @@ Rails.application.routes.draw do
 		
 		get "destroy", to: 'services#destroy', as: "destroyService"
 
-		get "membership", to: 'home#membership', as: "membership"
 		get "profile", to: 'home#profile', as: "profile"
+		get "membership", to: 'home#membership', as: "membership"
+		get "verify-phone", to: 'home#verifyPhone'
 		get "authenticateAPI", to: 'home#authenticateAPI', as: "authenticateAPI"
 
 	  authenticated :user do

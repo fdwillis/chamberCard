@@ -89,6 +89,27 @@ class HomeController < ApplicationController
 		render :layout => "landing1"
 	end
 
+	def verifyPhone
+		if request.get?
+		end
+
+		if request.post?
+			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params[:verifyPhone].to_json}' -X PATCH #{SITEurl}/v1/verify`
+
+			response = Oj.load(curlCall)
+
+	    if response['success']
+	    	
+				flash[:success] = response['message']
+				
+	      redirect_to verify_phone_path
+	    else
+				flash[:error] = response['message']
+	      redirect_to verify_phone_path
+	    end
+		end
+	end
+
 	private
 
 	def joinParams

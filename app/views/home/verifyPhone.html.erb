@@ -1,0 +1,48 @@
+<div class="card card-style">
+      <div class="content mb-0">
+        <h4 class="text-center"><i class="input-icon fa fa-exclamation-triangle color-red2-light"></i> &nbsp; &nbsp; Account Pending</h4>
+
+        <p class="mb-5 text-center">
+          We just need to verify you're a real person. Enter the code we sent to the number you gave us and that's all! 
+        </p>
+        </p>
+        <%= form_for :verifyPhone, url: verifyPhone_path do |f| %>
+
+          <div class="input-style input-style-2 has-icon input-required mt-4">
+              <i class="input-icon fa fa-lock"></i>
+              <span class="color-highlight input-style-1-active">Verification Code</span>
+              <em>(required)</em>
+              <%= f.text_field :tewCodeVerificationCode, class: "form-control", required: true %>
+          </div>
+
+          <div class="col-12">
+            <div class="input-style input-style-2">
+              <%= f.submit "Verify Account", class: "btn bg-yellow1-dark text-uppercase rounded-sm font-900"%>
+            </div>
+          </div>
+        <% end %>
+
+        <p class="mb-5 text-center">Update your contact information below if necessary 
+        <%= form_for :updateCustomer, url: stripe_customer_path(id: current_user&.uuid), method: :put do |f| %>
+
+          <div class="input-style input-style-2 has-icon input-required mt-4">
+              <i class="input-icon fa fa-at"></i>
+              <span class="color-highlight input-style-1-active">Email Address</span>
+              <em>(required)</em>
+              <%= f.email_field :email, value: current_user&.email ? current_user&.email : @email, class: "form-control", required: true %>
+          </div> 
+          <div class="input-style input-style-2 has-icon input-required mt-4">
+              <i class="input-icon fa fa-phone"></i>
+              <span class="color-highlight input-style-1-active">Phone Number</span>
+              <em>(required)</em>
+              <%= f.text_field :phone, placeholder: "2628547895", class: "form-control", value: current_user&.phone ? current_user&.phone : @phone, required: true %>
+          </div>
+
+          <div class="col-12">
+            <div class="input-style input-style-2">
+              <%= f.submit "Save Information", class: "btn bg-green1-dark text-uppercase rounded-sm font-900"%>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
