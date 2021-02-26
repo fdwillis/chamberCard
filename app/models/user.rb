@@ -166,7 +166,7 @@ class User < ApplicationRecord
     response = Oj.load(curlCall)
     
     if response['success']
-      self.update(username: response['username'] ,accessPin: response['accessPin'] , stripeMerchantID: response['stripeMerchantID'], stripeCustomerID: response['stripeCustomerID'], authentication_token: response['authentication_token'], uuid: response['uuid'] )
+      self.update(username: response['username'] ,accessPin: response['accessPin'] , stripeMerchantID: response['stripeMerchantID'], stripeCustomerID: response['stripeCustomerID'], authentication_token: response['authentication_token'], uuid: response['uuid'], twilioPhoneVerify: response['twilioPhoneVerify'] )
       return response
     else
       return response
@@ -178,7 +178,7 @@ class User < ApplicationRecord
     curlCall = `curl -d "appName=#{ENV['appName']}&phone=#{params['phone']}&accessPin=#{params['accessPin']}&email=#{self.email}&username=#{self.username}&password=#{self.password}&password_confirmation=#{self.password}" #{SITEurl}/v1/users`
     response = Oj.load(curlCall)
     if !response.blank? && response['success']
-      self.update(uuid: response['uuid'],username: response['username'], accessPin: response['accessPin'], phone: response['phone'] )
+      self.update(uuid: response['uuid'],username: response['username'], accessPin: response['accessPin'], phone: response['phone'], twilioPhoneVerify: response['twilioPhoneVerify'] )
       return response
     else
       return response
