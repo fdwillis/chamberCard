@@ -1922,6 +1922,35 @@
     </style>
   </head>
   <body class="lp-pom-body">
+    <% if flash[:success] %>
+      <div id="toast-2" class="toast text-center toast-tiny toast-top bg-green1-dark fade" data-delay="3000" data-autohide="true"><i class="fa fa-info mr-3"></i><%= flash[:success] %></div>
+      <script type="text/javascript">
+        setTimeout(function(){
+            $('#toast-2').toast('show');
+        }, 100);
+      </script>
+    <% elsif flash[:notice] %>
+      <div id="toast-3" class="toast text-center toast-tiny toast-top bg-blue2-dark fade" data-delay="3000" data-autohide="true"><i class="fa fa-info mr-3"></i><%= flash[:notice] %></div>
+      <script type="text/javascript">
+        setTimeout(function(){
+            $('#toast-3').toast('show');
+        }, 100);
+      </script>
+    <% elsif flash[:error] %>
+      <div id="toast-32" class="toast text-center toast-tiny toast-top bg-red2-dark fade" data-delay="3000" data-autohide="true"><i class="fa fa-info mr-3"></i><%= flash[:error] %></div>
+      <script type="text/javascript">
+        setTimeout(function(){
+            $('#toast-32').toast('show');
+        }, 100);
+      </script>
+    <% elsif flash[:alert] %>
+      <div id="toast-344" class="toast text-center toast-tiny toast-top bg-yellow1-dark fade" data-delay="15000" data-autohide="true"><i class="fa fa-info mr-3"></i><%= flash[:alert] %></div>
+      <script type="text/javascript">
+        setTimeout(function(){
+            $('#toast-344').toast('show');
+        }, 100);
+      </script>
+    <% end %>
     <%= yield %>
 
 
