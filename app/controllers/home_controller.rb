@@ -99,10 +99,11 @@ class HomeController < ApplicationController
 			response = Oj.load(curlCall)
 
 	    if response['success']
-	    	
+	    	current_user.update(twilioPhoneVerify: response['twilioPhoneVerify'])
+
 				flash[:success] = response['message']
 				
-	      redirect_to verify_phone_path
+	      redirect_to profile_path
 	    else
 				flash[:error] = response['message']
 	      redirect_to verify_phone_path

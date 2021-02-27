@@ -32,6 +32,7 @@ Rails.application.routes.draw do
 		post "join", to: 'home#join', as: "join"
 		post "verify-phone", to: 'home#verifyPhone', as: "verifyPhone"
 		
+		post "resend-code", to: 'stripe_customers#resendCode', as: "resendCode"
 		post "requestBooking", to: 'schedule#requestBooking', as: "requestBooking"
 		post "acceptBooking", to: 'schedule#acceptBooking', as: "acceptBooking"
 		post "cancel", to: 'schedule#cancel', as: "cancel"

@@ -33,7 +33,6 @@ class User < ApplicationRecord
     end
   end
 
-
   def self.timeKit
     t = `curl --request 'GET' --header 'Content-Type: application/json' --url 'https://api.timekit.io/v2/projects' --user ':test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9'`
     json = Oj.load(t)['data']
@@ -61,6 +60,19 @@ class User < ApplicationRecord
     return resources.flatten
 
 
+  end
+
+  def resendTwilioPhoneAPI
+    
+
+    curlCall  = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X POST #{SITEurl}/v1/resend-phone-code`
+    response = Oj.load(curlCall)
+
+    if response['success']
+      return response
+    else
+      return response
+    end
   end
 
   def updateStripeCustomerAPI(params)

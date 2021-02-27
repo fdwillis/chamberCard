@@ -12,7 +12,7 @@
               <i class="input-icon fa fa-lock"></i>
               <span class="color-highlight input-style-1-active">Verification Code</span>
               <em>(required)</em>
-              <%= f.text_field :tewCodeVerificationCode, class: "form-control", required: true %>
+              <%= f.number_field :tewCodeVerificationCode, class: "form-control", required: true %>
           </div>
 
           <div class="col-12">
@@ -21,6 +21,30 @@
             </div>
           </div>
         <% end %>
+
+        <%= form_for :resendCode, url: resendCode_path do |f| %>
+	        <div class="col-12">
+            <div class="input-style input-style-2">
+		          <%= f.submit "Resend Code", class: "btn bg-blue2-dark text-uppercase font-900 rounded-sm"%>
+		        </div>
+	        </div>
+        <% end %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         <p class="mb-5 text-center">Update your contact information below if necessary 
         <%= form_for :updateCustomer, url: stripe_customer_path(id: current_user&.uuid), method: :put do |f| %>

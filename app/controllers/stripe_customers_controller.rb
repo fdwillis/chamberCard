@@ -26,6 +26,18 @@ before_action :authenticate_user!
 
 	end
 
+	def resendCode
+		callCurl = current_user.resendTwilioPhoneAPI
+
+		if callCurl['success']
+			flash[:success] = "Verification Sent"
+			redirect_to verify_phone_path
+		else
+			flash[:error] = callCurl['message']
+			redirect_to verify_phone_path
+		end
+	end
+
 	private
 
 	def stripeCustomerParams
