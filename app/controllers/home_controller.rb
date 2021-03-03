@@ -48,7 +48,7 @@ class HomeController < ApplicationController
 
 	def join
 		if current_user&.paymentOn?
-			params = {price: joinParams[:plan]}.to_json
+			params = {price: joinParams[:plan], serviceFee: joinParams[:serviceFee]}.to_json
 			
 			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X POST #{SITEurl}/v1/subscriptions`
 			
@@ -114,6 +114,6 @@ class HomeController < ApplicationController
 	private
 
 	def joinParams
-		paramsClean = params.require(:join).permit(:plan)
+		paramsClean = params.require(:join).permit(:serviceFee, :plan)
 	end
 end
