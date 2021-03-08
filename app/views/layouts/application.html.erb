@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Your Brand Idea</title>
+    <title><%= ENV['siteName'] %></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -145,7 +145,7 @@
                         <img src="/assets/ML_512-01.png" width="43">
                     </div>
                     <div class="flex-grow-1">
-                        <h1 class="font-22 font-700 mb-0">Your Brand Idea</h1>
+                        <h1 class="font-22 font-700 mb-0"><%= ENV['siteName'] %></h1>
                         <p class="mt-n2  font-10 font-400">Your brand tagline here</p>
                     </div>
                 </div>
