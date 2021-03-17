@@ -88,7 +88,7 @@
                   <h4><%= number_to_currency(@cart['serviceFee'] * 0.01, precision: 2) %></h4>
 
                   <% if !current_user&.member? %>
-                    <h4 class="opacity-50"><%= number_to_currency((@cart['serviceFee'] - (@cart['serviceFee'] * 0.71)) * 0.01, precision: 2) %></h4>
+                    <!-- <h4 class="opacity-50"><%= number_to_currency((@cart['serviceFee'] - (@cart['serviceFee'] * 0.71)) * 0.01, precision: 2) %></h4> -->
                   <% elsif current_user&.member? %>
                     <p><%= number_to_currency((((35 * 0.01) * @cart['subItemsTotal']) * 0.01) - ((@cart['servicePercent'] * @cart['subItemsTotal']) * 0.01), precision: 2) %></p>
                   <% end %>
@@ -99,20 +99,30 @@
                   <h5 class="font-600">Sub Total</h5>
               </div>
               <div class="ml-auto text-right">
-                  <h4>
+                  <h5 class="font-600">
                     <%= number_to_currency(@cart['subItemsTotal'] * 0.01, precision: 2) %>
-                  </h4>
+                  </h5>
+              </div>
+          </div>
+          <div class="d-flex mb-3">
+              <div class="mr-3 text-left">
+                  <h5 class="font-600">Grand Total</h5>
+              </div>
+              <div class="ml-auto text-right">
+                  <h5 class="font-600">
+                    <%= number_to_currency(@cart['subTotal'] * 0.01, precision: 2) %>
+                  </h5>
               </div>
           </div>
           <div class="divider"></div>
           <div class="d-flex mb-3">
               <div class="mr-3 text-left">
-                  <h4 class="font-20">Grand Total</h4>
+                  <h5 class="font-600">Due Today</h5>
               </div>
               <div class="ml-auto text-right">
-                  <h4 class="font-20">
-                    <%= number_to_currency(@cart['subTotal'] * 0.01, precision: 2) %>
-                  </h4>
+                  <h5 class="font-600">
+                    <%= number_to_currency((@cart['subTotal'] * 0.01) * (ENV['stripeCapturePercentage'].to_i*0.01), precision: 2) %>
+                  </h5>
               </div>
           </div>
           

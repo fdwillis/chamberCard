@@ -96,7 +96,7 @@ class User < ApplicationRecord
 
     response = Oj.load(curlCall)
 
-    if response['success'] && saved
+    if response['success']
       return response
     else
       return false
@@ -259,6 +259,16 @@ class User < ApplicationRecord
 
   def admin?
     adminAccess.include?(accessPin)     
+  end
+  
+  def subscriptionCheck
+    if !stripeCustomerID.blank?
+      loadCustomer = Stripe::Subscription.list({customer: stripeCustomerID})['data']
+#if subscription not active? unpaid? anything but active/present
+      return !loadCustomer.blank? ? true : false
+    else
+      return false
+    end
   end
 
   def checkStripeSource

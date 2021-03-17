@@ -1,7 +1,8 @@
-Rails.application.configure do
-  require "awesome_print"
+require "awesome_print"
 
-  AwesomePrint.irb!
+AwesomePrint.irb!
+
+Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   # Settings specified here will take precedence over those in config/application.rb.
 
