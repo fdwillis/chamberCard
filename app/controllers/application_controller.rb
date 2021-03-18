@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
 	    response = Oj.load(curlCall)
 	    
 	    if response['success']
-	    	@cart = response.merge(stripeCapturePercentage: ENV['stripeCapturePercentage'].to_i * 0.01)
+	    	@cart = response.merge(stripeCapturePercentage: ENV['stripeCapturePercentage'].to_f * 0.01)
 	    end
 	  else
 	  	@cart = nil
