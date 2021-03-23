@@ -86,10 +86,10 @@ Contact
                                 </div>
                               <% end %>
                             </div>
-                            <%= form_for :trackingNumber, id: "#{h['customer']}#{h['invoice']['id']}", url: trackingNumber_path do |f| %>
+                            <%= form_for :trackingNumber, id: "#{h['customerStripeInfo']['name']}#{h['invoice']['id']}", url: trackingNumber_path do |f| %>
                               <div class="input-style input-style-2 mt-2 ">
                               Did you receive your order?
-                                <%= f.select :orderIssueStatus, [['Yes', 0], ['Yes, But theres an issue or problem',1]], id: "#{h['customer']}#{h['invoice']['id']}", onchange: "showReport(#{h['customer']}#{h['invoice']['id']});" %>
+                                <%= f.select :orderIssueStatus, [['Yes', 0], ['Yes, But theres an issue or problem',1]], id: "#{h['customerStripeInfo']['name']}#{h['invoice']['id']}", onchange: "showReport(#{h['customerStripeInfo']['name']}#{h['invoice']['id']});" %>
                                 <%= f.hidden_field :invoice, value: h['invoice']['id'] %>
                                 <%= f.hidden_field :merchantStripeID, value: h['invoice']['metadata']['connectAccount'] %>
 

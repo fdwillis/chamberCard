@@ -14,7 +14,8 @@
     <div class="card card-style shadow-s">
       <% stored.each do |cart| %>
         <div class="content">
-            <a href="carts/<%= @cart['carts'][indx]['connectAccount'] %>?item=<%= cart['stripePriceInfo']['id']%>" class="d-block float-right opacity-90"><i class="fa fa-times pr-2 color-red2-dark"></i></a>
+            <%= link_to ('<i class=“fa fa-times pr-2 color-red2-dark”> </i>').html_safe, cart_path(id: @cart['carts'][indx]['connectAccount'], item: cart['stripePriceInfo']['id']), :method=> :delete, :remote=> true%>
+            <a href="carts/<%= @cart['carts'][indx]['connectAccount'] %>?item=<%= cart['stripePriceInfo']['id']%>" method="DELETE" class="d-block float-right opacity-90"><i class="fa fa-times pr-2 color-red2-dark"></i></a>
           <%= form_for :addToCart, :html => {:id => cart['stripePriceInfo']['id']}, url: updateQuantity_path(id: @cart['carts'][indx]['connectAccount']) do |f| %>
             <%= f.hidden_field :sellerItem, value: cart['stripePriceInfo']['id'] %>
 
