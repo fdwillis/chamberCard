@@ -174,8 +174,8 @@ class User < ApplicationRecord
     end
   end
 
-  def createUserSessionAPI(password)
-    curlCall = `curl -d "email=#{self.email}&password=#{password}" #{SITEurl}/v1/sessions`
+  def self.createUserSessionAPI(user)
+    curlCall = `curl -d "email=#{user['email']}&password=#{user['password']}" #{SITEurl}/v1/sessions`
     
     response = Oj.load(curlCall)
     
