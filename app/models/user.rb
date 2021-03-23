@@ -8,7 +8,7 @@ class User < ApplicationRecord
 
 
   def syncTimekit(params)
-    resource_id = params['resource_id'] == timeKitID ? ( (Rails.env.development? || Rails.env.test?) ? "f8abca72-ec4d-4812-b4b2-156855462017" : timeKitID) : nil
+    resource_id =  (Rails.env.development? || Rails.env.test?) ? "f8abca72-ec4d-4812-b4b2-156855462017" : timeKitID
     
     start = DateTime.parse(params['start']).rfc3339
     endAt = (DateTime.parse(params['start']) + params['duration'].to_i.minutes).rfc3339
