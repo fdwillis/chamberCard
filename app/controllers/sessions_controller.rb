@@ -1,5 +1,5 @@
 class SessionsController < Devise::SessionsController
-  before_action :after_login, :only => :create
+  after_action :after_login, :only => :create
   before_action :after_logout, :only => :destroy
   # before_action :after_login, :only => :create
   
@@ -19,10 +19,14 @@ class SessionsController < Devise::SessionsController
 
   def after_login
     response = User.createUserSessionAPI(params[:user])
+
     if response['success']
       flash[:success] = "Welcome"
     else
+      reset_session
+      current_user = nil
       flash[:alert] = response['message']
+      # redirect_to new_user_session_path
     end
   end
 end
