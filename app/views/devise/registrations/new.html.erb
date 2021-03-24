@@ -6,11 +6,9 @@
 
 
         <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-          <div class="input-style has-icon input-style-2 input-required pb-1">
-              <span class="color-highlight input-style-1-active">Account Type</span>
-              <em>(required)</em>
-              <%= f.select :accessPin, [['I want to shop', 'customer'], ['I want to sell', 'manager']], required: true %>
-          </div>
+
+          <%= f.hidden_field :accessPin, value:'customer', required: true %>
+        
           <div class="input-style has-icon input-style-2 input-required pb-1">
               <i class="input-icon fa fa-user color-theme"></i>
               <span class="color-highlight input-style-1-active">Username</span>

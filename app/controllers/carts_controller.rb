@@ -84,7 +84,7 @@ class CartsController < ApplicationController
 			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X POST #{SITEurl}/v1/checkout`
 			
 	    response = Oj.load(curlCall)
-
+	    
 	    if response['success']
 	    	flash[:success] = "Purchase Complete"
 	    	redirect_to charges_path
