@@ -64,7 +64,6 @@ class ScheduleController < ApplicationController
 	def acceptBooking
 		# sync booking to manager calendar
 		bookingDone = current_user&.syncTimekit(params[:acceptBooking])
-
 		if bookingDone[:success]
 
 			curlCall = Schedule.APIaccept(current_user, params[:acceptBooking], bookingDone[:timeKitBookingID])

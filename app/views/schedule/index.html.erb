@@ -153,7 +153,6 @@ Contact
 
             <% startDateX = Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'], {stripe_account: current_user&.stripeMerchantID})['metadata']['startDate'] %>
 
-NAME: <%= h['customerStripeInfo']['name']  %>
 
             <% if Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'],{stripe_account: current_user&.stripeMerchantID })['metadata']['merchantConfirmed'] == "true" %>
               <div class="card card-style bg-theme pb-0">
