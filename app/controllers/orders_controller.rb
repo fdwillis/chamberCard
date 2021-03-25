@@ -8,7 +8,6 @@ class OrdersController < ApplicationController
 	    response = Oj.load(curlCall)
 	    if response['success']
 				@payments = response['payments']
-				# debugger
 			elsif response['message'] == "No purchases found"
 				@message = response['message']
 			else
