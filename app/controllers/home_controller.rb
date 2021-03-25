@@ -10,7 +10,7 @@ class HomeController < ApplicationController
 					@sources = !callCurl['source'].blank? ? callCurl['source'] : callCurl['sources']
 					@phone = callCurl['stripeCustomer']['phone']
 					@name = callCurl['stripeCustomer']['name']
-					@email = callCurl['stripeCustomer']['email']
+					@email = current_user.email
 				end
 			end
 		else
