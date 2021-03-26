@@ -66,6 +66,7 @@ Contact
                   <div id="<%= h['invoice']['lines']['data'][0]['id'] %>" class="collapse" data-parent="#accordion-1" style="">
 
                   <% if current_user&.manager?  %>
+                    <%= User.find_by(stripeCustomerID: h['customerStripeInfo']['id']) %>
                     <%= form_for :trackingNumber, url: trackingNumber_path do |f| %>
                       <div class="input-style has-icon input-style-2 input-required pb-1">
                           <i class="input-icon fa fa-truck color-theme"></i>

@@ -25,39 +25,98 @@ class ScheduleController < ApplicationController
 	# webhook
 	def timeKitCancel
 		#  place in webhook controller
-		metaData = params['meta']
-		timeKitID = params['id']
-		connectAccount = metaData['connectAccount']
-		invoiceItem = metaData['invoiceItem']
+		if request.put?
+			metaData = params['meta']
+			timeKitID = params['id']
+			connectAccount = metaData['connectAccount']
+			invoiceItem = metaData['invoiceItem']
 
 
-		stripeInvoiceItem = Stripe::InvoiceItem.retrieve(invoiceItem, {stripe_account: connectAccount})
-		stripeMetaData = stripeInvoiceItem['metadata']
-		claimedInt = stripeMetaData['claimed'].to_i
+			stripeInvoiceItem = Stripe::InvoiceItem.retrieve(invoiceItem, {stripe_account: connectAccount})
+			stripeMetaData = stripeInvoiceItem['metadata']
+			claimedInt = stripeMetaData['claimed'].to_i
 
-		ogTimekitString = stripeMetaData['timeKitBookingID']
-		ogTimekitArray = ogTimekitString.split(",")
-		
-		# edit metadata by removing timekitID of meeting passed
-		if ogTimekitArray.include?(timeKitID)
-			ogTimekitArray.delete(timeKitID)
+			ogTimekitString = stripeMetaData['timeKitBookingID']
+			ogTimekitArray = ogTimekitString.split(",")
 			
-			invoiceUpdated = Stripe::InvoiceItem.update(
-			  stripeInvoiceItem['id'],
-			  {
-			  	metadata: {
+			# edit metadata by removing timekitID of meeting passed
+			if ogTimekitArray.include?(timeKitID)
+				ogTimekitArray.delete(timeKitID)
+				
+				invoiceUpdated = Stripe::InvoiceItem.update(
+				  stripeInvoiceItem['id'],
+				  {
+				  	metadata: {
 
-						timeKitBookingID: ogTimekitArray.join(","),
-						claimed: "#{claimedInt -= 1}"
-					}
-				}, {stripe_account: connectAccount}
-			)
+							timeKitBookingID: ogTimekitArray.join(","),
+							claimed: "#{claimedInt -= 1}"
+						}
+					}, {stripe_account: connectAccount}
+				)
+			end
+
+			render json: {
+				success: true
+			}
+			return
 		end
 
-		render json: {
-			success: true
-		}
-		return
+		if request.post?
+			debugger
+			return
+			if timeKitBookingID = params['cancel']['timeKitBookingID']
+
+				connectAccount = params['cancel']['merchantStripeID']
+				invoiceItem = params['cancel']['serviceToCancel']
+
+				begin
+					stripeInvoiceItem = Stripe::InvoiceItem.retrieve(invoiceItem, {stripe_account: connectAccount})
+					stripeMetaData = stripeInvoiceItem['metadata']
+					claimedInt = stripeMetaData['claimed'].to_i
+
+					ogTimekitString = stripeMetaData['timeKitBookingID']
+					ogTimekitArray = ogTimekitString.split(",")
+					debugger
+					# edit metadata by removing timekitID of meeting passed
+					if ogTimekitArray.include?(timeKitBookingID)
+						ogTimekitArray.delete(timeKitBookingID)
+						debugger
+						invoiceUpdated = Stripe::InvoiceItem.update(
+						  stripeInvoiceItem['id'],
+						  {
+						  	metadata: {
+
+									timeKitBookingID: ogTimekitArray.join(","),
+									claimed: "#{claimedInt -= 1}", 
+									merchantConfirmed: false
+								}
+							}, {stripe_account: connectAccount}
+						)
+					end
+
+					if invoiceUpdated['id']
+
+						flash[:success] = "Appointment Cancelled"
+						
+			      redirect_to request.referrer
+			    end
+
+				rescue Stripe::StripeError => e
+					render json: {
+						error: e.error.message
+					}
+					return
+				rescue Exception => e
+					render json: {
+						error: e
+					}
+				end
+				return
+			else
+				flash[:error] = "Please contact TewCode to setup your Schedule Sync"
+				redirect_to request.referrer
+			end
+		end
 	end
 
 

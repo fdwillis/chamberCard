@@ -8,7 +8,7 @@ class RegistrationsController < Devise::RegistrationsController
       createAtt = resource.createUserAPI(params[:user])
 
       if createAtt['success']
-        auth = User.createUserSessionAPI(params[:user])
+        auth = resource.createUserSessionAPI(params[:user])
         
         if auth['success']
           flash[:success] = "Created account"

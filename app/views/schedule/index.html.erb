@@ -35,7 +35,6 @@ Contact
                   <% remainingToClaim = itm['invoiceLine']['quantity'].to_i - itm['invoiceLine']['metadata']['claimed'].to_i %>
                 <% end %>
 
-                <% if remainingToClaim > 0 %>
 
                   <% if itm['product']['type'] == 'service' %>
 
@@ -78,13 +77,6 @@ Contact
                     <div class="accordion" id="<%= itm['invoiceLine']['id'] %>">
                       <div id="<%= itm['invoiceLine']['id'] %>" class="collapse" data-parent="#<%= itm['invoiceLine']['id'] %>" style="">
                         <div class="text-center">
-                          <% if !itm['invoiceLine']['metadata']['timeKitBookingID'].blank? %>
-                            <h4>Upcoming</h4>
-
-                            <% itm['invoiceLine']['metadata']['timeKitBookingID'].split(",").each do |tkid| %>
-                              <p class="mb-4"><%= tkid %></p>
-                            <% end %>
-                          <% end %>
 
                           
 
@@ -116,7 +108,6 @@ Contact
                       </div>
                     </div>
                   <% end %>
-                <% end %>
               <% end %>
           <% end %>
         </div>
@@ -154,79 +145,7 @@ Contact
             <% startDateX = Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'], {stripe_account: current_user&.stripeMerchantID})['metadata']['startDate'] %>
 
 
-            <% if Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'],{stripe_account: current_user&.stripeMerchantID })['metadata']['merchantConfirmed'] == "true" %>
-              <div class="card card-style bg-theme pb-0">
-                <div class="content mb-0">
-                  Order#<%= h['invoice']['id'][3..h['invoice']['id'].length].truncate(9, omission: '') %>
-                  <div class="row mb-0">
-                      <div class="col-3 icon icon-xl">
-                          <i class="fa fa-exclamation bg-fade-yellow1-dark rounded-xl color-yellow2-dark" width='80'></i>
-                      </div>
-                      <div class="col-9 pl-4">
-                          <div class="d-flex">
-                              <div><p class="font-700 color-theme">Date</p></div>
-                              <div class="ml-auto">
-                                <p>
-                                  <%= startDateX.to_datetime.strftime("%A, %B %d, %Y") %>
-                                  
-                                </p>
-                              </div>
-                          </div>
-                          <div class="d-flex">
-                              <div><p class="font-700 color-theme">Time</p></div>
-                              <div class="ml-auto">
-                                <p>
-                                  <%= startDateX.to_datetime.strftime("%I:%M %p") %>
-                                </p>
-                              </div>
-                          </div>
-                          <div class="d-flex">
-                              <div><p class="font-700 color-theme">Email</p></div>
-                              <div class="ml-auto"><p><%= link_to "Email Customer", "mailto:#{h['customerStripeInfo']['email']}"  %></p></div>
-                          </div>
-                          <div class="d-flex">
-                              <div><p class="font-700 color-theme">Phone</p></div>
-                              <div class="ml-auto"><p><%= link_to "Call Customer", "tel:#{h['customerStripeInfo']['phone']}"  %></p></div>
-                          </div>
-                          <div class="d-flex">
-                              <div><p class="font-700 color-theme">Customer</p></div>
-                              <div class="ml-auto"><p><%= h['customerStripeInfo']['name'] %></p></div>
-                          </div>
-
-                          <%= form_for :cancel, url: cancel_path do |f| %>
-                            <div class="d-flex mt-4">
-                              <%= f.hidden_field :serviceToCancel, value: itm['invoiceLine']['invoice_item'] %>
-                              <%= f.hidden_field :merchantStripeID, value: h['merchantStripeID'] %>
-                              <%= f.submit "Cancel Booking", class: "btn btn-full bg-red1-dark col-12 text-uppercase rounded-sm font-900"%>
-                            </div>
-                          <% end %>
-                      </div>
-                  </div>
-                  <div class="divider mt-3 mb-3"></div>
-                  <% if Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'],{stripe_account: current_user&.stripeMerchantID })['metadata']['timeKitBookingID'].blank? %>
-
-                    <%= form_for :requestBooking, id: "#{h['customerStripeInfo']['name']}#{h['invoice']['id']}", url: requestBooking_path do |f| %>
-                      <div class="row">
-                        <div class="input-style input-style-2 mt-2 col-6">
-                          Date
-                          <%= f.date_select(:dateRequested, :default => { day: DateTime.now.strftime("%d") , year: DateTime.now.strftime("%Y"), month: DateTime.now.strftime("%m") }) %>
-
-                        </div>
-                        <div class="input-style input-style-2 mt-2 col-6">
-                          Time
-                          <%= f.time_select(:my_time, start_hour: 8, end_hour: 20,minute_step: 15, ampm: true) %>
-                        </div>
-                      </div>
-
-                      <%= f.hidden_field :invoice, value: h['invoice']['id'] %>
-                      <%= f.hidden_field :merchantStripeID, value: h['merchantStripeID'] %>
-                      <%= f.hidden_field :serviceToBook, value: itm['invoiceLine']['invoice_item'] %>
-                      <%= f.submit "Change Date", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
-                    <% end %>
-                  <% end %>
-                </div>
-              </div>
-            <% else %>
+            <% if Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'],{stripe_account: current_user&.stripeMerchantID })['metadata']['merchantConfirmed'] != "true" %>
               <% if  itm['invoiceLine']['metadata']['requesting'].to_i > 0 %>
                 <div class="card card-style bg-theme pb-0">
                   <div class="content mb-0">

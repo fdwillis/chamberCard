@@ -98,6 +98,7 @@ class User < ApplicationRecord
     response = Oj.load(curlCall)
 
     if response['success']
+      self.update(phone: phone, email: email)
       return response
     else
       return false
@@ -175,13 +176,13 @@ class User < ApplicationRecord
     end
   end
 
-  def self.createUserSessionAPI(user)
+  def createUserSessionAPI(user)
     curlCall = `curl -d "email=#{user['email']}&password=#{user['password']}" #{SITEurl}/v1/sessions`
     
     response = Oj.load(curlCall)
     
     if response['success']
-      self.update(username: response['username'] ,accessPin: response['accessPin'] , stripeMerchantID: response['stripeMerchantID'], stripeCustomerID: response['stripeCustomerID'], authentication_token: response['authentication_token'], uuid: response['uuid'], twilioPhoneVerify: response['twilioPhoneVerify'] )
+      self.update(authentication_token: response['authentication_token'])
       return response
     else
       return response
