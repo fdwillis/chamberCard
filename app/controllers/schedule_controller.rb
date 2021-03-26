@@ -25,6 +25,7 @@ class ScheduleController < ApplicationController
 	# webhook
 	def timeKitCancel
 		#  place in webhook controller
+		
 		if request.put?
 			metaData = params['meta']
 			timeKitID = params['id']
@@ -49,7 +50,10 @@ class ScheduleController < ApplicationController
 				  	metadata: {
 
 							timeKitBookingID: ogTimekitArray.join(","),
-							claimed: "#{claimedInt -= 1}"
+							claimed: "#{claimedInt -= 1}",
+							requesting: nil,
+							startDate: nil,
+							merchantConfirmed: false
 						}
 					}, {stripe_account: connectAccount}
 				)
@@ -62,7 +66,7 @@ class ScheduleController < ApplicationController
 		end
 
 		if request.post?
-			debugger
+			
 			return
 			if timeKitBookingID = params['cancel']['timeKitBookingID']
 

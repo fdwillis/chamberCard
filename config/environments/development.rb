@@ -13,7 +13,7 @@ Rails.application.configure do
 
   # Do not eager load code on boot.
   config.eager_load = false
-  config.hosts << "41100d55e6ed.ngrok.io"
+  config.hosts << "slimy-bullfrog-95.loca.lt"
   
 
   # Show full error reports.
