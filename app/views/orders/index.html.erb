@@ -37,7 +37,10 @@ Contact
             <% if theInvoiceX['metadata']['goodOrService'] == 'good' && theInvoiceX['metadata']['orderIssue'].blank? %>
               <div class="row mb-4">
                  <div class="col-8">
-                  #<%= h['invoice']['id'][3..h['invoice']['id'].length] %>
+                  Order#<%= h['invoice']['id'][3..h['invoice']['id'].length] %><br>
+                  <% if current_user&.manager? %>
+                    Ship To: <%= User.find_by(stripeCustomerID: h['customerStripeInfo']['id']).address %>
+                  <% end %>
                 </div>
                  <div class="col-4">
                   <button class="accordion-btn col-12 btn btn-m btn-full bg-green1-dark text-uppercase font-900" data-toggle="collapse" data-target="#<%= h['invoice']['lines']['data'][0]['id'] %>" aria-expanded="false" style='margin-top:-10px;'>
@@ -66,7 +69,6 @@ Contact
                   <div id="<%= h['invoice']['lines']['data'][0]['id'] %>" class="collapse" data-parent="#accordion-1" style="">
 
                   <% if current_user&.manager?  %>
-                    <%= User.find_by(stripeCustomerID: h['customerStripeInfo']['id']) %>
                     <%= form_for :trackingNumber, url: trackingNumber_path do |f| %>
                       <div class="input-style has-icon input-style-2 input-required pb-1">
                           <i class="input-icon fa fa-truck color-theme"></i>
@@ -83,7 +85,7 @@ Contact
 
                   <% if current_user&.customer?  %>
                     <% if theInvoiceX['metadata']['trackingNumbers'].blank? %>
-                      <p>Your order ahas been received. Check back for tracking updates</p>
+                      <p>Your order has been received. Check back for tracking updates</p>
                     <% else %>
                       <div class="row">
                         <% theInvoiceX['metadata']['trackingNumbers'].split(",").each do |t| %>
