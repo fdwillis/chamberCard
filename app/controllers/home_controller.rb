@@ -10,7 +10,7 @@ class HomeController < ApplicationController
 					@sources = !callCurl['source'].blank? ? callCurl['source'] : callCurl['sources']
 					@phone = callCurl['stripeCustomer']['phone']
 					@name = callCurl['stripeCustomer']['name']
-					@email = callCurl['stripeCustomer']['email']
+					@email = current_user.email
 				end
 			end
 		else
@@ -29,9 +29,9 @@ class HomeController < ApplicationController
 			loadSaver = ENV["saverMonthlyMembership"].split(",")
 			loadElite = ENV["eliteMonthlyMembership"].split(",")
 
-			basicMonthly = ab_test(:basicMonthlyMembership, {loadBasic[0] => 2} , {loadBasic[1]=> 6}, {loadBasic[2]=> 2})
-			saverMonthly = ab_test(:saverMonthlyMembership, {loadSaver[0] => 2} , {loadSaver[1] => 6}, {loadSaver[2] => 2})
-			eliteMonthly = ab_test(:eliteMonthlyMembership, {loadElite[0] => 2} , {loadElite[1] => 6}, {loadElite[2] => 2})
+			basicMonthly = ab_test(:basicMonthlyMembership, {loadBasic[0] => 0.75} , {loadBasic[1]=> 8}, {loadBasic[2]=> 1.25})
+			saverMonthly = ab_test(:saverMonthlyMembership, {loadSaver[0] => 0.75} , {loadSaver[1] => 8}, {loadSaver[2] => 1.25})
+			eliteMonthly = ab_test(:eliteMonthlyMembership, {loadElite[0] => 0.75} , {loadElite[1] => 8}, {loadElite[2] => 1.25})
 		
 			@basicMonthlyMembership = Stripe::Price.retrieve("price_#{basicMonthly}")
 			@saverMonthlyMembership = Stripe::Price.retrieve("price_#{saverMonthly}")

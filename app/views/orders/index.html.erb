@@ -32,78 +32,90 @@ Contact
     <% if @payments&.present?  %>
       <div class="card card-style">
         <div class="content mb-0">
-          <div class="row mb-4">
-            <div class="col-5"><h4 class="font-14 text-left"><u>Product</u></h4></div>
-            <div class="col-3"><h4 class="font-14 text-justify"><u>QTY</u></h4></div>
-            <div>&nbsp;</div>
-          </div>
           <% @payments.each_with_index do |h, hindx| %>
-              <% h['items'].each_with_index do |itm,indx| %>
-                <% if Stripe::Invoice.retrieve(h['invoice'], {stripe_account: h['merchantStripeID']})['metadata']['goodOrService'] == 'good' %>
-
-
-                  <% if itm['product']['type'] == 'good' %>
-                    <div class="row mb-4">
-                      <div class="col-5"><h4 class="font-14 text-left"><%= itm['product']['name'].titleize %></h4></div>
-                      <% if itm['price']['transform_quantity'] && !itm['price']['transform_quantity']['divide_by'].blank? %>
-                        <div class="col-3"><h4 class="font-14 text-justify"><%= (itm['invoiceLine']['quantity'].to_i * itm['price']['transform_quantity']['divide_by']) %></h4></div>
-                      <% else %>
-                        <div class="col-3"><h4 class="font-14 text-justify"><%= itm['invoiceLine']['quantity'].to_i %></h4></div>
-                      <% end %>
-                      <div class="col-4">
-                        <button class="accordion-btn  btn btn-m btn-full bg-green1-dark text-uppercase font-900" data-toggle="collapse" data-target="#<%= itm['invoiceLine']['id'] %>" aria-expanded="false" style='margin-top:-10px;'>
-                          <i class="fa fa-truck"></i>
-                        </button>
-                      </div>
-                    </div>
-                    <div class="accordion" id="accordion-1">
-                      <div class="mb-4">
-                        <div id="<%= itm['invoiceLine']['id'] %>" class="collapse" data-parent="#accordion-1" style="">
-
-                        <% if current_user&.manager?  %>
-                          <%= form_for :trackingNumber, url: trackingNumber_path do |f| %>
-                            <div class="input-style has-icon input-style-2 input-required pb-1">
-                                <i class="input-icon fa fa-truck color-theme"></i>
-                                <span class="color-highlight input-style-1-active">Tracking Numbers</span>
-                                <em>(required)</em>
-                                <%= f.text_field :trackingIDs, placeholder: "1ZSD6756...", required: true, value: !Stripe::Invoice.retrieve(h['invoice'], {stripe_account: h['merchantStripeID']})['metadata']['trackingNumbers'].blank? ? Stripe::Invoice.retrieve(h['invoice'], {stripe_account: h['merchantStripeID']})['metadata']['trackingNumbers'] : nil %>
-                                <%= f.hidden_field :invoice, value: h['invoice'] %>
-                            </div> 
-                            <p class="text-center">Seperate Tracking Numbers By Comma</p>
-                            <%= f.submit "Update Tracking", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
-                          <% end %>
-                        <% end %>
-
-
-                        <% if current_user&.customer?  %>
-                          <% if Stripe::Invoice.retrieve(h['invoice'], {stripe_account: h['merchantStripeID']})['metadata']['trackingNumbers'].blank? %>
-                            <p>Your order ahas been received. Check back for tracking updates</p>
-                          <% else %>
-                            <div class="row">
-                              <% Stripe::Invoice.retrieve(h['invoice'], {stripe_account: h['merchantStripeID']})['metadata']['trackingNumbers'].split(",").each do |t| %>
-                                <div class="text-left col-12">
-                                  Tracking Number - <%= link_to t, "https://www.google.com/search?q=#{t}&oq=#{t}", 'target' => '_blank' %>
-                                </div>
-                              <% end %>
-                            </div>
-                            <%= form_for :trackingNumber, id: "#{h['customer']}#{h['invoice']}", url: trackingNumber_path do |f| %>
-                              <div class="input-style input-style-2 mt-2 ">
-                              Did you receive your order?
-                                <%= f.select :orderIssueStatus, [['Yes', 0], ['Yes, But theres an issue or problem',1]], id: "#{h['customer']}#{h['invoice']}", onchange: "showReport(#{h['customer']}#{h['invoice']});" %>
-                                <%= f.hidden_field :invoice, value: h['invoice'] %>
-                                <%= f.hidden_field :merchantStripeID, value: h['merchantStripeID'] %>
-
-                              </div>
-                              <%= f.submit "Update Status", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
-                            <% end %>
-                          <% end %>
-                        <% end %>
-                        </div>
-                      </div>
-                    </div>
+            <% theInvoiceX = Stripe::Invoice.retrieve(h['invoice']['id'], {stripe_account: h['invoice']['metadata']['connectAccount']}) %>
+            <% if theInvoiceX['metadata']['goodOrService'] == 'good' && theInvoiceX['metadata']['orderIssue'].blank? %>
+              <div class="row mb-4">
+                 <div class="col-8">
+                  Order#<%= h['invoice']['id'][3..h['invoice']['id'].length] %><br>
+                  <% if current_user&.manager? %>
+                    Ship To: <%= User.find_by(stripeCustomerID: h['customerStripeInfo']['id']).address %>
                   <% end %>
-                <% end %>
+                </div>
+                 <div class="col-4">
+                  <button class="accordion-btn col-12 btn btn-m btn-full bg-green1-dark text-uppercase font-900" data-toggle="collapse" data-target="#<%= h['invoice']['lines']['data'][0]['id'] %>" aria-expanded="false" style='margin-top:-10px;'>
+                    <i class="fa fa-truck"></i>
+                  </button>
+                </div>
+              </div>
+              
+              <% h['items'].each do |itm| %>
+                <% productFromInvoice = Stripe::Product.retrieve(itm['invoiceLine']['price']['product'], {stripe_account: h['invoice']['metadata']['connectAccount']}) %>
+                <div class="row mb-4">
+                  <div class="col-5"><h4 class="font-14 text-left"><%= productFromInvoice['name'].titleize %></h4></div>
+                  <% if h['invoice']['lines']['data'][0]['price']['transform_quantity'] && !h['invoice']['lines']['data'][0]['price']['transform_quantity']['divide_by'].blank? %>
+                    <div class="col-3"><h4 class="font-14 text-justify"><%= (h['invoice']['lines']['data'][0]['quantity'].to_i * h['invoice']['lines']['data'][0]['price']['transform_quantity']['divide_by']) %></h4></div>
+                  <% else %>
+                    <div class="col-3"><h4 class="font-14 text-justify"><%= h['invoice']['lines']['data'][0]['quantity'].to_i %></h4></div>
+                  <% end %>
+                  <div class="col-4">
+                  </div>
+                </div>
               <% end %>
+              
+
+              <div class="accordion" id="accordion-1">
+                <div class="mb-4">
+                  <div id="<%= h['invoice']['lines']['data'][0]['id'] %>" class="collapse" data-parent="#accordion-1" style="">
+
+                  <% if current_user&.manager?  %>
+                    <%= form_for :trackingNumber, url: trackingNumber_path do |f| %>
+                      <div class="input-style has-icon input-style-2 input-required pb-1">
+                          <i class="input-icon fa fa-truck color-theme"></i>
+                          <span class="color-highlight input-style-1-active">Tracking Numbers</span>
+                          <em>(required)</em>
+                          <%= f.text_field :trackingIDs, placeholder: "1ZSD6756...", required: true, value: !theInvoiceX['metadata']['trackingNumbers'].blank? ? theInvoiceX['metadata']['trackingNumbers'] : nil %>
+                          <%= f.hidden_field :invoice, value: h['invoice']['id'] %>
+                      </div> 
+                      <p class="text-center">Seperate Tracking Numbers By Comma</p>
+                      <%= f.submit "Update Tracking", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
+                    <% end %>
+                  <% end %>
+
+
+                  <% if current_user&.customer?  %>
+                    <% if theInvoiceX['metadata']['trackingNumbers'].blank? %>
+                      <p>Your order has been received. Check back for tracking updates</p>
+                    <% else %>
+                      <div class="row">
+                        <% theInvoiceX['metadata']['trackingNumbers'].split(",").each do |t| %>
+                          <div class="text-left col-12">
+                            Tracking Number - <%= link_to t, "https://www.google.com/search?q=#{t}&oq=#{t}", 'target' => '_blank' %>
+                          </div>
+                        <% end %>
+                      </div>
+                      <%= form_for :trackingNumber, id: "#{h['customerStripeInfo']['name']}#{h['invoice']['id']}", url: trackingNumber_path do |f| %>
+                        <div class="input-style input-style-2 mt-2 ">
+                        Did you receive your order?
+                          <%= f.select :orderIssueStatus, [['Yes', 0], ['Yes, But theres an issue or problem',1]], id: "#{h['customerStripeInfo']['name']}#{h['invoice']['id']}", onchange: "showReport(#{h['customerStripeInfo']['name']}#{h['invoice']['id']});" %>
+                          <%= f.hidden_field :invoice, value: h['invoice']['id'] %>
+                          <%= f.hidden_field :merchantStripeID, value: h['invoice']['metadata']['connectAccount'] %>
+
+                        </div>
+                        <%= f.submit "Update Status", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                  </div>
+                </div>
+              </div>
+
+
+
+
+
+              
+            <% end %>
           <% end %>
         </div>
       </div>

@@ -13,4 +13,5 @@
 //= require rails-ujs
 //= require jquery 
 //= require jquery_ujs
+//= require _service-worker
 //= require_tree .

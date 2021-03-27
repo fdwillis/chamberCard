@@ -1,7 +1,8 @@
-Rails.application.configure do
-  require "awesome_print"
+require "awesome_print"
 
-  AwesomePrint.irb!
+AwesomePrint.irb!
+
+Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -12,7 +13,7 @@ Rails.application.configure do
 
   # Do not eager load code on boot.
   config.eager_load = false
-  config.hosts << "41100d55e6ed.ngrok.io"
+  config.hosts << "slimy-bullfrog-95.loca.lt"
   
 
   # Show full error reports.

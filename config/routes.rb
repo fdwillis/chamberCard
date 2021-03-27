@@ -35,7 +35,9 @@ Rails.application.routes.draw do
 		post "resend-code", to: 'stripe_customers#resendCode', as: "resendCode"
 		post "requestBooking", to: 'schedule#requestBooking', as: "requestBooking"
 		post "acceptBooking", to: 'schedule#acceptBooking', as: "acceptBooking"
+		post "cancel-timekit", to: 'schedule#timeKitCancel', as: "cancel-timekit-ui"
 		post "cancel", to: 'schedule#cancel', as: "cancel"
+		post "completed", to: 'schedule#completed', as: "completed"
 		post "confirm", to: 'schedule#confirm', as: "confirm"
 		
 		put "cancel-timekit", to: 'schedule#timeKitCancel', as: "cancel-timekit"
@@ -54,7 +56,7 @@ Rails.application.routes.draw do
 	  end
 
 	  unauthenticated :user do
-	    root 'home#welcome', as: :unauthenticated_root
+	    root 'sessions#new', as: :unauthenticated_root
 	  end
 	end	
 end

@@ -8,7 +8,7 @@ class ScheduleController < ApplicationController
 			curlCall = Charge.APIindex(current_user)
 			
 	    response = Oj.load(curlCall)
-				
+	    
 	    if response['success']
 				@payments = response['payments']
 			elsif response['message'] == "No purchases found"
@@ -25,46 +25,108 @@ class ScheduleController < ApplicationController
 	# webhook
 	def timeKitCancel
 		#  place in webhook controller
-		metaData = params['meta']
-		timeKitID = params['id']
-		connectAccount = metaData['connectAccount']
-		invoiceItem = metaData['invoiceItem']
-
-
-		stripeInvoiceItem = Stripe::InvoiceItem.retrieve(invoiceItem, {stripe_account: connectAccount})
-		stripeMetaData = stripeInvoiceItem['metadata']
-		claimedInt = stripeMetaData['claimed'].to_i
-
-		ogTimekitString = stripeMetaData['timeKitBookingID']
-		ogTimekitArray = ogTimekitString.split(",")
 		
-		# edit metadata by removing timekitID of meeting passed
-		if ogTimekitArray.include?(timeKitID)
-			ogTimekitArray.delete(timeKitID)
-			
-			invoiceUpdated = Stripe::InvoiceItem.update(
-			  stripeInvoiceItem['id'],
-			  {
-			  	metadata: {
+		if request.put?
+			metaData = params['meta']
+			timeKitID = params['id']
+			connectAccount = metaData['connectAccount']
+			invoiceItem = metaData['invoiceItem']
 
-						timeKitBookingID: ogTimekitArray.join(","),
-						claimed: "#{claimedInt -= 1}"
-					}
-				}, {stripe_account: connectAccount}
-			)
+
+			stripeInvoiceItem = Stripe::InvoiceItem.retrieve(invoiceItem, {stripe_account: connectAccount})
+			stripeMetaData = stripeInvoiceItem['metadata']
+			claimedInt = stripeMetaData['claimed'].to_i
+
+			ogTimekitString = stripeMetaData['timeKitBookingID']
+			ogTimekitArray = ogTimekitString.split(",")
+			
+			# edit metadata by removing timekitID of meeting passed
+			if ogTimekitArray.include?(timeKitID)
+				ogTimekitArray.delete(timeKitID)
+				
+				invoiceUpdated = Stripe::InvoiceItem.update(
+				  stripeInvoiceItem['id'],
+				  {
+				  	metadata: {
+
+							timeKitBookingID: ogTimekitArray.join(","),
+							claimed: "#{claimedInt -= 1}",
+							requesting: nil,
+							startDate: nil,
+							merchantConfirmed: false
+						}
+					}, {stripe_account: connectAccount}
+				)
+			end
+
+			render json: {
+				success: true
+			}
+			return
 		end
 
-		render json: {
-			success: true
-		}
-		return
+		if request.post?
+			
+			return
+			if timeKitBookingID = params['cancel']['timeKitBookingID']
+
+				connectAccount = params['cancel']['merchantStripeID']
+				invoiceItem = params['cancel']['serviceToCancel']
+
+				begin
+					stripeInvoiceItem = Stripe::InvoiceItem.retrieve(invoiceItem, {stripe_account: connectAccount})
+					stripeMetaData = stripeInvoiceItem['metadata']
+					claimedInt = stripeMetaData['claimed'].to_i
+
+					ogTimekitString = stripeMetaData['timeKitBookingID']
+					ogTimekitArray = ogTimekitString.split(",")
+					
+					# edit metadata by removing timekitID of meeting passed
+					if ogTimekitArray.include?(timeKitBookingID)
+						ogTimekitArray.delete(timeKitBookingID)
+						
+						invoiceUpdated = Stripe::InvoiceItem.update(
+						  stripeInvoiceItem['id'],
+						  {
+						  	metadata: {
+
+									timeKitBookingID: ogTimekitArray.join(","),
+									claimed: "#{claimedInt -= 1}", 
+									merchantConfirmed: false
+								}
+							}, {stripe_account: connectAccount}
+						)
+					end
+
+					if invoiceUpdated['id']
+
+						flash[:success] = "Appointment Cancelled"
+						
+			      redirect_to request.referrer
+			    end
+
+				rescue Stripe::StripeError => e
+					render json: {
+						error: e.error.message
+					}
+					return
+				rescue Exception => e
+					render json: {
+						error: e
+					}
+				end
+				return
+			else
+				flash[:error] = "Please contact TewCode to setup your Schedule Sync"
+				redirect_to request.referrer
+			end
+		end
 	end
 
 
 	def acceptBooking
 		# sync booking to manager calendar
 		bookingDone = current_user&.syncTimekit(params[:acceptBooking])
-
 		if bookingDone[:success]
 
 			curlCall = Schedule.APIaccept(current_user, params[:acceptBooking], bookingDone[:timeKitBookingID])

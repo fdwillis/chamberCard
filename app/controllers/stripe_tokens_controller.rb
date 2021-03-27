@@ -2,6 +2,7 @@ class StripeTokensController < ApplicationController
 before_action :authenticate_user!
 
 	def create
+		
 		callCurl2 = current_user.updateStripeCustomerAPI(!newStripeCardTokenParams.blank? ? newStripeCardTokenParams : newStripeBankTokenParams )
 		
 		if callCurl2['success']

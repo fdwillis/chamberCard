@@ -78,11 +78,11 @@
               <% if s['object'] == 'card' %>
                 <div style="align-items: center;" class="mb-4">
                   <% if s['brand'] == "Visa" %>
-                    <%= image_tag "pay-1.png","width"=>"50", stlye: '' %>
+                    Visa
                   <% elsif s['brand'] == "MasterCard" %>
-                    <%= image_tag "pay-2.png","width"=>"50" %>
+                    MasterCard
                   <% elsif s['brand'] == "American Express" %>
-                    <%= image_tag "pay-5.png","width"=>"50" %>
+                    American Express
                   <% end %>
                     <p class="mt-n1 mb-0 font-10">**** <%= s['last4'] %></p>
                 </div>  
@@ -103,7 +103,7 @@
     </div>
   <% end %>
 
-  <% if current_user&.manager? && current_user&.stripeMerchantID.blank? %>
+  <% if current_user&.manager? && !current_user&.subscriptionCheck %>
     <div class="card card-style">
       <div class="content mb-0">
         <h4 class="text-center"><i class="input-icon fa fa-exclamation-triangle color-red2-light"></i> &nbsp; &nbsp; Account Pending</h4>

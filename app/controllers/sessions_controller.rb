@@ -18,13 +18,15 @@ class SessionsController < Devise::SessionsController
   end
 
   def after_login
-    response = resource.createUserSessionAPI(params[:user][:password])
+    response = resource.createUserSessionAPI(params[:user])
+
     if response['success']
       flash[:success] = "Welcome"
-      
     else
-      flash[:alert] = response['message']
       reset_session
+      current_user = nil
+      flash[:alert] = response['message']
+      # redirect_to new_user_session_path
     end
   end
 end

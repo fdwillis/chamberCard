@@ -8,7 +8,7 @@ class User < ApplicationRecord
 
 
   def syncTimekit(params)
-    resource_id = params['resource_id'] == timeKitID ? ( (Rails.env.development? || Rails.env.test?) ? "f8abca72-ec4d-4812-b4b2-156855462017" : timeKitID) : nil
+    resource_id =  (Rails.env.development? || Rails.env.test?) ? "f8abca72-ec4d-4812-b4b2-156855462017" : timeKitID
     
     start = DateTime.parse(params['start']).rfc3339
     endAt = (DateTime.parse(params['start']) + params['duration'].to_i.minutes).rfc3339
@@ -21,8 +21,9 @@ class User < ApplicationRecord
     customerPhone = params['customerPhone']
     invoiceItem = params['serviceToAccept']
 
-    timeKitPost = `curl --request POST --header 'Content-Type: application/json' --url https://api.timekit.io/v2/bookings --user :test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9 --data '{"meta":{"invoiceItem": "#{invoiceItem}", "connectAccount": "#{stripeMerchantID}"},"buffer":"#{ENV['bufferTime']} minutes","resource_id": "#{resource_id}","graph": "instant","start": "#{start}","end": "#{endAt}","what": "#{what}","where": "#{where}","description": "#{description}","customer": {"name": "#{customerName}","email": "#{customerEmail}","phone": "#{customerPhone}"}}'`
-    #DOUBLE BOOKINGS -------> timeKitPost = `curl --request POST --header 'Content-Type: application/json' --url https://api.timekit.io/v2/bookings --user :test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9 --data '{"settings": {"allow_double_bookings": true}, "meta":{"invoiceItem": "#{invoiceItem}", "connectAccount": "#{stripeMerchantID}"},"buffer":"#{ENV['bufferTime']} minutes","resource_id": "#{resource_id}","graph": "instant","start": "#{start}","end": "#{endAt}","what": "#{what}","where": "#{where}","description": "#{description}","customer": {"name": "#{customerName}","email": "#{customerEmail}","phone": "#{customerPhone}"}}'`
+    # timeKitPost = `curl --request POST --header 'Content-Type: application/json' --url https://api.timekit.io/v2/bookings --user :test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9 --data '{"meta":{"invoiceItem": "#{invoiceItem}", "connectAccount": "#{stripeMerchantID}"},"buffer":"#{ENV['bufferTime']} minutes","resource_id": "#{resource_id}","graph": "instant","start": "#{start}","end": "#{endAt}","what": "#{what}","where": "#{where}","description": "#{description}","customer": {"name": "#{customerName}","email": "#{customerEmail}","phone": "#{customerPhone}"}}'`
+    
+    timeKitPost = `curl --request POST --header 'Content-Type: application/json' --url https://api.timekit.io/v2/bookings --user :test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9 --data '{"settings": {"allow_double_bookings": true}, "meta":{"invoiceItem": "#{invoiceItem}", "connectAccount": "#{stripeMerchantID}"},"buffer":"#{ENV['bufferTime']} minutes","resource_id": "#{resource_id}","graph": "instant","start": "#{start}","end": "#{endAt}","what": "#{what}","where": "#{where}","description": "#{description}","customer": {"name": "#{customerName}","email": "#{customerEmail}","phone": "#{customerPhone}"}}'`
    
     resourceLoaded = Oj.load(timeKitPost)
 
@@ -96,7 +97,8 @@ class User < ApplicationRecord
 
     response = Oj.load(curlCall)
 
-    if response['success'] && saved
+    if response['success']
+      self.update(phone: phone, email: email)
       return response
     else
       return false
@@ -174,13 +176,13 @@ class User < ApplicationRecord
     end
   end
 
-  def createUserSessionAPI(password)
-    curlCall = `curl -d "email=#{self.email}&password=#{password}" #{SITEurl}/v1/sessions`
+  def createUserSessionAPI(user)
+    curlCall = `curl -d "email=#{user['email']}&password=#{user['password']}" #{SITEurl}/v1/sessions`
     
     response = Oj.load(curlCall)
     
     if response['success']
-      self.update(username: response['username'] ,accessPin: response['accessPin'] , stripeMerchantID: response['stripeMerchantID'], stripeCustomerID: response['stripeCustomerID'], authentication_token: response['authentication_token'], uuid: response['uuid'], twilioPhoneVerify: response['twilioPhoneVerify'] )
+      self.update(authentication_token: response['authentication_token'])
       return response
     else
       return response
@@ -191,7 +193,6 @@ class User < ApplicationRecord
 
     curlCall = `curl -d "appName=#{ENV['appName']}&phone=#{params['phone']}&accessPin=#{params['accessPin']}&email=#{self.email}&username=#{self.username}&password=#{self.password}&password_confirmation=#{self.password}" #{SITEurl}/v1/users`
     response = Oj.load(curlCall)
-    debugger
     
     if !response.blank? && response['success']
       self.update(uuid: response['uuid'],username: response['username'], accessPin: response['accessPin'], phone: response['phone'], twilioPhoneVerify: response['twilioPhoneVerify'] )
@@ -259,6 +260,16 @@ class User < ApplicationRecord
 
   def admin?
     adminAccess.include?(accessPin)     
+  end
+  
+  def subscriptionCheck
+    if !stripeCustomerID.blank?
+      loadCustomer = Stripe::Subscription.list({customer: stripeCustomerID})['data']
+#if subscription not active? unpaid? anything but active/present
+      return !loadCustomer.blank? ? true : false
+    else
+      return false
+    end
   end
 
   def checkStripeSource

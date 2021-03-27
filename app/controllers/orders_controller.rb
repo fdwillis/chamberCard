@@ -3,10 +3,9 @@ class OrdersController < ApplicationController
 	
 	def index
 		if current_user&.authentication_token
-			curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "" -X GET #{SITEurl}/v1/charges`
+			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "" -X GET #{SITEurl}/v1/charges`
 			
 	    response = Oj.load(curlCall)
-				
 	    if response['success']
 				@payments = response['payments']
 			elsif response['message'] == "No purchases found"
