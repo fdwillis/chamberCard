@@ -27,37 +27,33 @@
                 
     
     <div id="page">
-        <div class="header header-demo header-logo-left mb-3">
-            <a href="index.html" class="header-logo">Enabled<span class="color-highlight"> Mobile</span></a>
-            <%= link_to '#', 'data-menu'=>"menu-sidebar-right-1", class: 'header-icon header-icon-1' do %>
-              <i class="fa fa-bars font-14"></i>
+      <div class="header header-demo header-logo-left mb-3">
+        <a href="index.html" class="header-logo">Enabled<span class="color-highlight"> Mobile</span></a>
+        <%= link_to '#', 'data-menu'=>"menu-sidebar-right-1", class: 'header-icon header-icon-1' do %>
+          <i class="fa fa-bars font-14"></i>
+        <% end %>
+
+        <% if current_user&.authentication_token && !@cart.nil? && current_user&.customer? %>
+          <%= link_to '/carts', class: 'font-14 header-icon header-icon-2' do %>
+            <i class="fa fa-shopping-cart"></i>
+            <% if @cart['carts'].map{|c,i| c['cart']}.flatten.map{|c,i|c['quantity']}.sum > 0%>
+              <span class="badge bg-green1-dark" style="width: 30px;"><%= @cart['carts'].map{|c,i| c['cart']}.flatten.map{|c,i|c['quantity']}.sum %></span>
             <% end %>
+          <% end %>
+        <% end %>
 
-            <% if current_user&.authentication_token && !@cart.nil? && current_user&.customer? %>
-              <%= link_to '/carts', class: 'font-14 header-icon header-icon-2' do %>
-                <i class="fa fa-shopping-cart"></i>
-                <% if @cart['carts'].map{|c,i| c['cart']}.flatten.map{|c,i|c['quantity']}.sum > 0%>
-                  <span class="badge bg-green1-dark" style="width: 30px;"><%= @cart['carts'].map{|c,i| c['cart']}.flatten.map{|c,i|c['quantity']}.sum %></span>
-                <% end %>
-              <% end %>
-              
+        <% if current_user&.authentication_token && current_user&.customer? %>
+          <% if !current_user&.twilioPhoneVerify %>
+            <%= link_to '/verify-phone', class: 'font-14 header-icon header-icon-3' do %>
+              <i class="fa fa-check-circle color-yellow2-dark" data-toggle="tooltip" data-placement="right" title="" data-original-title="To verify your account, please enter the code we sent to the phone number on file."></i>
             <% end %>
-
-            <% if current_user&.authentication_token && current_user&.customer? %>
-              <% if !current_user&.twilioPhoneVerify %>
-                <%= link_to '/verify-phone', class: 'font-14 header-icon header-icon-3' do %>
-                  <i class="fa fa-check-circle color-yellow2-dark" data-toggle="tooltip" data-placement="right" title="" data-original-title="To verify your account, please enter the code we sent to the phone number on file."></i>
-                <% end %>
-              <% else %>
-                <%= link_to '#', class: 'font-14 header-icon header-icon-3' do %>
-                  <i class="fa fa-check-circle color-blue2-dark" data-toggle="tooltip" data-placement="right" title="" data-original-title="Verified!"></i>
-                <% end %>
-              <% end %>
+          <% else %>
+            <%= link_to '#', class: 'font-14 header-icon header-icon-3' do %>
+              <i class="fa fa-check-circle color-blue2-dark" data-toggle="tooltip" data-placement="right" title="" data-original-title="Verified!"></i>
             <% end %>
-        </div>
-
-
-
+          <% end %>
+        <% end %>
+      </div>
       <div id="footer-bar" class="footer-bar-1">
         <% if request.fullpath.include?('/services') || request.fullpath.include?('?service_id') %>
           <a href="/services"><i class="fa fa-shopping-bag color-highlight"></i><span>Services</span></a>
