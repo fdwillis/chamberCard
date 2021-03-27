@@ -13,6 +13,7 @@ gem 'coffee-rails'
 gem 'jquery-rails'
 gem 'jquery'
 gem 'pwa'
+gem 'mimemagic'
 
 gem 'stripe'
 gem 'simple_token_authentication'
