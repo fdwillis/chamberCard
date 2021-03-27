@@ -13,7 +13,8 @@ gem 'coffee-rails'
 gem 'jquery-rails'
 gem 'jquery'
 gem 'pwa'
-gem 'mimemagic'
+gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dabd025dcbd36a8a60f'
+
 
 gem 'stripe'
 gem 'simple_token_authentication'
