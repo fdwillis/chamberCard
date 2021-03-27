@@ -80,11 +80,11 @@ class ScheduleController < ApplicationController
 
 					ogTimekitString = stripeMetaData['timeKitBookingID']
 					ogTimekitArray = ogTimekitString.split(",")
-					debugger
+					
 					# edit metadata by removing timekitID of meeting passed
 					if ogTimekitArray.include?(timeKitBookingID)
 						ogTimekitArray.delete(timeKitBookingID)
-						debugger
+						
 						invoiceUpdated = Stripe::InvoiceItem.update(
 						  stripeInvoiceItem['id'],
 						  {
