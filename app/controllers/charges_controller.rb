@@ -6,7 +6,7 @@ class ChargesController < ApplicationController
 			curlCall = Charge.APIindex(current_user)
 			
 	    response = Oj.load(curlCall)
-
+	    
 	    if response['success']
 				@payments = response['payments']
 				@overdue = response['overdue']

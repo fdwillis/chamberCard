@@ -1,9 +1,9 @@
 <div class="card card-style">
-    <% if current_user&.manager? && current_user&.checkStripeSource%>
+    <% if current_user&.manager? && current_user&.subscriptionCheck %>
       <a href="<%= new_service_path %>" class="float-right btn btn-xs bg-yellow1-dark rounded-xl shadow-xl text-uppercase font-900 mt-2 font-11">Add Service</a>
     <% end %>
 
-    <% if !current_user&.checkStripeSource %>
+    <% if !current_user&.subscriptionCheck && current_user&.manager? %>
       <p class="mb-5 text-center">
         <%= ENV['siteName'] %> has partnerd with TewCode for all its technology needs.<br>  A representative from TewCode will contact you at <%= number_to_phone(current_user&.phone) %> or <%= current_user&.email %> shortly to get your account setup. 
       </p>

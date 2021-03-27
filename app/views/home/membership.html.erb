@@ -7,15 +7,15 @@ eliteMonthlyMemberships = ENV['eliteMonthlyMembership'].split(",") %>
 
 <% if current_user&.stripeCustomerID %>
   <% if !(Stripe::Subscription.list({customer: current_user&.stripeCustomerID})['data'].map{|s| s['plan']['id'][6..s['plan']['id'].length] }.flatten & basicMonthlyMemberships).blank?  %> 
-    <% serviceFee = 30 %>
+    <% serviceFee = ENV['basicFee'] %>
   <% end %>
 
   <% if !(Stripe::Subscription.list({customer: current_user&.stripeCustomerID})['data'].map{|s| s['plan']['id'][6..s['plan']['id'].length] }.flatten & saverMonthlyMemberships).blank? %> 
-    <% serviceFee = 25 %>
+    <% serviceFee = ENV['saverFee'] %>
   <% end %>
 
   <% if !(Stripe::Subscription.list({customer: current_user&.stripeCustomerID})['data'].map{|s| s['plan']['id'][6..s['plan']['id'].length] }.flatten & eliteMonthlyMemberships).blank? %> 
-    <% serviceFee = 10 %>
+    <% serviceFee = ENV['eliteFee'] %>
   <% end %>
 <% end %>
 
@@ -141,7 +141,7 @@ eliteMonthlyMemberships = ENV['eliteMonthlyMembership'].split(",") %>
                 <h5 class="font-600 opacity-80">Basic Transaction Fee</h5>
             </div>
             <div class="col-5 mb-4 text-right">
-                <h5>30%</h5>
+                <h5><%= ENV['basicFee'] %>%</h5>
             </div>
             <div class="col-12 offset-3 mb-4 ">
               <%= form_for :join, url: join_path do |f| %>
@@ -176,7 +176,7 @@ eliteMonthlyMemberships = ENV['eliteMonthlyMembership'].split(",") %>
                 <h5 class="font-600 opacity-80">Saver Transaction Fee</h5>
             </div>
             <div class="col-5 mb-4 text-right">
-                <h5>25%</h5>
+                <h5><%= ENV['saverFee'] %>%</h5>
             </div>
 
             <div class="col-12 offset-3 mb-4 ">
@@ -222,7 +222,7 @@ eliteMonthlyMemberships = ENV['eliteMonthlyMembership'].split(",") %>
                 <h5 class="font-600 opacity-80">Elite Transaction Fee</h5>
             </div>
             <div class="col-5 mb-4 text-right">
-                <h5>10%</h5>
+                <h5><%= ENV['eliteFee'] %>%</h5>
             </div>
             <div class="col-12 offset-3 mb-4 ">
               <%= form_for :join, url: join_path do |f| %>

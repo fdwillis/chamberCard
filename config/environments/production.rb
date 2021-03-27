@@ -1,7 +1,7 @@
-Rails.application.configure do
-  require "awesome_print"
+require "awesome_print"
+AwesomePrint.irb!
 
-  AwesomePrint.irb!
+Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.

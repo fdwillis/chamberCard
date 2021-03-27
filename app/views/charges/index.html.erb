@@ -37,7 +37,7 @@
       <% @payments.each do |h| %> 
         <div class="card card-style bg-theme pb-0">
           <div class="content mb-0">
-            Order#<%= h['invoice'][3..h['invoice'].length].truncate(9, omission: '') %>
+            Order#<%= h['invoice']['id'][3..h['invoice']['id'].length].truncate(9, omission: '') %>
             <div class="content">
               <div class="row mb-0">
                   <div class="col-3 icon icon-xl">
@@ -50,7 +50,7 @@
                       </div>
                       <div class="d-flex">
                           <div><p class="font-700 color-theme">Customer</p></div>
-                          <div class="ml-auto"><p><%= h['customer'] %></p></div>
+                          <div class="ml-auto"><p><%= h['customerStripeInfo']['name'] %></p></div>
                       </div>
                       <div class="d-flex">
                           <div><p class="font-700 color-theme">Date</p></div>
@@ -76,30 +76,21 @@
                     <!-- <div class="col-2"><h4 class="font-14 text-right">Claimed: <%= itm['invoiceLine']['metadata']['claimed'] %></h4></div> -->
                   </div>
               <% end %>
-              <% if current_user&.manager? %>
+              <% if current_user&.customer? %>
+                
                 <div class="row mb-0">
                   <div class="divider divider-margins w-100 mt-2 mb-2"></div>
                   <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-                  <div class="col-6"><h4 class="font-14 mt-1">Grand Total</h4></div>
-                  <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency( h['subTotal']  * 0.01, precision: 2) %></h4></div>
+                  <div class="col-6"><h4 class="font-14 mt-1">Total</h4></div>
+                  <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency( h['invoice']['subtotal']  * 0.01, precision: 2) %></h4></div>
+                  <div class="col-6"><h4 class="font-14 mt-1">Paid</h4></div>
+                  <div class="col-6"><h4 class="font-14 text-right mt-1"><%=  h['invoice']['status'] == 'draft' ? number_to_currency(h['invoice']['total_discount_amounts'][0]['amount']  * 0.01, precision: 2) : number_to_currency(h['invoice']['amount_paid']  * 0.01, precision: 2) %></h4></div>
+                  
 
-                  <!-- <div class="col-12"><a href="#" class="close-menu btn btn-full btn-m bg-red2-dark rounded-sm text-uppercase font-800">Refund</a></div> -->
-                </div>
-
-              <% else %>
-                <div class="row mb-0">
-                  <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-                  <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-                  <div class="col-6"><h4 class="font-14 mt-1">Fee &nbsp;<i class="fa fa-exclamation-circle font-14 mt-1 color-yellow2-dark scale-icon mr-2" data-toggle="tooltip" data-placement="right" title="" data-original-title="Miser Brands service fee includes processing fees"></i></h4></div>
-                  <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency( h['fee']  * 0.01, precision: 2) %></h4></div>
-                  <div class="col-6"><h4 class="font-14 mt-1">Sub Total</h4></div>
-                  <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency( h['subTotal']  * 0.01, precision: 2) %></h4></div>
-
-                  <div class="col-6"><h4 class="font-14 mt-1">Grand Total</h4></div>
-                  <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency(h['grandTotal']  * 0.01, precision: 2) %></h4></div>
           
                   <div class="divider divider-margins w-100 mt-2 mb-3"></div>
-                  <!-- <div class="col-12"><a href="#" class="close-menu btn btn-full btn-m bg-red2-dark rounded-sm text-uppercase font-800">Refund</a></div> -->
+                  <div class="col-6"><h4 class="font-14 mt-1">Due</h4></div>
+                  <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency(h['invoice']['amount_remaining'] * 0.01, precision: 2) %></h4></div>
                 </div>
               <% end%>
             </div>
