@@ -100,6 +100,10 @@ class ChargesController < ApplicationController
 		
 	end
 
+	def payNow
+		
+	end
+
 	private
 
 	def newInvoiceParams

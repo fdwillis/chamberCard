@@ -41,6 +41,7 @@ Rails.application.routes.draw do
 		post "confirm", to: 'schedule#confirm', as: "confirm"
 		
 		get "initiateCharge", to: 'charges#initiateCharge', as: "getinitiateCharge"
+		get "pay-now", to: 'charges#payNow', as: "pay-now"
 		
 		get "destroy", to: 'services#destroy', as: "destroyService"
 
