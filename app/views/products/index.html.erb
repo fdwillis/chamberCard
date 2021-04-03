@@ -36,9 +36,7 @@
               <% end %>
               <h1><%= h[:product]['name'] %></h1>
               <p><%= h[:product]['description'] %></p>
-              <p class="text-right mb-0 pb-3">
-                <%= link_to "View", "/products/#{h[:product]['id'][5..h[:product]['id'].size]}?connectAccount=#{h[:connectAccount]}", class: 'btn btn-full bg-blue2-dark' %>
-              </p>
+              <%= link_to "View", "/products/#{h[:product]['id'][5..h[:product]['id'].size]}?connectAccount=#{h[:connectAccount]}", class: 'btn btn-full bg-blue2-dark' %>
             </div>
           <% end %>
         <% end %>
