@@ -13,24 +13,6 @@
       </p>
     </div>
   </div>
-  <% if current_user&.manager? && current_user&.checkStripeSource %>
-    <div class="card card-style bg-theme pb-0">
-      <div class="content">
-        <h3>New Invoice</h3>
-        <p class="mb-5">Enter the client ID to begin a new invoice.  The client ID can be found by the client on the first section of their profile page. </p>
-
-        <%= form_for :initiateCharge, url: initiateCharge_path do |f| %>
-          <div class="input-style has-icon input-style-2 input-required pb-1">
-              <i class="input-icon fa fa-user color-theme"></i>
-              <span class="color-highlight input-style-1-active">Customer ID</span>
-              <em>(required)</em>
-              <%= f.text_field :customerID, placeholder: SecureRandom.uuid[0..7], required: true %>
-          </div> 
-          <%= f.submit "Begin", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
-        <% end %>
-      </div>
-    </div>
-  <% end %>
 
   <% if @pending || @payments %>
 
@@ -63,10 +45,8 @@
               
               <% h['invoice']['lines']['data'].each_with_index do |itm,indx| %>
                   
-                  <div class="row mb-2">
                     
-                    <div class="col-6"><h4 class="font-14 text-center"><%= itm['description'] %> | <%= number_to_currency((itm['amount'] * 0.01), precision: 2) %></h4></div>
-                  </div>
+                <h4 class="font-14 text-center"><%= itm['description'] %> | <%= number_to_currency((itm['amount'] * 0.01), precision: 2) %></h4>
               <% end %>
               <% if current_user&.customer? %>
                 
@@ -83,7 +63,13 @@
                   <div class="divider divider-margins w-100 mt-2 mb-3"></div>
                   <div class="col-6"><h4 class="font-14 mt-1">Due</h4></div>
                   <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency(h['invoice']['amount_remaining'] * 0.01, precision: 2) %></h4></div>
+
                 </div>
+                  <%= form_for :customerPayInvoice, url: customer_pay_path do |f| %>
+                    <%= f.hidden_field :sellerToChargeAs, value: h['merchantStripeID'] %>
+                    <%= f.hidden_field :invoiceToPay, value: h['invoice']['id'] %>
+                    <%= f.submit "Pay Now", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
+                  <% end %>
               <% end%>
             </div>
           </div>

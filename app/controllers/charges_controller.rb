@@ -120,6 +120,35 @@ class ChargesController < ApplicationController
 		end
 	end
 
+	def customerPay
+		if current_user&.authentication_token
+			begin
+				
+				# finalizeInvoice = Stripe::Invoice.finalize_invoice(params['customerPayInvoice']['invoiceToPay'],{},{stripe_account: params['customerPayInvoice']['sellerToChargeAs']})
+				paidInvoice = Stripe::Invoice.pay(params['customerPayInvoice']['invoiceToPay'], {}, {stripe_account: params['customerPayInvoice']['sellerToChargeAs']})
+
+				
+				if paidInvoice['status'] == 'paid'
+					flash[:success] = "Invoice Paid"
+		      redirect_to pay_now_path
+				else
+					flash[:alert] = "Invoice Not Paid"
+		      redirect_to pay_now_path
+				end
+			rescue Stripe::StripeError => e
+				flash[:alert] = e.error.message
+	      redirect_to pay_now_path
+				
+			rescue Exception => e
+				flash[:alert] = e
+	      redirect_to pay_now_path
+			end
+		else
+			current_user = nil
+      reset_session
+		end
+	end
+
 	private
 
 	def newInvoiceParams
