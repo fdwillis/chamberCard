@@ -101,7 +101,23 @@ class ChargesController < ApplicationController
 	end
 
 	def payNow
-		
+		if current_user&.authentication_token
+			curlCall = Charge.APIindex(current_user)
+			
+	    response = Oj.load(curlCall)
+	    
+	    if response['success']
+				@payments = response['payments']
+				@pending = response['pending']
+			elsif response['message'] == "No purchases found"
+				@message = response['message']
+			else
+				flash[:error] = response['message']
+			end
+		else
+			current_user = nil
+      reset_session
+		end
 	end
 
 	private
