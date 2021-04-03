@@ -69,7 +69,7 @@ class ChargesController < ApplicationController
 		desc = newInvoiceParams[:desc]
 		title = newInvoiceParams[:title]
     
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "customer=#{customer}&title=#{title}&desc=#{desc}&managerInvoice=true&amount=#{amount}" -X POST #{SITEurl}/v1/stripe-charges`
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "customer=#{customer}&title=#{title}&desc=#{desc}&managerInvoice=true&amount=#{amount}" -X POST #{SITEurl}/v1/charges`
 
 		response = Oj.load(curlCall)
 
@@ -86,7 +86,7 @@ class ChargesController < ApplicationController
 	def acceptInvoice
 		charge = params[:stripeChargeID]
 		
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X PATCH #{SITEurl}/v1/stripe-charges/#{charge}`
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X PATCH #{SITEurl}/v1/charges/#{charge}`
 
 		response = Oj.load(curlCall)
     if response['success']
@@ -98,6 +98,55 @@ class ChargesController < ApplicationController
       redirect_to charges_path
     end
 		
+	end
+
+	def payNow
+		if current_user&.authentication_token
+			curlCall = Charge.APIindex(current_user)
+			
+	    response = Oj.load(curlCall)
+	    
+	    if response['success']
+				@payments = response['payments']
+				@pending = response['pending']
+			elsif response['message'] == "No purchases found"
+				@message = response['message']
+			else
+				flash[:error] = response['message']
+			end
+		else
+			current_user = nil
+      reset_session
+		end
+	end
+
+	def customerPay
+		if current_user&.authentication_token
+			begin
+				
+				# finalizeInvoice = Stripe::Invoice.finalize_invoice(params['customerPayInvoice']['invoiceToPay'],{},{stripe_account: params['customerPayInvoice']['sellerToChargeAs']})
+				paidInvoice = Stripe::Invoice.pay(params['customerPayInvoice']['invoiceToPay'], {}, {stripe_account: params['customerPayInvoice']['sellerToChargeAs']})
+
+				
+				if paidInvoice['status'] == 'paid'
+					flash[:success] = "Invoice Paid"
+		      redirect_to pay_now_path
+				else
+					flash[:alert] = "Invoice Not Paid"
+		      redirect_to pay_now_path
+				end
+			rescue Stripe::StripeError => e
+				flash[:alert] = e.error.message
+	      redirect_to pay_now_path
+				
+			rescue Exception => e
+				flash[:alert] = e
+	      redirect_to pay_now_path
+			end
+		else
+			current_user = nil
+      reset_session
+		end
 	end
 
 	private
