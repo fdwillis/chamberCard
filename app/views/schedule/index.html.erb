@@ -36,7 +36,7 @@ Contact
                 <% end %>
 
 
-                  <% if itm['product']['type'] == 'service' %>
+                  <% if itm['product']['type'] == 'service' && remainingToClaim > 0 %>
 
                     <% if !itm['invoiceLine']['metadata']['claimed'].blank? %>
                       
@@ -80,29 +80,27 @@ Contact
 
                           
 
-                          <% if remainingToClaim > 0 %>
 
-                            <%= form_for :requestBooking, id: "#{h['customerStripeInfo']['name']}#{h['invoice']['id']}", url: requestBooking_path do |f| %>
-                              <div class="row">
-                                <div class="input-style input-style-2 mt-2 col-6">
-                                  Date
-                                  <%= f.date_select(:dateRequested, :default => { day: DateTime.now.strftime("%d") , year: DateTime.now.strftime("%Y"), month: DateTime.now.strftime("%m") }) %>
+                          <%= form_for :requestBooking, id: "#{h['customerStripeInfo']['name']}#{h['invoice']['id']}", url: requestBooking_path do |f| %>
+                            <div class="row">
+                              <div class="input-style input-style-2 mt-2 col-6">
+                                Date
+                                <%= f.date_select(:dateRequested, :default => { day: DateTime.now.strftime("%d") , year: DateTime.now.strftime("%Y"), month: DateTime.now.strftime("%m") }) %>
 
-                                </div>
-                                <div class="input-style input-style-2 mt-2 col-6">
-                                  Time
-                                  <%= f.time_select(:my_time, start_hour: 8, end_hour: 20,minute_step: 15, ampm: true) %>
-                                </div>
                               </div>
+                              <div class="input-style input-style-2 mt-2 col-6">
+                                Time
+                                <%= f.time_select(:my_time, start_hour: 8, end_hour: 20,minute_step: 15, ampm: true) %>
+                              </div>
+                            </div>
 
-                              <%= f.hidden_field :invoice, value: h['invoice']['id'] %>
+                            <%= f.hidden_field :invoice, value: h['invoice']['id'] %>
 
-                              <%= f.hidden_field :merchantStripeID, value: h['merchantStripeID'] %>
+                            <%= f.hidden_field :merchantStripeID, value: h['merchantStripeID'] %>
 
-                              <%= f.hidden_field :serviceToBook, value: itm['invoiceLine']['invoice_item'] %>
-                              
-                              <%= f.submit "Request Booking", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
-                            <% end %>
+                            <%= f.hidden_field :serviceToBook, value: itm['invoiceLine']['invoice_item'] %>
+                            
+                            <%= f.submit "Request Booking", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
                           <% end %>
                         </div>
                       </div>
