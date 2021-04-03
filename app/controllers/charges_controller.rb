@@ -69,7 +69,7 @@ class ChargesController < ApplicationController
 		desc = newInvoiceParams[:desc]
 		title = newInvoiceParams[:title]
     
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "customer=#{customer}&title=#{title}&desc=#{desc}&managerInvoice=true&amount=#{amount}" -X POST #{SITEurl}/v1/stripe-charges`
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "customer=#{customer}&title=#{title}&desc=#{desc}&managerInvoice=true&amount=#{amount}" -X POST #{SITEurl}/v1/charges`
 
 		response = Oj.load(curlCall)
 
@@ -86,7 +86,7 @@ class ChargesController < ApplicationController
 	def acceptInvoice
 		charge = params[:stripeChargeID]
 		
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X PATCH #{SITEurl}/v1/stripe-charges/#{charge}`
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X PATCH #{SITEurl}/v1/charges/#{charge}`
 
 		response = Oj.load(curlCall)
     if response['success']
