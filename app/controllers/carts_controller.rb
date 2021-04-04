@@ -88,6 +88,9 @@ class CartsController < ApplicationController
 	    if response['success']
 	    	flash[:success] = "Purchase Complete"
 	    	redirect_to charges_path
+	    else
+	    	flash[:error] = response['error']
+	    	redirect_to carts_path
 	    end
 	  end
 	end
