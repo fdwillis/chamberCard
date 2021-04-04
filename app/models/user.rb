@@ -182,7 +182,7 @@ class User < ApplicationRecord
     response = Oj.load(curlCall)
     
     if response['success']
-      self.update(authentication_token: response['authentication_token'])
+      self.update(authentication_token: response['authentication_token'], uuid: response['uuid'])
       return response
     else
       return response
