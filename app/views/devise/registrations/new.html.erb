@@ -30,13 +30,13 @@
           <div class="input-style has-icon input-style-2 input-required pb-1">
               <i class="input-icon fa fa-lock color-theme"></i>
               <span class="color-highlight input-style-1-active">Password</span>
-              <em>(required)</em>
+              <em>(8 Characters Required)</em>
               <%= f.password_field :password, autocomplete: "current-password", placeholder: 'Password', required: true %>
           </div> 
           <div class="input-style has-icon input-style-2 input-required pb-1">
               <i class="input-icon fa fa-lock color-theme"></i>
               <span class="color-highlight input-style-1-active">Confirm Password</span>
-              <em>(required)</em>
+              <em>(8 Characters Required)</em>
               <%= f.password_field :password_confirmation, autocomplete: "current-password", placeholder: 'Confirm Password', required: true %>
           </div> 
           <% if devise_mapping.rememberable? %>
