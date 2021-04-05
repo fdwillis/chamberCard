@@ -9,7 +9,6 @@ class ChargesController < ApplicationController
 	    
 	    if response['success']
 				@payments = response['payments']
-				@overdue = response['overdue']
 			elsif response['message'] == "No purchases found"
 				@message = response['message']
 			else
