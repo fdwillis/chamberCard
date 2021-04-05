@@ -17,34 +17,7 @@
         </div>
     </div>
   </div>
-  <div class="card card-style">
-      <div class="content mt-0 mb-0">
-          <div class="list-group list-custom-large list-icon-0">
-              <a data-toggle-theme data-trigger-switch="switch-a" href="#">
-                  <i class="fa font-14 fa-lightbulb rounded-s color-yellow1-dark"></i>
-                  <span>Dark View</span>
-                  <strong>Turn off the Lights</strong>
-                  <div class="custom-control scale-switch ios-switch">
-                      <input type="checkbox" class="ios-input" id="switch-a">
-                      <label class="custom-control-label" for="switch-1"></label>
-                  </div>
-                  <i class="fa fa-chevron-right opacity-30"></i>
-              </a>        
-              <!-- <a data-trigger-switch="switch-b" href="#">
-                  if user subscribed, opt for text/email message alerts
-                  <i class="fa font-14 fa-envelope rounded-s color-blue2-dark"></i>
-                  <span>Newsletter</span>
-                  <strong>Get updates via Newsletter?</strong>
-                  <div class="custom-control scale-switch ios-switch">
-                      <input type="checkbox" class="ios-input" id="switch-b">
-                      <label class="custom-control-label" for="switch-1"></label>
-                  </div>
-                  <i class="fa fa-chevron-right opacity-30"></i>
-              </a>        
-               -->     
-          </div>
-      </div>
-  </div> 
+   
   <% if current_user&.customer? %>
     <div class="card card-style text-center">
       <div class="content mb-0">
@@ -110,7 +83,7 @@
         <h4 class="text-center"><i class="input-icon fa fa-exclamation-triangle color-red2-light"></i> &nbsp; &nbsp; Account Pending</h4>
 
         <p class="mb-5 text-center">
-          <%= ENV['siteName'] %> has partnerd with TewCode for all its technology needs.<br>  A representative from TewCode will contact you at <%= number_to_phone(current_user&.phone) %> or <%= current_user&.email %> shortly to get your account setup. 
+          <%= ENV['siteName'] %> has partnered with TewCode for all its technology needs.<br>  A representative from TewCode will contact you at <%= number_to_phone(current_user&.phone) %> or <%= current_user&.email %> shortly to get your account setup. 
         </p>
         <p class="mb-5 text-center">Update your contact information below if necessary 
         </p>
@@ -231,7 +204,36 @@
             <% end %>
         </div>
     </div>   
-  <% end %>      
+  <% end %>  
+
+  <div class="card card-style">
+      <div class="content mt-0 mb-0">
+          <div class="list-group list-custom-large list-icon-0">
+              <a data-toggle-theme data-trigger-switch="switch-a" href="#">
+                  <i class="fa font-14 fa-lightbulb rounded-s color-yellow1-dark"></i>
+                  <span>Dark View</span>
+                  <strong>Turn off the Lights</strong>
+                  <div class="custom-control scale-switch ios-switch">
+                      <input type="checkbox" class="ios-input" id="switch-a">
+                      <label class="custom-control-label" for="switch-1"></label>
+                  </div>
+                  <i class="fa fa-chevron-right opacity-30"></i>
+              </a>        
+              <!-- <a data-trigger-switch="switch-b" href="#">
+                  if user subscribed, opt for text/email message alerts
+                  <i class="fa font-14 fa-envelope rounded-s color-blue2-dark"></i>
+                  <span>Newsletter</span>
+                  <strong>Get updates via Newsletter?</strong>
+                  <div class="custom-control scale-switch ios-switch">
+                      <input type="checkbox" class="ios-input" id="switch-b">
+                      <label class="custom-control-label" for="switch-1"></label>
+                  </div>
+                  <i class="fa fa-chevron-right opacity-30"></i>
+              </a>        
+               -->     
+          </div>
+      </div>
+  </div>    
       
 <% else %>
   <div class="page-content ">
