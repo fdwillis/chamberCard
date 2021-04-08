@@ -6,6 +6,14 @@ class User < ApplicationRecord
 
   geocoded_by :address
 
+  def resetPassword(user)
+    # get reset password from api then set in brand
+    # hashed = Devise.token_generator.generate(User, :reset_password_token)
+    # user = User.find_by(email: 'john.doe@mysaas.com')
+    # user.reset_password_token = hashed
+    # user.reset_password_sent_at = Time.now.utc
+    # user.save
+  end
 
   def syncTimekit(params)
     resource_id =  (Rails.env.development? || Rails.env.test?) ? "f8abca72-ec4d-4812-b4b2-156855462017" : timeKitID
