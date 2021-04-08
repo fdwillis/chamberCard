@@ -1,9 +1,4 @@
-// Loading the Service Worker
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/app/assets/javascripts/_service-worker.js', {scope: '/app/assets/javascripts/'});
-  });
-}
+
 
 
 $(document).ready(function(){      

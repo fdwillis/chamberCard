@@ -6,6 +6,14 @@ class User < ApplicationRecord
 
   geocoded_by :address
 
+  def resetPassword(user)
+    # get reset password from api then set in brand
+    # hashed = Devise.token_generator.generate(User, :reset_password_token)
+    # user = User.find_by(email: 'john.doe@mysaas.com')
+    # user.reset_password_token = hashed
+    # user.reset_password_sent_at = Time.now.utc
+    # user.save
+  end
 
   def syncTimekit(params)
     resource_id =  (Rails.env.development? || Rails.env.test?) ? "f8abca72-ec4d-4812-b4b2-156855462017" : timeKitID
@@ -35,32 +43,8 @@ class User < ApplicationRecord
   end
 
   def self.timeKit
-    t = `curl --request 'GET' --header 'Content-Type: application/json' --url 'https://api.timekit.io/v2/projects' --user ':test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9'`
-    json = Oj.load(t)['data']
-
-    resources = []
-
-    json.each do |j|
-      if j['name'] == ENV['appName']
-        grabResource = `curl --request GET --url "https://api.timekit.io/v2/projects/#{j['id']}/resources" --header 'Content-Type: application/json' --user :test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9 `
-        resourceLoaded = Oj.load(grabResource)['data']
-
-        if !resourceLoaded.blank? 
-          resourceLoaded.each do |res|
-
-            availability = `curl --request POST --url https://api.timekit.io/v2/availability --header 'Content-Type: application/json' --user :test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9 --data '{"mode": "roundrobin_random","resources": ["#{res}"],"length": "4 hours","from": "3 days","to": "4 weeks","buffer": "#{ENV['bufferTime']} minutes","ignore_all_day_events": true}'`
-
-            availabilityLoaded = Oj.load(availability)['data']
-
-            resources << {project: j, resource: resourceLoaded, availability: availabilityLoaded}
-          end
-        end
-      end
-    end
-
-    return resources.flatten
-
-
+    resources = `curl --request 'GET' --header 'Content-Type: application/json' --url 'https://api.timekit.io/v2/resources' --user ':test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9'`
+    return Oj.load(resources)['data']
   end
 
   def resendTwilioPhoneAPI

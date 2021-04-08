@@ -126,8 +126,6 @@ Contact
     <div class="content mt-3 mb-3">
       <h3>Schedule Services</h3>
       <p class='text-justify'>
-            As clients purchase your services the 'Pending' section will show you which clients have requested their service be complete. <br><br>
-
             <% if ENV['stripeCapturePercentage'].to_i < 100 %>
               After you have accepted the date and time to complete a service, the customer will be charged the remaining <%= 100 -  ENV['stripeCapturePercentage'].to_i %>%
             <% end %>

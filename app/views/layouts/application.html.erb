@@ -28,7 +28,7 @@
     
     <div id="page">
       <div class="header header-demo header-logo-left mb-3">
-        <a href="index.html" class="header-logo">Enabled<span class="color-highlight"> Mobile</span></a>
+        <a href="/" class="header-logo">Enabled<span class="color-highlight"> Mobile</span></a>
         <%= link_to '#', 'data-menu'=>"menu-sidebar-right-1", class: 'header-icon header-icon-1' do %>
           <i class="fa fa-bars font-14"></i>
         <% end %>
@@ -45,7 +45,7 @@
         <% if current_user&.authentication_token && current_user&.customer? %>
           <% if !current_user&.twilioPhoneVerify %>
             <%= link_to '/verify-phone', class: 'font-14 header-icon header-icon-3' do %>
-              <i class="fa fa-check-circle color-yellow2-dark" data-toggle="tooltip" data-placement="right" title="" data-original-title="To verify your account, please enter the code we sent to the phone number on file."></i>
+              <i class="fa fa-check-circle color-yellow2-dark"></i>
             <% end %>
           <% else %>
             <%= link_to '#', class: 'font-14 header-icon header-icon-3' do %>
@@ -178,6 +178,14 @@
                     </a>        
                 </div>
             </div> -->
+            <% if !current_user %>
+              <div class="pl-3 pr-3 pt-3 mt-4 mb-2">
+                <a href="/auth/login" class="btn btn-full bg-green1-dark btn-m text-uppercase font-800 rounded-sm">LOGIN</a>
+              </div>
+              <div class="pl-3 pr-3 pt-3 mt-4 mb-2">
+                <a href="/auth/sign-up" class="btn btn-full bg-magenta3-dark btn-m text-uppercase font-800 rounded-sm">SIGNUP</a>
+              </div>
+            <% end %>
             <% if current_user&.customer? %>
               <div class="mr-3 ml-3">
                 <span class="text-uppercase font-900 font-11 opacity-30">Invoices</span>
@@ -202,7 +210,7 @@
               <div class="mr-3 ml-3">
                 <span class="text-uppercase font-900 font-11 opacity-30">Partners | TewCode</span>
                 <div class="list-group list-custom-small list-icon-0">
-                    <a href="#">
+                    <a href="https://www.tewcode.com" target="_blank">
                         <i class="fa font-14 fa-shopping-bag color-yellow1-dark"></i>
                         <span>Launch Your Store</span>
                         <i class="fa fa-angle-right"></i>
@@ -441,5 +449,30 @@
     <script type="text/javascript" src="/assets/jquery.js"></script>
     <script type="text/javascript" src="/assets/bootstrap.min.js"></script>
     <script type="text/javascript" src="/assets/custom.js"></script>
+    <script type="text/javascript">
+      import ('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
+
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          //Workbox Config
+          workbox.setConfig({
+              debug: false //set to true if you want to see SW in action.
+          });
+
+          //Caching Everything Inside the Folder of our Item
+          workbox.routing.registerRoute(
+              new RegExp('.*'),
+              new workbox.strategies.NetworkFirst()
+          );
+
+
+          //console.log('Sticky Service Worker Running');
+
+          //Learn more about Service Workers and Configurations
+          //https://developers.google.com/web/tools/workbox/
+          // navigator.serviceWorker.register('/app/assets/javascripts/service-worker.js', {scope: '/app/assets/javascripts/'});
+        });
+      }
+    </script>
   </body>
 </html>
