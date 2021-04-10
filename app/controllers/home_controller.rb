@@ -4,13 +4,13 @@ class HomeController < ApplicationController
 	def profile
 		if current_user&.authentication_token
 			if !current_user&.stripeCustomerID.blank? || !current_user&.stripeMerchantID.blank?
-				callCurl = current_user.showStripeUserAPI
+				callCurl = current_user&.showStripeUserAPI
 
 				if callCurl['success']
 					@sources = !callCurl['source'].blank? ? callCurl['source'] : callCurl['sources']
 					@phone = callCurl['stripeCustomer']['phone']
 					@name = callCurl['stripeCustomer']['name']
-					@email = current_user.email
+					@email = current_user&.email
 				end
 			end
 		else
@@ -37,8 +37,8 @@ class HomeController < ApplicationController
 			@saverMonthlyMembership = Stripe::Price.retrieve("price_#{saverMonthly}")
 			@eliteMonthlyMembership = Stripe::Price.retrieve("price_#{eliteMonthly}")
 
-			if current_user.member?
-				@subsc = Stripe::Subscription.list({customer: current_user.stripeCustomerID})['data'][0]
+			if current_user&.member?
+				@subsc = Stripe::Subscription.list({customer: current_user&.stripeCustomerID})['data'][0]
 				@price = Stripe::Price.retrieve(!@subsc.blank? ? @subsc['items']['data'][0]['price']['id'] : nil)
 			end
 
@@ -50,7 +50,7 @@ class HomeController < ApplicationController
 		if current_user&.paymentOn?
 			params = {price: joinParams[:plan], serviceFee: joinParams[:serviceFee]}.to_json
 			
-			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X POST #{SITEurl}/v1/subscriptions`
+			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user&.authentication_token}" -d '#{params}' -X POST #{SITEurl}/v1/subscriptions`
 			
 			response = Oj.load(curlCall)
 
@@ -69,7 +69,7 @@ class HomeController < ApplicationController
 
 	def cancel
 
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X DELETE #{SITEurl}/v1/subscriptions/#{params[:cancel][:subscription]}`
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user&.authentication_token}" -X DELETE #{SITEurl}/v1/subscriptions/#{params[:cancel][:subscription]}?serviceFee=#{ENV['serviceFee']}`
 
 		response = Oj.load(curlCall)
 
@@ -94,12 +94,12 @@ class HomeController < ApplicationController
 		end
 
 		if request.post?
-			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params[:verifyPhone].to_json}' -X PATCH #{SITEurl}/v1/verify`
+			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user&.authentication_token}" -d '#{params[:verifyPhone].to_json}' -X PATCH #{SITEurl}/v1/verify`
 
 			response = Oj.load(curlCall)
 
 	    if response['success']
-	    	current_user.update(twilioPhoneVerify: response['twilioPhoneVerify'])
+	    	current_user&.update(twilioPhoneVerify: response['twilioPhoneVerify'])
 
 				flash[:success] = response['message']
 				

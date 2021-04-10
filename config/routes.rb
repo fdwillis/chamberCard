@@ -36,7 +36,7 @@ Rails.application.routes.draw do
 		post "requestBooking", to: 'schedule#requestBooking', as: "requestBooking"
 		post "acceptBooking", to: 'schedule#acceptBooking', as: "acceptBooking"
 		post "cancel-timekit", to: 'schedule#timeKitCancel', as: "cancel-timekit-ui"
-		post "cancel", to: 'schedule#cancel', as: "cancel"
+		post "cancel", to: 'home#cancel', as: "cancel"
 		post "completed", to: 'schedule#completed', as: "completed"
 		post "confirm", to: 'schedule#confirm', as: "confirm"
 		post "customer-pay", to: 'charges#customerPay', as: "customer-pay"
