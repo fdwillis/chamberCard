@@ -20,6 +20,7 @@ eliteMonthlyMemberships = ENV['eliteMonthlyMembership'].split(",") %>
 <% end %>
 
 <div class="page-content">
+
                 
   <div class="card card-style">
       <div class="content">
@@ -60,6 +61,21 @@ eliteMonthlyMemberships = ENV['eliteMonthlyMembership'].split(",") %>
         <% end %>
       </div>
   </div>
+
+  <div class="card card-style">
+      <div class="content">
+        <div class="d-flex">
+          <div class="align-self-center pr-3">
+              <!-- <i class="fa fa-check-circle color-green1-dark fa-5x"></i> -->
+          </div>
+          <div class="align-self-center">
+              <h4>Billed By TewCode</h4>
+              <h2><small><%= ENV['siteName'] %> + TewCode </h2>
+              <p class="line-height-s"><%= ENV['siteName'] %> has partnered with TewCode for all its technology needs including payment processing.</p>
+          </div>
+        </div>
+      </div>
+  </div> 
   
     
   <% if current_user&.member? %>
