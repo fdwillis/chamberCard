@@ -71,7 +71,7 @@ eliteMonthlyMemberships = ENV['eliteMonthlyMembership'].split(",") %>
           <div class="align-self-center">
               <h4>Billed By TewCode</h4>
               <h2><small><%= ENV['siteName'] %> + TewCode </h2>
-              <p class="line-height-s"><%= ENV['siteName'] %> has partnered with TewCode for all its technology needs including payment processing.</p>
+              <p class="line-height-s"><%= ENV['siteName'] %> has partnered with TewCode for all its technology needs including one-click payment processing.</p>
           </div>
         </div>
       </div>
@@ -103,6 +103,9 @@ eliteMonthlyMemberships = ENV['eliteMonthlyMembership'].split(",") %>
           <div class="col-5">
               <h5><%= number_to_currency((@price['unit_amount'] * 0.01), precision: 2) %></h5>
           </div>
+          <div class="col-12">
+              <p class="text-center font-14">To upgrade or downgrade your current plan, first cancel it. Then select your new plan. </p>
+          </div>
         </div>
       </div>
     </div>
@@ -110,7 +113,7 @@ eliteMonthlyMemberships = ENV['eliteMonthlyMembership'].split(",") %>
     <% Stripe::Subscription.list(customer: current_user&.stripeCustomerID)['data'].map{|s| s['items']}.flatten.map{|d| d['data']}.flatten.each do |s| %>
       <div class="card card-style">
         <div class="content">
-          <p class="font-600 font-11"><%= Stripe::Product.retrieve(s['plan']['product'])['name'] %></p>
+          <h4 class="font-600"><%= Stripe::Product.retrieve(s['plan']['product'])['name'].titleize %></h4>
           <div class="row mt-6">
               <div class="col-3 icon icon-xl">
                   <i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark" width='80'></i>

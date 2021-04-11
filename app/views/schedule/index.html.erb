@@ -54,7 +54,7 @@ Contact
 
 
                       <div class="row mb-6">
-                        <div class="col-12"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
+                        <div class="col-5"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
                         <% if itm['price']['transform_quantity'] && !itm['price']['transform_quantity']['divide_by'].blank? %>
                           <!-- <div class="col-1"><h4 class="font-14 text-left"><i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark"></i></h4></div> -->
                           <div class="col-3"><h4 class="font-14 text-justify"><%= (itm['invoiceLine']['quantity'].to_i * itm['price']['transform_quantity']['divide_by']) - itm['invoiceLine']['metadata']['claimed'].to_i %></h4></div>
