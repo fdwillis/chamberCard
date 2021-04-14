@@ -35,7 +35,7 @@
                 <%= cl_image_tag(h[:product]['images'][0].split(",")[0], :width => 100, :height => 50, :gravity=>:auto, class: "mr-3") %>
               <% end %>
               <h1><%= h[:product]['name'] %></h1>
-              <p><%= h[:product]['description'] %></p>
+              <p class="text-justify"><%= h[:product]['description'] %></p>
               <%= link_to "View", "/products/#{h[:product]['id'][5..h[:product]['id'].size]}?connectAccount=#{h[:connectAccount]}", class: 'btn btn-full bg-blue2-dark' %>
             </div>
           <% end %>
@@ -51,7 +51,7 @@
                 <%= cl_image_tag(h[:product]['images'][0].split(",")[0], :width => 100, :height => 50, :gravity=>:auto, class: "mr-3") %>
               <% end %>
               <h1><%= h[:product]['name'] %></h1>
-              <p><%= h[:product]['description'] %></p>
+              <p class="text-justify"><%= h[:product]['description'] %></p>
               <p class="text-right mb-0 pb-3">
                 <%= link_to "View", "/products/#{h[:product]['id'][5..h[:product]['id'].size]}?connectAccount=#{h[:connectAccount]}", class: 'btn btn-full bg-blue2-dark' %>
               </p>

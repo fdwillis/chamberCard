@@ -77,10 +77,7 @@
         <% @prices.each do |pr| %>
           <div class="content">
             <div class="row mb-0">
-                <div class="col-3 icon icon-xl">
-                    <i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark" width='80'></i>
-                </div>
-                <div class="col-9 pl-4">
+                <div class="col-12 pl-4">
                     <div class="d-flex">
                       <div><p class="font-700 color-theme"><%= number_to_currency((pr['unit_amount'] * 0.01), precision: 2) %></p></div>
                     </div>

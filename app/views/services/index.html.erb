@@ -43,7 +43,7 @@
               <% end %>
 
               <h1 style="padding-left: 5px;"><%= h[:product]['name'] %></h1>
-              <p style="padding-left: 5px;"><%= h[:product]['description'] %></p>
+              <p style="padding-left: 5px;" class="text-justify"><%= h[:product]['description'] %></p>
               <p class="text-right mb-0 pb-3">
                 <%= link_to "View", "/services/#{h[:product]['id'][5..h[:product]['id'].size]}?connectAccount=#{h[:connectAccount]}", class: 'btn btn-full bg-blue2-dark' %>
               </p>
@@ -57,7 +57,7 @@
             <div data-filter-item="" data-filter-name="all <%= !h[:product]['metadata'].blank? ? h[:product]['metadata']['keywords'] : h[:product][:name] %>" class="search-result-list">
 
               <h1  style="padding-left: 5px;"><%= h[:product]['name'] %></h1>
-              <p style="padding-left: 5px;"><%= h[:product]['description'] %></p>
+              <p style="padding-left: 5px;"  class="text-justify"><%= h[:product]['description'] %></p>
               <%= link_to "View", "/services/#{h[:product]['id'][5..h[:product]['id'].size]}?connectAccount=#{h[:connectAccount]}", class: 'btn btn-full bg-blue2-dark' %>
             </div>
           <% end %>
