@@ -31,8 +31,14 @@ class User < ApplicationRecord
 
     # timeKitPost = `curl --request POST --header 'Content-Type: application/json' --url https://api.timekit.io/v2/bookings --user :test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9 --data '{"meta":{"invoiceItem": "#{invoiceItem}", "connectAccount": "#{stripeMerchantID}"},"buffer":"#{ENV['bufferTime']} minutes","resource_id": "#{resource_id}","graph": "instant","start": "#{start}","end": "#{endAt}","what": "#{what}","where": "#{where}","description": "#{description}","customer": {"name": "#{customerName}","email": "#{customerEmail}","phone": "#{customerPhone}"}}'`
     
-    timeKitPost = `curl --request POST --header 'Content-Type: application/json' --url https://api.timekit.io/v2/bookings --user :test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9 --data '{"settings": {"allow_double_bookings": true}, "meta":{"invoiceItem": "#{invoiceItem}", "connectAccount": "#{stripeMerchantID}"},"buffer":"#{ENV['bufferTime']} minutes","resource_id": "#{resource_id}","graph": "instant","start": "#{start}","end": "#{endAt}","what": "#{what}","where": "#{where}","description": "#{description}","customer": {"name": "#{customerName}","email": "#{customerEmail}","phone": "#{customerPhone}"}}'`
-   
+    if Rails.env.development? || Rails.env.test?
+      timeKitPost = `curl --request POST --header 'Content-Type: application/json' --url https://api.timekit.io/v2/bookings --user :#{ENV['timeKitKeyTest']} --data '{"settings": {"allow_double_bookings": true}, "meta":{"invoiceItem": "#{invoiceItem}", "connectAccount": "#{stripeMerchantID}"},"buffer":"#{ENV['bufferTime']} minutes","resource_id": "#{resource_id}","graph": "instant","start": "#{start}","end": "#{endAt}","what": "#{what}","where": "#{where}","description": "#{description}","customer": {"name": "#{customerName}","email": "#{customerEmail}","phone": "#{customerPhone}"}}'`
+    end
+
+    if Rails.env.production?
+      timeKitPost = `curl --request POST --header 'Content-Type: application/json' --url https://api.timekit.io/v2/bookings --user :#{ENV['timeKitKeyLive']} --data '{"settings": {"allow_double_bookings": true}, "meta":{"invoiceItem": "#{invoiceItem}", "connectAccount": "#{stripeMerchantID}"},"buffer":"#{ENV['bufferTime']} minutes","resource_id": "#{resource_id}","graph": "instant","start": "#{start}","end": "#{endAt}","what": "#{what}","where": "#{where}","description": "#{description}","customer": {"name": "#{customerName}","email": "#{customerEmail}","phone": "#{customerPhone}"}}'`
+    end
+    
     resourceLoaded = Oj.load(timeKitPost)
 
     if !resourceLoaded['error']
@@ -43,7 +49,14 @@ class User < ApplicationRecord
   end
 
   def self.timeKit
-    resources = `curl --request 'GET' --header 'Content-Type: application/json' --url 'https://api.timekit.io/v2/resources' --user ':test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9'`
+    if Rails.env.development? || Rails.env.test?
+      resources = `curl --request 'GET' --header 'Content-Type: application/json' --url 'https://api.timekit.io/v2/resources' --user ':#{ENV['timeKitKeyTest']}'`
+    end
+
+    if Rails.env.production?
+      resources = `curl --request 'GET' --header 'Content-Type: application/json' --url 'https://api.timekit.io/v2/resources' --user ':#{ENV['timeKitKeyLive']}'`
+    end
+
     return Oj.load(resources)['data']
   end
 
@@ -174,7 +187,7 @@ class User < ApplicationRecord
   end
 
   def createUserAPI(params)
-
+debugger
     curlCall = `curl -d "uuid=#{SecureRandom.uuid[0..7]}&serviceFee=#{ENV['serviceFee']}&appName=#{ENV['appName']}&phone=#{params['phone']}&accessPin=#{params['accessPin']}&email=#{self.email}&username=#{self.username}&password=#{self.password}&password_confirmation=#{self.password}" #{SITEurl}/v1/users`
     response = Oj.load(curlCall)
     
