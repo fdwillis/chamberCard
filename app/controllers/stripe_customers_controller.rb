@@ -1,6 +1,19 @@
 class StripeCustomersController < ApplicationController
 before_action :authenticate_user!
 
+	
+
+	def index
+		callCurl = current_user.indexStripeCustomerAPI
+
+		if callCurl['success']
+			@customers = callCurl['customers']
+		else
+			flash[:error] = callCurl['message']
+			redirect_to profile_path
+		end
+	end
+
 	def create
 		callCurl = current_user.createStripeCustomerAPI
 

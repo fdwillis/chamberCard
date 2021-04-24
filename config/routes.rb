@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 		resources :products
 		resources :pricing
 
-		resources :stripe_customers, :path => '/stripe-customers'
+		resources :stripe_customers, :path => '/customers'
 		resources :stripe_tokens, :path => '/stripe-tokens'
 				
 		post "initiateCharge", to: 'charges#initiateCharge', as: "initiateCharge"

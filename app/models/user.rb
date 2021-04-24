@@ -159,6 +159,20 @@ class User < ApplicationRecord
     end
   end
 
+  def indexStripeCustomerAPI
+
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/stripe-customers`
+
+    response = Oj.load(curlCall)
+    
+    if !response.blank? && response['success']
+      self.update(stripeCustomerID: response['stripeCustomerID'] )
+      return response
+    else
+      return response
+    end
+  end
+
   def createStripeCustomerAPI
 
     curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "" #{SITEurl}/v1/stripe-customers`
@@ -187,7 +201,7 @@ class User < ApplicationRecord
   end
 
   def createUserAPI(params)
-debugger
+
     curlCall = `curl -d "uuid=#{SecureRandom.uuid[0..7]}&serviceFee=#{ENV['serviceFee']}&appName=#{ENV['appName']}&phone=#{params['phone']}&accessPin=#{params['accessPin']}&email=#{self.email}&username=#{self.username}&password=#{self.password}&password_confirmation=#{self.password}" #{SITEurl}/v1/users`
     response = Oj.load(curlCall)
     
@@ -237,6 +251,10 @@ debugger
 
   def paymentOn?
     !stripeCustomerID.blank? && !checkStripeSource.blank?
+  end
+
+  def owner?
+    admin? || (stripeMerchantID[5..stripeMerchantID.length] == ENV['appName'][0..15] && manager?)
   end
  
   def member?
@@ -357,6 +375,6 @@ debugger
   end
   
   def adminAccess
-    return ['admin' , 'virtual']
+    return ['admin' , 'trustee']
   end
 end
