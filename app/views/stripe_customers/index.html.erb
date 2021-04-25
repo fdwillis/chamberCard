@@ -1,1 +1,29 @@
 <%= @customers %>
+
+<div class="card card-style">
+  <div class="content mb-2">
+    <h3>Customers of <%= ENV['siteName'] %></h3>
+    <p>View customer profiles &amp; financials </p>
+    <table class="table table-borderless text-center rounded-sm shadow-l" style="overflow: hidden;">
+      <thead>
+        <tr class="bg-dark3-dark">
+            <th scope="col-2" class="color-white">Name</th>
+            <th scope="col-2" class="color-white">Spend</th>
+            <th scope="col-2" class="color-white">Documents</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+            <th scope="row">Apple</th>
+            <td class="color-green1-dark">$9,878.90</td>
+            <td class="color-blue2-dark"><i class="fa fa-file "></i></td>
+        </tr>
+        <tr>
+            <th scope="row">Nope</th>
+            <td class="color-red1-dark">$0.00</td>
+            <td class="color-blue2-dark"><i class="fa fa-file "></i></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
