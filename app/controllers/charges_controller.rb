@@ -9,6 +9,7 @@ class ChargesController < ApplicationController
 	    
 	    if response['success']
 				@payments = response['payments']
+				@pending = response['pending']
 			elsif response['message'] == "No purchases found"
 				@message = response['message']
 			else

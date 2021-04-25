@@ -219,6 +219,19 @@
               </div>
             <% end %>
 
+            <% if !current_user&.customer? && current_user&.owner? %>
+              <div class="mr-3 ml-3">
+                <span class="text-uppercase font-900 font-11 opacity-30">Customers</span>
+                <div class="list-group list-custom-small list-icon-0">
+                    <a href="/customers">
+                        <i class="fa font-14 fa-users color-green1-dark"></i>
+                        <span>Customers</span>
+                        <i class="fa fa-angle-right"></i>
+                    </a>   
+                </div>
+              </div>
+            <% end %>
+
             
             <div class="mr-3 ml-3 mt-4">
                 <span class="text-uppercase font-900 font-11 opacity-30">FIND US</span>

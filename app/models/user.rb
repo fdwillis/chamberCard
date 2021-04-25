@@ -288,26 +288,22 @@ class User < ApplicationRecord
   end
 
   def checkStripeSource
-    if !stripeCustomerID.blank?
-      if manager?
-        accountCapabilities = Stripe::Account.retrieve(stripeMerchantID)['capabilities']
+    if manager?
+      accountCapabilities = Stripe::Account.retrieve(stripeMerchantID)['capabilities']
 
-        if accountCapabilities['card_payments'] == "active" && accountCapabilities['transfers'] == "active" #charge stripeSubscription to cover heroku fees
-          return true
-        else
-          return false
-        end
+      if accountCapabilities['card_payments'] == "active" && accountCapabilities['transfers'] == "active" #charge stripeSubscription to cover heroku fees
+        return true
       else
-        stripeCustomer = Stripe::Customer.retrieve(stripeCustomerID)
-        #make phone number required for purchase
-        if stripeCustomer['default_source']
-          return true
-        else
-          return false
-        end
+        return false
       end
     else
-      return false
+      stripeCustomer = Stripe::Customer.retrieve(stripeCustomerID)
+      #make phone number required for purchase
+      if stripeCustomer['default_source']
+        return true
+      else
+        return false
+      end
     end
   end
 
