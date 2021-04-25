@@ -174,7 +174,7 @@ class User < ApplicationRecord
 
   def showStripeCustomerAPI(customerID)
 
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/stripe-customers/#{customerID}`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/stripe-customers/#{customerID}`
 
     response = Oj.load(curlCall)
     

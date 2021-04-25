@@ -4,13 +4,15 @@ class HomeController < ApplicationController
 	def profile
 		if current_user&.authentication_token
 			if !current_user&.stripeCustomerID.blank? || !current_user&.stripeMerchantID.blank?
-				callCurl = current_user&.showStripeUserAPI
+				callCurl = current_user&.showStripeCustomerAPI(current_user&.stripeCustomerID)
 
 				if callCurl['success']
-					@sources = !callCurl['source'].blank? ? callCurl['source'] : callCurl['sources']
+					@sources = callCurl['sources']
 					@phone = callCurl['stripeCustomer']['phone']
 					@name = callCurl['stripeCustomer']['name']
 					@email = current_user&.email
+				else
+					flash[:error] = callCurl['message']
 				end
 			end
 		else
