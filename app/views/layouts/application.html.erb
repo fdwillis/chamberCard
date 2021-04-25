@@ -80,16 +80,18 @@
         <% end %>
 
         <% if request.fullpath.include?('/charges') %>
-          <a href="/charges"><i class="fa fa-dollar-sign color-highlight"></i><span>Payments</span></a>
+          <a href="/charges"><i class="fa fa-dollar-sign color-highlight"></i><span>Charges</span></a>
         <% else %>
-          <a href="/charges"><i class="fa fa-dollar-sign"></i><span>Payments</span></a>
+          <a href="/charges"><i class="fa fa-dollar-sign"></i><span>Charges</span></a>
         <% end %>
 
         <% if request.fullpath.include?('/profile') || request.fullpath.include?('/auth/login')|| request.fullpath.include?('/auth/sign-up')|| request.fullpath.include?('/membership') %>
-          <a href="/profile"><i class="fa fa-user color-highlight"></i><span>Profile</span></a>
+          <a href="/profile"><i class="fa fa-cog color-highlight"></i><span>Settings</span></a>
         <% else %>
-          <a href="/profile"><i class="fa fa-user"></i><span>Profile</span></a>
+          <a href="/profile"><i class="fa fa-cog"></i><span>Settings</span></a>
         <% end %>
+
+
 
 
           <!-- <a href="#" data-menu="menu-settings"><i class="fa fa-cog"></i><span>Settings</span></a> -->
@@ -188,11 +190,11 @@
             <% end %>
             <% if current_user&.customer? %>
               <div class="mr-3 ml-3">
-                <span class="text-uppercase font-900 font-11 opacity-30">Invoices</span>
+                <span class="text-uppercase font-900 font-11 opacity-30">Financials</span>
                 <div class="list-group list-custom-small list-icon-0">
-                    <a href="/pay-now">
-                        <i class="fa font-14 fa-download color-red1-dark"></i>
-                        <span>Pay Now</span>
+                    <a href="/customers/my-spend">
+                        <i class="fa font-14 fa-user color-red1-dark"></i>
+                        <span>My Spend</span>
                         <i class="fa fa-angle-right"></i>
                     </a>   
                 </div>

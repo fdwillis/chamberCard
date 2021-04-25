@@ -19,6 +19,8 @@ before_action :authenticate_user!
 
 		if callCurl['success']
 			@customer = callCurl['stripeCustomer']
+			@sellerID = callCurl['stripeSeller']
+			@stripePlatformCustomerID = callCurl['stripePlatformCustomerID']
 		end
 		# debugger
 	end
