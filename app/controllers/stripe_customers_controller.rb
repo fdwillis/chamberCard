@@ -14,6 +14,10 @@ before_action :authenticate_user!
 		end
 	end
 
+	def show
+		debugger
+	end
+
 	def create
 		callCurl = current_user.createStripeCustomerAPI
 

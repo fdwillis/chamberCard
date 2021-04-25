@@ -1,5 +1,3 @@
-<%= @customers %>
-
 <div class="card card-style">
   <div class="content mb-2">
     <h3>Customers of <%= ENV['siteName'] %></h3>
@@ -13,16 +11,18 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-            <th scope="row">Apple</th>
-            <td class="color-green1-dark">$9,878.90</td>
-            <td class="color-blue2-dark"><i class="fa fa-file "></i></td>
-        </tr>
-        <tr>
-            <th scope="row">Nope</th>
-            <td class="color-red1-dark">$0.00</td>
-            <td class="color-blue2-dark"><i class="fa fa-file "></i></td>
-        </tr>
+      	<% @customers.each do |cust| %>
+        <% stripeSpend = Stripe::Charge.list({customer: cust['id'], limit: 100}, {stripe_account: current_user&.stripeMerchantID})['data'].sum(&:amount) * 0.01 %>
+	        <tr>
+	            <th scope="row"><%= link_to cust['name'], stripe_customer_path(cust['id'])  %></th>
+              <% if stripeSpend > 0 %>
+  	            <td class="color-green1-dark"><%= number_to_currency(stripeSpend, precision: 2) %></td>
+              <% else %>
+                <td class="color-red1-dark"><%= number_to_currency(stripeSpend, precision: 2) %></td>
+              <% end %>
+	            <td class="color-blue2-dark"><i class="fa fa-file "></i></td>
+	        </tr>
+      	<% end %>
       </tbody>
     </table>
   </div>

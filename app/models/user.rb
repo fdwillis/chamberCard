@@ -166,7 +166,6 @@ class User < ApplicationRecord
     response = Oj.load(curlCall)
     
     if !response.blank? && response['success']
-      self.update(stripeCustomerID: response['stripeCustomerID'] )
       return response
     else
       return response
