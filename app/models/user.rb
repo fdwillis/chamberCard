@@ -172,6 +172,19 @@ class User < ApplicationRecord
     end
   end
 
+  def showStripeCustomerAPI(customerID)
+
+    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/stripe-customers/#{customerID}`
+
+    response = Oj.load(curlCall)
+    
+    if !response.blank? && response['success']
+      return response
+    else
+      return response
+    end
+  end
+
   def createStripeCustomerAPI
 
     curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "" #{SITEurl}/v1/stripe-customers`
@@ -253,7 +266,7 @@ class User < ApplicationRecord
   end
 
   def owner?
-    admin? || (stripeMerchantID[5..stripeMerchantID.length] == ENV['appName'][0..15] && manager?)
+    admin? || (!stripeMerchantID.blank? && stripeMerchantID[5..stripeMerchantID.length] == ENV['appName'][0..15] && manager?)
   end
  
   def member?

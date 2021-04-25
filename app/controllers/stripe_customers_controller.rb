@@ -15,7 +15,12 @@ before_action :authenticate_user!
 	end
 
 	def show
-		debugger
+		callCurl = current_user.showStripeCustomerAPI(params[:id])
+
+		if callCurl['success']
+			@customer = callCurl['stripeCustomer']
+		end
+		# debugger
 	end
 
 	def create
