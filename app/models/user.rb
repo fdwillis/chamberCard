@@ -63,7 +63,7 @@ class User < ApplicationRecord
   def resendTwilioPhoneAPI
     
 
-    curlCall  = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X POST #{SITEurl}/v1/resend-phone-code`
+    curlCall  = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X POST #{SITEurl}/v1/resend-phone-code`
     response = Oj.load(curlCall)
 
     if response['success']
@@ -90,7 +90,7 @@ class User < ApplicationRecord
     end
     # build the address by saving to user and passing param
 
-    curlCall  = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "email=#{email}&name=#{stripeName}&phone=#{phone}&source=#{source}" -X PATCH #{SITEurl}/v1/stripe-customers/#{self.uuid}`
+    curlCall  = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "email=#{email}&name=#{stripeName}&phone=#{phone}&source=#{source}" -X PATCH #{SITEurl}/v1/stripe-customers/#{self.uuid}`
 
     response = Oj.load(curlCall)
 
@@ -103,7 +103,7 @@ class User < ApplicationRecord
   end
 
   def showStripeUserAPI
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/stripe-customers/#{self.uuid}`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/stripe-customers/#{self.uuid}`
 
     response = Oj.load(curlCall)
     if !response.blank? && response['success']
@@ -115,7 +115,7 @@ class User < ApplicationRecord
 
   def attachSourceStripe(tokenSource)
 
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "source=#{tokenSource}" -X PATCH #{SITEurl}/v1/stripe-customers/#{self.uuid}`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "source=#{tokenSource}" -X PATCH #{SITEurl}/v1/stripe-customers/#{self.uuid}`
 
     response = Oj.load(curlCall)
     
@@ -132,7 +132,7 @@ class User < ApplicationRecord
     exp_month = params[:exp_month]
     cvc = params[:cvc]
 
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/v1/stripe-tokens`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/v1/stripe-tokens`
 
     response = Oj.load(curlCall)
     
@@ -148,7 +148,7 @@ class User < ApplicationRecord
     account_number = params[:account_number]
     routing_number = params[:routing_number]
 
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "account_holder_name=#{account_holder_name}&account_number=#{account_number}&routing_number=#{routing_number}" #{SITEurl}/v1/stripe-tokens`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "account_holder_name=#{account_holder_name}&account_number=#{account_number}&routing_number=#{routing_number}" #{SITEurl}/v1/stripe-tokens`
 
     response = Oj.load(curlCall)
     
@@ -161,7 +161,7 @@ class User < ApplicationRecord
 
   def indexStripeCustomerAPI
 
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/stripe-customers`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/stripe-customers`
 
     response = Oj.load(curlCall)
     
@@ -187,7 +187,7 @@ class User < ApplicationRecord
 
   def createStripeCustomerAPI
 
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "" #{SITEurl}/v1/stripe-customers`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "" #{SITEurl}/v1/stripe-customers`
 
     response = Oj.load(curlCall)
     
@@ -229,7 +229,7 @@ class User < ApplicationRecord
     email = self.email
     username = self.username
 
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "email=#{email}&username=#{username}" -X PATCH #{SITEurl}/v1/users/#{self.uuid}`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "email=#{email}&username=#{username}" -X PATCH #{SITEurl}/v1/users/#{self.uuid}`
 
     response = Oj.load(curlCall)
 
@@ -241,7 +241,7 @@ class User < ApplicationRecord
   end
 
   def deleteUserSessionAPI
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X DELETE #{SITEurl}/v1/sessions/#{self.uuid}`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X DELETE #{SITEurl}/v1/sessions/#{self.uuid}`
     
     response = Oj.load(curlCall)
     
