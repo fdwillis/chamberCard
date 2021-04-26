@@ -177,7 +177,7 @@ class User < ApplicationRecord
     curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/stripe-customers/#{customerID}`
 
     response = Oj.load(curlCall)
-    
+
     if !response.blank? && response['success']
       return response
     else

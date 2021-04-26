@@ -22,7 +22,6 @@ before_action :authenticate_user!
 			@sellerID = callCurl['stripeSeller']
 			@stripePlatformCustomerID = callCurl['stripePlatformCustomerID']
 		end
-		# debugger
 	end
 
 	def create
