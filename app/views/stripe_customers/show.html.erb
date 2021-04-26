@@ -14,22 +14,25 @@
       </div>
   </div>
 </div>
-<div class="card card-style">
-  <div class="d-flex">
-      <div class="col-12 w-100 align-self-center">
-          <h5 class="mb-n2">TewCode Customer ID:</h5>
-          <p class="mb-0 font-11 opacity-60"><%= @stripePlatformCustomerID[4..@stripePlatformCustomerID.length] %></p>
-      </div>
+
+<% if current_user&.admin? %>
+  <div class="card card-style">
+    <div class="d-flex">
+        <div class="col-12 w-100 align-self-center">
+            <h5 class="mb-n2">TewCode Customer ID:</h5>
+            <p class="mb-0 font-11 opacity-60"><%= @stripePlatformCustomerID[4..@stripePlatformCustomerID.length] %></p>
+        </div>
+    </div>
   </div>
-</div>
-<div class="card card-style">
-  <div class="d-flex">
-      <div class="col-12 w-100 align-self-center">
-          <h5 class="mb-n2"><%= ENV['siteName'] %> Customer ID:</h5>
-          <p class="mb-0 font-11 opacity-60"><%= @customer['id'][4..@customer['id'].length] %></p>
-      </div>
+  <div class="card card-style">
+    <div class="d-flex">
+        <div class="col-12 w-100 align-self-center">
+            <h5 class="mb-n2"><%= ENV['siteName'] %> Customer ID:</h5>
+            <p class="mb-0 font-11 opacity-60"><%= @customer['id'][4..@customer['id'].length] %></p>
+        </div>
+    </div>
   </div>
-</div>
+<% end %>
 
 <% stripeSpend = Stripe::Charge.list({customer: @customer['id'], limit: 100}, {stripe_account: @sellerID})['data'].sum(&:amount) * 0.01 %>
 <% stripeInvoices = Stripe::Invoice.list({customer: @customer['id'], limit: 100}, {stripe_account: @sellerID})['data'] %>

@@ -309,10 +309,14 @@ class User < ApplicationRecord
         return false
       end
     else
-      stripeCustomer = Stripe::Customer.retrieve(stripeCustomerID)
-      #make phone number required for purchase
-      if stripeCustomer['default_source']
-        return true
+      if !stripeCustomerID.blank?
+        stripeCustomer = Stripe::Customer.retrieve(stripeCustomerID)
+        #make phone number required for purchase
+        if stripeCustomer['default_source']
+          return true
+        else
+          return false
+        end
       else
         return false
       end

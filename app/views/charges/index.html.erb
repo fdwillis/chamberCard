@@ -43,14 +43,18 @@
                     <i class="fa fa-exclamation-triangle bg-fade-red2-dark rounded-xl color-red2-dark" width='80'></i>
                 </div>
                 <div class="col-9 pl-4">
-                    <div class="d-flex">
-                        <div><p class="font-700 color-theme">Seller</p></div>
-                        <div class="ml-auto"><p><%= h['merchantName'] %></p></div>
-                    </div>
-                    <div class="d-flex">
-                        <div><p class="font-700 color-theme">Customer</p></div>
-                        <div class="ml-auto"><p><%= h['customerStripeInfo']['name'] %></p></div>
-                    </div>
+                    <% if current_user&.customer? %>
+                      <div class="d-flex">
+                          <div><p class="font-700 color-theme">Seller</p></div>
+                          <div class="ml-auto"><p><%= h['merchantName'] %></p></div>
+                      </div>
+                    <% end %>
+                    <% if current_user&.manager? %>
+                      <div class="d-flex">
+                          <div><p class="font-700 color-theme">Customer</p></div>
+                          <div class="ml-auto"><p><%= h['customerStripeInfo']['name'].split(" ")[0] %></p></div>
+                      </div>
+                    <% end %>
                     <div class="d-flex">
                         <div><p class="font-700 color-theme">Date</p></div>
                         <div class="ml-auto"><p><%= h['date'] %></p></div>
@@ -108,14 +112,18 @@
                     <i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark" width='80'></i>
                 </div>
                 <div class="col-9 pl-4">
-                    <div class="d-flex">
-                        <div><p class="font-700 color-theme">Seller</p></div>
-                        <div class="ml-auto"><p><%= h['merchantName'] %></p></div>
-                    </div>
-                    <div class="d-flex">
-                        <div><p class="font-700 color-theme">Customer</p></div>
-                        <div class="ml-auto"><p><%= h['customerStripeInfo']['name'] %></p></div>
-                    </div>
+                    <% if current_user&.customer? %>
+                      <div class="d-flex">
+                          <div><p class="font-700 color-theme">Seller</p></div>
+                          <div class="ml-auto"><p><%= h['merchantName'] %></p></div>
+                      </div>
+                    <% end %>
+                    <% if current_user&.manager? %>
+                      <div class="d-flex">
+                          <div><p class="font-700 color-theme">Customer</p></div>
+                          <div class="ml-auto"><p><%= h['customerStripeInfo']['name'].split(" ")[0] %></p></div>
+                      </div>
+                    <% end %>
                     <div class="d-flex">
                         <div><p class="font-700 color-theme">Date</p></div>
                         <div class="ml-auto"><p><%= h['date'] %></p></div>

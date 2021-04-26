@@ -77,7 +77,8 @@
     </div>
   <% end %>
 
-  <% if current_user&.manager? && !current_user&.subscriptionCheck %>
+  <!-- marketplace managers/authorized sellers -->
+  <% if current_user&.manager? && !current_user&.subscriptionCheck %> 
     <div class="card card-style">
       <div class="content mb-0">
         <h4 class="text-center"><i class="input-icon fa fa-exclamation-triangle color-red2-light"></i> &nbsp; &nbsp; Account Pending</h4>
@@ -139,28 +140,21 @@
     </div>
   <% end %>
 
+  <!-- customers, owners, & managers that are verified in stripe with subscription if necessary -->
   <% if !current_user&.stripeCustomerID.blank? || !current_user&.stripeMerchantID.blank? %>
     <div class="card card-style">
         <div class="content mb-0">
-            <h4 class="text-center"><i class="input-icon fa fa-pencil"></i> &nbsp; &nbsp; Account Information</h4>
-            <p class="mb-5 text-center">
-                <% if current_user&.customer? %>
-                  This information is so that service providers can contact you. Payment receipts will be sent to the email address below.
-                <% end %>
-            </p>
+            
             <%= form_for :updateCustomer, url: stripe_customer_path(id: current_user&.uuid), method: :put do |f| %>
 
-              <div class="input-style input-style-2 has-icon input-required">
-                  <i class="input-icon fa fa-user"></i>
-                  <span class="color-highlight input-style-1-active">Name</span>
-                  <em>(required)</em>
-                  <%= f.text_field :name, placeholder: "Legal Name", class: "form-control", value: @name, required: true %>
-              </div> 
+              
+
+              <h3 class="text-center"><i class="input-icon fa fa-home"></i> &nbsp; &nbsp; <%= current_user&.manager? ? "Business" : "Shipping" %> Information </h3>
               <div class="input-style input-style-2 has-icon input-required mt-4">
                   <i class="input-icon fa fa-at"></i>
                   <span class="color-highlight input-style-1-active">Email Address</span>
                   <em>(required)</em>
-                  <%= f.email_field :email, value: @email, class: "form-control", required: true %>
+                  <%= f.email_field :email, value: current_user&.email ? current_user&.email : @email, class: "form-control", required: true %>
               </div> 
               <div class="input-style input-style-2 has-icon input-required mt-4">
                   <i class="input-icon fa fa-phone"></i>
@@ -168,8 +162,6 @@
                   <em>(required)</em>
                   <%= f.text_field :phone, placeholder: "2628547895", class: "form-control", value: current_user&.phone ? current_user&.phone : @phone, required: true %>
               </div>
-
-              <h3 class="text-center"><i class="input-icon fa fa-home"></i> &nbsp; &nbsp; <%= current_user&.manager? ? "Business" : "Shipping" %> Address </h3>
               <div class="input-style input-style-2 input-required mt-4">
                   <span class="color-highlight input-style-1-active">Street Address</span>
                   <em>(required)</em>
