@@ -1,4 +1,4 @@
-
+<% userShowUUID = User.find_by(email: @customer['email']).uuid %>
 <div class="card card-style">
   <div class="content">
       <div class="d-flex">
@@ -10,6 +10,7 @@
           <div class="w-100 align-self-center">
               <h1 class="mb-n2"><%= @customer['name'] %></h1>
               <p class="font-11 opacity-60"><%= @customer['email'] %></p>
+              <%= userShowUUID %>
           </div>
       </div>
   </div>
@@ -49,7 +50,7 @@
               <div class="p-3">
                   <h4 class="font-700 text-uppercase font-12 opacity-50 mt-n2">Spend</h4>
                   <h1 class="font-700 font-34 color-green1-dark mb-0"><%= number_to_currency(stripeSpend, precision: 2) %></h1>
-                  <i class="fa fa-arrow-right float-right opacity-20"></i>
+                  <!-- <i class="fa fa-arrow-right float-right opacity-20"></i> -->
               </div>
           </div>
       </div>
@@ -58,7 +59,9 @@
               <div class="p-3">
                   <h4 class="font-700 text-uppercase font-12 opacity-50 mt-n2">Unpaid Invoices</h4>
                   <h1 class="font-700 font-34 color-red1-dark  mb-0"><%= unpaidInvoices.count %></h1>
-                  <i class="fa fa-arrow-right float-right opacity-20"></i>
+                  <% if current_user&.owner? %>
+                    <a href="/initiateCharge?customerUUID=<%=userShowUUID%>" class="mt-2 btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm">Create New Invoice</a>
+                  <% end %>
               </div>
           </div>
       </div>
@@ -67,7 +70,7 @@
               <div class="p-3">
                   <h4 class="font-700 text-uppercase font-12 opacity-50 mt-n2">Subscriptions</h4>
                   <h1 class="font-700 font-34 color-blue1-dark mb-0"><%= stripeSellerSubscriptions.count + stripePlatformSubscriptions.count %></h1>
-                  <i class="fa fa-arrow-right float-right opacity-20"></i>
+                  <!-- <i class="fa fa-arrow-right float-right opacity-20"></i> -->
               </div>
           </div>
       </div>
