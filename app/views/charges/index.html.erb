@@ -1,5 +1,3 @@
-
-
 <% if current_user.present? %>
 	<div class="card card-style">
     <div class="content mt-3 mb-3">
@@ -50,9 +48,10 @@
                       </div>
                     <% end %>
                     <% if current_user&.manager? %>
+                      <% userShow = User.find_by(email: h['customerStripeInfo']['email']) %>
                       <div class="d-flex">
                           <div><p class="font-700 color-theme">Customer</p></div>
-                          <div class="ml-auto"><p><%= h['customerStripeInfo']['name'].split(" ")[0] %></p></div>
+                          <div class="ml-auto"><p><%= link_to h['customerStripeInfo']['name'].split(" ")[0], "/customers/#{ h['invoice']['customer']}" %></p></div>
                       </div>
                     <% end %>
                     <div class="d-flex">
@@ -62,7 +61,6 @@
                 </div>
             </div>
             <div class="divider mt-3 mb-3"></div>
-            
             <% h['invoice']['lines']['data'].each_with_index do |itm,indx| %>
                 
                   
@@ -121,7 +119,7 @@
                     <% if current_user&.manager? %>
                       <div class="d-flex">
                           <div><p class="font-700 color-theme">Customer</p></div>
-                          <div class="ml-auto"><p><%= h['customerStripeInfo']['name'].split(" ")[0] %></p></div>
+                          <div class="ml-auto"><p><%= link_to h['customerStripeInfo']['name'].split(" ")[0], "/customers/#{ h['invoice']['customer']}" %></p></div>
                       </div>
                     <% end %>
                     <div class="d-flex">
@@ -169,6 +167,7 @@
                 <%= f.hidden_field :invoiceToPay, value: h['invoice']['id'] %>
                 <% if current_user&.customer? %>
                   <%= f.submit "Pay Now", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
+                  <p class="text-center">A representative from <%= ENV['siteName'] %> will be in touch to schedule your service</p>
                 <% end %>
 
                 <% if current_user&.owner? %>
