@@ -63,6 +63,13 @@
           <% end %>
         <% end %>
 
+        <% if current_user&.customer? %>
+          <% if request.fullpath.include?('/customers') %>
+            <a href="/customers/<%= current_user&.uuid %>"><i class="fa fa-user color-highlight"></i><span>Profile</span></a>
+          <% else %>
+            <a href="/customers/<%= current_user&.uuid %>"><i class="fa fa-user"></i><span>Profile</span></a>
+          <% end %>
+        <% end %>
 
         <% if request.fullpath.include?('/services') || request.fullpath.include?('?service_id') %>
           <a href="/services"><i class="fa fa-shopping-bag color-highlight"></i><span>Services</span></a>
