@@ -7,7 +7,7 @@
         <tr class="bg-dark3-dark">
             <th scope="col-3" class="color-white">Name</th>
             <th scope="col-3" class="color-white">Uncollected</th>
-            <th scope="col-3" class="color-white">Spend</th>
+            <th scope="col-3" class="color-white">Spent</th>
             <!-- <th scope="col-3" class="color-white">Documents</th> -->
         </tr>
       </thead>
@@ -20,15 +20,15 @@
 	        <tr>
 	            <td scope="row"><%= link_to cust['name'], stripe_customer_path(cust['id'])  %></td>
               <% if uncollected > 0 %>
-  	            <td class="color-green1-dark"><%= number_to_currency(uncollected * 0.01, precision: 2) %></td>
+  	            <td class="color-red1-dark"><%= number_to_currency(uncollected * 0.01, precision: 2) %></td>
               <% else %>
-                <td class="color-red1-dark"><%= number_to_currency(uncollected * 0.01, precision: 2) %></td>
+                <td><%= number_to_currency(uncollected * 0.01, precision: 2) %></td>
               <% end %>
 
               <% if stripeSpend > 0 %>
                 <td class="color-green1-dark"><%= number_to_currency(stripeSpend, precision: 2) %></td>
               <% else %>
-                <td class="color-red1-dark"><%= number_to_currency(stripeSpend, precision: 2) %></td>
+                <td><%= number_to_currency(stripeSpend, precision: 2) %></td>
               <% end %>
 	            <!-- <td class="color-blue2-dark"><i class="fa fa-file "></i></td> -->
 	        </tr>

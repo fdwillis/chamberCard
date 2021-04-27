@@ -63,7 +63,7 @@
           <% end %>
         <% end %>
 
-        <% if current_user&.customer? %>
+        <% if current_user&.customer? && current_user&.stripeCustomerID && current_user&.checkStripeSource %>
           <% if request.fullpath.include?('/customers') %>
             <a href="/customers/<%= current_user&.uuid %>"><i class="fa fa-user color-highlight"></i><span>Profile</span></a>
           <% else %>
@@ -218,7 +218,7 @@
                   </div>
                 </div>
               <% end %>
-              <div class="mr-3 ml-3">
+              <!-- <div class="mr-3 ml-3">
                 <span class="text-uppercase font-900 font-11 opacity-30">Membership Savings</span>
                 <div class="list-group list-custom-small list-icon-0">
                     <a href="/membership">
@@ -227,8 +227,8 @@
                         <i class="fa fa-angle-right"></i>
                     </a>   
                 </div>
-              </div>
-              <div class="mr-3 ml-3">
+              </div> -->
+              <!-- <div class="mr-3 ml-3">
                 <span class="text-uppercase font-900 font-11 opacity-30">Partners | TewCode</span>
                 <div class="list-group list-custom-small list-icon-0">
                     <a href="https://www.tewcode.com" target="_blank">
@@ -237,7 +237,7 @@
                         <i class="fa fa-angle-right"></i>
                     </a>   
                 </div>
-              </div>
+              </div> -->
             <% end %>
 
             <% if !current_user&.customer? && current_user&.owner? %>
