@@ -1,0 +1,44 @@
+
+
+
+<div class="card card-style">
+  <div class="content mb-2">
+    <h3>Customers of <%= ENV['siteName'] %></h3>
+    <p>View customer profiles &amp; financials </p>
+    <table class="table table-borderless text-center rounded-sm shadow-l" style="overflow: hidden;">
+      <thead>
+        <tr class="bg-dark3-dark">
+            <th class="col-3" class="color-white">Name</th>
+            <th class="col-5" class="color-white">Spent</th>
+            <th class="col-4" class="color-white">Pending</th>
+            <!-- <th class="col-3" class="color-white">Documents</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <% @customers.each do |cust| %>
+        <% stripeSpend = Stripe::Charge.list({customer: cust['id'], limit: 100}, {stripe_account: @stripeMerchantID})['data'].sum(&:amount) * 0.01 %>
+        <% uncollected = 0 %>
+        <% stripeInvoices = Stripe::Invoice.list({customer: cust['id'], limit: 100}, {stripe_account: @stripeMerchantID})['data'] %>
+        <% stripeInvoices.map{|inv| (inv['status'] == 'draft' || inv['status'] == 'open') ? uncollected += inv['amount_remaining'] : next } %>
+          <% if User.find_by(email: cust['email']).present? &&  cust['name'].present? %>
+            <tr>
+                <td class="col-3"><%= link_to cust['name'].truncate(20), stripe_customer_path(cust['id'])  %></td>
+                <% if stripeSpend > 0 %>
+                  <td class="col-5 color-green1-dark"><%= number_to_currency(stripeSpend, precision: 2) %></td>
+                <% else %>
+                  <td class="col-5"><%= number_to_currency(stripeSpend, precision: 2) %></td>
+                <% end %>
+                <% if uncollected > 0 %>
+                  <td class="col-4 color-red1-dark"><%= number_to_currency(uncollected * 0.01, precision: 2) %></td>
+                <% else %>
+                  <td class="col-4"><%= number_to_currency(uncollected * 0.01, precision: 2) %></td>
+                <% end %>
+
+                <!-- <td class="color-blue2-dark"><i class="fa fa-file "></i></td> -->
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

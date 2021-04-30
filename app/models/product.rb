@@ -30,13 +30,13 @@ class Product < ApplicationRecord
 				cloudX = Cloudinary::Uploader.upload(imageMade.source.file.file)
 				images.append(cloudX['secure_url'])
 				File.delete(imageMade.source.file.file)
+				productStarted.destroy!
 			end
 		end
 
 		if userX&.class == User
 			callIt = `curl -H "appName: #{ENV['appName']}" -d 'keywords=#{keywords}&images=#{images.join(",")}&type=#{type}&name=#{productName}&description=#{description}&connectAccount=#{userX&.stripeMerchantID}&active=true' -H "bxxkxmxppAuthtoken: #{userX&.authentication_token}" -X POST #{SITEurl}/v1/products`
 			response = Oj.load(callIt)
-			productStarted.update(stripeProductID: response['product'])
 
 			return callIt
 		end

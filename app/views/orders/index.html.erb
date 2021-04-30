@@ -37,10 +37,7 @@ Contact
             <% if theInvoiceX['metadata']['goodOrService'] == 'good' && theInvoiceX['metadata']['orderIssue'].blank? %>
               <div class="row mb-4">
                  <div class="col-8">
-                  Order#<%= h['invoice']['id'][3..h['invoice']['id'].length] %><br>
-                  <% if current_user&.manager? %>
-                    Ship To: <%= User.find_by(stripeCustomerID: h['customerStripeInfo']['id']).address %>
-                  <% end %>
+                  <%= Stripe::Customer.retrieve(h['customerStripeInfo']['id'])['name'] %> | Ship To: <%= User.find_by(stripeCustomerID: h['customerStripeInfo']['id']).address %> 
                 </div>
                  <div class="col-4">
                   <button class="accordion-btn col-12 btn btn-m btn-full bg-green1-dark text-uppercase font-900" data-toggle="collapse" data-target="#<%= h['invoice']['lines']['data'][0]['id'] %>" aria-expanded="false" style='margin-top:-10px;'>
@@ -106,9 +103,12 @@ Contact
                       <% end %>
                     <% end %>
                   <% end %>
+
+                  Order#<%= h['invoice']['id'][3..(h['invoice']['id'].length)] %><br>
                   </div>
                 </div>
               </div>
+
 
 
 

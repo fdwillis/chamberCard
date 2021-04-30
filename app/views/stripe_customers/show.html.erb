@@ -1,0 +1,81 @@
+<% userShow = User.find_by(email: @customer['email']) %>
+<div class="card card-style">
+  <div class="content">
+      <div class="d-flex">
+          <div class="align-self-center">
+              <div class="col-3 icon icon-l">
+                <i class="fa fa-user bg-fade-green2-dark rounded-xl color-green2-dark" width='80'></i>
+              </div>
+          </div>
+          <div class="w-100 align-self-center">
+              <h1 class="mb-2"><%= @customer['name'] %></h1>
+              <% if current_user&.owner? %>
+                <p class="font-11 opacity-60 mb-0"><%= link_to "Email Customer", "mailto:#{@customer['email']}"  %></p>
+                <p class="font-11 opacity-60 mb-0"><%= link_to "Call Customer", "tel:#{userShow&.phone}"  %><%=  %></p>
+              <% end %>
+              
+          </div>
+      </div>
+  </div>
+</div>
+
+<% if current_user&.admin? %>
+  <div class="card card-style">
+    <div class="d-flex">
+        <div class="col-12 w-100 align-self-center">
+            <h5 class="mb-n2">TewCode Customer ID:</h5>
+            <p class="mb-0 font-11 opacity-60"><%= @stripePlatformCustomerID[4..@stripePlatformCustomerID.length] %></p>
+        </div>
+    </div>
+  </div>
+  <div class="card card-style">
+    <div class="d-flex">
+        <div class="col-12 w-100 align-self-center">
+            <h5 class="mb-n2"><%= ENV['siteName'] %> Customer ID:</h5>
+            <p class="mb-0 font-11 opacity-60"><%= @customer['id'][4..@customer['id'].length] %></p>
+        </div>
+    </div>
+  </div>
+<% end %>
+
+<% stripeSpend = Stripe::Charge.list({customer: @customer['id'], limit: 100}, {stripe_account: @sellerID})['data'].sum(&:amount) * 0.01 %>
+<% stripeInvoices = Stripe::Invoice.list({customer: @customer['id'], limit: 100}, {stripe_account: @sellerID})['data'] %>
+<% stripeSellerSubscriptions = Stripe::Subscription.list({customer: @customer['id'], limit: 100}, {stripe_account: @sellerID})['data'] %>
+<% stripePlatformSubscriptions = Stripe::Subscription.list({customer: @stripePlatformCustomerID, limit: 100})['data'] %>
+<% unpaidInvoices = [] %>
+<% stripeInvoices.map{|inv| (inv['status'] == 'draft' || inv['status'] == 'open') ? unpaidInvoices << inv : next } %>
+ 
+ 
+<div class="content">
+  <div class="row mb-n2">
+      <div class="col-12 ps-2">
+          <div class="card card-style mx-0 mb-3">
+              <div class="p-3">
+                  <h4 class="font-700 text-uppercase font-12 opacity-50 mt-n2">Spent</h4>
+                  <h1 class="font-700 font-34 color-green1-dark mb-0"><%= number_to_currency(stripeSpend, precision: 2) %></h1>
+                  <!-- <i class="fa fa-arrow-right float-right opacity-20"></i> -->
+              </div>
+          </div>
+      </div>
+      <div class="col-12 pe-2">
+          <div class="card card-style mx-0 mb-3">
+              <div class="p-3">
+                  <h4 class="font-700 text-uppercase font-12 opacity-50 mt-n2">Unpaid Invoices</h4>
+                  <h1 class="font-700 font-34 color-red1-dark  mb-0"><%= unpaidInvoices.count %></h1>
+                  <% if current_user&.owner? %>
+                    <a href="/initiateCharge?customerUUID=<%=userShow&.uuid%>" class="mt-2 btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm">Create New Invoice</a>
+                  <% end %>
+              </div>
+          </div>
+      </div>
+      <div class="col-12 ps-2 pe-2">
+          <div class="card card-style mx-0 mb-3">
+              <div class="p-3">
+                  <h4 class="font-700 text-uppercase font-12 opacity-50 mt-n2">Subscriptions</h4>
+                  <h1 class="font-700 font-34 color-blue1-dark mb-0"><%= stripeSellerSubscriptions.count + stripePlatformSubscriptions.count %></h1>
+                  <!-- <i class="fa fa-arrow-right float-right opacity-20"></i> -->
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

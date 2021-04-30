@@ -99,7 +99,7 @@ Contact
                             <%= f.hidden_field :merchantStripeID, value: h['merchantStripeID'] %>
 
                             <%= f.hidden_field :serviceToBook, value: itm['invoiceLine']['invoice_item'] %>
-                            
+
                             <%= f.submit "Request Booking", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
                           <% end %>
                         </div>
@@ -147,7 +147,9 @@ Contact
               <% if  itm['invoiceLine']['metadata']['requesting'].to_i > 0 %>
                 <div class="card card-style bg-theme pb-0">
                   <div class="content mb-0">
-                    Order#<%= h['invoice']['id'][3..h['invoice']['id'].length].truncate(9, omission: '') %>
+                    <h3 class="text-left"><%= itm['product']['name'] %></h3>
+                    <div class="ml-auto"><p><%= itm['invoiceLine']['metadata']['serviceAddress'] %></p></div>
+                    <small>Order#<%= h['invoice']['id'][3..h['invoice']['id'].length].truncate(9, omission: '') %></small>
                     <div class="row mb-0">
                         <div class="col-3 icon icon-xl">
                             <i class="fa fa-exclamation bg-fade-yellow1-dark rounded-xl color-yellow2-dark" width='80'></i>
@@ -192,7 +194,7 @@ Contact
                                 <%= f.hidden_field :serviceToAccept, value: itm['invoiceLine']['invoice_item'] %>
                                 <%= f.hidden_field :start, value: startDateX %>
                                 <%= f.hidden_field :what, value: "#{itm['product']['name']}: #{itm['product']['description']}" %>
-                                <%= f.hidden_field :where, value: current_user&.address %>
+                                <%= f.hidden_field :where, value: itm['invoiceLine']['metadata']['serviceAddress'] %>
                                 <%= f.hidden_field :description, value: itm['price']['metadata']['description'] %>
                                 <%= f.hidden_field :customerName, value: h['customerStripeInfo']['name'] %>
                                 <%= f.hidden_field :customerEmail, value: h['customerStripeInfo']['email'] %>
@@ -208,12 +210,6 @@ Contact
                         </div>
                     </div>
                     <div class="divider mt-3 mb-3"></div>
-                    <div class="row mb-2">
-                      <div class="col-12"><h3 class="text-left"><%= itm['product']['name'] %></h3></div>
-                    </div>
-
-
-
                     <%= form_for :requestBooking, id: "#{h['customerStripeInfo']['name']}#{h['invoice']['id']}", url: requestBooking_path do |f| %>
                       <div class="row">
                         <div class="input-style input-style-2 mt-2 col-6">
@@ -230,7 +226,7 @@ Contact
                       <%= f.hidden_field :invoice, value: h['invoice']['id'] %>
                       <%= f.hidden_field :merchantStripeID, value: h['merchantStripeID'] %>
                       <%= f.hidden_field :serviceToBook, value: itm['invoiceLine']['invoice_item'] %>
-                      <%= f.submit "Change Date", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
+                      <%= f.submit "Propose New Date", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
                     <% end %>
 
 

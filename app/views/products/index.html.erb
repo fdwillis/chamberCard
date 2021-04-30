@@ -32,10 +32,10 @@
                 <span class="bg-red1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Unavailable</span>
               <% end %>
               <% if !h[:product]['images'].blank? %>
-                <%= cl_image_tag(h[:product]['images'][0].split(",")[0], :width=>100, :height=>100, :crop=>"crop", class: "mr-3") %>
+                <%= cl_image_tag(h[:product]['images'][0].split(",")[0], :width => 100, :height => 50, :gravity=>:auto, class: "mr-3") %>
               <% end %>
               <h1><%= h[:product]['name'] %></h1>
-              <p><%= h[:product]['description'] %></p>
+              <p class="text-justify"><%= h[:product]['description'] %></p>
               <%= link_to "View", "/products/#{h[:product]['id'][5..h[:product]['id'].size]}?connectAccount=#{h[:connectAccount]}", class: 'btn btn-full bg-blue2-dark' %>
             </div>
           <% end %>
@@ -48,10 +48,10 @@
 
               
               <% if !h[:product]['images'].blank? %>
-                <%= cl_image_tag(h[:product]['images'][0].split(",")[0], :width=>100, :height=>100, :crop=>"crop", class: "mr-3") %>
+                <%= cl_image_tag(h[:product]['images'][0].split(",")[0], :width => 100, :height => 50, :gravity=>:auto, class: "mr-3") %>
               <% end %>
               <h1><%= h[:product]['name'] %></h1>
-              <p><%= h[:product]['description'] %></p>
+              <p class="text-justify"><%= h[:product]['description'] %></p>
               <p class="text-right mb-0 pb-3">
                 <%= link_to "View", "/products/#{h[:product]['id'][5..h[:product]['id'].size]}?connectAccount=#{h[:connectAccount]}", class: 'btn btn-full bg-blue2-dark' %>
               </p>
@@ -71,11 +71,7 @@
     </div>
     <div class="list-group list-custom-small mr-3 ml-3">
       <a href="#">
-        <span class="font-400 color-blue2-dark">View All</span>
-        <i class="color-gray2-dark fa fa-angle-right"></i>
-      </a>        
-      <a href="#">
-        <span class="font-400 color-blue2-dark">Willis</span>
+        <span class="font-400 color-blue2-dark">All</span>
         <i class="color-gray2-dark fa fa-angle-right"></i>
       </a>        
     </div>

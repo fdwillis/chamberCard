@@ -31,8 +31,14 @@ class User < ApplicationRecord
 
     # timeKitPost = `curl --request POST --header 'Content-Type: application/json' --url https://api.timekit.io/v2/bookings --user :test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9 --data '{"meta":{"invoiceItem": "#{invoiceItem}", "connectAccount": "#{stripeMerchantID}"},"buffer":"#{ENV['bufferTime']} minutes","resource_id": "#{resource_id}","graph": "instant","start": "#{start}","end": "#{endAt}","what": "#{what}","where": "#{where}","description": "#{description}","customer": {"name": "#{customerName}","email": "#{customerEmail}","phone": "#{customerPhone}"}}'`
     
-    timeKitPost = `curl --request POST --header 'Content-Type: application/json' --url https://api.timekit.io/v2/bookings --user :test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9 --data '{"settings": {"allow_double_bookings": true}, "meta":{"invoiceItem": "#{invoiceItem}", "connectAccount": "#{stripeMerchantID}"},"buffer":"#{ENV['bufferTime']} minutes","resource_id": "#{resource_id}","graph": "instant","start": "#{start}","end": "#{endAt}","what": "#{what}","where": "#{where}","description": "#{description}","customer": {"name": "#{customerName}","email": "#{customerEmail}","phone": "#{customerPhone}"}}'`
-   
+    if Rails.env.development? || Rails.env.test?
+      timeKitPost = `curl --request POST --header 'Content-Type: application/json' --url https://api.timekit.io/v2/bookings --user :#{ENV['timeKitKeyTest']} --data '{"settings": {"allow_double_bookings": true}, "meta":{"invoiceItem": "#{invoiceItem}", "connectAccount": "#{stripeMerchantID}"},"buffer":"#{ENV['bufferTime']} minutes","resource_id": "#{resource_id}","graph": "instant","start": "#{start}","end": "#{endAt}","what": "#{what}","where": "#{where}","description": "#{description}","customer": {"name": "#{customerName}","email": "#{customerEmail}","phone": "#{customerPhone}"}}'`
+    end
+
+    if Rails.env.production?
+      timeKitPost = `curl --request POST --header 'Content-Type: application/json' --url https://api.timekit.io/v2/bookings --user :#{ENV['timeKitKeyLive']} --data '{"settings": {"allow_double_bookings": true}, "meta":{"invoiceItem": "#{invoiceItem}", "connectAccount": "#{stripeMerchantID}"},"buffer":"#{ENV['bufferTime']} minutes","resource_id": "#{resource_id}","graph": "instant","start": "#{start}","end": "#{endAt}","what": "#{what}","where": "#{where}","description": "#{description}","customer": {"name": "#{customerName}","email": "#{customerEmail}","phone": "#{customerPhone}"}}'`
+    end
+    
     resourceLoaded = Oj.load(timeKitPost)
 
     if !resourceLoaded['error']
@@ -43,14 +49,21 @@ class User < ApplicationRecord
   end
 
   def self.timeKit
-    resources = `curl --request 'GET' --header 'Content-Type: application/json' --url 'https://api.timekit.io/v2/resources' --user ':test_api_key_SicNtNNTHeEpjQIw6G9jpDiaHn9dRwr9'`
+    if Rails.env.development? || Rails.env.test?
+      resources = `curl --request 'GET' --header 'Content-Type: application/json' --url 'https://api.timekit.io/v2/resources' --user ':#{ENV['timeKitKeyTest']}'`
+    end
+
+    if Rails.env.production?
+      resources = `curl --request 'GET' --header 'Content-Type: application/json' --url 'https://api.timekit.io/v2/resources' --user ':#{ENV['timeKitKeyLive']}'`
+    end
+
     return Oj.load(resources)['data']
   end
 
   def resendTwilioPhoneAPI
     
 
-    curlCall  = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X POST #{SITEurl}/v1/resend-phone-code`
+    curlCall  = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X POST #{SITEurl}/v1/resend-phone-code`
     response = Oj.load(curlCall)
 
     if response['success']
@@ -77,7 +90,7 @@ class User < ApplicationRecord
     end
     # build the address by saving to user and passing param
 
-    curlCall  = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "email=#{email}&name=#{stripeName}&phone=#{phone}&source=#{source}" -X PATCH #{SITEurl}/v1/stripe-customers/#{self.uuid}`
+    curlCall  = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "email=#{email}&name=#{stripeName}&phone=#{phone}&source=#{source}" -X PATCH #{SITEurl}/v1/stripe-customers/#{self.uuid}`
 
     response = Oj.load(curlCall)
 
@@ -90,7 +103,7 @@ class User < ApplicationRecord
   end
 
   def showStripeUserAPI
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/stripe-customers/#{self.uuid}`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/stripe-customers/#{self.uuid}`
 
     response = Oj.load(curlCall)
     if !response.blank? && response['success']
@@ -102,7 +115,7 @@ class User < ApplicationRecord
 
   def attachSourceStripe(tokenSource)
 
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "source=#{tokenSource}" -X PATCH #{SITEurl}/v1/stripe-customers/#{self.uuid}`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "source=#{tokenSource}" -X PATCH #{SITEurl}/v1/stripe-customers/#{self.uuid}`
 
     response = Oj.load(curlCall)
     
@@ -119,7 +132,7 @@ class User < ApplicationRecord
     exp_month = params[:exp_month]
     cvc = params[:cvc]
 
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/v1/stripe-tokens`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/v1/stripe-tokens`
 
     response = Oj.load(curlCall)
     
@@ -135,7 +148,7 @@ class User < ApplicationRecord
     account_number = params[:account_number]
     routing_number = params[:routing_number]
 
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "account_holder_name=#{account_holder_name}&account_number=#{account_number}&routing_number=#{routing_number}" #{SITEurl}/v1/stripe-tokens`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "account_holder_name=#{account_holder_name}&account_number=#{account_number}&routing_number=#{routing_number}" #{SITEurl}/v1/stripe-tokens`
 
     response = Oj.load(curlCall)
     
@@ -146,9 +159,35 @@ class User < ApplicationRecord
     end
   end
 
+  def indexStripeCustomerAPI
+
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/stripe-customers`
+
+    response = Oj.load(curlCall)
+    
+    if !response.blank? && response['success']
+      return response
+    else
+      return response
+    end
+  end
+
+  def showStripeCustomerAPI(customerID)
+
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/stripe-customers/#{customerID}`
+
+    response = Oj.load(curlCall)
+
+    if !response.blank? && response['success']
+      return response
+    else
+      return response
+    end
+  end
+
   def createStripeCustomerAPI
 
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "" #{SITEurl}/v1/stripe-customers`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "" #{SITEurl}/v1/stripe-customers`
 
     response = Oj.load(curlCall)
     
@@ -190,7 +229,7 @@ class User < ApplicationRecord
     email = self.email
     username = self.username
 
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "email=#{email}&username=#{username}" -X PATCH #{SITEurl}/v1/users/#{self.uuid}`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "email=#{email}&username=#{username}" -X PATCH #{SITEurl}/v1/users/#{self.uuid}`
 
     response = Oj.load(curlCall)
 
@@ -202,7 +241,7 @@ class User < ApplicationRecord
   end
 
   def deleteUserSessionAPI
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X DELETE #{SITEurl}/v1/sessions/#{self.uuid}`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X DELETE #{SITEurl}/v1/sessions/#{self.uuid}`
     
     response = Oj.load(curlCall)
     
@@ -224,6 +263,10 @@ class User < ApplicationRecord
 
   def paymentOn?
     !stripeCustomerID.blank? && !checkStripeSource.blank?
+  end
+
+  def owner?
+    admin? || (!stripeMerchantID.blank? && stripeMerchantID[5..stripeMerchantID.length] == ENV['appName'][0..15] && manager?)
   end
  
   def member?
@@ -257,16 +300,16 @@ class User < ApplicationRecord
   end
 
   def checkStripeSource
-    if !stripeCustomerID.blank?
-      if manager?
-        accountCapabilities = Stripe::Account.retrieve(stripeMerchantID)['capabilities']
+    if manager?
+      accountCapabilities = Stripe::Account.retrieve(stripeMerchantID)['capabilities']
 
-        if accountCapabilities['card_payments'] == "active" && accountCapabilities['transfers'] == "active" #charge stripeSubscription to cover heroku fees
-          return true
-        else
-          return false
-        end
+      if accountCapabilities['card_payments'] == "active" && accountCapabilities['transfers'] == "active" #charge stripeSubscription to cover heroku fees
+        return true
       else
+        return false
+      end
+    else
+      if !stripeCustomerID.blank?
         stripeCustomer = Stripe::Customer.retrieve(stripeCustomerID)
         #make phone number required for purchase
         if stripeCustomer['default_source']
@@ -274,9 +317,9 @@ class User < ApplicationRecord
         else
           return false
         end
+      else
+        return false
       end
-    else
-      return false
     end
   end
 
@@ -344,6 +387,6 @@ class User < ApplicationRecord
   end
   
   def adminAccess
-    return ['admin' , 'virtual']
+    return ['admin' , 'trustee']
   end
 end

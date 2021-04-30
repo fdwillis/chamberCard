@@ -13,28 +13,21 @@
 
 
 
-
-
-
-
-
-
-
 <div class="search-page">
-            <!-- auto fill with all using JS for when user clicks off behavior -->
-  <div class="search-box search-header bg-theme card-style mr-3 ml-3">
-    <i class="fa fa-search"></i>
-    <input type="text" class="border-0" placeholder="What are you looking for? " data-search="all" id="searchBox" onchange="checkSearchBox();">
-    <a href="#" class=""><i class="fa fa-times-circle color-red2-dark"></i></a>
+            
+  <div class="search-box search-header bg-theme card-style me-3 ms-3">
+      <i class="fa fa-search"></i>
+      <input type="text" class="border-0" placeholder="What are you looking for? " data-search="">
+      <a href="#" class="disabled"><i class="fa fa-times-circle color-red-dark"></i></a>
   </div>   
 
-  <div class="search-results card card-style shadow-l">
+  <div class="search-results card card-style shadow-l disabled-search-list">
     <div class="content">
       <% if current_user&.manager? %>
         <% @products.each do |h| %>
           <% if h[:connectAccount] && h[:connectAccount] == current_user&.stripeMerchantID %>
 
-            <div data-filter-item="" data-filter-name="all <%= !h[:product]['metadata'].blank? ? h[:product]['metadata']['keywords'] : h[:product][:name] %>" class="search-result-list">
+            <div data-filter-item="" data-filter-name="all services <%= !h[:product]['metadata'].blank? ? h[:product]['metadata']['keywords'] : h[:product][:name] %>" class="search-result-list">
 
               <% if h[:product]['active'] && !Stripe::Price.list({limit: 100, product: h[:product]['id'], active: true}, {stripe_account: current_user.stripeMerchantID})['data'].blank? %>
                 <span class="bg-green1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Active</span>
@@ -54,7 +47,7 @@
         <% @activeProducts.each do |h| %>
           <% if h[:connectAccount] %>
 
-            <div data-filter-item="" data-filter-name="all <%= !h[:product]['metadata'].blank? ? h[:product]['metadata']['keywords'] : h[:product][:name] %>" class="search-result-list">
+            <div data-filter-item="" data-filter-name="all services <%= !h[:product]['metadata'].blank? ? h[:product]['metadata']['keywords'] : h[:product][:name] %>" class="search-result-list">
 
               <h1  style="padding-left: 5px;"><%= h[:product]['name'] %></h1>
               <p style="padding-left: 5px;"><%= h[:product]['description'] %></p>
@@ -66,24 +59,25 @@
     </div>
   </div>
 
-
-  <!-- keen data of most searched (using JS) and bought(via controller)? -->
-  <div class="search-trending card card-style disabled">
-    <div class="content mb-2">
-      <h3>Shop Searches</h3>
-      <p class="font-11 mt-n2">What others are Searching for.</p>
-    </div>
-    <div class="list-group list-custom-small mr-3 ml-3">
-      <a href="#">
-        <span class="font-400 color-blue2-dark">View All</span>
-        <i class="color-gray2-dark fa fa-angle-right"></i>
-      </a>        
-      <a href="#">
-        <span class="font-400 color-blue2-dark">Willis</span>
-        <i class="color-gray2-dark fa fa-angle-right"></i>
-      </a>        
-    </div>
+  <div class="search-trending card card-style">
+      <div class="content mb-2">
+          <h3>Service Searches</h3>
+          <p class="font-11 mt-n2">What others are Searching for.</p>
+      </div>
+      <div class="list-group list-custom-small mr-3 ml-3">
+          <a href="#">
+              <span class="font-400 color-blue-dark">All Services</span>
+              <i class="color-gray-dark fa fa-angle-right"></i>
+          </a>              
+      </div>
   </div>
+</div>
+
+
+
+
+
+
 
 
 <script type="text/javascript">

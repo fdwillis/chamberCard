@@ -9,6 +9,7 @@ class ChargesController < ApplicationController
 	    
 	    if response['success']
 				@payments = response['payments']
+				@pending = response['pending']
 			elsif response['message'] == "No purchases found"
 				@message = response['message']
 			else
@@ -129,18 +130,18 @@ class ChargesController < ApplicationController
 				
 				if paidInvoice['status'] == 'paid'
 					flash[:success] = "Invoice Paid"
-		      redirect_to pay_now_path
+		      redirect_to charges_path
 				else
 					flash[:alert] = "Invoice Not Paid"
-		      redirect_to pay_now_path
+		      redirect_to charges_path
 				end
 			rescue Stripe::StripeError => e
 				flash[:alert] = e.error.message
-	      redirect_to pay_now_path
+	      redirect_to charges_path
 				
 			rescue Exception => e
 				flash[:alert] = e
-	      redirect_to pay_now_path
+	      redirect_to charges_path
 			end
 		else
 			current_user = nil
