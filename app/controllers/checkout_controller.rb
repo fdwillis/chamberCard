@@ -19,7 +19,7 @@ class CheckoutController < ApplicationController
 	  else
 
 	  	@checkoutAnon = Stripe::Checkout::Session.create({
-			  success_url: carts_url,
+			  success_url: success_url+'?session_id={CHECKOUT_SESSION_ID}',
 			  cancel_url: carts_url,
 			  payment_method_types: ['card'],
 			  line_items: [@lineItems],
@@ -30,6 +30,24 @@ class CheckoutController < ApplicationController
 				format.js
 			end
 	  end
+		
+	end
+
+	def success
+		@sessionPaid = Stripe::Checkout::Session.retrieve(params[:session_id], stripe_account: ENV['connectAccount'])
+
+		@paymentCharge = Stripe::PaymentIntent.retrieve(@sessionPaid.payment_intent,{stripe_account: ENV['connectAccount']})
+
+		@collecctAnonFee = Stripe::Charge.create({
+		  amount: @serviceFee,
+		  currency: 'usd',
+		  description: "Transaction Fee # #{@paymentCharge.id}| TewCode",
+		  source: ENV['connectAccount'],
+		})
+		debugger
+	end
+
+	def cancel
 		
 	end
 end

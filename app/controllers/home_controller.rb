@@ -67,7 +67,7 @@ class HomeController < ApplicationController
     end
 	end
 
-	def cancel
+	def cancelSub
 
     curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user&.authentication_token}" -X DELETE #{SITEurl}/v1/subscriptions/#{params[:cancel][:subscription]}?serviceFee=#{ENV['serviceFee']}`
 

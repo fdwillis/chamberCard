@@ -132,7 +132,7 @@ eliteMonthlyMemberships = ENV['eliteMonthlyMembership'].split(",") %>
               </div>
           </div>
           <div class="divider mt-3 mb-3"></div>
-          <%= form_for :cancel, url: cancel_path do |f| %>
+          <%= form_for :cancel, url: cancelSub_path do |f| %>
             <%= f.hidden_field :subscription, value: s['subscription'] %>
             <%= f.submit "Cancel", class: 'btn btn-full bg-red1-dark text-uppercase font-800 rounded-sm  col-4' %>
           <% end %>

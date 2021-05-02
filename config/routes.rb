@@ -38,11 +38,14 @@ Rails.application.routes.draw do
 		post "requestBooking", to: 'schedule#requestBooking', as: "requestBooking"
 		post "acceptBooking", to: 'schedule#acceptBooking', as: "acceptBooking"
 		post "cancel-timekit", to: 'schedule#timeKitCancel', as: "cancel-timekit-ui"
-		post "cancel", to: 'home#cancel', as: "cancel"
+		post "cancelSub", to: 'home#cancelSub', as: "cancelSub"
 		post "completed", to: 'schedule#completed', as: "completed"
 		post "confirm", to: 'schedule#confirm', as: "confirm"
 		post "customer-pay", to: 'charges#customerPay', as: "customer-pay"
 		
+		get "success", to: 'checkout#success', as: "success"
+		get "cancel", to: 'checkout#cancel', as: "cancel"
+
 		get "initiateCharge", to: 'charges#initiateCharge', as: "getinitiateCharge"
 		get "pay-now", to: 'charges#payNow', as: "pay-now"
 		
