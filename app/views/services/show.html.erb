@@ -26,7 +26,7 @@
   </div>
 </div>
 
-<%if current_user.stripeMerchantID == @connectAccount %>
+<%if current_user&.stripeMerchantID == @connectAccount %>
   <div class="card card-style mb-0">
     <div class="content">
       <div class="d-flex">
@@ -55,7 +55,7 @@
 
 
 
-<% if !current_user.manager? %>
+<% if !current_user&.manager? %>
   <div class="card card-overflow card-style">
     <div class="content">
       <p><%= @product['description'] %></p>
@@ -94,7 +94,7 @@
         * Plus Service Fee: This fee helps us operate and upgrade <%= ENV['siteName'] %>
         <% if current_user&.paymentOn? %>
           <% if !@prices.blank? %>
-            <% if !current_user.manager? %>
+            <% if !current_user&.manager? %>
               <%= button_tag type: 'submit', class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" do %>
                 <i class="fa fa-shopping-cart" aria-hidden="true"></i> Add To Cart
               <% end %>

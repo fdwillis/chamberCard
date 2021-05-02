@@ -1,5 +1,5 @@
 class ServicesController < ApplicationController
-	before_action :authenticate_user!, except: :index
+	before_action :authenticate_user!, only: [:create, :update, :edit, :new]
 
 	def index
 		if current_user&.authentication_token
@@ -40,24 +40,17 @@ class ServicesController < ApplicationController
 	end
 
 	def show
-		if current_user&.authentication_token
-			curlCall = Product.APIshow(current_user, params)
+		curlCall = Product.APIshow(params)
+		response = Oj.load(curlCall)
 		
-			response = Oj.load(curlCall)
-			
-			if !response['product'].blank? && response['success']
-				@product = response['product']
-				@connectAccount = response['connectAccount']
-				@prices = response['prices']
-			else
-				flash[:alert] = "Trouble connecting. Try again."
-				redirect_to services_path
-			end
+		if !response['product'].blank? && response['success']
+			@product = response['product']
+			@connectAccount = response['connectAccount']
+			@prices = response['prices']
 		else
-			redirect_to new_user_session_path
-			flash[:alert] = 'Please login'
+			flash[:alert] = "Trouble connecting. Try again."
+			redirect_to services_path
 		end
-
 	end
 
 	def create

@@ -3,16 +3,14 @@ class Product < ApplicationRecord
 
 	def self.APIindex(userX)
 		if userX&.class == User
-			return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{userX&.authentication_token}" -X GET #{SITEurl}/v1/products`
+			return `curl -H "appName: #{ENV['appName']}" -X GET #{SITEurl}/v1/products`
 		else
 			return `curl -H "appName: #{ENV['appName']}" -X GET #{SITEurl}/v1/products`
 		end
 	end
 
-	def self.APIshow(userX, params)
-		if userX&.class == User
-			return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{userX&.authentication_token}" -X GET #{SITEurl}/v1/products/prod_#{params[:id]}?connectAccount=#{params[:connectAccount]}`
-		end
+	def self.APIshow(params)
+		return `curl -H "appName: #{ENV['appName']}" -X GET #{SITEurl}/v1/products/prod_#{params[:id]}?connectAccount=#{params[:connectAccount]}`
 	end
 
 	def self.APIcreate(userX, productParams)
@@ -35,7 +33,7 @@ class Product < ApplicationRecord
 		end
 
 		if userX&.class == User
-			callIt = `curl -H "appName: #{ENV['appName']}" -d 'keywords=#{keywords}&images=#{images.join(",")}&type=#{type}&name=#{productName}&description=#{description}&connectAccount=#{userX&.stripeMerchantID}&active=true' -H "bxxkxmxppAuthtoken: #{userX&.authentication_token}" -X POST #{SITEurl}/v1/products`
+			callIt = `curl -H "appName: #{ENV['appName']}" -d 'keywords=#{keywords}&images=#{images.join(",")}&type=#{type}&name=#{productName}&description=#{description}&connectAccount=#{userX&.stripeMerchantID}&active=true' -X POST #{SITEurl}/v1/products`
 			response = Oj.load(callIt)
 
 			return callIt
@@ -63,7 +61,7 @@ class Product < ApplicationRecord
 		end
 
 		if userX&.class == User
-			return `curl -H "appName: #{ENV['appName']}" -d "images=#{images.join(",")}&keywords=#{keywords}&name=#{productName}&description=#{description}&active=#{active}&type=#{type}&connectAccount=#{userX&.stripeMerchantID}" -H "bxxkxmxppAuthtoken: #{userX&.authentication_token}" -X PATCH #{SITEurl}/v1/products/#{productParams[:id]}`
+			return `curl -H "appName: #{ENV['appName']}" -d "images=#{images.join(",")}&keywords=#{keywords}&name=#{productName}&description=#{description}&active=#{active}&type=#{type}&connectAccount=#{userX&.stripeMerchantID}" -X PATCH #{SITEurl}/v1/products/#{productParams[:id]}`
 		end
 	end
 end
