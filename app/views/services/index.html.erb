@@ -21,7 +21,7 @@
       <a href="#" class="disabled"><i class="fa fa-times-circle color-red-dark"></i></a>
   </div>   
 
-  <div class="search-results card card-style shadow-l disabled-search-list">
+  <div class="search-results card card-style shadow-l ">
     <div class="content">
       <% if current_user&.manager? %>
         <% @products.each do |h| %>
@@ -59,7 +59,7 @@
     </div>
   </div>
 
-  <div class="search-trending card card-style">
+  <div class="search-trending card card-style disabled">
       <div class="content mb-2">
           <h3>Service Searches</h3>
           <p class="font-11 mt-n2">What others are Searching for.</p>
