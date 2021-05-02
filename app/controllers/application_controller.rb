@@ -26,6 +26,7 @@ class ApplicationController < ActionController::Base
 	    	@cart['carts'].each do |cartInfo|
 					cartInfo['cart'].each do |item|
 						@lineItems << {price: item['stripePriceInfo']['id'], quantity: item['quantity']}
+						@serviceFee = @cart['serviceFee']
 					end
 				end
 	    end
