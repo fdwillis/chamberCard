@@ -95,6 +95,10 @@ class CartsController < ApplicationController
 	  end
 	end
 
+	def checkout_anon
+		debugger
+	end
+
 	private
 
 	def cartParams

@@ -41,6 +41,7 @@ Rails.application.routes.draw do
 		post "confirm", to: 'schedule#confirm', as: "confirm"
 		post "customer-pay", to: 'charges#customerPay', as: "customer-pay"
 		
+		get "checkout-anon", to: 'carts#checkout_anon', as: "checkout-anon"
 		get "initiateCharge", to: 'charges#initiateCharge', as: "getinitiateCharge"
 		get "pay-now", to: 'charges#payNow', as: "pay-now"
 		
