@@ -16,12 +16,11 @@ before_action :authenticate_user!
 	end
 
 	def show
-		callCurl = current_user&.showStripeCustomerAPI(params[:id])
+		callCurl = current_user.present? ? current_user&.showStripeCustomerAPI(params[:id]) : User.showStripeCustomerAPI(params[:id])
 
 		if callCurl['success']
 			@customer = callCurl['stripeCustomer']
 			@sellerID = callCurl['stripeSeller']
-			@stripePlatformCustomerID = callCurl['stripePlatformCustomerID']
 		end
 	end
 

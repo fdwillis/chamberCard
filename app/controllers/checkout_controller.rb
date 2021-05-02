@@ -35,7 +35,7 @@ class CheckoutController < ApplicationController
 
 	def success
 		@cart = nil
-		
+
 		@sessionPaid = Stripe::Checkout::Session.retrieve(params[:session_id], stripe_account: ENV['connectAccount'])
 
 		@paymentCharge = Stripe::PaymentIntent.retrieve(@sessionPaid.payment_intent,{stripe_account: ENV['connectAccount']})
@@ -43,9 +43,11 @@ class CheckoutController < ApplicationController
 		@collecctAnonFee = Stripe::Charge.create({
 		  amount: @serviceFee,
 		  currency: 'usd',
-		  description: "Transaction Fee # #{@paymentCharge.id}| TewCode",
+		  description: "Transaction Fee # #{@paymentCharge.id} | TewCode",
 		  source: ENV['connectAccount'],
 		})
+
+		# add anan user to platform as customer
 		
 		curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -X DELETE #{SITEurl}/v1/carts/#{@cartID}`
 

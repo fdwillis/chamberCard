@@ -11,24 +11,6 @@
       </p>
     </div>
   </div>
-  <!--   <% if current_user&.manager? && current_user&.checkStripeSource %>
-      <div class="card card-style bg-theme pb-0">
-        <div class="content">
-          <h3>New Invoice</h3>
-          <p class="mb-5">Enter the client ID to begin a new invoice.  The client ID can be found by the client on the first section of their profile page. </p>
-
-          <%= form_for :initiateCharge, url: initiateCharge_path do |f| %>
-            <div class="input-style has-icon input-style-2 input-required pb-1">
-                <i class="input-icon fa fa-user color-theme"></i>
-                <span class="color-highlight input-style-1-active">Customer ID</span>
-                <em>(required)</em>
-                <%= f.text_field :customerID, placeholder: SecureRandom.uuid[0..7], required: true %>
-            </div> 
-            <%= f.submit "Begin", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
-          <% end %>
-        </div>
-      </div>
-    <% end %> -->
 
   <% if @pending || @payments %>
     <% @pending.each do |h| %> 
