@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-	before_action :authenticate_user!, except: [:welcome, :membership]
+	before_action :authenticate_user!, except: [:welcome, :membership, :profile]
 
 	def profile
 		if current_user&.authentication_token
@@ -16,12 +16,12 @@ class HomeController < ApplicationController
 				end
 			end
 		else
-			reset_session
+			redirect_to carts_path
+			flash[:notice] = "To manage setting please create an account"
 		end
 	end
 
 	def membership
-		profile
 		# if current member show membership with discount saving
 		# when creating plans add lookup_keys to be able to divide by monthly/annual
 

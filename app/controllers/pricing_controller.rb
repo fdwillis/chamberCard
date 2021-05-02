@@ -14,7 +14,7 @@ class PricingController < ApplicationController
 				@productL = response['product']
 				@archived = response['archived']
 			else
-				flash[:alert] = "Trouble connecting. Try again later."
+				flash[:alert] = "Trouble connecting..."
 				redirect_to services_path
 			end
 		end
@@ -52,7 +52,7 @@ class PricingController < ApplicationController
 					redirect_to request.referrer
 					# redirect_to pricing_index_path(service_id: @productL['id'][5..@productL['id'].length])
 				else
-					flash[:alert] = "Trouble connecting. Try again later."
+					flash[:alert] = "Trouble connecting..."
 					redirect_to request.referrer
 				end
 			end
@@ -88,7 +88,7 @@ class PricingController < ApplicationController
 				flash[:success] = "Pricing Updated"
 			  redirect_to pricing_index_path(service_id: pricingParams[:product][5..pricingParams[:product].length])
 			else
-				flash[:alert] = "Trouble connecting. Try again later."
+				flash[:alert] = "Trouble connecting..."
 				redirect_to request.referrer
 			end
 		end

@@ -34,7 +34,7 @@ class ServicesController < ApplicationController
 			end
 		else
 
-			flash[:alert] = response['message']
+			flash[:alert] = "Trouble connecting..."
 			redirect_to profile_path
 		end
 	end
@@ -48,7 +48,7 @@ class ServicesController < ApplicationController
 			@connectAccount = response['connectAccount']
 			@prices = response['prices']
 		else
-			flash[:alert] = "Trouble connecting. Try again."
+			flash[:alert] = "Trouble connecting..."
 			redirect_to services_path
 		end
 	end
@@ -80,7 +80,7 @@ class ServicesController < ApplicationController
 				flash[:success] = "Service Updated"
 				redirect_to service_path(id: params[:id][5..params[:id].length], connectAccount: current_user&.stripeMerchantID)
 			else
-				flash[:alert] = "Trouble connecting. Try again."
+				flash[:alert] = "Trouble connecting..."
 				redirect_to request.referrer
 			end
 		end

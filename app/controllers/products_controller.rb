@@ -51,7 +51,7 @@ class ProductsController < ApplicationController
 				@connectAccount = response['connectAccount']
 				@prices = response['prices']
 			else
-				flash[:alert] = "Trouble connecting. Try again."
+				flash[:alert] = "Trouble connecting..."
 				redirect_to products_path
 			end
 		else
@@ -88,7 +88,7 @@ class ProductsController < ApplicationController
 				flash[:success] = "Product Updated"
 				redirect_to product_path(id: params[:id][5..params[:id].length], connectAccount: current_user&.stripeMerchantID)
 			else
-				flash[:alert] = "Trouble connecting. Try again later."
+				flash[:alert] = "Trouble connecting..."
 				redirect_to request.referrer
 			end
 		end

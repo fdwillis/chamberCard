@@ -51,7 +51,7 @@
               <div class="p-3">
                   <h4 class="font-700 text-uppercase font-12 opacity-50 mt-n2">Unpaid Invoices</h4>
                   <h1 class="font-700 font-34 color-red1-dark  mb-0"><%= unpaidInvoices.count %></h1>
-                  <% if current_user&.owner? %>
+                  <% if current_user&.owner? && User.find_by(email: @customer['email']).present? %>
                     <a href="/initiateCharge?customerUUID=<%= params['id'] %>" class="mt-2 btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm">Create New Invoice</a>
                   <% end %>
               </div>
