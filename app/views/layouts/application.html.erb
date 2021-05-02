@@ -206,18 +206,18 @@
             <% end %>
             <% if current_user&.customer? %>
 
-              <% if current_user&.stripeCustomerID && current_user&.checkStripeSource %>
-                <div class="mr-3 ml-3">
-                  <span class="text-uppercase font-900 font-11 opacity-30">Financials</span>
-                  <div class="list-group list-custom-small list-icon-0">
-                      <a href="/customers/<%= current_user&.uuid %>">
-                          <i class="fa font-14 fa-money-bill color-red1-dark"></i>
-                          <span>Spending</span>
-                          <i class="fa fa-angle-right"></i>
-                      </a>   
-                  </div>
-                </div>
-              <% end %>
+            <!--               <% if current_user&.stripeCustomerID && current_user&.checkStripeSource %>
+                            <div class="mr-3 ml-3">
+                              <span class="text-uppercase font-900 font-11 opacity-30">Financials</span>
+                              <div class="list-group list-custom-small list-icon-0">
+                                  <a href="/customers/<%= current_user&.uuid %>">
+                                      <i class="fa font-14 fa-money-bill color-red1-dark"></i>
+                                      <span>Spending</span>
+                                      <i class="fa fa-angle-right"></i>
+                                  </a>   
+                              </div>
+                            </div>
+                          <% end %> -->
               <!-- <div class="mr-3 ml-3">
                 <span class="text-uppercase font-900 font-11 opacity-30">Membership Savings</span>
                 <div class="list-group list-custom-small list-icon-0">

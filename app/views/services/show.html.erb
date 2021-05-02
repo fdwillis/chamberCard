@@ -91,7 +91,7 @@
         <% end %>
 
 
-
+        * Plus Service Fee: This fee helps us operate and upgrade <%= ENV['siteName'] %>
         <% if current_user&.paymentOn? %>
           <% if !@prices.blank? %>
             <% if !current_user.manager? %>

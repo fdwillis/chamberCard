@@ -93,7 +93,7 @@
         <% end %>
 
 
-
+        * Plus Service Fee: This fee helps us operate and upgrade <%= ENV['siteName'] %>
         <% if current_user&.stripeCustomerID.blank? || !current_user&.checkStripeSource %>
           <%= link_to "Setup Payment", '/profile', class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' %>
         <% else %>
