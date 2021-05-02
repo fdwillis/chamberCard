@@ -21,6 +21,13 @@ class ApplicationController < ActionController::Base
 	    
 	    if response['success']
 	    	@cart = response.merge(stripeCapturePercentage: ENV['stripeCapturePercentage'].to_f * 0.01, tenPercentDepositCoupon: ENV['tenPercentDepositCoupon'], thirtyPercentDepositCoupon: ENV['thirtyPercentDepositCoupon'], fiftyPercentDepositCoupon: ENV['fiftyPercentDepositCoupon'])
+	    	@lineItems = []
+	    	
+	    	@cart['carts'].each do |cartInfo|
+					cartInfo['cart'].each do |item|
+						@lineItems << {price: item['stripePriceInfo']['id'], quantity: item['quantity']}
+					end
+				end
 	    end
 	  end
 
