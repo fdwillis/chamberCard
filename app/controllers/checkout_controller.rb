@@ -34,6 +34,8 @@ class CheckoutController < ApplicationController
 	end
 
 	def success
+		@cart = nil
+		
 		@sessionPaid = Stripe::Checkout::Session.retrieve(params[:session_id], stripe_account: ENV['connectAccount'])
 
 		@paymentCharge = Stripe::PaymentIntent.retrieve(@sessionPaid.payment_intent,{stripe_account: ENV['connectAccount']})
@@ -44,7 +46,17 @@ class CheckoutController < ApplicationController
 		  description: "Transaction Fee # #{@paymentCharge.id}| TewCode",
 		  source: ENV['connectAccount'],
 		})
-		debugger
+		
+		curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -X DELETE #{SITEurl}/v1/carts/#{@cartID}`
+
+		response = Oj.load(curlCall)
+	    
+    if response['success']
+    	flash[:success] = "Purchase Complete"
+    else
+    	flash[:error] = response['error']
+    	redirect_to carts_path
+    end
 	end
 
 	def cancel
