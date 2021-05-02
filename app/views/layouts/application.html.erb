@@ -33,14 +33,12 @@
           <i class="fa fa-bars font-14"></i>
         <% end %>
 
-        <% if current_user&.authentication_token && !@cart.nil? && current_user&.customer? %>
           <%= link_to '/carts', class: 'font-14 header-icon header-icon-2' do %>
             <i class="fa fa-shopping-cart"></i>
-            <% if @cart['carts'].map{|c,i| c['cart']}.flatten.map{|c,i|c['quantity']}.sum > 0%>
+            <% if @cart.present? && @cart['carts'].map{|c,i| c['cart']}.flatten.map{|c,i|c['quantity']}.sum > 0%>
               <span class="badge bg-green1-dark" style="width: 30px;"><%= @cart['carts'].map{|c,i| c['cart']}.flatten.map{|c,i|c['quantity']}.sum %></span>
             <% end %>
           <% end %>
-        <% end %>
 
         <% if current_user&.authentication_token && current_user&.customer? %>
           <% if !current_user&.twilioPhoneVerify %>

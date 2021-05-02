@@ -12,7 +12,15 @@ class ApplicationController < ActionController::Base
 	    	@cart = response.merge(stripeCapturePercentage: ENV['stripeCapturePercentage'].to_f * 0.01, tenPercentDepositCoupon: ENV['tenPercentDepositCoupon'], thirtyPercentDepositCoupon: ENV['thirtyPercentDepositCoupon'], fiftyPercentDepositCoupon: ENV['fiftyPercentDepositCoupon'])
 	    end
 	  else
-	  	@cart = nil
+	  	cartID = session[:cart_id].present? ? session[:cart_id] : rand(0..1000) + rand(0..1000000)
+
+	  	curlCall = `curl -H "appName: #{ENV['appName']}" -X GET #{SITEurl}/v1/carts?cartID=#{cartID}`
+			
+	    response = Oj.load(curlCall)
+	    
+	    if response['success']
+	    	@cart = response.merge(stripeCapturePercentage: ENV['stripeCapturePercentage'].to_f * 0.01, tenPercentDepositCoupon: ENV['tenPercentDepositCoupon'], thirtyPercentDepositCoupon: ENV['thirtyPercentDepositCoupon'], fiftyPercentDepositCoupon: ENV['fiftyPercentDepositCoupon'])
+	    end
 	  end
 
 	end
