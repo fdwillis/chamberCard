@@ -65,7 +65,14 @@
             <span class="color-highlight input-style-1-active">Price</span>
             <em>(required)</em>
             <% if current_user %>
-              <%= f.select :sellerItem, @prices.sort { |a,b| a['unit_amount'] <=> b['unit_amount'] }.map{|p,i| ["#{number_to_currency(p['unit_amount'].to_f * 0.01, precision: 2)} #{!p['transform_quantity'].blank? ? 'Package Of ' + p['transform_quantity']['divide_by'].to_s : "Single Purchase"}", "#{p['unit_amount']}-#{p['id'][6..p['id'].length]}-#{!p['transform_quantity'].blank? ? "package-#{p['transform_quantity']['divide_by']}" : ""}"  ]}, required: true %>
+              <% selectPrices = [] %>
+              <% @prices.each do |pri| %>
+                <% if pri['metadata']['public'] == 'false' %>
+                  <% selectPrices << pri %>
+                <% end %>
+              <% end %>
+
+              <%= f.select :sellerItem, selectPrices.sort { |a,b| a['unit_amount'] <=> b['unit_amount'] }.map{|p,i| ["#{number_to_currency(p['unit_amount'].to_f * 0.01, precision: 2)} #{!p['transform_quantity'].blank? ? 'Package Of ' + p['transform_quantity']['divide_by'].to_s : "Single Purchase"}", "#{p['unit_amount']}-#{p['id'][6..p['id'].length]}-#{!p['transform_quantity'].blank? ? "package-#{p['transform_quantity']['divide_by']}" : ""}"  ]}, required: true %>
             <% else %>
               <% selectPrices = [] %>
               <% @prices.each do |pri| %>
@@ -101,7 +108,7 @@
               <div class="divider mt-3 mb-3"></div>
             </div>
           <% end %>
-          <% if current_user&.authentication_token %>
+          <% if current_user&.authentication_token && pr['metadata']['public'] == 'false' %>
             <div class="content">
               <div class="row mb-0">
                   <div class="col-12 pl-4">

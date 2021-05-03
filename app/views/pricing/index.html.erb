@@ -35,21 +35,23 @@
 
         <div class="content">
           <div class="row mb-0">
-              <div class="col-3 icon icon-xl">
-                  <i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark" width='80'></i>
-              </div>
-              <div class="col-9 pl-4">
+              <div class="col-12 pl-4">
+                  <% if pr['metadata']['public'] == 'true' %>
+                    <span class="bg-green1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Public Only</span>
+                  <% else %>
+                    <span class="bg-blue1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Login Required</span>
+                  <% end %>
                   <div class="d-flex">
                       <div><p class="font-700 color-theme"><%= number_to_currency((pr['unit_amount'] * 0.01), precision: 2) %></p></div>
-                      <div class="ml-auto"><p>
-                        <%= link_to edit_pricing_path(product_id: @productL['id'][6..@productL['id'].size], id: pr['id'][6..pr['id'].size], price: pr), class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' do %>
-                          <i class="fa fa-pencil"></i> Edit
-                        <% end %>
-                      </p></div>
                   </div>
                   <div class="d-flex">
-                  </div>
                   <%= !pr['metadata'].blank? ? pr['metadata']['description'] : nil %>
+                      <div class="ml-auto">
+                        <%= link_to edit_pricing_path(product_id: @productL['id'][6..@productL['id'].size], id: pr['id'][6..pr['id'].size], price: pr), class: 'btn btn-full bg-yellow2-dark btn-sm text-uppercase font-800 rounded-sm' do %>
+                          <i class="fa fa-pencil"></i> Edit
+                        <% end %>
+                      </div>
+                  </div>
               </div>
           </div>
           <div class="divider mt-3 mb-3"></div>
