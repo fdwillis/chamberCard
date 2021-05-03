@@ -63,9 +63,9 @@
 
         <% if current_user&.customer? && current_user&.stripeCustomerID && current_user&.checkStripeSource %>
           <% if request.fullpath.include?('/customers') %>
-            <a href="/customers/<%= current_user&.uuid %>"><i class="fa fa-user color-highlight"></i><span>Profile</span></a>
+            <a href="/customers/<%= current_user&.stripeCustomerID %>"><i class="fa fa-user color-highlight"></i><span>Profile</span></a>
           <% else %>
-            <a href="/customers/<%= current_user&.uuid %>"><i class="fa fa-user"></i><span>Profile</span></a>
+            <a href="/customers/<%= current_user&.stripeCustomerID %>"><i class="fa fa-user"></i><span>Profile</span></a>
           <% end %>
         <% end %>
 
