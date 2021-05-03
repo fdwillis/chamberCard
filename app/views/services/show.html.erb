@@ -75,6 +75,7 @@
         <p class="mt-n1 font-12 color-highlight mb-0" id='packageSelected' style="display: none;"><i class="fa fa-info mr-3"></i> Package Selected: Includes </p>
 
         <% @prices.each do |pr| %>
+          <%= pr['metadata']['public'] == 'true' %>
           <div class="content">
             <div class="row mb-0">
                 <div class="col-12 pl-4">

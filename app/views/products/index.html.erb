@@ -42,8 +42,7 @@
         <% end %>
       <% else %>
         <% @activeProducts.each do |h| %>
-          <% if h[:connectAccount] %>
-
+          <% if h[:connectAccount] && Stripe::Price.list({limit: 100, product: h[:product]['id']}, stripe_account: h[:connectAccount])['data'].map{|prod| prod['metadata']['public'] == 'true'}.include?(true) %>
             <div data-filter-item="" data-filter-name="all <%= !h[:product]['metadata'].blank? ? h[:product]['metadata']['keywords'] : h[:product][:name] %>" class="search-result-list">
 
               
