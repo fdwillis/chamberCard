@@ -134,111 +134,121 @@ Contact
   </div>
 
 
+  <% if @charges&.present? %>
+    <div class="card card-style">
+      <div class="content mb-0">
+        <% @charges.each do |charge| %>
+          <%= charge['payment_intent'] %>
+          <div class="d-flex pull-right">    
+            <%= link_to edit_pricing_path(product_id: charge['customer'][6..charge['customer'].size], id: charge['customer'][6..charge['customer'].size], price: charge['customer']), class: 'btn btn-full bg-yellow2-dark btn-sm text-uppercase font-800 rounded-sm' do %>
+              <i class="fa fa-calendar-check"></i>
+            <% end %>
+            &nbsp;
+            <%= link_to edit_pricing_path(product_id: charge['customer'][6..charge['customer'].size], id: charge['customer'][6..charge['customer'].size], price: charge['customer']), class: 'ml-2 btn btn-full bg-green2-dark btn-sm text-uppercase font-800 rounded-sm' do %>
+              <i class="fa fa-check"></i>
+            <% end %>
+          </div>
+          <a href="#" data-menu="menu-transaction-1" class="d-flex mb-3">
+            <div class="align-self-center ms-auto text-end">
+              <h2 class="mb-n1 font-18 color-green2-dark"><%= number_to_currency(charge['amount_captured'] * 0.01, precision: 2) %></h2>
+              <p class="font-12 opacity-50"><%= Time.at(charge['created']).strftime("%b #{Time.at(charge['created']).day.ordinalize} %Y") %></p>
+            </div>
+          </a>
+              
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+
   <% if @payments&.present? %>
     <% @payments.each do |h| %> 
       <% if Stripe::Invoice.retrieve(h['invoice']['id'], {stripe_account: current_user&.stripeMerchantID})['metadata']['goodOrService'] == 'service' %>
         <% h['items'].each_with_index do |itm,indx| %>
-          <% if current_user&.address %>
-
-            <% startDateX = Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'], {stripe_account: current_user&.stripeMerchantID})['metadata']['startDate'] %>
-
-
-            <% if Stripe::InvoiceItem.retrieve(itm['invoiceLine']['invoice_item'],{stripe_account: current_user&.stripeMerchantID })['metadata']['merchantConfirmed'] != "true" %>
-              <% if  itm['invoiceLine']['metadata']['requesting'].to_i > 0 %>
-                <div class="card card-style bg-theme pb-0">
-                  <div class="content mb-0">
-                    <h3 class="text-left"><%= itm['product']['name'] %></h3>
-                    <div class="ml-auto"><p><%= itm['invoiceLine']['metadata']['serviceAddress'] %></p></div>
-                    <small>Order#<%= h['invoice']['id'][3..h['invoice']['id'].length].truncate(9, omission: '') %></small>
-                    <div class="row mb-0">
-                        <div class="col-3 icon icon-xl">
-                            <i class="fa fa-exclamation bg-fade-yellow1-dark rounded-xl color-yellow2-dark" width='80'></i>
-                        </div>
-                        <div class="col-9 pl-4">
-                            <div class="d-flex">
-                              <div><p class="font-700 color-theme">Date</p></div>
-                              <div class="ml-auto">
-                                <p>
-                                 <%= startDateX.to_datetime.strftime("%A, %B %d, %Y") %>
-                                  
-                                </p>
-                              </div>
-                            </div>
-                            <div class="d-flex">
-                                <div><p class="font-700 color-theme">Time</p></div>
-                                <div class="ml-auto">
-                                  <p>
-                                    <%= startDateX.to_datetime.strftime("%I:%M %p") %>
-                                  </p>
-                                </div>
-                            </div>
-                            <div class="d-flex">
-                                <div><p class="font-700 color-theme">Email</p></div>
-                                <div class="ml-auto"><p><%= link_to "Email Customer", "mailto:#{h['customerStripeInfo']['email']}"  %></p></div>
-                            </div>
-                            <div class="d-flex">
-                                <div><p class="font-700 color-theme">Phone</p></div>
-                                <div class="ml-auto"><p><%= link_to "Call Customer", "tel:#{h['customerStripeInfo']['phone']}"  %></p></div>
-                            </div>
-                            <div class="d-flex">
-                                <div><p class="font-700 color-theme">Customer</p></div>
-                                <div class="ml-auto"><p><%= h['customerStripeInfo']['name'] %></p></div>
-                            </div>
-
-                            <%= form_for :acceptBooking, url: acceptBooking_path do |f| %>
-                              <div class="d-flex mt-4">
-                                <div class="input-style input-style-2 mt-2 col-12">
-                                <%= f.number_field :duration, placeholder: 'Duration in minutes', required: true %>
-                                </div>
-                                <%= f.hidden_field :resource_id, value: current_user&.timeKitID  %>
-                                <%= f.hidden_field :serviceToAccept, value: itm['invoiceLine']['invoice_item'] %>
-                                <%= f.hidden_field :start, value: startDateX %>
-                                <%= f.hidden_field :what, value: "#{itm['product']['name']}: #{itm['product']['description']}" %>
-                                <%= f.hidden_field :where, value: itm['invoiceLine']['metadata']['serviceAddress'] %>
-                                <%= f.hidden_field :description, value: itm['price']['metadata']['description'] %>
-                                <%= f.hidden_field :customerName, value: h['customerStripeInfo']['name'] %>
-                                <%= f.hidden_field :customerEmail, value: h['customerStripeInfo']['email'] %>
-                                <%= f.hidden_field :customerPhone, value: h['customerStripeInfo']['phone'] %>
-                                <%= f.hidden_field :merchantStripeID, value: h['merchantStripeID'] %>
-                              </div>
-                              <div class="d-flex mt-4">
-                                <div class="input-style input-style-2 mb-4 col-12">
-                                  <%= f.submit "Accept Booking", class: "btn btn-full bg-green1-dark col-12 text-uppercase rounded-sm font-900"%>
-                                </div>
-                              </div>
-                            <% end %>
-                        </div>
-                    </div>
-                    <div class="divider mt-3 mb-3"></div>
-                    <%= form_for :requestBooking, id: "#{h['customerStripeInfo']['name']}#{h['invoice']['id']}", url: requestBooking_path do |f| %>
-                      <div class="row">
-                        <div class="input-style input-style-2 mt-2 col-6">
-                          Date
-                          <%= f.date_select(:dateRequested, :default => { day: DateTime.now.strftime("%d") , year: DateTime.now.strftime("%Y"), month: DateTime.now.strftime("%m") }) %>
-
-                        </div>
-                        <div class="input-style input-style-2 mt-2 col-6">
-                          Time
-                          <%= f.time_select(:my_time, start_hour: 8, end_hour: 20,minute_step: 15, ampm: true) %>
+          <div class="card card-style bg-theme pb-0">
+            <div class="content mb-0">
+              <h3 class="text-left"><%= itm['product']['name'] %></h3>
+              <div class="ml-auto"><p><%= itm['invoiceLine']['metadata']['serviceAddress'] %></p></div>
+              <small>Order#<%= h['invoice']['id'][3..h['invoice']['id'].length].truncate(9, omission: '') %></small>
+              <div class="row mb-0">
+                  <div class="col-3 icon icon-xl">
+                      <i class="fa fa-exclamation bg-fade-yellow1-dark rounded-xl color-yellow2-dark" width='80'></i>
+                  </div>
+                  <div class="col-9 pl-4">
+                      <div class="d-flex">
+                        <div><p class="font-700 color-theme">Date</p></div>
+                        <div class="ml-auto">
+                          <p>
+                           mar 5th 2017
+                            
+                          </p>
                         </div>
                       </div>
+                      <div class="d-flex">
+                          <div><p class="font-700 color-theme">Time</p></div>
+                          <div class="ml-auto">
+                            <p>
+                              5:00 PM
+                            </p>
+                          </div>
+                      </div>
+                      <div class="d-flex">
+                          <div><p class="font-700 color-theme">Email</p></div>
+                          <div class="ml-auto"><p><%= link_to "Email Customer", "mailto:#{h['customerStripeInfo']['email']}"  %></p></div>
+                      </div>
+                      <div class="d-flex">
+                          <div><p class="font-700 color-theme">Phone</p></div>
+                          <div class="ml-auto"><p><%= link_to "Call Customer", "tel:#{h['customerStripeInfo']['phone']}"  %></p></div>
+                      </div>
+                      <div class="d-flex">
+                          <div><p class="font-700 color-theme">Customer</p></div>
+                          <div class="ml-auto"><p><%= h['customerStripeInfo']['name'] %></p></div>
+                      </div>
 
-                      <%= f.hidden_field :invoice, value: h['invoice']['id'] %>
-                      <%= f.hidden_field :merchantStripeID, value: h['merchantStripeID'] %>
-                      <%= f.hidden_field :serviceToBook, value: itm['invoiceLine']['invoice_item'] %>
-                      <%= f.submit "Propose New Date", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
-                    <% end %>
-
-
+                      <%= form_for :acceptBooking, url: acceptBooking_path do |f| %>
+                        <div class="d-flex mt-4">
+                          <div class="input-style input-style-2 mt-2 col-12">
+                          <%= f.number_field :duration, placeholder: 'Duration in minutes', required: true %>
+                          </div>
+                          <%= f.hidden_field :resource_id, value: current_user&.timeKitID  %>
+                          <%= f.hidden_field :serviceToAccept, value: itm['invoiceLine']['invoice_item'] %>
+                          <%= f.hidden_field :what, value: "#{itm['product']['name']}: #{itm['product']['description']}" %>
+                          <%= f.hidden_field :where, value: itm['invoiceLine']['metadata']['serviceAddress'] %>
+                          <%= f.hidden_field :description, value: itm['price']['metadata']['description'] %>
+                          <%= f.hidden_field :customerName, value: h['customerStripeInfo']['name'] %>
+                          <%= f.hidden_field :customerEmail, value: h['customerStripeInfo']['email'] %>
+                          <%= f.hidden_field :customerPhone, value: h['customerStripeInfo']['phone'] %>
+                          <%= f.hidden_field :merchantStripeID, value: h['merchantStripeID'] %>
+                        </div>
+                        <div class="d-flex mt-4">
+                          <div class="input-style input-style-2 mb-4 col-12">
+                            <%= f.submit "Accept Booking", class: "btn btn-full bg-green1-dark col-12 text-uppercase rounded-sm font-900"%>
+                          </div>
+                        </div>
+                      <% end %>
+                  </div>
+              </div>
+              <div class="divider mt-3 mb-3"></div>
+              <%= form_for :requestBooking, id: "#{h['customerStripeInfo']['name']}#{h['invoice']['id']}", url: requestBooking_path do |f| %>
+                <div class="row">
+                  <div class="input-style input-style-2 mt-2 col-6">
+                    Date
+                    <%= f.date_select(:dateRequested, :default => { day: DateTime.now.strftime("%d") , year: DateTime.now.strftime("%Y"), month: DateTime.now.strftime("%m") }) %>
 
                   </div>
+                  <div class="input-style input-style-2 mt-2 col-6">
+                    Time
+                    <%= f.time_select(:my_time, start_hour: 8, end_hour: 20,minute_step: 15, ampm: true) %>
+                  </div>
                 </div>
+
+                <%= f.hidden_field :invoice, value: h['invoice']['id'] %>
+                <%= f.hidden_field :merchantStripeID, value: h['merchantStripeID'] %>
+                <%= f.hidden_field :serviceToBook, value: itm['invoiceLine']['invoice_item'] %>
+                <%= f.submit "Propose New Date", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
               <% end %>
-            <% end %>
-          
-          <% else %>
-            <%= link_to "Setup Business Address", '/profile', class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' %>
-          <% end %>
+            </div>
+          </div>
         <% end %>
       <% end %>
     <% end %>

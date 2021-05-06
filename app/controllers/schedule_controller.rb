@@ -11,6 +11,7 @@ class ScheduleController < ApplicationController
 	    
 	    if response['success']
 				@payments = response['payments']
+				@charges = response['charges']
 			elsif response['message'] == "No purchases found"
 				@message = response['message']
 			else
