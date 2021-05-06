@@ -1,14 +1,4 @@
-<!-- Preferred order:
 
-Customer: name, custID
-“Title of job”
-Date of service
-Customer: name, custID?
-Contact 
-Contact 
-Contact 
-         Total $/charge
-         Net $ (fee shown) -->
 <% if current_user&.customer? %>
   <% if current_user&.paymentOn? %>
     <div class="card card-style">
@@ -19,7 +9,7 @@ Contact
         </p>
       </div>
     </div>
-    <% if @payments&.present?  %>
+    <% if @invoices&.present?  %>
       <div class="card card-style">
         <div class="content mb-0">
           <div class="row mb-4">
@@ -27,7 +17,7 @@ Contact
             <div class="col-3"><h4 class="font-14 text-justify"><u>QTY</u></h4></div>
             <div>&nbsp;</div>
           </div>
-          <% @payments.each_with_index do |h, hindx| %>
+          <% @invoices.each_with_index do |h, hindx| %>
               <% h['items'].each_with_index do |itm,indx| %>
                 <% if itm['price']['transform_quantity'] && !itm['price']['transform_quantity']['divide_by'].blank? %>
                   <% remainingToClaim = (itm['invoiceLine']['quantity'].to_i * itm['price']['transform_quantity']['divide_by']) - itm['invoiceLine']['metadata']['claimed'].to_i %>
@@ -133,36 +123,20 @@ Contact
     </div>
   </div>
 
+  ANON USER CHARGEs <%= number_to_currency(@charges.map{ |char| char['stripeSession']['amount_total'] }.sum * 0.01, precision: 2) %>
 
   <% if @charges&.present? %>
     <div class="card card-style">
-      <div class="content mb-0">
-        <% @charges.each do |charge| %>
-          <%= charge['payment_intent'] %>
-          <div class="d-flex pull-right">    
-            <%= link_to edit_pricing_path(product_id: charge['customer'][6..charge['customer'].size], id: charge['customer'][6..charge['customer'].size], price: charge['customer']), class: 'btn btn-full bg-yellow2-dark btn-sm text-uppercase font-800 rounded-sm' do %>
-              <i class="fa fa-calendar-check"></i>
-            <% end %>
-            &nbsp;
-            <%= link_to edit_pricing_path(product_id: charge['customer'][6..charge['customer'].size], id: charge['customer'][6..charge['customer'].size], price: charge['customer']), class: 'ml-2 btn btn-full bg-green2-dark btn-sm text-uppercase font-800 rounded-sm' do %>
-              <i class="fa fa-check"></i>
-            <% end %>
-          </div>
-          <a href="#" data-menu="menu-transaction-1" class="d-flex mb-3">
-            <div class="align-self-center ms-auto text-end">
-              <h2 class="mb-n1 font-18 color-green2-dark"><%= number_to_currency(charge['amount_captured'] * 0.01, precision: 2) %></h2>
-              <p class="font-12 opacity-50"><%= Time.at(charge['created']).strftime("%b #{Time.at(charge['created']).day.ordinalize} %Y") %></p>
-            </div>
-          </a>
-              
-        <% end %>
-      </div>
+      <% @charges.each do |charge| %>
+        <%= charge %>
+      <% end %>
     </div>
   <% end %>
 
-
-  <% if @payments&.present? %>
-    <% @payments.each do |h| %> 
+  CUSTOMER CHARGEs
+  <%= number_to_currency(@invoices.map{|inv| inv['invoice']['amount_paid'] }.sum * 0.01, precision: 2) %>
+  <% if @invoices&.present? %>
+    <% @invoices.each do |h| %> 
       <% if Stripe::Invoice.retrieve(h['invoice']['id'], {stripe_account: current_user&.stripeMerchantID})['metadata']['goodOrService'] == 'service' %>
         <% h['items'].each_with_index do |itm,indx| %>
           <div class="card card-style bg-theme pb-0">

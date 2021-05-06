@@ -8,7 +8,7 @@ class ChargesController < ApplicationController
 	    response = Oj.load(curlCall)
 	    
 	    if response['success']
-				@payments = response['payments']
+				@invoices = response['invoices']
 				@pending = response['pending']
 				@paymentIntents = response['paymentIntents']
 			elsif response['message'] == "No purchases found"

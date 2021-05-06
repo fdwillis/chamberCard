@@ -12,7 +12,7 @@
     </div>
   </div>
 
-  <% if @pending || @payments %>
+  <% if @pending || @invoices %>
     <% @pending.each do |h| %> 
       <div class="card card-style bg-theme pb-0">
         <div class="content mb-0">
@@ -83,7 +83,7 @@
       </div>
     <% end %>
 
-    <% @payments.each do |h| %> 
+    <% @invoices.each do |h| %> 
       <div class="card card-style bg-theme pb-0">
         <div class="content mb-0">
           Order#<%= h['invoice']['id'][3..h['invoice']['id'].length].truncate(9, omission: '') %>
