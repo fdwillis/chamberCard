@@ -21,7 +21,7 @@ before_action :authenticate_user!
 		if callCurl['success']
 			@customer = callCurl['stripeCustomer']
 			@sellerID = callCurl['stripeSeller']
-			@payments = callCurl['payments']
+			@payments = callCurl['payments']['data']
 		end
 	end
 
