@@ -82,6 +82,7 @@
         </div>
       </div>
     <% end %>
+
     <% @payments.each do |h| %> 
       <div class="card card-style bg-theme pb-0">
         <div class="content mb-0">
@@ -161,6 +162,8 @@
         </div>
       </div>
     <% end %>
+
+    <%= @paymentIntents %>
   <% else %>
     <% if current_user&.customer? %>
       <% if  current_user&.paymentOn?%>

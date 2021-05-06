@@ -10,6 +10,7 @@ class ChargesController < ApplicationController
 	    if response['success']
 				@payments = response['payments']
 				@pending = response['pending']
+				@paymentIntents = response['paymentIntents']
 			elsif response['message'] == "No purchases found"
 				@message = response['message']
 			else
@@ -32,7 +33,7 @@ class ChargesController < ApplicationController
 		quantity = newChargeParams[:quantity]
 		desc = newChargeParams[:desc]
     
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "quantity=#{quantity}&timeSlot=#{timeSlot}&timeSlotCharge=true&description=#{desc}" #{SITEurl}/v1/charges`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "quantity=#{quantity}&timeSlot=#{timeSlot}&timeSlotCharge=true&description=#{desc}" #{SITEurl}/v1/charges`
 
 		response = Oj.load(curlCall)
     
@@ -49,7 +50,7 @@ class ChargesController < ApplicationController
 	def initiateCharge
 		if request.post?
 			uuid = params[:initiateCharge][:customerID]
-			curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "" -X GET #{SITEurl}/v1/users/#{uuid}`
+			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "" -X GET #{SITEurl}/v1/users/#{uuid}`
 				
 	    response = Oj.load(curlCall)
 	    
@@ -69,7 +70,7 @@ class ChargesController < ApplicationController
 		desc = newInvoiceParams[:desc]
 		title = newInvoiceParams[:title]
     
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "customer=#{customer}&title=#{title}&desc=#{desc}&managerInvoice=true&amount=#{amount}" -X POST #{SITEurl}/v1/charges`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "customer=#{customer}&title=#{title}&desc=#{desc}&managerInvoice=true&amount=#{amount}" -X POST #{SITEurl}/v1/charges`
 
 		response = Oj.load(curlCall)
 
@@ -86,7 +87,7 @@ class ChargesController < ApplicationController
 	def acceptInvoice
 		charge = params[:stripeChargeID]
 		
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X PATCH #{SITEurl}/v1/charges/#{charge}`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X PATCH #{SITEurl}/v1/charges/#{charge}`
 
 		response = Oj.load(curlCall)
     if response['success']

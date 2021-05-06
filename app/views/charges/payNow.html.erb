@@ -31,10 +31,12 @@
                           <div><p class="font-700 color-theme">Seller</p></div>
                           <div class="ml-auto"><p><%= h['merchantName'] %></p></div>
                       </div>
+                    <% if current_user&.owner? %>
                       <div class="d-flex">
                           <div><p class="font-700 color-theme">Customer</p></div>
                           <div class="ml-auto"><p><%= h['customerStripeInfo']['name'] %></p></div>
                       </div>
+                    <% end %>
                       <div class="d-flex">
                           <div><p class="font-700 color-theme">Date</p></div>
                           <div class="ml-auto"><p><%= h['date'] %></p></div>
