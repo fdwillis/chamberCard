@@ -11,7 +11,8 @@ class ScheduleController < ApplicationController
 	    
 	    if response['success']
 				@invoices = response['invoices']
-				@charges = response['charges']
+				@anonCharges = response['charges'] #edit stripe session meta for scheduling
+				@customerCharges = response['customerCharges']#edit lineItems meta for scheduling
 			elsif response['message'] == "No purchases found"
 				@message = response['message']
 			else

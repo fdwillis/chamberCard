@@ -123,17 +123,82 @@
     </div>
   </div>
 
-  ANON USER CHARGEs <%= number_to_currency(@charges.map{ |char| char['stripeSession']['amount_total'] }.sum * 0.01, precision: 2) %>
+  <!-- ANON USER CHARGEs <%= number_to_currency(@anonCharges.map{ |char| char['stripeSession']['amount_total'] }.sum * 0.01, precision: 2) %> -->
 
-  <% if @charges&.present? %>
+  <% if @anonCharges&.present? %>
     <div class="card card-style">
-      <% @charges.each do |charge| %>
-        <%= charge %>
+      <% @anonCharges.each do |charge| %>
+        <div class="content mb-0">
+          <% if charge['stripeSession']['metadata'].present? %>
+            show meta
+          <% else %>
+            <div class="d-flex pull-right">    
+              <%= link_to '#', class: 'btn btn-full bg-yellow2-dark btn-sm text-uppercase font-800 rounded-sm' do %>
+                <i class="fa fa-calendar-check"></i>
+              <% end %>
+            </div>
+            <div class="d-flex">    
+              <span class="bg-red1-dark rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Please Confirm</span>
+            </div>
+            
+          <% end %>
+              <% charge['lineItems'].each do |item| %>
+                <a href="#" data-menu="menu-transaction-1" class="d-flex">
+                    <h2 class="font-18"><%= item['description'] %></h2><br>
+                </a>
+              <% end %>
+              <%= link_to charge['stripeSession']['customer_details']['email'], "#{charge['stripeSession']['customer_details']['email']}" %>
+          <div class="pull-right">
+            <h2 class="font-18 color-green2-dark"><%= number_to_currency(charge['stripeSession']['amount_total']*0.01, precision: 2) %></h2>
+          </div>
+        </div>
+
+        <div class="divider mt-2 mb-3"></div> 
+
       <% end %>
     </div>
   <% end %>
 
-  CUSTOMER CHARGEs
+  CUSTOMER USER CHARGEs <%= number_to_currency(@customerCharges.map{|char| char['lineItems'].map{|itm| itm['amount']} }.flatten.sum * 0.01, precision: 2) %>
+  <% if @customerCharges&.present? %>
+    <div class="card card-style">
+      <% @customerCharges.each do |customerCharge| %>
+        <% customerCharge['lineItems'].each do |lit| %>
+          <div class="content mb-0">
+            <% if lit['metadata'].present? %>
+              show meta
+            <% else %>
+              <div class="d-flex pull-right">    
+                <%= link_to '#', class: 'btn btn-full bg-yellow2-dark btn-sm text-uppercase font-800 rounded-sm' do %>
+                  <i class="fa fa-calendar-check"></i>
+                <% end %>
+                &nbsp;
+                <%= link_to "#", class: 'ml-2 btn btn-full bg-green2-dark btn-sm text-uppercase font-800 rounded-sm' do %>
+                  <i class="fa fa-check"></i>
+                <% end %>
+              </div>
+              <div class="d-flex">
+                <p>Need to schedule</p>
+              </div>
+            <% end %>
+            <a href="#" data-menu="menu-transaction-1" class="d-flex mb-3">
+              <div class="align-self-center ms-auto text-end">
+                <h2 class="mb-n1 font-18"><%= lit['description'] %></h2>
+              </div>
+            </a>
+            <div class="d-flex pull-right">
+              <div class="align-self-center ms-auto text-end">
+                <h2 class="font-18 color-green2-dark"><%= number_to_currency(lit['amount']*0.01, precision: 2) %></h2>
+
+                <p class="font-12 opacity-50"><%= link_to customerCharge['stripeCustomer']['email'], "#{customerCharge['stripeCustomer']['email']}" %></p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+
   <%= number_to_currency(@invoices.map{|inv| inv['invoice']['amount_paid'] }.sum * 0.01, precision: 2) %>
   <% if @invoices&.present? %>
     <% @invoices.each do |h| %> 
