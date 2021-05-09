@@ -10,11 +10,8 @@ class ScheduleController < ApplicationController
 				@invoices = session[:invoices]
 				@anonCharges = session[:charges] #edit stripe session meta for scheduling
 				@customerCharges = session[:customerCharges] #edit lineItems meta for scheduling
-				debugger
 			else
 				chargesNcustomers
-				debugger
-				
 				@invoices = session[:invoices]
 				@anonCharges = session[:charges] #edit stripe session meta for scheduling
 				@customerCharges = session[:customerCharges] #edit lineItems meta for scheduling
