@@ -5,18 +5,19 @@ class ScheduleController < ApplicationController
 	
 	def index
 		if current_user&.authentication_token
-			curlCall = Charge.APIindex(current_user)
-			
-	    response = Oj.load(curlCall)
-	    
-	    if response['success']
-				@invoices = response['invoices']
-				@anonCharges = response['charges'] #edit stripe session meta for scheduling
-				@customerCharges = response['customerCharges']#edit lineItems meta for scheduling
-			elsif response['message'] == "No purchases found"
-				@message = response['message']
+
+			if !session[:invoices].blank?
+				@invoices = session[:invoices]
+				@anonCharges = session[:charges] #edit stripe session meta for scheduling
+				@customerCharges = session[:customerCharges] #edit lineItems meta for scheduling
+				debugger
 			else
-				flash[:error] = response['message']
+				chargesNcustomers
+				debugger
+				
+				@invoices = session[:invoices]
+				@anonCharges = session[:charges] #edit stripe session meta for scheduling
+				@customerCharges = session[:customerCharges] #edit lineItems meta for scheduling
 			end
 		else
 			current_user = nil

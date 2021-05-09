@@ -2,6 +2,44 @@ class ApplicationController < ActionController::Base
 	before_action :configure_permitted_parameters, if: :devise_controller?
 	before_action :grabCart
 
+	def chargesNcustomers
+		if current_user&.owner?
+			# user
+			# what
+			# sess or inv
+			curlCall = Charge.APIindex(current_user)
+			
+	    response = Oj.load(curlCall)
+	    
+	    if response['success']
+				session[:invoices] = response['invoices']
+				session[:charges] = response['charges'] #edit stripe session meta for scheduling
+				session[:customerCharges] = response['customerCharges']#edit lineItems meta for scheduling
+			elsif response['message'] == "No purchases found"
+				@message = response['message']
+			else
+				flash[:error] = response['message']
+			end
+		end
+
+		if current_user&.customer?
+			curlCall = Charge.APIindex(current_user)
+			
+	    response = Oj.load(curlCall)
+	    
+	    if response['success']
+				@invoices = response['invoices']
+				@anonCharges = response['charges'] #edit stripe session meta for scheduling
+				@customerCharges = response['customerCharges']#edit lineItems meta for scheduling
+			elsif response['message'] == "No purchases found"
+				@message = response['message']
+			else
+				flash[:error] = response['message']
+			end
+		end
+		
+	end
+
 	def grabCart
 		if current_user&.authentication_token
 			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/carts`

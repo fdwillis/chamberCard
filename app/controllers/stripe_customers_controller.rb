@@ -23,7 +23,6 @@ before_action :authenticate_user!
 			@sellerID = callCurl['stripeSeller']
 			@payments = callCurl['payments']
 		else
-			# debugger
 		end
 	end
 
