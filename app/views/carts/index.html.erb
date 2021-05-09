@@ -143,7 +143,7 @@
           
           <% if @cart['carts'].map{|c,i| c['cart']}.flatten.map{|c,i|c['quantity']}.sum != 0 %>
 
-            <%= form_for :checkout, url: checkout_index_path do |f| %>
+            <%= form_for :checkout, url: checkout_index_path, remote: true  do |f| %>
               <div class="input-style input-style-2 mb-4">
               <% if current_user %>
                 <% if !current_user&.address.blank? %>

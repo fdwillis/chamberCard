@@ -2,7 +2,7 @@ class CheckoutController < ApplicationController
 	protect_from_forgery with: :null_session, only: [:checkout, :checkout_anon]
 
 	def create
-		params = @cart.to_json
+		params = session[:cart].to_json
 		
 		if current_user&.authentication_token
 			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X POST #{SITEurl}/v1/checkout`
@@ -22,7 +22,7 @@ class CheckoutController < ApplicationController
 			  success_url: success_url+'?session_id={CHECKOUT_SESSION_ID}',
 			  cancel_url: carts_url,
 			  payment_method_types: ['card'],
-			  line_items: [@lineItems],
+			  line_items: [session[:lineItems]],
 			  mode: 'payment',
 			}, stripe_account: ENV['connectAccount'])
 
@@ -34,7 +34,6 @@ class CheckoutController < ApplicationController
 	end
 
 	def success
-		@cart = nil
 
 		@sessionPaid = Stripe::Checkout::Session.retrieve(params[:session_id], stripe_account: ENV['connectAccount'])
 
@@ -55,6 +54,7 @@ class CheckoutController < ApplicationController
 	    
     if response['success']
     	flash[:success] = "Purchase Complete"
+			reset_session
     else
     	flash[:error] = response['error']
     	redirect_to carts_path
