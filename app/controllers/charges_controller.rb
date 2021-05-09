@@ -94,7 +94,7 @@ class ChargesController < ApplicationController
     if response['success']
 			flash[:notice] = "Invoice Paid"
 			
-      redirect_to charges_path
+      redirect_to pay_now_path
     else
 			flash[:error] = response['message']
       redirect_to charges_path
@@ -122,10 +122,9 @@ class ChargesController < ApplicationController
 				# finalizeInvoice = Stripe::Invoice.finalize_invoice(params['customerPayInvoice']['invoiceToPay'],{},{stripe_account: params['customerPayInvoice']['sellerToChargeAs']})
 				paidInvoice = Stripe::Invoice.pay(params['customerPayInvoice']['invoiceToPay'], {}, {stripe_account: params['customerPayInvoice']['sellerToChargeAs']})
 
-				chargesNcustomers
 				if paidInvoice['status'] == 'paid'
 					flash[:success] = "Invoice Paid"
-		      redirect_to charges_path
+		      redirect_to pay_now_path
 				else
 					flash[:alert] = "Invoice Not Paid"
 		      redirect_to charges_path
