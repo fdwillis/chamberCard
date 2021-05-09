@@ -184,8 +184,6 @@
         </div>
       </div>
     <% end %>
-
-    <%= @paymentIntents %>
   <% else %>
     <% if current_user&.customer? %>
       <% if  current_user&.paymentOn?%>
