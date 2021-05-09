@@ -8,6 +8,7 @@ class ScheduleController < ApplicationController
 
 			if !session[:invoices].blank?
 				@invoices = session[:invoices]
+				@pending = session[:pending]
 				@anonCharges = session[:charges] #edit stripe session meta for scheduling
 				@customerCharges = session[:customerCharges] #edit lineItems meta for scheduling
 			else

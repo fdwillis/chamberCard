@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
 	    
 	    if response['success']
 				session[:invoices] = response['invoices']
+				session[:pending] = response['pending']
 				session[:charges] = response['charges'] #edit stripe session meta for scheduling
 				session[:customerCharges] = response['customerCharges']#edit lineItems meta for scheduling
 			elsif response['message'] == "No purchases found"

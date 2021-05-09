@@ -1,3 +1,25 @@
+<div class="card card-style">
+  <% @customerCharges.each do |customerCharge| %>
+    <% customerCharge['lineItems'].each do |lit| %>
+      <div class="content mb-0">
+        <a href="#" data-menu="menu-transaction-1" class="d-flex mb-3">
+          <div class="align-self-center ms-auto text-end">
+            <h2 class="mb-n1 font-18"><%= lit['description'] %></h2>
+          </div>
+        </a>
+        <div class="d-flex pull-right">
+          <div class="align-self-center ms-auto text-end">
+            <h2 class="font-18 color-green2-dark"><%= number_to_currency(lit['amount']*0.01, precision: 2) %></h2>
+
+            <p class="font-12 opacity-50"><%= link_to customerCharge['stripeCustomer']['email'], "#{customerCharge['stripeCustomer']['email']}" %></p>
+          </div>
+        </div>
+      </div>
+      <div class="divider mt-2 mb-3"></div>
+    <% end %>
+  <% end %>
+</div>
+
 <% if current_user.present? %>
 	<div class="card card-style">
     <div class="content mt-3 mb-3">

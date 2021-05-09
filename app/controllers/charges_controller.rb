@@ -3,19 +3,20 @@ class ChargesController < ApplicationController
 	
 	def index
 		if current_user&.authentication_token
-			curlCall = Charge.APIindex(current_user)
-			
-	    response = Oj.load(curlCall)
-	    
-	    if response['success']
-				@invoices = response['invoices']
-				@pending = response['pending']
-				@paymentIntents = response['paymentIntents']
-			elsif response['message'] == "No purchases found"
-				@message = response['message']
+
+			if !session[:customerCharges].blank?
+				@invoices = session[:invoices]
+				@pending = session[:pending]
+				@anonCharges = session[:charges] #edit stripe session meta for scheduling
+				@customerCharges = session[:customerCharges] #edit lineItems meta for scheduling
 			else
-				flash[:error] = response['message']
+				chargesNcustomers
+				@pending = session[:pending]
+				@invoices = session[:invoices]
+				@anonCharges = session[:charges] #edit stripe session meta for scheduling
+				@customerCharges = session[:customerCharges] #edit lineItems meta for scheduling
 			end
+
 		else
 			current_user = nil
       reset_session
