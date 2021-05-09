@@ -11,7 +11,7 @@ class CheckoutController < ApplicationController
 	    
 	    if response['success']
 	    	flash[:success] = "Purchase Complete"
-	    	redirect_to charges_path
+	    	redirect_to pay_now_path
 	    else
 	    	flash[:error] = response['error']
 	    	redirect_to carts_path

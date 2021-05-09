@@ -76,7 +76,7 @@ class ChargesController < ApplicationController
 		response = Oj.load(curlCall)
 
     if response['success']
-			
+			chargesNcustomers
 			flash[:success] = "Invoice Created"
       redirect_to charges_path
     else
@@ -104,18 +104,11 @@ class ChargesController < ApplicationController
 
 	def payNow
 		if current_user&.authentication_token
-			curlCall = Charge.APIindex(current_user)
-			
-	    response = Oj.load(curlCall)
-	    
-	    if response['success']
-				@payments = response['payments']
-				@pending = response['pending']
-			elsif response['message'] == "No purchases found"
-				@message = response['message']
-			else
-				flash[:error] = response['message']
-			end
+			chargesNcustomers
+			@invoices = session[:invoices]
+			@pending = session[:pending]
+			@anonCharges = session[:charges] #edit stripe session meta for scheduling
+			@customerCharges = session[:customerCharges] #edit lineItems meta for scheduling
 		else
 			current_user = nil
       reset_session
@@ -129,7 +122,7 @@ class ChargesController < ApplicationController
 				# finalizeInvoice = Stripe::Invoice.finalize_invoice(params['customerPayInvoice']['invoiceToPay'],{},{stripe_account: params['customerPayInvoice']['sellerToChargeAs']})
 				paidInvoice = Stripe::Invoice.pay(params['customerPayInvoice']['invoiceToPay'], {}, {stripe_account: params['customerPayInvoice']['sellerToChargeAs']})
 
-				
+				chargesNcustomers
 				if paidInvoice['status'] == 'paid'
 					flash[:success] = "Invoice Paid"
 		      redirect_to charges_path
