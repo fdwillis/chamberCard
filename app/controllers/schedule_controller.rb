@@ -2,6 +2,10 @@ class ScheduleController < ApplicationController
 	before_action :authenticate_user!, except: :timeKitCancel
 
 	protect_from_forgery with: :null_session, only: :timeKitCancel
+
+	def create
+		sessionOrInvoiceID = scheduleServiceParams['invoiceScheduled']
+	end
 	
 	def index
 		if current_user&.authentication_token
@@ -70,5 +74,12 @@ class ScheduleController < ApplicationController
 				redirect_to request.referrer
 			end
 		end
+	end
+
+	private
+
+	def scheduleServiceParams
+		paramsClean = params.require(:scheduleService).permit(:invoiceScheduled)
+		return paramsClean.reject{|_, v| v.blank?}
 	end
 end

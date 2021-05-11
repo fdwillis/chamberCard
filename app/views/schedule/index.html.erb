@@ -133,16 +133,9 @@
           <% if charge['stripeSession']['metadata'].present? %>
             <%= charge['metadata'] %>
           <% else %>
-            <div class="d-flex pull-right">    
-              <%= link_to '#', class: 'btn btn-full bg-yellow2-dark btn-sm text-uppercase font-800 rounded-sm' do %>
-                <i class="fa fa-calendar-check"></i>
-              <% end %>
-            </div>
             <div class="d-flex">    
-              <span class="bg-red1-dark rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Please Confirm</span>
+              <span class="bg-red1-dark rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Select Service Date</span>
             </div>
-            
-          <% end %>
             <%= link_to charge['stripeSession']['customer_details']['email'], "#{charge['stripeSession']['customer_details']['email']}" %>
             <% charge['lineItems'].each do |item| %>
               <% if Stripe::Product.retrieve(item['price']['product'], {stripe_account: current_user&.stripeMerchantID})['type'] == 'service' %>
@@ -155,6 +148,19 @@
                 </div>
               <% end %>
             <% end %>
+            <%= form_for :scheduleService, url: schedule_index_path(id: charge['stripeSession']['id']) do |f| %>
+              <div class="input-style has-borders no-icon mb-4">
+                  <input type="date" value="" max="2030-01-01" min="2021-01-01" class="form-control validate-text" id="session<%= charge['stripeSession']['id'] %>" placeholder="Service Date">
+                  <label for="session<%= charge['stripeSession']['id'] %>" class="color-highlight">To select a date click the calendar icon</label>
+                  <i class="fa fa-check disabled valid me-4 pe-3 font-12 color-green-dark"></i>
+                  <i class="fa fa-check disabled invalid me-4 pe-3 font-12 color-red-dark"></i>
+                  <%= f.hidden_field :invoiceScheduled, value: charge['stripeSession']['id'] %>
+              </div>
+              <div class="input-style has-borders no-icon mb-4">
+                <%= f.submit "Schedule Service", class: "btn bg-green1-dark text-uppercase rounded-sm font-900" %>
+              </div>
+            <% end %>
+          <% end %>
         </div>
 
         <div class="divider mt-2 mb-3"></div> 
