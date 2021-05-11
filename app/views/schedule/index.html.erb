@@ -144,6 +144,7 @@
             
           <% end %>
             <% charge['lineItems'].each do |item| %>
+              <%= Stripe::Product.retrieve(item['price']['product'], {stripe_account: current_user&.stripeMerchantID})['type'] %>
               <a href="#" data-menu="menu-transaction-1" class="d-flex">
                   <h2 class="font-18"><%= item['description'] %></h2><br>
               </a>
@@ -165,6 +166,7 @@
     <div class="card card-style">
       <% @customerCharges.each do |customerCharge| %>
         <%= customerCharge['invoice']['id'] %>
+        <%= customerCharge['invoice']['metadata'] %>
         <% customerCharge['lineItems'].each do |lit| %>
           <div class="content mb-0">
             <% if lit['metadata'].present? %>
