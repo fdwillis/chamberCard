@@ -53,8 +53,8 @@ class CheckoutController < ApplicationController
 		response = Oj.load(curlCall)
 	    
     if response['success']
-    	flash[:success] = "Purchase Complete"
 			reset_session
+    	flash[:success] = "Purchase Complete"
     else
     	flash[:error] = response['error']
     	redirect_to carts_path

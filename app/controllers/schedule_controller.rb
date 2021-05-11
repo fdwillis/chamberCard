@@ -9,8 +9,17 @@ class ScheduleController < ApplicationController
 			if !session[:invoices].blank?
 				@invoices = session[:invoices]
 				@pending = session[:pending]
-				@anonCharges = session[:charges] #edit stripe session meta for scheduling
 				@customerCharges = session[:customerCharges] #edit lineItems meta for scheduling
+
+				anonCharges = []
+
+				session[:charges].each do |anon|
+					
+					if anon['lineItems'].map{|litm| Stripe::Product.retrieve(litm['price']['product'], {stripe_account: ENV['connectAccount']})['type'] }.include?("service")
+						anonCharges << anon
+					end
+				end
+				@anonCharges = anonCharges #edit stripe session meta for scheduling
 			else
 				chargesNcustomers
 				@invoices = session[:invoices]

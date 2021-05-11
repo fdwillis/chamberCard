@@ -125,11 +125,11 @@
 
   <!-- ANON USER CHARGEs <%= number_to_currency(@anonCharges.map{ |char| char['stripeSession']['amount_total'] }.sum * 0.01, precision: 2) %> -->
 
-  <% if @anonCharges&.present? %>
-    <div class="card card-style">
+  <div class="card card-style">
+    <% if @anonCharges&.present? %>
       <% @anonCharges.each do |charge| %>
         <div class="content mb-0">
-          <%= charge['stripeSession']['id'] %>
+          <!-- <%= charge['stripeSession']['id'] %> -->
           <% if charge['stripeSession']['metadata'].present? %>
             <%= charge['metadata'] %>
           <% else %>
@@ -146,7 +146,7 @@
             <%= link_to charge['stripeSession']['customer_details']['email'], "#{charge['stripeSession']['customer_details']['email']}" %>
             <% charge['lineItems'].each do |item| %>
               <% if Stripe::Product.retrieve(item['price']['product'], {stripe_account: current_user&.stripeMerchantID})['type'] == 'service' %>
-                <%= item %>
+                <!-- <%= item['id'] %> -->
                 <a href="#" data-menu="menu-transaction-1" class="d-flex">
                     <h2 class="font-18"><%= item['description'] %></h2><br>
                 </a>
@@ -160,15 +160,14 @@
         <div class="divider mt-2 mb-3"></div> 
 
       <% end %>
-    </div>
-  <% end %>
+    <% end %>
+ 
 
-  CUSTOMER USER CHARGEs <%= number_to_currency(@customerCharges.map{|char| char['lineItems'].map{|itm| itm['amount']} }.flatten.sum * 0.01, precision: 2) %>
-  <% if @customerCharges&.present? %>
-    <div class="card card-style">
+    CUSTOMER USER CHARGEs <%= number_to_currency(@customerCharges.map{|char| char['lineItems'].map{|itm| itm['amount']} }.flatten.sum * 0.01, precision: 2) %>
+    <% if @customerCharges&.present? %>
       <% @customerCharges.each do |customerCharge| %>
         <% if customerCharge['invoice']['metadata'] && customerCharge['invoice']['metadata']['goodOrService'] == 'service' %>
-          <%= customerCharge['invoice']['id'] %>
+          <!-- <%= customerCharge['invoice']['id'] %> -->
           <% customerCharge['lineItems'].each do |lit| %>
             <div class="content mb-0">
               <% if lit['metadata'].present? %>
@@ -211,8 +210,8 @@
           <% end %>
         <% end %>
       <% end %>
-    </div>
-  <% end %>
+    <% end %>
+   </div>
 
   <%= number_to_currency(@invoices.map{|inv| inv['invoice']['amount_paid'] }.sum * 0.01, precision: 2) %>
   <% if @invoices&.present? %>
