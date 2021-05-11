@@ -164,14 +164,13 @@
   <% if @customerCharges&.present? %>
     <div class="card card-style">
       <% @customerCharges.each do |customerCharge| %>
+        <%= customerCharge['invoice']['id'] %>
         <% customerCharge['lineItems'].each do |lit| %>
           <div class="content mb-0">
             <% if lit['metadata'].present? %>
               <% if lit['metadata']['serviceDate'].present? %>
-                <%= lit['metadata']['serviceDate'] %>
+              <!-- <%= lit['metadata']['serviceDate'] %> -->
               <% else %>
-                <%= lit %>
-                book date
                 <div class="d-flex pull-right">    
                   <%= link_to '#', class: 'btn btn-full bg-yellow2-dark btn-sm text-uppercase font-800 rounded-sm' do %>
                     <i class="fa fa-calendar-check"></i>
@@ -196,7 +195,10 @@
                 <h2 class="font-18"><%= lit['description'] %></h2>
               </div>
             </a>
-            <%= link_to customerCharge['stripeCustomer']['email'], "#{customerCharge['stripeCustomer']['email']}" %>
+
+            <% randoUser = Stripe::Customer.retrieve(customerCharge['invoice']['customer'], {stripe_account: current_user&.stripeMerchantID}) %>
+
+            <%= link_to randoUser['email'], "mailto:#{randoUser['email']}" %>
             <div class="pull-right">
               <h2 class="font-18 color-green2-dark"><%= number_to_currency(lit['amount']*0.01, precision: 2) %></h2>
             </div>
