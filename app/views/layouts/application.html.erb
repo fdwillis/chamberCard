@@ -59,10 +59,16 @@
           <% else %>
             <a href="/customers"><i class="fa fa-users"></i><span>Customers</span></a>
           <% end %>
+
+          <% if request.fullpath.include?('/schedule') %>
+            <a href="/schedule"><i class="fa fa-calendar-check color-highlight"></i><span>Schedule</span></a>
+          <% else %>
+            <a href="/schedule"><i class="fa fa-calendar-check"></i><span>Schedule</span></a>
+          <% end %>
         <% end %>
 
         <% if current_user&.customer? && current_user&.stripeCustomerID && current_user&.checkStripeSource %>
-          <% if request.fullpath.include?('/customers') || request.fullpath.include?('/pay-now')%>
+          <% if request.fullpath.include?('/customers') %>
             <a href="/customers/<%= current_user&.stripeCustomerID %>"><i class="fa fa-user color-highlight"></i><span>Profile</span></a>
           <% else %>
             <a href="/customers/<%= current_user&.stripeCustomerID %>"><i class="fa fa-user"></i><span>Profile</span></a>
@@ -81,11 +87,7 @@
           <a href="/products"><i class="fa fa-shopping-basket"></i><span>Shop</span></a>
         <% end %>
 
-        <% if request.fullpath.include?('/schedule') %>
-          <a href="/schedule"><i class="fa fa-calendar-check color-highlight"></i><span>Schedule</span></a>
-        <% else %>
-          <a href="/schedule"><i class="fa fa-calendar-check"></i><span>Schedule</span></a>
-        <% end %>
+        
 
         <% if request.fullpath.include?('/orders') %>
           <a href="/orders"><i class="fa fa-truck color-highlight"></i><span>Orders</span></a>
@@ -93,10 +95,20 @@
           <a href="/orders"><i class="fa fa-truck"></i><span>Orders</span></a>
         <% end %>
 
-        <% if request.fullpath.include?('/charges') %>
-          <a href="/charges"><i class="fa fa-dollar-sign color-highlight"></i><span>Payments</span></a>
+        <% if request.fullpath.include?('/charges') || request.fullpath.include?('/pay-now') %>
+          <% if current_user&.customer? %>
+            <a href="/charges"><i class="fa fa-dollar-sign color-highlight"></i><span>Payments</span></a>
+          <% end %>
+          <% if current_user&.owner? %>
+            <a href="/pay-now"><i class="fa fa-money-bill color-highlight"></i><span>Invoices</span></a>
+          <% end %>
         <% else %>
-          <a href="/charges"><i class="fa fa-dollar-sign"></i><span>Payments</span></a>
+          <% if current_user&.customer? %>
+            <a href="/charges"><i class="fa fa-dollar-sign"></i><span>Payments</span></a>
+          <% end %>
+          <% if current_user&.owner? %>
+            <a href="/pay-now"><i class="fa fa-money-bill"></i><span>Invoices</span></a>
+          <% end %>
         <% end %>
 
         <% if request.fullpath.include?('/profile') || request.fullpath.include?('/auth/login')|| request.fullpath.include?('/auth/sign-up')|| request.fullpath.include?('/membership') %>

@@ -1,24 +1,3 @@
-<div class="card card-style">
-  <% @customerCharges.each do |customerCharge| %>
-    <% customerCharge['lineItems'].each do |lit| %>
-      <div class="content mb-0">
-        <a href="#" data-menu="menu-transaction-1" class="d-flex mb-3">
-          <div class="align-self-center ms-auto text-end">
-            <h2 class="mb-2 font-18"><%= lit['description'] %></h2>
-            <p class="font-12 opacity-50"><%= customerCharge['invoice']['customer_email'] %></p>
-          </div>
-        </a>
-        <div class="d-flex pull-right">
-          <div class="align-self-center ms-auto text-end">
-            <h2 class="font-18 color-green2-dark"><%= number_to_currency(lit['amount']*0.01, precision: 2) %></h2>
-
-          </div>
-        </div>
-      </div>
-      <div class="divider mt-2 mb-3"></div>
-    <% end %>
-  <% end %>
-</div>
 
 <% if current_user.present? %>
 	<div class="card card-style">
@@ -33,175 +12,27 @@
       </p>
     </div>
   </div>
-
-  <% if @pending || @invoices %>
-    <% @pending.each do |h| %> 
-      <div class="card card-style bg-theme pb-0">
+  <div class="card card-style">
+    <% @customerCharges.each do |customerCharge| %>
+      <% customerCharge['lineItems'].each do |lit| %>
         <div class="content mb-0">
-          PENDING
-          <div class="content">
-            <div class="row mb-0">
-                <div class="col-3 icon icon-xl">
-                    <i class="fa fa-exclamation-triangle bg-fade-red2-dark rounded-xl color-red2-dark" width='80'></i>
-                </div>
-                <div class="col-9 pl-4">
-                    <% if current_user&.customer? %>
-                      <div class="d-flex">
-                          <div><p class="font-700 color-theme">Seller</p></div>
-                          <div class="ml-auto"><p><%= h['merchantName'] %></p></div>
-                      </div>
-                    <% end %>
-                    <% if current_user&.manager? %>
-                      <% userShow = User.find_by(email: h['customerStripeInfo']['email']) %>
-                      <div class="d-flex">
-                          <div><p class="font-700 color-theme">Customer</p></div>
-                          <div class="ml-auto"><p><%= link_to h['customerStripeInfo']['name'].split(" ")[0], "/customers/#{ h['invoice']['customer']}" %></p></div>
-                      </div>
-                    <% end %>
-                    <div class="d-flex">
-                        <div><p class="font-700 color-theme">Date</p></div>
-                        <div class="ml-auto"><p><%= h['date'] %></p></div>
-                    </div>
-                </div>
+          <a href="#" data-menu="menu-transaction-1" class="d-flex mb-3">
+            <div class="align-self-center ms-auto text-end">
+              <h2 class="mb-2 font-18"><%= lit['description'] %></h2>
+              <p class="font-12 opacity-50"><%= customerCharge['invoice']['customer_email'] %></p>
             </div>
-            <div class="divider mt-3 mb-3"></div>
-            <% h['invoice']['lines']['data'].each_with_index do |itm,indx| %>
-                
-                  
-              <h4 class="font-14 text-center"><%= itm['description'] %> <%= number_to_currency((itm['amount'] * 0.01), precision: 2) %></h4>
-            <% end %>
+          </a>
+          <div class="d-flex pull-right">
+            <div class="align-self-center ms-auto text-end">
+              <h2 class="font-18 color-green2-dark"><%= number_to_currency(lit['amount']*0.01, precision: 2) %></h2>
 
-              
-              <div class="row mb-0">
-                <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-                <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-                <div class="col-6"><h4 class="font-14 mt-1">Total</h4></div>
-                <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency( h['invoice']['subtotal']  * 0.01, precision: 2) %></h4></div>
-                <div class="col-6"><h4 class="font-14 mt-1">Paid</h4></div>
-                <div class="col-6"><h4 class="font-14 text-right mt-1"><%=  h['invoice']['status'] == 'draft' ? number_to_currency(h['invoice']['total_discount_amounts'][0]['amount']  * 0.01, precision: 2) : number_to_currency(h['invoice']['amount_paid']  * 0.01, precision: 2) %></h4></div>
-                
-
-        
-                <div class="divider divider-margins w-100 mt-2 mb-3"></div>
-                <div class="col-6"><h4 class="font-14 mt-1">Due</h4></div>
-                <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency(h['invoice']['amount_remaining'] * 0.01, precision: 2) %></h4></div>
-
-              </div>
-            <% if h['invoice']['amount_remaining'] > 0 %>
-              <%= form_for :customerPayInvoice, url: customer_pay_path do |f| %>
-                <%= f.hidden_field :sellerToChargeAs, value: h['merchantStripeID'] %>
-                <%= f.hidden_field :invoiceToPay, value: h['invoice']['id'] %>
-                <% if current_user&.customer? %>
-                  <%= f.submit "Pay Now", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
-                <% end %>
-
-                <% if current_user&.owner? %>
-                  <%= f.submit "Collect Payment", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
-                <% end %>
-              <% end %>
-            <% end%>
+            </div>
           </div>
         </div>
-      </div>
-    <% end %>
-
-    <% @invoices.each do |h| %> 
-      <div class="card card-style bg-theme pb-0">
-        <div class="content mb-0">
-          Order#<%= h['invoice']['id'][3..h['invoice']['id'].length].truncate(9, omission: '') %>
-          <div class="content">
-            <div class="row mb-0">
-                <div class="col-3 icon icon-xl">
-                    <i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark" width='80'></i>
-                </div>
-                <div class="col-9 pl-4">
-                    <% if current_user&.customer? %>
-                      <div class="d-flex">
-                          <div><p class="font-700 color-theme">Seller</p></div>
-                          <div class="ml-auto"><p><%= h['merchantName'] %></p></div>
-                      </div>
-                    <% end %>
-                    <% if current_user&.manager? %>
-                      <div class="d-flex">
-                          <div><p class="font-700 color-theme">Customer</p></div>
-                          <div class="ml-auto"><p><%= link_to h['customerStripeInfo']['name'].split(" ")[0], "/customers/#{ h['invoice']['customer']}" %></p></div>
-                      </div>
-                    <% end %>
-                    <div class="d-flex">
-                        <div><p class="font-700 color-theme">Date</p></div>
-                        <div class="ml-auto"><p><%= h['date'] %></p></div>
-                    </div>
-                </div>
-            </div>
-            <div class="divider mt-3 mb-3"></div>
-            <div class="row mb-0">
-            
-                <div class="col-6"><h4 class="font-14 text-left"><u>Item</u></h4></div>
-                <div class="col-3"><h4 class="font-14 text-center"><u>QTY</u></h4></div>
-                <div class="col-3"><h4 class="font-14 text-center"><u>Price</u></h4></div>
-            </div>
-            <% h['items'].each_with_index do |itm,indx| %>
-                
-                <div class="row mb-2">
-                  <div class="col-6"><h4 class="font-14 text-left"><%= itm['product']['name'] %></h4></div>
-                  <div class="col-3"><h4 class="font-14 text-center"><%= itm['invoiceLine']['quantity'] %></h4></div>
-                  <div class="col-3"><h4 class="font-14 text-center"><%= number_to_currency((itm['price']['unit_amount'] * 0.01), precision: 2) %></h4></div>
-
-                  
-                  <!-- <div class="col-2"><h4 class="font-14 text-right">Claimed: <%= itm['invoiceLine']['metadata']['claimed'] %></h4></div> -->
-                </div>
-            <% end %>
-              
-              <div class="row mb-0">
-                <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-                <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-                <div class="col-6"><h4 class="font-14 mt-1">Total</h4></div>
-                <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency( h['invoice']['subtotal']  * 0.01, precision: 2) %></h4></div>
-                <div class="col-6"><h4 class="font-14 mt-1">Paid</h4></div>
-                <div class="col-6"><h4 class="font-14 text-right mt-1"><%=  h['invoice']['status'] == 'draft' ? number_to_currency(h['invoice']['total_discount_amounts'][0]['amount']  * 0.01, precision: 2) : number_to_currency(h['invoice']['amount_paid']  * 0.01, precision: 2) %></h4></div>
-                
-
-        
-                <div class="divider divider-margins w-100 mt-2 mb-3"></div>
-                <div class="col-6"><h4 class="font-14 mt-1">Due</h4></div>
-                <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency(h['invoice']['amount_remaining'] * 0.01, precision: 2) %></h4></div>
-              </div>
-            <% if h['invoice']['amount_remaining'] > 0 %>
-              <%= form_for :customerPayInvoice, url: customer_pay_path do |f| %>
-                <%= f.hidden_field :sellerToChargeAs, value: h['merchantStripeID'] %>
-                <%= f.hidden_field :invoiceToPay, value: h['invoice']['id'] %>
-                <% if current_user&.customer? %>
-                  <%= f.submit "Pay Now", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
-                  <p class="text-center">A representative from <%= ENV['siteName'] %> will be in touch to schedule your service</p>
-                <% end %>
-
-                <% if current_user&.owner? %>
-                  <%= f.submit "Collect Payment", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
-                <% end %>
-              <% end %>
-            <% end%>
-          </div>
-        </div>
-      </div>
-    <% end %>
-  <% else %>
-    <% if current_user&.customer? %>
-      <% if  current_user&.paymentOn?%>
-        <div class="content mb-0 text-center">
-          <h5>You have not been charged</h5>
-        </div>
-
-      <% else %>
-        <%= link_to "Setup Payment", '/profile', class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' %>
+        <div class="divider mt-2 mb-3"></div>
       <% end %>
     <% end %>
-
-    <% if current_user&.manager? %>
-      <div class="content mb-0 text-center">
-        <h5>No payments posted</h5>
-      </div>
-    <% end %>
-  <% end %>
+  </div>
 <% else %>
   <div class="page-content header-clear-medium">
         
