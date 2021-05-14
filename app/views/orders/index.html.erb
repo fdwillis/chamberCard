@@ -1,180 +1,108 @@
-<!-- Preferred order:
-
-Customer: name, custID
-“Title of job”
-Date of product
-Customer: name, custID?
-Contact 
-Contact 
-Contact 
-         Total $/charge
-         Net $ (fee shown) -->
-<% if current_user&.manager? || (current_user&.customer? && current_user&.paymentOn?) %>
-
-
-    <div class="card card-style">
-      <div class="content mt-3 mb-3">
-        <% if current_user&.customer? %>
-              <h3>Track Your Orders</h3>
-              <p class='text-justify'>
-                Check on your orders anytime by clicking your Tracking Number(s)
-              </p>
-        <% end %>
-        <% if current_user&.manager? %>
-          <h3>Order Fulfillment</h3>
-            <p class='text-justify'>
-              Once you receive your tracking numbers, enter them below!
-            </p>
-        <% end %>
-      </div>
-    </div>
-
-    <% if @payments&.present?  %>
-      <div class="card card-style">
-        <div class="content mb-0">
-          <% @payments.each_with_index do |h, hindx| %>
-            <% theInvoiceX = Stripe::Invoice.retrieve(h['invoice']['id'], {stripe_account: h['invoice']['metadata']['connectAccount']}) %>
-            <% if theInvoiceX['metadata']['goodOrService'] == 'good' && theInvoiceX['metadata']['orderIssue'].blank? %>
-              <div class="row mb-4">
-                 <div class="col-8">
-                  <%= Stripe::Customer.retrieve(h['customerStripeInfo']['id'])['name'] %> | Ship To: <%= User.find_by(stripeCustomerID: h['customerStripeInfo']['id']).address %> 
-                </div>
-                 <div class="col-4">
-                  <button class="accordion-btn col-12 btn btn-m btn-full bg-green1-dark text-uppercase font-900" data-toggle="collapse" data-target="#<%= h['invoice']['lines']['data'][0]['id'] %>" aria-expanded="false" style='margin-top:-10px;'>
-                    <i class="fa fa-truck"></i>
-                  </button>
-                </div>
-              </div>
-              
-              <% h['items'].each do |itm| %>
-                <% productFromInvoice = Stripe::Product.retrieve(itm['invoiceLine']['price']['product'], {stripe_account: h['invoice']['metadata']['connectAccount']}) %>
-                <div class="row mb-4">
-                  <div class="col-5"><h4 class="font-14 text-left"><%= productFromInvoice['name'].titleize %></h4></div>
-                  <% if h['invoice']['lines']['data'][0]['price']['transform_quantity'] && !h['invoice']['lines']['data'][0]['price']['transform_quantity']['divide_by'].blank? %>
-                    <div class="col-3"><h4 class="font-14 text-justify"><%= (h['invoice']['lines']['data'][0]['quantity'].to_i * h['invoice']['lines']['data'][0]['price']['transform_quantity']['divide_by']) %></h4></div>
-                  <% else %>
-                    <div class="col-3"><h4 class="font-14 text-justify"><%= h['invoice']['lines']['data'][0]['quantity'].to_i %></h4></div>
-                  <% end %>
-                  <div class="col-4">
-                  </div>
-                </div>
-              <% end %>
-              
-
-              <div class="accordion" id="accordion-1">
-                <div class="mb-4">
-                  <div id="<%= h['invoice']['lines']['data'][0]['id'] %>" class="collapse" data-parent="#accordion-1" style="">
-
-                  <% if current_user&.manager?  %>
-                    <%= form_for :trackingNumber, url: trackingNumber_path do |f| %>
-                      <div class="input-style has-icon input-style-2 input-required pb-1">
-                          <i class="input-icon fa fa-truck color-theme"></i>
-                          <span class="color-highlight input-style-1-active">Tracking Numbers</span>
-                          <em>(required)</em>
-                          <%= f.text_field :trackingIDs, placeholder: "1ZSD6756...", required: true, value: !theInvoiceX['metadata']['trackingNumbers'].blank? ? theInvoiceX['metadata']['trackingNumbers'] : nil %>
-                          <%= f.hidden_field :invoice, value: h['invoice']['id'] %>
-                      </div> 
-                      <p class="text-center">Seperate Tracking Numbers By Comma</p>
-                      <%= f.submit "Update Tracking", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
-                    <% end %>
-                  <% end %>
-
-
-                  <% if current_user&.customer?  %>
-                    <% if theInvoiceX['metadata']['trackingNumbers'].blank? %>
-                      <p>Your order has been received. Check back for tracking updates</p>
-                    <% else %>
-                      <div class="row">
-                        <% theInvoiceX['metadata']['trackingNumbers'].split(",").each do |t| %>
-                          <div class="text-left col-12">
-                            Tracking Number - <%= link_to t, "https://www.google.com/search?q=#{t}&oq=#{t}", 'target' => '_blank' %>
-                          </div>
-                        <% end %>
-                      </div>
-                      <%= form_for :trackingNumber, id: "#{h['customerStripeInfo']['name']}#{h['invoice']['id']}", url: trackingNumber_path do |f| %>
-                        <div class="input-style input-style-2 mt-2 ">
-                        Did you receive your order?
-                          <%= f.select :orderIssueStatus, [['Yes', 0], ['Yes, But theres an issue or problem',1]], id: "#{h['customerStripeInfo']['name']}#{h['invoice']['id']}", onchange: "showReport(#{h['customerStripeInfo']['name']}#{h['invoice']['id']});" %>
-                          <%= f.hidden_field :invoice, value: h['invoice']['id'] %>
-                          <%= f.hidden_field :merchantStripeID, value: h['invoice']['metadata']['connectAccount'] %>
-
-                        </div>
-                        <%= f.submit "Update Status", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-yellow1-dark text-uppercase font-900" %>
-                      <% end %>
-                    <% end %>
-                  <% end %>
-
-                  Order#<%= h['invoice']['id'][3..(h['invoice']['id'].length)] %><br>
-                  </div>
-                </div>
-              </div>
-
-
-
-
-
-
-              
+<div class="card card-style">
+    <div class="content mt-3 mb-3">
+      <h3>Order Tracking</h3>
+      <p class='text-justify'>
+            <% if ENV['stripeCapturePercentage'].to_i < 100 %>
+              After you have updated the order, it will be removed from the list below.
             <% end %>
+      </p>
+    </div>
+  </div>
+
+  <!-- ANON USER CHARGEs <%= number_to_currency(@anonCharges.map{ |char| char['stripeSession']['amount_total'] }.sum * 0.01, precision: 2) %> -->
+
+  <!-- CUSTOMER USER CHARGEs <%= number_to_currency(@customerCharges.map{|char| char['lineItems'].map{|itm| itm['amount']} }.flatten.sum * 0.01, precision: 2) %> -->
+
+  <div class="card card-style">
+    <% if @customerCharges&.present? %>
+      <% @customerCharges.each do |customerCharge| %>
+        <% if customerCharge['invoice']['metadata'] && customerCharge['invoice']['metadata']['confirmed'].blank? && customerCharge['invoice']['metadata']['goodOrService'] == 'good' %>
+          <% customerCharge['lineItems'].each do |lit| %>
+            <div class="content mb-0">
+                <div class="d-flex">    
+                  <span class="bg-red1-dark rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Shipment Pending</span>
+                </div>
+              <% randoUser = Stripe::Customer.retrieve(customerCharge['invoice']['customer'], {stripe_account: ENV['connectAccount']}) %>
+
+              <%= link_to randoUser['email'], "mailto:#{randoUser['email']}" %>
+              <a href="#" data-menu="menu-transaction-1" class="d-flex">
+                <div class="align-self-center ms-auto text-end mb-2">
+                  <h2 class="font-18"><%= lit['description'] %></h2>show quantity
+                </div>
+              </a>
+              <% if current_user&.owner? %>
+                <%= form_for :scheduleService, url: schedule_index_path(id: customerCharge['invoice']['id']) do |f| %>
+                  <div class="input-style input-style-2">
+                      <span class="input-style-1-active">Tracking Number</span>
+                      <%= f.text_field :title, required: true  %>
+                  </div>
+                  <div class="input-style has-borders no-icon mb-4">
+                      
+                      <label for="session<%= customerCharge['invoice']['id'] %>" class="color-highlight">Seperate tracking numbers by comma</label>
+                      <i class="fa fa-check disabled valid me-4 pe-3 font-12 color-green-dark"></i>
+                      <i class="fa fa-check disabled invalid me-4 pe-3 font-12 color-red-dark"></i>
+                  </div>
+
+                  <div class="input-style has-borders no-icon mb-4">
+                    <%= f.hidden_field :sessionOrInvoiceID, value: customerCharge['invoice']['id'] %>
+                  </div>
+                  <div class="input-style has-borders no-icon mb-4">
+                    <%= f.submit "Update tracking", class: "btn bg-green1-dark text-uppercase rounded-sm font-900" %>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+            <div class="divider mt-2 mb-3"></div> 
           <% end %>
-        </div>
-      </div>
-    <% else %>
-
-      <% if current_user&.customer? %>
-        <div class="content mb-0 text-center">
-          <h5>You have not purchased any products</h5>
-        </div>
+        <% end %>
       <% end %>
-      <% if current_user&.manager? %>
-        <div class="content mb-0 text-center">
-          <h5>No orders listed</h5>
-        </div>
-      <% end %>
-
     <% end %>
 
-
-
-
-
-
-<% else %>
-  <%= link_to "Setup Payment", '/profile', class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' %>
-<% end %>
-
-
-
-
-
-<% if !current_user %>
-  <div class="page-content header-clear-medium">
-
-        <div class="card card-style">
-            
-            <div class="d-flex content mb-1">
-                <!-- left side of profile -->
-                <div class="flex-grow-1">
-                    <h1 class="font-700">Book Now</h1>
-                    <p class="mb-2">
-                      All of your scheduled appointments will be posted here. Cancel an appointment anytime for free!
-                    </p>
-                </div>
-                <!-- right side of profile. increase image width to increase column size-->
-            </div>
-            <!-- follow buttons-->
+    <% if @anonCharges&.present? %>
+      <% @anonCharges.each do |charge| %>
+        <% if charge['lineItems'].map{|lit| Stripe::Product.retrieve(lit['price']['product'], {stripe_account: ENV['connectAccount']})['type'] == 'good' }.flatten.include?(true) %>
+          <% paymentMeta = Stripe::PaymentIntent.retrieve(charge['stripeSession']['payment_intent'], {stripe_account: ENV['connectAccount']}) %>
+            <!-- <%= charge['stripeSession']['id'] %> -->
+          <% if paymentMeta['metadata']['confirmed'].blank? %>
             <div class="content mb-0">
-                <div class="row mb-0">
-                    <div class="col-6">
-                        <a href="<%= new_user_registration_path %>" class="btn btn-full btn-s rounded-s text-uppercase font-900 bg-green1-dark">Create Account</a>
-                    </div>
-                    <div class="col-6">
-                        <a href="<%= new_user_session_path %>" class="btn btn-full btn-s rounded-s text-uppercase font-900 color-theme border-green1-dark">Login</a>
-                    </div>
+              <div class="d-flex">    
+                <span class="bg-red1-dark rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Contact Customer</span>
+              </div>
+
+              <%= link_to charge['stripeSession']['customer_details']['email'], "#{charge['stripeSession']['customer_details']['email']}" %>
+
+              <% charge['lineItems'].each do |item| %>
+                <!-- <%= item['id'] %> -->
+                <a href="#" data-menu="menu-transaction-1" class="d-flex">
+                    <h2 class="font-18"><%= item['description'] %></h2><br>
+                </a>
+                <!-- <div class="pull-right">
+                  <h2 class="font-18 color-green2-dark"><%= number_to_currency(item['amount_total']*0.01, precision: 2) %></h2>
+                </div> -->
+              <% end %>
+
+              <%= form_for :scheduleService, url: schedule_index_path(id: charge['stripeSession']['id']) do |f| %>
+                <div class="input-style has-borders no-icon mb-4">
+                    
+                    <label for="session<%= charge['stripeSession']['id'] %>" class="color-highlight">Confirm &amp; schedule service with the customer</label>
+                    <i class="fa fa-check disabled valid me-4 pe-3 font-12 color-green-dark"></i>
+                    <i class="fa fa-check disabled invalid me-4 pe-3 font-12 color-red-dark"></i>
                 </div>
+
+                <div class="input-style has-borders no-icon mb-4">
+                  <%= f.hidden_field :sessionOrInvoiceID, value: charge['stripeSession']['id'] %>
+                </div>
+                <div class="input-style has-borders no-icon mb-4">
+                  <%= f.submit "Service Confirmed", class: "btn bg-green1-dark text-uppercase rounded-sm font-900" %>
+                </div>
+              <% end %>
             </div>
-            
-            <div class="divider mt-4 mb-0"></div>
-        </div>
+            <div class="divider mt-2 mb-3"></div> 
+          <% end %>
+        <% end %>
+
+
+      <% end %>
+    <% end %>
+    
   </div>
-<% end %>
