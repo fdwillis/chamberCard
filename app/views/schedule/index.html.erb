@@ -131,8 +131,6 @@
     <% if @customerCharges&.present? %>
       <% @customerCharges.each do |customerCharge| %>
         <% if customerCharge['invoice']['metadata'] && customerCharge['invoice']['metadata']['confirmed'].blank? && customerCharge['invoice']['metadata']['goodOrService'] %>
-          <!-- <%= customerCharge['invoice']['metadata'] %> -->
-          <!-- <%= customerCharge['invoice']['id'] %> -->
           <% customerCharge['lineItems'].each do |lit| %>
             <div class="content mb-0">
               <div class="d-flex">    
