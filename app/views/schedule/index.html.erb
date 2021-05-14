@@ -166,7 +166,6 @@
       <% end %>
     <% end %>
 
-
     <% if @anonCharges&.present? %>
       <% @anonCharges.each do |charge| %>
         <% if charge['lineItems'].map{|lit| Stripe::Product.retrieve(lit['price']['product'], {stripe_account: current_user&.stripeMerchantID})['type'] == 'service' }.flatten.include?(true) %>
@@ -213,42 +212,6 @@
 
       <% end %>
     <% end %>
- 
-
     
-   </div>
-<% end %>
-
-
-
-<% if !current_user %>
-  <div class="page-content header-clear-medium">
-
-        <div class="card card-style">
-            
-            <div class="d-flex content mb-1">
-                <!-- left side of profile -->
-                <div class="flex-grow-1">
-                    <h1 class="font-700">Book Now</h1>
-                    <p class="mb-2">
-                      All of your scheduled appointments will be posted here. Cancel an appointment anytime for free!
-                    </p>
-                </div>
-                <!-- right side of profile. increase image width to increase column size-->
-            </div>
-            <!-- follow buttons-->
-            <div class="content mb-0">
-                <div class="row mb-0">
-                    <div class="col-6">
-                        <a href="<%= new_user_registration_path %>" class="btn btn-full btn-s rounded-s text-uppercase font-900 bg-green1-dark">Create Account</a>
-                    </div>
-                    <div class="col-6">
-                        <a href="<%= new_user_session_path %>" class="btn btn-full btn-s rounded-s text-uppercase font-900 color-theme border-green1-dark">Login</a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="divider mt-4 mb-0"></div>
-        </div>
   </div>
 <% end %>
