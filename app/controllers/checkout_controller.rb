@@ -38,7 +38,7 @@ class CheckoutController < ApplicationController
 		@sessionPaid = Stripe::Checkout::Session.retrieve(params[:session_id], stripe_account: ENV['connectAccount'])
 
 		@paymentCharge = Stripe::PaymentIntent.retrieve(@sessionPaid.payment_intent,{stripe_account: ENV['connectAccount']})
-
+		# edit payment intent for application fee @serviceFee
 		@collecctAnonFee = Stripe::Charge.create({
 		  amount: @serviceFee,
 		  currency: 'usd',
