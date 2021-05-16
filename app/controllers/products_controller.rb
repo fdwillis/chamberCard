@@ -101,32 +101,25 @@ class ProductsController < ApplicationController
 	end
 
 	def trackingNumber
-		if request.post?
-			invoice = params[:trackingNumber][:invoice]
-			
-			if !params[:trackingNumber][:trackingIDs].blank?
-				trackingIDs = params[:trackingNumber][:trackingIDs]
+		sessionOrInvoiceID = params[:trackingNumber][:sessionOrInvoiceID]
+		
+		if !params[:trackingNumber][:trackingIDs].blank?
+			trackingIDs = params[:trackingNumber][:trackingIDs]
 
-				curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"  -d 'invoice=#{invoice}&trackingIDs=#{trackingIDs}' -X POST #{SITEurl}/v1/tracking`
-			elsif !params[:trackingNumber][:orderIssueStatus].blank?
-				orderIssueStatus = ActiveModel::Type::Boolean.new.cast(params[:trackingNumber][:orderIssueStatus])
-				merchantStripeID = params[:trackingNumber][:merchantStripeID]
-				curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"  -d 'invoice=#{invoice}&orderIssueStatus=#{orderIssueStatus}&merchantStripeID=#{merchantStripeID}' -X POST #{SITEurl}/v1/tracking`
-			else
-				flash[:error] = "Something was missing"
-				redirect_to request.referrer
-				return
-			end
+			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"  -d 'sessionOrInvoiceID=#{sessionOrInvoiceID}&trackingIDs=#{trackingIDs}' -X POST #{SITEurl}/v1/tracking`
+		else
+			flash[:error] = "Something was missing"
+			redirect_to request.referrer
+			return
+		end
+    response = Oj.load(curlCall)
 
-	    response = Oj.load(curlCall)
-
-	    if response['success']
-				flash[:success] = response['message']
-				redirect_to request.referrer
-			else
-				flash[:error] = "Something went wrong"
-				redirect_to request.referrer
-			end
+    if response['success']
+			flash[:success] = response['message']
+			redirect_to request.referrer
+		else
+			flash[:error] = "Something went wrong"
+			redirect_to request.referrer
 		end
 	end
 
