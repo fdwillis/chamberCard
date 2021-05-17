@@ -20,15 +20,12 @@ class Product < ApplicationRecord
 		keywords = productParams[:keywords]
 
 		images = []
-		productStarted = Product.create()
 
 		if !productParams['images'].blank?
 			productParams['images'].each do |img|
-				imageMade = productStarted.images.create(source: img)
-				cloudX = Cloudinary::Uploader.upload(imageMade.source.file.file)
+				
+				cloudX = Cloudinary::Uploader.upload(img.tempfile)
 				images.append(cloudX['secure_url'])
-				File.delete(imageMade.source.file.file)
-				productStarted.destroy!
 			end
 		end
 
@@ -51,12 +48,9 @@ class Product < ApplicationRecord
 
 		if !productParams['images'].blank?
 			productParams['images'].each do |img|
-				productFound = Product.find_by(stripeProductID: "prod_#{productParams[:id]}")
-				imageMade = productFound.images.create(source: img)
 				
-				cloudX = Cloudinary::Uploader.upload(imageMade.source.file.file)
+				cloudX = Cloudinary::Uploader.upload(img.tempfile)
 				images.append(cloudX['secure_url'])
-				File.delete(imageMade.source.file.file)
 			end
 		end
 

@@ -1,5 +1,5 @@
 class PricingController < ApplicationController
-
+	before_action :authenticate_user!
 	before_action :grabProduct
 
 	def index

@@ -111,10 +111,14 @@
                 </div> -->
               <% end %>
 
-              <%= form_for :scheduleService, url: schedule_index_path(id: charge['stripeSession']['id']) do |f| %>
+              <%= form_for :trackingNumber, url: trackingNumber_path(id: charge['stripeSession']['id']) do |f| %>
+                <div class="input-style input-style-2">
+                    <span class="input-style-1-active">Tracking Number</span>
+                    <%= f.text_field :trackingIDs, required: true  %>
+                </div>
                 <div class="input-style has-borders no-icon mb-4">
                     
-                    <label for="session<%= charge['stripeSession']['id'] %>" class="color-highlight">Confirm &amp; schedule service with the customer</label>
+                    <label for="session<%= charge['stripeSession']['id'] %>" class="color-highlight">Seperate tracking numbers by comma</label>
                     <i class="fa fa-check disabled valid me-4 pe-3 font-12 color-green-dark"></i>
                     <i class="fa fa-check disabled invalid me-4 pe-3 font-12 color-red-dark"></i>
                 </div>
@@ -123,7 +127,7 @@
                   <%= f.hidden_field :sessionOrInvoiceID, value: charge['stripeSession']['id'] %>
                 </div>
                 <div class="input-style has-borders no-icon mb-4">
-                  <%= f.submit "Service Confirmed", class: "btn bg-green1-dark text-uppercase rounded-sm font-900" %>
+                  <%= f.submit "Update tracking", class: "btn bg-green1-dark text-uppercase rounded-sm font-900" %>
                 </div>
               <% end %>
             </div>

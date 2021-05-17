@@ -4,7 +4,7 @@
         <h2 class="mb-8">
             Checkout
         </h2>
-        <p>Your shopping cart before checking out.<br><em><strong>One Click Purchase</strong></em></p>
+        <p>Your shopping cart before checking out.<br><em><strong>This payment will be processed by <a href="https://www.tewcode.com" target="_blank">TewCode</a> &amp; <%= link_to "Stripe", "https://stripe.com", 'target' => '_blank' %></strong></em></p>
     </div>
 </div>
 
@@ -159,18 +159,19 @@
               <%= form_for :checkout, url: checkout_index_path, remote: true  do |f| %>
                 <div class="input-style input-style-2 mb-4">
                 <% if @cart.present? %>
-                  <%= f.submit "Charge Me",remote: true %>
+                  <%= f.submit "Charge Me",remote: true, class: "btn btn-full bg-green1-dark text-uppercase rounded-sm font-900" %>
                 <% end %>
                 </div>
-                <a href="/services" class="btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm">Continue Shopping</a>
+                <a href="/services" class="mb-2 btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm">Continue Shopping</a>
               <% end %>
             <% end %>
 
 
 
           <% else %>
-            <a href="/services" class="btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm">Continue Shopping</a>
+            <a href="/services" class="mb-2 btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm">Continue Shopping</a>
           <% end %>
+          
       </div>
   </div>
 </div>

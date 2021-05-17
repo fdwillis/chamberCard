@@ -17,9 +17,8 @@ class CheckoutController < ApplicationController
 	    	redirect_to carts_path
 	    end
 	  else
-
 	  	@checkoutAnon = Stripe::Checkout::Session.create({
-			  success_url: success_url+'?session_id={CHECKOUT_SESSION_ID}',
+			  success_url: success_url+'?session_id={CHECKOUT_SESSION_ID}&customer={CHECKOUT_SESSION_CUSTOMER}',
 			  cancel_url: carts_url,
 			  payment_method_types: ['card'],
 			  line_items: [session[:lineItems]],
@@ -35,14 +34,16 @@ class CheckoutController < ApplicationController
 
 	def success
 
-		@sessionPaid = Stripe::Checkout::Session.retrieve(params[:session_id], stripe_account: ENV['connectAccount'])
+		@sessionPaid = Stripe::Checkout::Session.retrieve(params[:session_id], {stripe_account: ENV['connectAccount']})
 
 		@paymentCharge = Stripe::PaymentIntent.retrieve(@sessionPaid.payment_intent,{stripe_account: ENV['connectAccount']})
 		# edit payment intent for application fee @serviceFee
+		@line_items = Stripe::Checkout::Session.list_line_items(@sessionPaid.id, {limit: 100}, {stripe_account: ENV['connectAccount']})['data']
+
 		@collecctAnonFee = Stripe::Charge.create({
 		  amount: @serviceFee,
 		  currency: 'usd',
-		  description: "Transaction Fee # #{@paymentCharge.id} | TewCode",
+		  description: "#{ENV['appName']} Transaction Fee - ##{@paymentCharge.id} | TewCode",
 		  source: ENV['connectAccount'],
 		})
 

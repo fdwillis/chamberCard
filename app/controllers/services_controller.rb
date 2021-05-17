@@ -87,8 +87,8 @@ class ServicesController < ApplicationController
 	end
 
 	def edit
-		if !params['product'].blank?
-			@product = params['product']
+		if !params['service'].blank?
+			@product = params['service']
 		else
 			flash[:error] = "No product found"
 			redirect_to request.referrer
