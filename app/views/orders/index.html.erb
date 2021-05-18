@@ -72,8 +72,12 @@
 
               <a href="#" data-menu="menu-transaction-1" class="d-flex">
                 <div class="align-self-center ms-auto text-end mb-2">
-                  <h2 class="font-18"><%= lit['description'] %></h2>
-                  <p class="opacity-40">Quantity: <%= lit['quantity'] %></p>
+                  <h2 class="font-18"><%= lit['quantity'] %>x <%= lit['description'] %></h2>
+                  <% invoiceMeta = Stripe::Invoice.retrieve(customerCharge['invoice']['id'], {stripe_account: ENV['connectAccount']}) %>
+                    <% if !invoiceMeta['metadata']['trackingNumbers'].blank? %>
+                      <p class="opacity-40"><%= invoiceMeta['metadata']['trackingNumbers'] %></p>
+                      
+                    <% end %>
                 </div>
               </a>
               <% randoUser = Stripe::Customer.retrieve(customerCharge['invoice']['customer'], {stripe_account: ENV['connectAccount']}) %>
