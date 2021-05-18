@@ -31,7 +31,7 @@
               <%= link_to randoUser['email'], "mailto:#{randoUser['email']}" %>
               <a href="#" data-menu="menu-transaction-1" class="d-flex">
                 <div class="align-self-center ms-auto text-end mb-2">
-                  <h2 class="font-18"><%= lit['description'] %></h2>show quantity
+                  <h2 class="font-18"><%= lit['quantity'] %>x <%= lit['description'] %></h2>
                 </div>
               </a>
               <% if current_user&.owner? && customerCharge['invoice']['metadata']['trackingNumbers'].blank? %>
