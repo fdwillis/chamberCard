@@ -1,5 +1,5 @@
 class ServicesController < ApplicationController
-	before_action :authenticate_user!, except: :index
+	before_action :authenticate_user!, only: [:create, :update, :edit, :new]
 
 	def index
 		if current_user&.authentication_token
@@ -34,30 +34,23 @@ class ServicesController < ApplicationController
 			end
 		else
 
-			flash[:alert] = response['message']
+			flash[:alert] = "Trouble connecting..."
 			redirect_to profile_path
 		end
 	end
 
 	def show
-		if current_user&.authentication_token
-			curlCall = Product.APIshow(current_user, params)
+		curlCall = Product.APIshow(params)
+		response = Oj.load(curlCall)
 		
-			response = Oj.load(curlCall)
-			
-			if !response['product'].blank? && response['success']
-				@product = response['product']
-				@connectAccount = response['connectAccount']
-				@prices = response['prices']
-			else
-				flash[:alert] = "Trouble connecting. Try again."
-				redirect_to services_path
-			end
+		if !response['product'].blank? && response['success']
+			@product = response['product']
+			@connectAccount = response['connectAccount']
+			@prices = response['prices']
 		else
-			redirect_to new_user_session_path
-			flash[:alert] = 'Please login'
+			flash[:alert] = "Trouble connecting..."
+			redirect_to services_path
 		end
-
 	end
 
 	def create
@@ -87,15 +80,15 @@ class ServicesController < ApplicationController
 				flash[:success] = "Service Updated"
 				redirect_to service_path(id: params[:id][5..params[:id].length], connectAccount: current_user&.stripeMerchantID)
 			else
-				flash[:alert] = "Trouble connecting. Try again."
+				flash[:alert] = "Trouble connecting..."
 				redirect_to request.referrer
 			end
 		end
 	end
 
 	def edit
-		if !params['product'].blank?
-			@product = params['product']
+		if !params['service'].blank?
+			@product = params['service']
 		else
 			flash[:error] = "No product found"
 			redirect_to request.referrer

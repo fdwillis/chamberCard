@@ -20,21 +20,26 @@
       <% @pending.each do |h| %> 
         <div class="card card-style bg-theme pb-0">
           <div class="content mb-0">
-            Order#<%= h['invoice']['id'][3..h['invoice']['id'].length].truncate(9, omission: '') %>
+            PENDING
             <div class="content">
               <div class="row mb-0">
                   <div class="col-3 icon icon-xl">
-                      <i class="fa fa-check bg-fade-green2-dark rounded-xl color-green2-dark" width='80'></i>
+                      <i class="fa fa-exclamation-triangle bg-fade-red2-dark rounded-xl color-red2-dark" width='80'></i>
                   </div>
                   <div class="col-9 pl-4">
-                      <div class="d-flex">
-                          <div><p class="font-700 color-theme">Seller</p></div>
-                          <div class="ml-auto"><p><%= h['merchantName'] %></p></div>
-                      </div>
-                      <div class="d-flex">
-                          <div><p class="font-700 color-theme">Customer</p></div>
-                          <div class="ml-auto"><p><%= h['customerStripeInfo']['name'] %></p></div>
-                      </div>
+                      <% if current_user&.customer? %>
+                        <div class="d-flex">
+                            <div><p class="font-700 color-theme">Seller</p></div>
+                            <div class="ml-auto"><p><%= h['merchantName'] %></p></div>
+                        </div>
+                      <% end %>
+                      <% if current_user&.manager? %>
+                        <% userShow = User.find_by(email: h['customerStripeInfo']['email']) %>
+                        <div class="d-flex">
+                            <div><p class="font-700 color-theme">Customer</p></div>
+                            <div class="ml-auto"><p><%= link_to h['customerStripeInfo']['name'].split(" ")[0], "/customers/#{ h['invoice']['customer']}" %></p></div>
+                        </div>
+                      <% end %>
                       <div class="d-flex">
                           <div><p class="font-700 color-theme">Date</p></div>
                           <div class="ml-auto"><p><%= h['date'] %></p></div>
@@ -42,13 +47,12 @@
                   </div>
               </div>
               <div class="divider mt-3 mb-3"></div>
-              
               <% h['invoice']['lines']['data'].each_with_index do |itm,indx| %>
                   
                     
-                <h4 class="font-14 text-center"><%= itm['description'] %> | <%= number_to_currency((itm['amount'] * 0.01), precision: 2) %></h4>
+                <h4 class="font-14 text-center"><%= itm['description'] %> <%= number_to_currency((itm['amount'] * 0.01), precision: 2) %></h4>
               <% end %>
-              <% if current_user&.customer? %>
+
                 
                 <div class="row mb-0">
                   <div class="divider divider-margins w-100 mt-2 mb-2"></div>
@@ -65,11 +69,18 @@
                   <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency(h['invoice']['amount_remaining'] * 0.01, precision: 2) %></h4></div>
 
                 </div>
-                  <%= form_for :customerPayInvoice, url: customer_pay_path do |f| %>
-                    <%= f.hidden_field :sellerToChargeAs, value: h['merchantStripeID'] %>
-                    <%= f.hidden_field :invoiceToPay, value: h['invoice']['id'] %>
+              <% if h['invoice']['amount_remaining'] > 0 %>
+                <%= form_for :customerPayInvoice, url: customer_pay_path do |f| %>
+                  <%= f.hidden_field :sellerToChargeAs, value: h['merchantStripeID'] %>
+                  <%= f.hidden_field :invoiceToPay, value: h['invoice']['id'] %>
+                  <% if current_user&.customer? %>
                     <%= f.submit "Pay Now", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
                   <% end %>
+
+                  <% if current_user&.owner? %>
+                    <%= f.submit "Collect Payment", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
+                  <% end %>
+                <% end %>
               <% end%>
             </div>
           </div>

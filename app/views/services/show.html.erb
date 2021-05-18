@@ -1,32 +1,28 @@
-<div class=" pr-3 pl-3 owl-loaded owl-drag">
-  <div class="owl-stage-outer">
-    <div class="owl-stage">
-      <div>
-        <div class="card rounded-m shadow-l">
-          <div class="card-bottom text-center">
-            <div class="flex mb-2">
-              <div class="flex-grow-1">
-                  <h1 class="font-30 bg-white-dark"><%= @product['name'].titleize %></h1>
-                  <p class="mt-n1 font-12 color-highlight mb-0">Purchase &amp; Book At Your Convenience</p>
-
-              </div>
-              <div class="flex-shrink-1">
-                  <h1 class="font-20" style="color: white;">
-                    <div id="uniquePriceChange">
+<%if current_user&.stripeMerchantID == @connectAccount %>
+  <div class="card card-overflow card-style">
+            <div class="content">
+                <div class="d-flex">
+                    <div class="flex-grow-1">
+                        <h1 class="font-30"><%= @product['name'].titleize %></h1>
+                        <p class="mt-n1 font-12 color-highlight mb-4">Your Slogan</p>
                     </div>
-                  </h1>
-              </div>
-          </div>
-          </div>
-          <div class="card-overlay bg-gradient"></div>
-          <img class="img-fluid owl-lazy" data-src="https://wallpaperaccess.com/full/173798.jpg" src="https://wallpaperaccess.com/full/173798.jpg" >
+                    <div class="flex-shrink-1">
+                      <h1 class="font-20">
+                        <div id="uniquePriceChange">
+                        </div>
+                      </h1>
+                      
+                      <!-- <span class="bg-green1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 mt-n1">Available</span> -->
+                  </div>
+                </div>
+                
+                <div class="divider"></div>
+                
+                <p><%= @product['description'] %></p>
+                
+               
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<%if current_user.stripeMerchantID == @connectAccount %>
   <div class="card card-style mb-0">
     <div class="content">
       <div class="d-flex">
@@ -37,34 +33,68 @@
             </p>
         </div>
         <div class="flex-shrink-1 mt-1">
-          <span class="bg-yellow2-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2" style="color: white;"><%= link_to "Manage", pricing_index_path(service_id: @product['id'][5..@product['id'].size]), style: "color: white;" %></span>
+          <span class="bg-yellow2-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2" style="color: white;"><%= link_to "Manage", pricing_index_path(product_id: @product['id'][5..@product['id'].size]), style: "color: white;" %></span>
         </div>
       </div>
-      <div class="divider"></div>
       <p><%= @product['description'] %></p>
       <div class="divider"></div>
-      <%= link_to edit_service_path(id: params[:id], product: @product), class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' do %>
+      <%= link_to edit_service_path(id: params[:id], service: @product), class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' do %>
         <i class="fa fa-pencil"></i> Edit
       <% end %>
     </div>
   </div> 
 <% end %>
 
-
-
-
-
-
-<% if !current_user.manager? %>
+<% if !current_user&.manager? %>
+  <div class="card card-overflow card-style">
+      <div class="content">
+          <div class="d-flex">
+              <div class="flex-grow-1">
+                  <h1 class="font-30"><%= @product['name'].titleize %></h1>
+                  <p class="mt-n1 font-12 color-highlight mb-4">Your Slogan</p>
+              </div>
+              <div class="flex-shrink-1">
+                <h1 class="font-20">
+                  <div id="uniquePriceChange">
+                  </div>
+                </h1>
+                
+                <!-- <span class="bg-green1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 mt-n1">Available</span> -->
+            </div>
+          </div>
+          
+          <div class="divider"></div>
+          
+          <p><%= @product['description'] %></p>
+          
+         
+      </div>
+  </div>
   <div class="card card-overflow card-style">
     <div class="content">
-      <p><%= @product['description'] %></p>
       <%= form_for :addToCart, url: cart_path(id: @connectAccount), method: :patch do |f|  %>
         <div class="input-style has-icon input-style-2 input-required pb-1">
             <span class="color-highlight input-style-1-active">Price</span>
             <em>(required)</em>
-            <%= f.select :sellerItem, @prices.sort { |a,b| a['unit_amount'] <=> b['unit_amount'] }.map{|p,i| ["#{number_to_currency(p['unit_amount'].to_f * 0.01, precision: 2)} #{!p['transform_quantity'].blank? ? 'Package Of ' + p['transform_quantity']['divide_by'].to_s : "Single Purchase"}", "#{p['unit_amount']}-#{p['id'][6..p['id'].length]}-#{!p['transform_quantity'].blank? ? "package-#{p['transform_quantity']['divide_by']}" : ""}"  ]}, required: true %>
-            
+            <% if current_user %>
+              <% selectPrices = [] %>
+              <% @prices.each do |pri| %>
+                <% if pri['metadata']['public'] == 'false' %>
+                  <% selectPrices << pri %>
+                <% end %>
+              <% end %>
+
+              <%= f.select :sellerItem, selectPrices.sort { |a,b| a['unit_amount'] <=> b['unit_amount'] }.map{|p,i| ["#{number_to_currency(p['unit_amount'].to_f * 0.01, precision: 2)} #{!p['transform_quantity'].blank? ? 'Package Of ' + p['transform_quantity']['divide_by'].to_s : "Single Purchase"}", "#{p['unit_amount']}-#{p['id'][6..p['id'].length]}-#{!p['transform_quantity'].blank? ? "package-#{p['transform_quantity']['divide_by']}" : ""}"  ]}, required: true %>
+            <% else %>
+              <% selectPrices = [] %>
+              <% @prices.each do |pri| %>
+                <% if pri['metadata']['public'] == 'true' %>
+                  <% selectPrices << pri %>
+                <% end %>
+              <% end %>
+
+              <%= f.select :sellerItem, selectPrices.sort { |a,b| a['metadata']['public'] <=> b['metadata']['public'] }.map{|p,i| ["#{number_to_currency(p['unit_amount'].to_f * 0.01, precision: 2)} #{!p['transform_quantity'].blank? ? 'Package Of ' + p['transform_quantity']['divide_by'].to_s : "Single Purchase"}", "#{p['unit_amount']}-#{p['id'][6..p['id'].length]}-#{!p['transform_quantity'].blank? ? "package-#{p['transform_quantity']['divide_by']}" : ""}"  ]}, required: true %>
+            <% end %>
         </div>
         <div class="input-style has-icon input-style-2 input-required pb-1">
             <span class="color-highlight input-style-1-active">Quantity</span>
@@ -75,85 +105,71 @@
         <p class="mt-n1 font-12 color-highlight mb-0" id='packageSelected' style="display: none;"><i class="fa fa-info mr-3"></i> Package Selected: Includes </p>
 
         <% @prices.each do |pr| %>
-          <div class="content">
-            <div class="row mb-0">
-                <div class="col-12 pl-4">
-                    <div class="d-flex">
-                      <div><p class="font-700 color-theme"><%= number_to_currency((pr['unit_amount'] * 0.01), precision: 2) %></p></div>
-                    </div>
-                    <div class="d-flex">
-                    </div>
-                    <%= !pr['metadata'].blank? ? pr['metadata']['description'] : nil %>
-                </div>
+          <% if !current_user && pr['metadata']['public'] == 'true' %>
+            <div class="content">
+              <div class="row mb-0">
+                  <div class="col-12 pl-4">
+                      <div class="d-flex">
+                        <div><p class="font-700 color-theme"><%= number_to_currency((pr['unit_amount'] * 0.01), precision: 2) %></p></div>
+                      </div>
+                      <div class="d-flex">
+                      </div>
+                      <%= !pr['metadata'].blank? ? pr['metadata']['description'] : nil %>
+                  </div>
+              </div>
+              <div class="divider mt-3 mb-3"></div>
             </div>
-            <div class="divider mt-3 mb-3"></div>
-          </div>
+          <% end %>
+          <% if current_user&.authentication_token && pr['metadata']['public'] == 'false' %>
+            <div class="content">
+              <div class="row mb-0">
+                  <div class="col-12 pl-4">
+                      <div class="d-flex">
+                        <div><p class="font-700 color-theme"><%= number_to_currency((pr['unit_amount'] * 0.01), precision: 2) %></p></div>
+                      </div>
+                      <div class="d-flex">
+                      </div>
+                      <%= !pr['metadata'].blank? ? pr['metadata']['description'] : nil %>
+                  </div>
+              </div>
+              <div class="divider mt-3 mb-3"></div>
+            </div>
+          <% end %>
         <% end %>
 
 
-
-        <% if current_user&.paymentOn? %>
-          <% if !@prices.blank? %>
-            <% if !current_user.manager? %>
-              <%= button_tag type: 'submit', class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" do %>
-                <i class="fa fa-shopping-cart" aria-hidden="true"></i> Add To Cart
-              <% end %>
-            <% end %> 
+        * Plus Service Fee: This fee helps us operate and upgrade <%= ENV['siteName'] %>
+        <% if !@prices.blank? %>
+          <% if !current_user&.manager? %>
+            <%= button_tag type: 'submit', class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" do %>
+              <i class="fa fa-shopping-cart" aria-hidden="true"></i> Add To Cart
+            <% end %>
           <% end %> 
-        <% else %>
-          <%= link_to "Setup Payment", '/profile', class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' %>
         <% end %> 
       <% end %> 
     </div>
   </div>
-<% end %> 
+<% end %>
+<% if !@product['images'].blank? %>
+             
+        
+          <div class="card card-style">
+              <div class="content mb-0">
+                  <h2>Product Gallery</h2>
+                  <p class="mt-n1">
+                      Here are the best and most beautiful features our product has to offer. Just tap and move through the images.
+                  </p>
+                  <div class="row text-center row-cols-3 mb-0">
+                    <% @product['images'][0].split(",").each do |imgx| %>
+                      <a class="col mb-4" data-gallery="gallery-1" href="<%= imgx %>" title="A beautiful Retro Camera">
+                          <img src="<%= imgx %>" data-src="<%= imgx %>" class="img-fluid rounded-xs preload-img" alt="img" target="_blank">
+                      </a>
+                    <% end %>
+                  </div>
 
-
-
-<div id="menu-share" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-height="345" data-menu-effect="menu-over">
-  <div class="menu-title mt-n1"><h1><%= @product['name'].titleize %> Pricing</h1><p class="color-highlight">Manage single &amp; package pricing will be managed for customers to purchase</p><a href="#" class="close-menu"><i class="fa fa-times"></i></a></div>
-  <div class="content mb-0">
-        <h4>Daily Tasklist</h4>
-        <p class="mb-2">
-            Below is a simulated task list, you can add your own tasks here or you can connect to a CMS and add them by admin panel. By default this is a template.
-        </p>
-
-        <div class="list-group list-custom-large mr-2">
-            <a data-menu="menu-task-item" href="#">
-                <i class="fa fa-heart bg-fade-red2-dark rounded-xl color-red2-dark font-12 font-12"></i>
-                <span>Update Sticky</span>
-                <strong>Essential for Customers</strong>
-                <span class="badge bg-red2-dark mr-2">VIP</span>
-                <i class="fa fa-angle-right"></i>
-            </a>
-            <a data-menu="menu-task-item" href="#">
-                <i class="fa fa-check rounded-xl bg-fade-green1-dark color-green1-dark font-12"></i>
-                <span>Create New Page</span>
-                <strong>With New Design Patterns</strong>
-                <i class="fa fa-angle-right"></i>
-            </a>
-            <a data-menu="menu-task-item" href="#">
-                <i class="fa fa-cog rounded-xl bg-fade-magenta1-dark color-magenta1-dark font-12"></i>
-                <span>Upgade Components</span>
-                <strong>More Poweful Features</strong>
-                <i class="fa fa-angle-right"></i>
-            </a>      
-            <a data-menu="menu-task-item" href="#">
-                <i class="fa fa-bolt rounded-xl bg-fade-yellow1-dark color-yellow1-dark font-12"></i>
-                <span>Load Faster</span>
-                <strong>More Poweful Features</strong>
-                <i class="fa fa-angle-right"></i>
-            </a>        
-            <a data-menu="menu-task-item" href="#" class="no-border">
-                <i class="fa fa-mobile-alt rounded-xl bg-fade-blue2-dark color-blue2-dark font-12"></i>
-                <span>Release PWA Version</span>
-                <strong>More Poweful Features</strong>
-                <i class="fa fa-angle-right"></i>
-            </a>
-        </div>  
-    </div>
-</div>
-
+              </div>
+          </div>        
+       <% end %>
 
 
 
@@ -187,7 +203,7 @@
       var div = document.getElementById('packageSelected');
       console.log(selectedV.split("-")[3]);
       div.innerHTML = '';
-      div.innerHTML += 'Package Selected: Includes ' + selectedV.split("-")[3] + ' Services';
+      div.innerHTML += 'Package Selected: Includes ' + selectedV.split("-")[3] + ' Products';
 
     } else {
       packageAlert.style.display = 'none';
@@ -213,7 +229,7 @@
       packageAlert.style.display = 'inline';
 
       console.log(selectedV.split("-")[3]);
-      div.innerHTML = 'Package Selected: Includes ' + selectedV.split("-")[3] + ' Services';
+      div.innerHTML = 'Package Selected: Includes ' + selectedV.split("-")[3] + ' Products';
 
     } else {
       packageAlert.style.display = 'none';

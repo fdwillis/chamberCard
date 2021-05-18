@@ -1,5 +1,5 @@
 class CartsController < ApplicationController
-	before_action :authenticate_user!
+	
 
 	def index
 		
@@ -18,7 +18,9 @@ class CartsController < ApplicationController
 
 		if current_user&.authentication_token
 			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X PATCH #{SITEurl}/v1/carts/#{grabID}`
-			
+		else	
+			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{params}' -X PATCH #{SITEurl}/v1/carts/#{grabID}?cartID=#{@cartID}`
+	  end
 			
 	    response = Oj.load(curlCall)
 
@@ -26,7 +28,6 @@ class CartsController < ApplicationController
 	    	flash[:success] = "Added to cart"
 	    	redirect_to request.referrer
 	    end
-	  end
 	end
 
 	def updateQuantity
@@ -76,24 +77,6 @@ class CartsController < ApplicationController
 	  end
 	end
 
-	def checkout
-
-		params = @cart.to_json
-		
-		if current_user&.authentication_token
-			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X POST #{SITEurl}/v1/checkout`
-			
-	    response = Oj.load(curlCall)
-	    
-	    if response['success']
-	    	flash[:success] = "Purchase Complete"
-	    	redirect_to charges_path
-	    else
-	    	flash[:error] = response['error']
-	    	redirect_to carts_path
-	    end
-	  end
-	end
 
 	private
 

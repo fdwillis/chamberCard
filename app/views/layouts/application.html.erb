@@ -33,14 +33,12 @@
           <i class="fa fa-bars font-14"></i>
         <% end %>
 
-        <% if current_user&.authentication_token && !@cart.nil? && current_user&.customer? %>
           <%= link_to '/carts', class: 'font-14 header-icon header-icon-2' do %>
             <i class="fa fa-shopping-cart"></i>
-            <% if @cart['carts'].map{|c,i| c['cart']}.flatten.map{|c,i|c['quantity']}.sum > 0%>
+            <% if @cart.present? && @cart['carts'].map{|c,i| c['cart']}.flatten.map{|c,i|c['quantity']}.sum > 0%>
               <span class="badge bg-green1-dark" style="width: 30px;"><%= @cart['carts'].map{|c,i| c['cart']}.flatten.map{|c,i|c['quantity']}.sum %></span>
             <% end %>
           <% end %>
-        <% end %>
 
         <% if current_user&.authentication_token && current_user&.customer? %>
           <% if !current_user&.twilioPhoneVerify %>
@@ -61,13 +59,19 @@
           <% else %>
             <a href="/customers"><i class="fa fa-users"></i><span>Customers</span></a>
           <% end %>
+
+          <% if request.fullpath.include?('/schedule') %>
+            <a href="/schedule"><i class="fa fa-calendar-check color-highlight"></i><span>Schedule</span></a>
+          <% else %>
+            <a href="/schedule"><i class="fa fa-calendar-check"></i><span>Schedule</span></a>
+          <% end %>
         <% end %>
 
         <% if current_user&.customer? && current_user&.stripeCustomerID && current_user&.checkStripeSource %>
           <% if request.fullpath.include?('/customers') %>
-            <a href="/customers/<%= current_user&.uuid %>"><i class="fa fa-user color-highlight"></i><span>Profile</span></a>
+            <a href="/customers/<%= current_user&.stripeCustomerID %>"><i class="fa fa-user color-highlight"></i><span>Profile</span></a>
           <% else %>
-            <a href="/customers/<%= current_user&.uuid %>"><i class="fa fa-user"></i><span>Profile</span></a>
+            <a href="/customers/<%= current_user&.stripeCustomerID %>"><i class="fa fa-user"></i><span>Profile</span></a>
           <% end %>
         <% end %>
 
@@ -77,28 +81,30 @@
           <a href="/services"><i class="fa fa-shopping-bag"></i><span>Services</span></a>
         <% end %>
 
-       <!--  <% if request.fullpath.include?('/products') || request.fullpath.include?('?product_id') %>
+        <% if request.fullpath.include?('/products') || request.fullpath.include?('?product_id') %>
           <a href="/products"><i class="fa fa-shopping-basket color-highlight"></i><span>Shop</span></a>
         <% else %>
           <a href="/products"><i class="fa fa-shopping-basket"></i><span>Shop</span></a>
-        <% end %> -->
+        <% end %>
 
-<!--         <% if request.fullpath.include?('/schedule') %>
-          <a href="/schedule"><i class="fa fa-calendar-check color-highlight"></i><span>Schedule</span></a>
-        <% else %>
-          <a href="/schedule"><i class="fa fa-calendar-check"></i><span>Schedule</span></a>
-        <% end %> -->
+        
 
-<!--         <% if request.fullpath.include?('/orders') %>
+        <% if request.fullpath.include?('/orders') %>
           <a href="/orders"><i class="fa fa-truck color-highlight"></i><span>Orders</span></a>
         <% else %>
           <a href="/orders"><i class="fa fa-truck"></i><span>Orders</span></a>
-        <% end %> -->
+        <% end %>
 
         <% if request.fullpath.include?('/charges') %>
           <a href="/charges"><i class="fa fa-dollar-sign color-highlight"></i><span>Payments</span></a>
         <% else %>
           <a href="/charges"><i class="fa fa-dollar-sign"></i><span>Payments</span></a>
+        <% end %>
+
+        <% if request.fullpath.include?('/pay-now') %>
+            <a href="/pay-now"><i class="fa fa-money-bill color-highlight"></i><span>Invoices</span></a>
+        <% else %>
+            <a href="/pay-now"><i class="fa fa-money-bill"></i><span>Invoices</span></a>
         <% end %>
 
         <% if request.fullpath.include?('/profile') || request.fullpath.include?('/auth/login')|| request.fullpath.include?('/auth/sign-up')|| request.fullpath.include?('/membership') %>
@@ -206,18 +212,18 @@
             <% end %>
             <% if current_user&.customer? %>
 
-              <% if current_user&.stripeCustomerID && current_user&.checkStripeSource %>
-                <div class="mr-3 ml-3">
-                  <span class="text-uppercase font-900 font-11 opacity-30">Financials</span>
-                  <div class="list-group list-custom-small list-icon-0">
-                      <a href="/customers/<%= current_user&.uuid %>">
-                          <i class="fa font-14 fa-money-bill color-red1-dark"></i>
-                          <span>Spending</span>
-                          <i class="fa fa-angle-right"></i>
-                      </a>   
-                  </div>
-                </div>
-              <% end %>
+            <!--               <% if current_user&.stripeCustomerID && current_user&.checkStripeSource %>
+                            <div class="mr-3 ml-3">
+                              <span class="text-uppercase font-900 font-11 opacity-30">Financials</span>
+                              <div class="list-group list-custom-small list-icon-0">
+                                  <a href="/customers/<%= current_user&.uuid %>">
+                                      <i class="fa font-14 fa-money-bill color-red1-dark"></i>
+                                      <span>Spending</span>
+                                      <i class="fa fa-angle-right"></i>
+                                  </a>   
+                              </div>
+                            </div>
+                          <% end %> -->
               <!-- <div class="mr-3 ml-3">
                 <span class="text-uppercase font-900 font-11 opacity-30">Membership Savings</span>
                 <div class="list-group list-custom-small list-icon-0">
@@ -483,6 +489,7 @@
     <!-- <script type="text/javascript" src="/assets/jquery.js"></script> -->
     <script type="text/javascript" src="/assets/bootstrap.min.js"></script>
     <script type="text/javascript" src="/assets/custom.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
     <script type="text/javascript">
       import ('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
 

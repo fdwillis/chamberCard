@@ -16,8 +16,11 @@ Rails.application.routes.draw do
 		resources :services
 		resources :products
 		resources :pricing
+		resources :checkout
 
-		resources :stripe_customers, :path => '/customers'
+		resources :stripe_customers, :path => '/customers' do 
+			resources :payments
+		end
 		resources :stripe_tokens, :path => '/stripe-tokens'
 				
 		post "initiateCharge", to: 'charges#initiateCharge', as: "initiateCharge"
@@ -26,7 +29,8 @@ Rails.application.routes.draw do
 		
 		post "trackingNumber", to: 'products#trackingNumber', as: "trackingNumber"
 		
-		post "checkout", to: 'carts#checkout', as: "checkout"
+		# post "checkout-anon", to: 'carts#checkout_anon', as: "checkout-anon"
+		# post "checkout", to: 'carts#checkout', as: "checkout"
 		post "updateQuantity", to: 'carts#updateQuantity', as: "updateQuantity"
 		
 		post "join", to: 'home#join', as: "join"
@@ -36,11 +40,14 @@ Rails.application.routes.draw do
 		post "requestBooking", to: 'schedule#requestBooking', as: "requestBooking"
 		post "acceptBooking", to: 'schedule#acceptBooking', as: "acceptBooking"
 		post "cancel-timekit", to: 'schedule#timeKitCancel', as: "cancel-timekit-ui"
-		post "cancel", to: 'home#cancel', as: "cancel"
+		post "cancelSub", to: 'home#cancelSub', as: "cancelSub"
 		post "completed", to: 'schedule#completed', as: "completed"
 		post "confirm", to: 'schedule#confirm', as: "confirm"
 		post "customer-pay", to: 'charges#customerPay', as: "customer-pay"
 		
+		get "success", to: 'checkout#success', as: "success"
+		get "cancel", to: 'checkout#cancel', as: "cancel"
+
 		get "initiateCharge", to: 'charges#initiateCharge', as: "getinitiateCharge"
 		get "pay-now", to: 'charges#payNow', as: "pay-now"
 		

@@ -1,0 +1,19 @@
+
+
+<div class="card card-style">
+  <div class="content mb-0">
+		<h1>Customer: <%= @customer['email'] %> Spending History</h1>
+	</div>
+</div>
+<div class="card card-style">
+  <div class="content mb-0">
+  	<% @payments.each do |pay| %>
+	  	<a href="#" data-menu="menu-transaction-1" class="d-flex mb-3">
+			  <div class="align-self-center ms-auto text-end">
+			      <h2 class="mb-n1 font-18 color-green2-dark"><%= number_to_currency(pay['amount_captured'] * 0.01, precision: 2) %></h2>
+			      <p class="font-12 opacity-50"><%= Time.at(pay['created']).strftime("%b #{Time.at(pay['created']).day.ordinalize} %Y") %></p>
+			  </div>
+			</a>
+    <% end %>
+  </div>
+</div>

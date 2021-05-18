@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-	before_action :authenticate_user!, except: :welcome
+	before_action :authenticate_user!, except: [:welcome, :membership, :profile]
 
 	def profile
 		if current_user&.authentication_token
@@ -16,35 +16,33 @@ class HomeController < ApplicationController
 				end
 			end
 		else
-			reset_session
+			redirect_to carts_path
+			flash[:notice] = "To manage setting please create an account"
 		end
 	end
 
 	def membership
-		profile
 		# if current member show membership with discount saving
 		# when creating plans add lookup_keys to be able to divide by monthly/annual
 
-		if current_user&.authentication_token
 
-			loadBasic = ENV["basicMonthlyMembership"].split(",")
-			loadSaver = ENV["saverMonthlyMembership"].split(",")
-			loadElite = ENV["eliteMonthlyMembership"].split(",")
+		loadBasic = ENV["basicMonthlyMembership"].split(",")
+		loadSaver = ENV["saverMonthlyMembership"].split(",")
+		loadElite = ENV["eliteMonthlyMembership"].split(",")
 
-			basicMonthly = ab_test(:basicMonthlyMembership, {loadBasic[0] => 0.75} , {loadBasic[1]=> 8}, {loadBasic[2]=> 1.25})
-			saverMonthly = ab_test(:saverMonthlyMembership, {loadSaver[0] => 0.75} , {loadSaver[1] => 8}, {loadSaver[2] => 1.25})
-			eliteMonthly = ab_test(:eliteMonthlyMembership, {loadElite[0] => 0.75} , {loadElite[1] => 8}, {loadElite[2] => 1.25})
-		
-			@basicMonthlyMembership = Stripe::Price.retrieve("price_#{basicMonthly}")
-			@saverMonthlyMembership = Stripe::Price.retrieve("price_#{saverMonthly}")
-			@eliteMonthlyMembership = Stripe::Price.retrieve("price_#{eliteMonthly}")
+		basicMonthly = ab_test(:basicMonthlyMembership, {loadBasic[0] => 0.75} , {loadBasic[1]=> 8}, {loadBasic[2]=> 1.25})
+		saverMonthly = ab_test(:saverMonthlyMembership, {loadSaver[0] => 0.75} , {loadSaver[1] => 8}, {loadSaver[2] => 1.25})
+		eliteMonthly = ab_test(:eliteMonthlyMembership, {loadElite[0] => 0.75} , {loadElite[1] => 8}, {loadElite[2] => 1.25})
+	
+		@basicMonthlyMembership = Stripe::Price.retrieve("price_#{basicMonthly}")
+		@saverMonthlyMembership = Stripe::Price.retrieve("price_#{saverMonthly}")
+		@eliteMonthlyMembership = Stripe::Price.retrieve("price_#{eliteMonthly}")
 
-			if current_user&.member?
-				@subsc = Stripe::Subscription.list({customer: current_user&.stripeCustomerID})['data'][0]
-				@price = Stripe::Price.retrieve(!@subsc.blank? ? @subsc['items']['data'][0]['price']['id'] : nil)
-			end
-
+		if current_user&.member?
+			@subsc = Stripe::Subscription.list({customer: current_user&.stripeCustomerID})['data'][0]
+			@price = Stripe::Price.retrieve(!@subsc.blank? ? @subsc['items']['data'][0]['price']['id'] : nil)
 		end
+
 		
 	end
 
@@ -69,7 +67,7 @@ class HomeController < ApplicationController
     end
 	end
 
-	def cancel
+	def cancelSub
 
     curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user&.authentication_token}" -X DELETE #{SITEurl}/v1/subscriptions/#{params[:cancel][:subscription]}?serviceFee=#{ENV['serviceFee']}`
 

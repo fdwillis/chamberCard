@@ -132,7 +132,7 @@ eliteMonthlyMemberships = ENV['eliteMonthlyMembership'].split(",") %>
               </div>
           </div>
           <div class="divider mt-3 mb-3"></div>
-          <%= form_for :cancel, url: cancel_path do |f| %>
+          <%= form_for :cancel, url: cancelSub_path do |f| %>
             <%= f.hidden_field :subscription, value: s['subscription'] %>
             <%= f.submit "Cancel", class: 'btn btn-full bg-red1-dark text-uppercase font-800 rounded-sm  col-4' %>
           <% end %>
@@ -162,15 +162,19 @@ eliteMonthlyMemberships = ENV['eliteMonthlyMembership'].split(",") %>
             <div class="col-5 mb-4 text-right">
                 <h5><%= ENV['basicFee'] %>%</h5>
             </div>
-            <div class="col-12 offset-3 mb-4 ">
-              <%= form_for :join, url: join_path do |f| %>
-                <%= f.hidden_field :plan, value: @basicMonthlyMembership['id'] %>
-                <%= f.hidden_field :serviceFee, value: ENV['basicFee'] %>
-                <% if !current_user&.member? %>
-                  <%= f.submit "#{number_to_currency(@basicMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm' %>
-                <% else %>
-                  <%= f.submit "#{number_to_currency(@basicMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm', disabled: true, readonly: true %>
+            <div class="col-12 mb-4 ">
+              <% if current_user.present? %>
+                <%= form_for :join, url: join_path do |f| %>
+                  <%= f.hidden_field :plan, value: @basicMonthlyMembership['id'] %>
+                  <%= f.hidden_field :serviceFee, value: ENV['basicFee'] %>
+                  <% if !current_user&.member? %>
+                    <%= f.submit "#{number_to_currency(@basicMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm' %>
+                  <% else %>
+                    <%= f.submit "#{number_to_currency(@basicMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm', disabled: true, readonly: true %>
+                  <% end %>
                 <% end %>
+              <% else %>
+                <a href="/auth/sign-up" class="btn btn-full bg-yellow1-dark text-uppercase font-800 rounded-sm">SIGNUP</a>
               <% end %>
             </div>
           </div>
@@ -198,15 +202,19 @@ eliteMonthlyMemberships = ENV['eliteMonthlyMembership'].split(",") %>
                 <h5><%= ENV['saverFee'] %>%</h5>
             </div>
 
-            <div class="col-12 offset-3 mb-4 ">
-              <%= form_for :join, url: join_path do |f| %>
-                <%= f.hidden_field :plan, value: @saverMonthlyMembership['id'] %>
-                <%= f.hidden_field :serviceFee, value: ENV['saverFee'] %>
-                <% if !current_user&.member? %>
-                  <%= f.submit "#{number_to_currency(@saverMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm' %>
-                <% else %>
-                  <%= f.submit "#{number_to_currency(@saverMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm', disabled: true, readonly: true %>
+            <div class="col-12 mb-4 ">
+              <% if current_user.present? %>
+                <%= form_for :join, url: join_path do |f| %>
+                  <%= f.hidden_field :plan, value: @saverMonthlyMembership['id'] %>
+                  <%= f.hidden_field :serviceFee, value: ENV['saverFee'] %>
+                  <% if !current_user&.member? %>
+                    <%= f.submit "#{number_to_currency(@saverMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm' %>
+                  <% else %>
+                    <%= f.submit "#{number_to_currency(@saverMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm', disabled: true, readonly: true %>
+                  <% end %>
                 <% end %>
+              <% else %>
+                <a href="/auth/sign-up" class="btn btn-full bg-yellow1-dark text-uppercase font-800 rounded-sm">SIGNUP</a>
               <% end %>
             </div>
           </div>
@@ -243,15 +251,19 @@ eliteMonthlyMemberships = ENV['eliteMonthlyMembership'].split(",") %>
             <div class="col-5 mb-4 text-right">
                 <h5><%= ENV['eliteFee'] %>%</h5>
             </div>
-            <div class="col-12 offset-3 mb-4 ">
-              <%= form_for :join, url: join_path do |f| %>
-                <%= f.hidden_field :plan, value: @eliteMonthlyMembership['id'] %>
-                <%= f.hidden_field :serviceFee, value: ENV['eliteFee'] %>
-                <% if !current_user&.member? %>
-                  <%= f.submit "#{number_to_currency(@eliteMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm' %>
-                <% else %>
-                  <%= f.submit "#{number_to_currency(@eliteMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm', disabled: true, readonly: true %>
+            <div class="col-12 mb-4 ">
+              <% if current_user.present? %>
+                <%= form_for :join, url: join_path do |f| %>
+                  <%= f.hidden_field :plan, value: @eliteMonthlyMembership['id'] %>
+                  <%= f.hidden_field :serviceFee, value: ENV['eliteFee'] %>
+                  <% if !current_user&.member? %>
+                    <%= f.submit "#{number_to_currency(@eliteMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm' %>
+                  <% else %>
+                    <%= f.submit "#{number_to_currency(@eliteMonthlyMembership['unit_amount'] * 0.01, precision: 2)} per Month", class: 'btn btn-full bg-green1-dark text-uppercase font-800 rounded-sm', disabled: true, readonly: true %>
+                  <% end %>
                 <% end %>
+              <% else %>
+                <a href="/auth/sign-up" class="btn btn-full bg-yellow1-dark text-uppercase font-800 rounded-sm">SIGNUP</a>
               <% end %>
             </div>
           </div>

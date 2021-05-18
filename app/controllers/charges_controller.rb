@@ -3,18 +3,20 @@ class ChargesController < ApplicationController
 	
 	def index
 		if current_user&.authentication_token
-			curlCall = Charge.APIindex(current_user)
-			
-	    response = Oj.load(curlCall)
-	    
-	    if response['success']
-				@payments = response['payments']
-				@pending = response['pending']
-			elsif response['message'] == "No purchases found"
-				@message = response['message']
+
+			if !session[:customerCharges].blank?
+				@invoices = session[:invoices]
+				@pending = session[:pending]
+				@anonCharges = session[:charges] #edit stripe session meta for scheduling
+				@customerCharges = session[:customerCharges] #edit lineItems meta for scheduling
 			else
-				flash[:error] = response['message']
+				chargesNcustomers
+				@pending = session[:pending]
+				@invoices = session[:invoices]
+				@anonCharges = session[:charges] #edit stripe session meta for scheduling
+				@customerCharges = session[:customerCharges] #edit lineItems meta for scheduling
 			end
+
 		else
 			current_user = nil
       reset_session
@@ -32,7 +34,7 @@ class ChargesController < ApplicationController
 		quantity = newChargeParams[:quantity]
 		desc = newChargeParams[:desc]
     
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "quantity=#{quantity}&timeSlot=#{timeSlot}&timeSlotCharge=true&description=#{desc}" #{SITEurl}/v1/charges`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "quantity=#{quantity}&timeSlot=#{timeSlot}&timeSlotCharge=true&description=#{desc}" #{SITEurl}/v1/charges`
 
 		response = Oj.load(curlCall)
     
@@ -49,7 +51,7 @@ class ChargesController < ApplicationController
 	def initiateCharge
 		if request.post?
 			uuid = params[:initiateCharge][:customerID]
-			curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "" -X GET #{SITEurl}/v1/users/#{uuid}`
+			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "" -X GET #{SITEurl}/v1/users/#{uuid}`
 				
 	    response = Oj.load(curlCall)
 	    
@@ -69,12 +71,12 @@ class ChargesController < ApplicationController
 		desc = newInvoiceParams[:desc]
 		title = newInvoiceParams[:title]
     
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "customer=#{customer}&title=#{title}&desc=#{desc}&managerInvoice=true&amount=#{amount}" -X POST #{SITEurl}/v1/charges`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "customer=#{customer}&title=#{title}&desc=#{desc}&managerInvoice=true&amount=#{amount}" -X POST #{SITEurl}/v1/charges`
 
 		response = Oj.load(curlCall)
 
     if response['success']
-			
+			chargesNcustomers
 			flash[:success] = "Invoice Created"
       redirect_to charges_path
     else
@@ -86,13 +88,13 @@ class ChargesController < ApplicationController
 	def acceptInvoice
 		charge = params[:stripeChargeID]
 		
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X PATCH #{SITEurl}/v1/charges/#{charge}`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X PATCH #{SITEurl}/v1/charges/#{charge}`
 
 		response = Oj.load(curlCall)
     if response['success']
 			flash[:notice] = "Invoice Paid"
 			
-      redirect_to charges_path
+      redirect_to pay_now_path
     else
 			flash[:error] = response['message']
       redirect_to charges_path
@@ -102,18 +104,11 @@ class ChargesController < ApplicationController
 
 	def payNow
 		if current_user&.authentication_token
-			curlCall = Charge.APIindex(current_user)
-			
-	    response = Oj.load(curlCall)
-	    
-	    if response['success']
-				@payments = response['payments']
-				@pending = response['pending']
-			elsif response['message'] == "No purchases found"
-				@message = response['message']
-			else
-				flash[:error] = response['message']
-			end
+			chargesNcustomers
+			@invoices = session[:invoices]
+			@pending = session[:pending]
+			@anonCharges = session[:charges] #edit stripe session meta for scheduling
+			@customerCharges = session[:customerCharges] #edit lineItems meta for scheduling
 		else
 			current_user = nil
       reset_session
@@ -127,10 +122,9 @@ class ChargesController < ApplicationController
 				# finalizeInvoice = Stripe::Invoice.finalize_invoice(params['customerPayInvoice']['invoiceToPay'],{},{stripe_account: params['customerPayInvoice']['sellerToChargeAs']})
 				paidInvoice = Stripe::Invoice.pay(params['customerPayInvoice']['invoiceToPay'], {}, {stripe_account: params['customerPayInvoice']['sellerToChargeAs']})
 
-				
 				if paidInvoice['status'] == 'paid'
 					flash[:success] = "Invoice Paid"
-		      redirect_to charges_path
+		      redirect_to pay_now_path
 				else
 					flash[:alert] = "Invoice Not Paid"
 		      redirect_to charges_path
