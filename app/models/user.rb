@@ -6,6 +6,17 @@ class User < ApplicationRecord
 
   geocoded_by :address
 
+  def indexStripeChargesAPI(params)
+
+    if !params['paginateAfter'].blank?
+      return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/charges?paginateAfter=#{params['paginateAfter']}`
+    elsif !params['paginateBefore'].blank?
+      return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/charges?paginateBefore=#{params['paginateBefore']}`
+    else
+      return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/charges`
+    end
+  end
+
   def resetPassword(user)
     # get reset password from api then set in brand
     # hashed = Devise.token_generator.generate(User, :reset_password_token)

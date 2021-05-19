@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 			# user
 			# what
 			# sess or inv
-			curlCall = Charge.APIindex(current_user)
+			curlCall = current_user&.indexStripeChargesAPI(params)
 			
 	    response = Oj.load(curlCall)
 	    
