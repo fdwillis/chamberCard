@@ -8,11 +8,6 @@
       </p>
     </div>
   </div>
-
-  <!-- ANON USER CHARGEs <%= number_to_currency(@anonCharges.map{ |char| char['stripeSession']['amount_total'] }.sum * 0.01, precision: 2) %> -->
-
-  <!-- CUSTOMER USER CHARGEs <%= number_to_currency(@customerCharges.map{|char| char['lineItems'].map{|itm| itm['amount']} }.flatten.sum * 0.01, precision: 2) %> -->
-
   <div class="card card-style">
     <% if @customerCharges&.present? %>
       <% @customerCharges.each do |customerCharge| %>
