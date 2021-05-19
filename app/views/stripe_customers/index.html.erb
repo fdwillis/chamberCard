@@ -5,7 +5,7 @@
   <div class="content mb-2">
     <h3>Customers of <%= ENV['siteName'] %></h3>
     <p>View customer profiles &amp; financials </p>
-    <table class="table table-borderless text-center rounded-sm shadow-l" style="overflow: hidden;">
+    <table class="table table-borderless text-center rounded-sm shadow-l mb-4" style="overflow: hidden;">
       <thead>
         <tr class="bg-dark3-dark">
             <th class="col-3" class="color-white">Name</th>
@@ -16,10 +16,10 @@
       </thead>
       <tbody>
         <% @customers.each do |cust| %>
-        <% stripeSpend = Stripe::Charge.list({customer: cust['id'], limit: 100}, {stripe_account: @stripeMerchantID})['data'].sum(&:amount) * 0.01 %>
-        <% uncollected = 0 %>
-        <% stripeInvoices = Stripe::Invoice.list({customer: cust['id'], limit: 100}, {stripe_account: @stripeMerchantID})['data'] %>
-        <% stripeInvoices.map{|inv| (inv['status'] == 'draft' || inv['status'] == 'open') ? uncollected += inv['amount_remaining'] : next } %>
+          <% stripeSpend = Stripe::Charge.list({customer: cust['id'], limit: 100}, {stripe_account: @stripeMerchantID})['data'].sum(&:amount) * 0.01 %>
+          <% uncollected = 0 %>
+          <% stripeInvoices = Stripe::Invoice.list({customer: cust['id'], limit: 100}, {stripe_account: @stripeMerchantID})['data'] %>
+          <% stripeInvoices.map{|inv| (inv['status'] == 'draft' || inv['status'] == 'open') ? uncollected += inv['amount_remaining'] : next } %>
           <tr>
               <td class="col-3"><%= link_to cust['email'].truncate(20), stripe_customer_path(cust['id'])  %></td>
               <% if stripeSpend > 0 %>
@@ -36,7 +36,20 @@
               <!-- <td class="color-blue2-dark"><i class="fa fa-file "></i></td> -->
           </tr>
         <% end %>
+
       </tbody>
     </table>
+      <nav aria-label="pagination-demo">
+          <ul class="pagination pagination- justify-content-center">
+            <li class="page-item">
+                <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-xl border-0" href="/customers/?paginateBefore=<%= @customers.first['id'] %>" tabindex="-1" aria-disabled="true"><i class="fa fa-angle-left"></i></a>
+                BACK
+            </li>
+            <li class="page-item">
+                <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-l border-0" href="/customers/?paginateAfter=<%= @customers.last['id'] %>"><i class="fa fa-angle-right"></i></a>
+                NEXT
+            </li>
+          </ul>
+      </nav>
   </div>
 </div>

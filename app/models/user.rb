@@ -159,10 +159,16 @@ class User < ApplicationRecord
     end
   end
 
-  def indexStripeCustomerAPI
-
-    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/stripe-customers`
-
+  def indexStripeCustomerAPI(params)
+  
+    if !params['paginateAfter'].blank?
+      curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/stripe-customers?paginateAfter=#{params['paginateAfter']}`
+    elsif !params['paginateBefore'].blank?
+      curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/stripe-customers?paginateBefore=#{params['paginateBefore']}`
+    else
+      curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/stripe-customers`
+    end
+    
     response = Oj.load(curlCall)
     
     if !response.blank? && response['success']
