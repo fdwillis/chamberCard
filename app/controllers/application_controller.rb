@@ -12,10 +12,7 @@ class ApplicationController < ActionController::Base
 	    response = Oj.load(curlCall)
 	    
 	    if response['success']
-				session[:invoices] = response['invoices']
-				session[:pending] = response['pending']
-				session[:charges] = response['charges'] #edit stripe session meta for scheduling
-				session[:customerCharges] = response['customerCharges']#edit lineItems meta for scheduling
+				session[:actualCharges] = response['actualCharges']['data']
 			elsif response['message'] == "No purchases found"
 				@message = response['message']
 			else
@@ -29,9 +26,6 @@ class ApplicationController < ActionController::Base
 	    response = Oj.load(curlCall)
 	    
 	    if response['success']
-				session[:invoices] = response['invoices']
-				session[:pending] = response['pending']
-				session[:charges] = response['charges'] #edit stripe session meta for scheduling
 				session[:customerCharges] = response['customerCharges']#edit lineItems meta for scheduling
 			elsif response['message'] == "No purchases found"
 				@message = response['message']

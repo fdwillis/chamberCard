@@ -1,4 +1,3 @@
-
 <% if current_user.present? %>
 	<div class="card card-style">
     <div class="content mt-3 mb-3">
@@ -13,24 +12,23 @@
     </div>
   </div>
   <div class="card card-style">
-    <% @customerCharges.each do |customerCharge| %>
-      <% customerCharge['lineItems'].each do |lit| %>
-        <div class="content mb-0">
-          <a href="#" data-menu="menu-transaction-1" class="d-flex mb-3">
-            <div class="align-self-center ms-auto text-end">
-              <h2 class="mb-2 font-18"><%= lit['description'] %></h2>
-              <p class="font-12 opacity-50"><%= customerCharge['invoice']['customer_email'] %></p>
-            </div>
-          </a>
-          <div class="d-flex pull-right">
-            <div class="align-self-center ms-auto text-end">
-              <h2 class="font-18 color-green2-dark"><%= number_to_currency(lit['amount']*0.01, precision: 2) %></h2>
+    <% @actualCharges.each do |customerCharge| %>
+      <div class="content mb-0">
+        <a href="#" data-menu="menu-transaction-1" class="d-flex mb-3">
+          <div class="align-self-center ms-auto text-end">
+            <p><%= Time.at(customerCharge['created']).strftime("%b #{Time.at(customerCharge['created']).day.ordinalize} %Y") %></p>
+            <p class="font-12 opacity-50"><%= Stripe::Customer.retrieve(customerCharge['customer'], {stripe_account: ENV['connectAccount']})['email'] %></p>
+          </div>
+        </a>
+        <div class="d-flex pull-right">
+          <div class="align-self-center ms-auto text-end">
+            <h2 class="font-18 color-green2-dark"><%= number_to_currency(customerCharge['amount']*0.01, precision: 2) %></h2>
+            <h2 class="font-18 color-red2-dark"><%= number_to_currency(customerCharge['application_fee_amount']*0.01, precision: 2) %></h2>
 
-            </div>
           </div>
         </div>
-        <div class="divider mt-2 mb-3"></div>
-      <% end %>
+      </div>
+      <div class="divider mt-2 mb-3"></div>
     <% end %>
   </div>
 <% else %>

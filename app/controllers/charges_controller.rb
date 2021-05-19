@@ -3,20 +3,8 @@ class ChargesController < ApplicationController
 	
 	def index
 		if current_user&.authentication_token
-
-			if !session[:customerCharges].blank?
-				@invoices = session[:invoices]
-				@pending = session[:pending]
-				@anonCharges = session[:charges] #edit stripe session meta for scheduling
-				@customerCharges = session[:customerCharges] #edit lineItems meta for scheduling
-			else
-				chargesNcustomers
-				@pending = session[:pending]
-				@invoices = session[:invoices]
-				@anonCharges = session[:charges] #edit stripe session meta for scheduling
-				@customerCharges = session[:customerCharges] #edit lineItems meta for scheduling
-			end
-
+			chargesNcustomers
+			@actualCharges = session[:actualCharges] #edit stripe session meta for scheduling
 		else
 			current_user = nil
       reset_session
