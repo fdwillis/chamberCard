@@ -8,6 +8,7 @@
     </div>
   </div>
   <div class="card card-style">
+    <%= @actualCharges.size %>
     <% @actualCharges.each do |charge| %>
       <% if charge['customer'] && !charge['charges']['data'].blank? %>
         <% customerX =  Stripe::Customer.retrieve(charge['customer'], {stripe_account: ENV['connectAccount']}) %>
