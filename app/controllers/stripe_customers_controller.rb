@@ -8,7 +8,7 @@ before_action :authenticate_user!
 
 		if callCurl['success']
 			@info = callCurl
-			@customers = callCurl['customers']['data'].reverse
+			@customers = callCurl['customers']['data']
 			@hasMore = callCurl['customers']['has_more']
 			@stripeMerchantID = callCurl['stripeMerchantID']
 		else

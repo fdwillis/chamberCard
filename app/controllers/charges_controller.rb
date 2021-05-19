@@ -92,11 +92,20 @@ class ChargesController < ApplicationController
 
 	def payNow
 		if current_user&.authentication_token
-			chargesNcustomers
-			@invoices = session[:invoices]
-			@pending = session[:pending]
-			@anonCharges = session[:charges] #edit stripe session meta for scheduling
-			@customerCharges = session[:customerCharges] #edit lineItems meta for scheduling
+			curlCall = current_user&.indexStripeChargesAPI(params)
+
+			response = Oj.load(curlCall)
+			
+	    if response['success']
+				@pending = response['pending']
+				@actualCharges = response['actualCharges'] #edit lineItems meta for scheduling
+				
+	    else
+				flash[:error] = response['message']
+	      redirect_to charges_path
+	    end
+
+
 		else
 			current_user = nil
       reset_session

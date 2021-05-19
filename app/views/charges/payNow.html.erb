@@ -14,9 +14,8 @@
     </div>
   </div>
 
-  <% if @pending || @payments %>
 
-    <% if @pending.present? %>
+    <% if @pending.size > 0 %>
       <% @pending.each do |h| %> 
         <div class="card card-style bg-theme pb-0">
           <div class="content mb-0">
@@ -88,26 +87,7 @@
       <% end %>
     <% end %>
 
-       
 
-  <% else %>
-    <% if current_user&.customer? %>
-      <% if  current_user&.paymentOn?%>
-        <div class="content mb-0 text-center">
-          <h5>You have not been charged</h5>
-        </div>
-
-      <% else %>
-        <%= link_to "Setup Payment", '/profile', class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' %>
-      <% end %>
-    <% end %>
-
-    <% if current_user&.manager? %>
-      <div class="content mb-0 text-center">
-        <h5>No payments posted</h5>
-      </div>
-    <% end %>
-  <% end %>
 <% else %>
   <div class="page-content header-clear-medium">
         
