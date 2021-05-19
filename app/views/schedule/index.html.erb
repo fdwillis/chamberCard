@@ -9,7 +9,7 @@
   </div>
   <div class="card card-style">
     <% @actualCharges.each do |charge| %>
-      <% if charge['customer'] %>
+      <% if charge['customer'] && !charge['charges']['data'].blank? %>
         <% customerX =  Stripe::Customer.retrieve(charge['customer'], {stripe_account: ENV['connectAccount']}) %>
         <div class="content mb-0">
           <div class="d-flex">    
@@ -20,6 +20,15 @@
           </div>
           <div class="d-flex align-self-center ms-auto text-end">
             <h2 class="font-18"><%= customerX['name'] %></h2>
+          </div>
+          <div class="d-flex align-self-center ms-auto text-end">
+            <h2 class="font-18">MATADATA >> <%= charge['metadata'] %></h2>
+          </div>
+          <div class="d-flex align-self-center ms-auto text-end">
+            <h2 class="font-18">INVOICE >> <%= charge['invoice'] %></h2>
+          </div>
+          <div class="d-flex align-self-center ms-auto text-end">
+            <h2 class="font-18">PAYMENTINTENT >> <%= charge['charges']['data'][0]['payment_intent'] %></h2>
           </div>
           <div class="d-flex align-self-center ms-auto text-end">
             <h2 class="font-18"><%= link_to "View Receipt", charge['charges']['data'][0]['receipt_url'], 'target' => '_blank' %></h2>
