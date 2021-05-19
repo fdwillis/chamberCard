@@ -8,9 +8,9 @@ class ScheduleController < ApplicationController
 			curlCall = current_user&.indexStripeScheduleAPI(params)
 				
     	response = Oj.load(curlCall)
-    	
 	    if response['success']
-				@actualCharges = response['actualCharges']['data']
+				@actualCharges = response['actualCharges']
+				@hasMore = response['has_more']
 			elsif response['message'] == "No purchases found"
 				@message = response['message']
 			else
