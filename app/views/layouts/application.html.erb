@@ -60,13 +60,13 @@
             <a href="/customers"><i class="fa fa-users"></i><span>Customers</span></a>
           <% end %>
 
+        <% end %>
+
           <% if request.fullpath.include?('/schedule') %>
             <a href="/schedule"><i class="fa fa-calendar-check color-highlight"></i><span>Schedule</span></a>
           <% else %>
             <a href="/schedule"><i class="fa fa-calendar-check"></i><span>Schedule</span></a>
           <% end %>
-        <% end %>
-
         <% if current_user&.customer? && current_user&.stripeCustomerID && current_user&.checkStripeSource %>
           <% if request.fullpath.include?('/customers') %>
             <a href="/customers/<%= current_user&.stripeCustomerID %>"><i class="fa fa-user color-highlight"></i><span>Profile</span></a>

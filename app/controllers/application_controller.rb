@@ -2,12 +2,13 @@ class ApplicationController < ActionController::Base
 	before_action :configure_permitted_parameters, if: :devise_controller?
 	before_action :grabCart
 
-	def chargesNcustomers
+	def pullChargesAPI
 		curlCall = current_user&.indexStripeChargesAPI(params)
 			
-	    
+	  response = Oj.load(curlCall)
+
     if response['success']
-			session[:actualCharges] = response['actualCharges']['data']
+			session[:payments] = response['payments']
 			session[:pending] = response['pending']
 		elsif response['message'] == "No purchases found"
 			@message = response['message']

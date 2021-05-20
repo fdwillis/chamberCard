@@ -12,39 +12,36 @@
     </div>
   </div>
   <div class="card card-style">
-    <% @actualCharges.each do |customerCharge| %>
-      <% if customerCharge['customer'] %>
-        <div class="content mb-0">
-          <a href="#" data-menu="menu-transaction-1" class="d-flex mb-3">
-            <div class="align-self-center ms-auto text-end">
-              <p><%= Time.at(customerCharge['created']).strftime("%b #{Time.at(customerCharge['created']).day.ordinalize} %Y") %></p>
-              <p class="font-12 opacity-50"><%= Stripe::Customer.retrieve(customerCharge['customer'], {stripe_account: ENV['connectAccount']})['email'] %></p>
-            </div>
-          </a>
-          <div class="d-flex pull-right">
-            <div class="align-self-center ms-auto text-end">
-              <h2 class="font-18 color-green2-dark"><%= number_to_currency(customerCharge['amount']*0.01, precision: 2) %></h2>
-              <% if customerCharge['application_fee_amount'] %>
-                <h2 class="font-18 color-red2-dark"><%= number_to_currency(customerCharge['application_fee_amount']*0.01, precision: 2) %></h2>
-              <% end %>
-            </div>
+    <% @payments.each do |customerCharge| %>
+      <div class="content mb-0">
+        <a href="#" data-menu="menu-transaction-1" class="d-flex mb-3">
+          <div class="align-self-center ms-auto text-end">
+            <p><%= Time.at(customerCharge['dateCreated']).strftime("%b #{Time.at(customerCharge['dateCreated']).day.ordinalize} %Y") %></p>
+            <p class="font-12 opacity-50"><%= customerCharge['customerEmail'] %></p>
+          </div>
+        </a>
+        <div class="d-flex pull-right">
+          <div class="align-self-center ms-auto text-end">
+            <h2 class="font-18 color-green2-dark"><%=  %></h2>
           </div>
         </div>
-        <div class="divider mt-2 mb-3"></div>
-      <% end %>
+      </div>
+      <div class="divider mt-2 mb-3"></div>
     <% end %>
-    <nav aria-label="pagination-demo">
-        <ul class="pagination pagination- justify-content-center">
-          <li class="page-item">
-              <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-xl border-0" href="/charges/?paginateBefore=<%= @actualCharges.first['id'] %>" tabindex="-1" aria-disabled="true"><i class="fa fa-angle-left"></i></a>
-              BACK
-          </li>
-          <li class="page-item">
-              <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-l border-0" href="/charges/?paginateAfter=<%= @actualCharges.last['id'] %>"><i class="fa fa-angle-right"></i></a>
-              NEXT
-          </li>
-        </ul>
-    </nav>
+    <% if @hasMore %>
+      <nav aria-label="pagination-demo">
+          <ul class="pagination pagination- justify-content-center">
+            <li class="page-item">
+                <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-xl border-0" href="/charges/?paginateBefore=<%= @payments.first['id'] %>" tabindex="-1" aria-disabled="true"><i class="fa fa-angle-left"></i></a>
+                BACK
+            </li>
+            <li class="page-item">
+                <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-l border-0" href="/charges/?paginateAfter=<%= @payments.last['id'] %>"><i class="fa fa-angle-right"></i></a>
+                NEXT
+            </li>
+          </ul>
+      </nav>
+    <% end %>
   </div>
 <% else %>
   <div class="page-content header-clear-medium">

@@ -9,7 +9,7 @@ class ScheduleController < ApplicationController
 				
     	response = Oj.load(curlCall)
 	    if response['success']
-				@actualCharges = response['actualCharges']
+				@services = response['services']
 				@hasMore = response['has_more']
 			elsif response['message'] == "No purchases found"
 				@message = response['message']
