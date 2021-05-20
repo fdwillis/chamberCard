@@ -6,9 +6,8 @@ class OrdersController < ApplicationController
 			curlCall = current_user&.indexStripeOrdersAPI(params)
 				
     	response = Oj.load(curlCall)
-				debugger
 	    if response['success']
-				@actualCharges = response['actualOrders']
+				@orders = response['orders']
 				@hasMore = response['has_more']
 			elsif response['message'] == "No purchases found"
 				@message = response['message']

@@ -32,10 +32,6 @@ class ServicesController < ApplicationController
 				@unavailableProducts = unavailableProducts.flatten
 				@products = @activeProducts + @unavailableProducts
 			end
-		else
-
-			flash[:alert] = "Trouble connecting..."
-			redirect_to profile_path
 		end
 	end
 
