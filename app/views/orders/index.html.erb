@@ -1,44 +1,56 @@
-<% if current_user&.manager? %>
-  <div class="card card-style">
-    <div class="content mt-3 mb-3">
-      <h3>Schedule Services</h3>
-      <p class='text-justify'>
-        After you have updated the order, it will be removed from the list below.
-      </p>
-    </div>
+<div class="card card-style">
+  <div class="content mt-3 mb-3">
+    <h3>Tracking Number Update</h3>
+    <p class='text-justify'>
+      After you have updated the order, it will be removed from the list below.
+    </p>
   </div>
-  <div class="card card-style">
-    <% @actualCharges.each do |charge| %>
-      <% if charge['customer'] && !charge['charges']['data'].blank? %>
-        <% customerX =  Stripe::Customer.retrieve(charge['customer'], {stripe_account: ENV['connectAccount']}) %>
-        <div class="content mb-0">
-          <div class="d-flex">    
-            <span class="bg-red1-dark rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Contact Customer</span>
-          </div>
-          <div class="d-flex align-self-center ms-auto text-end">
-            <p class="font-18"><%= customerX['email'] %></p>
-          </div>
-          <div class="d-flex align-self-center ms-auto text-end">
-            <h2 class="font-18"><%= customerX['name'] %></h2>
-          </div>
-          <div class="d-flex align-self-center ms-auto text-end">
-            <h2 class="font-18">MATADATA >> <%= charge['metadata'] %></h2>
-          </div>
-          <% if charge['invoice'] %>
-            <div class="d-flex align-self-center ms-auto text-end">
-              <h2 class="font-18">INVOICE >> <%= charge['invoice'] %></h2>
-            </div>
-          <% else %>
-            <div class="d-flex align-self-center ms-auto text-end">
-              <h2 class="font-18">PAYMENTINTENT >> <%= charge['charges']['data'][0]['payment_intent'] %></h2>
-            </div>
-          <% end %>
-          <div class="d-flex align-self-center ms-auto text-end">
-            <h2 class="font-18"><%= link_to "View Receipt", charge['charges']['data'][0]['receipt_url'], 'target' => '_blank' %></h2>
-          </div>
+</div>
+<div class="card card-style">
+  <% @actualCharges.each do |charge| %>
+    <% if charge['customer'] && !charge['charges']['data'].blank? %>
+      <% customerX =  Stripe::Customer.retrieve(charge['customer'], {stripe_account: ENV['connectAccount']}) %>
+      <div class="content mb-0">
+        <div class="d-flex">    
+          <span class="bg-red1-dark rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Contact Customer</span>
         </div>
-        <div class="divider mt-2 mb-3"></div> 
-      <% end %>
+        <div class="d-flex align-self-center ms-auto text-end">
+          <p class="font-18"><%= customerX['email'] %></p>
+        </div>
+        <div class="d-flex align-self-center ms-auto text-end">
+          <h2 class="font-18"><%= customerX['name'] %></h2>
+        </div>
+        <div class="d-flex align-self-center ms-auto text-end">
+          <h2 class="font-18">MATADATA >> <%= charge['metadata'] %></h2>
+        </div>
+        <% if charge['invoice'] %>
+          <div class="d-flex align-self-center ms-auto text-end">
+            <h2 class="font-18">INVOICE >> <%= charge['invoice'] %></h2>
+          </div>
+        <% else %>
+          <div class="d-flex align-self-center ms-auto text-end">
+            <h2 class="font-18">PAYMENTINTENT >> <%= charge['charges']['data'][0]['payment_intent'] %></h2>
+          </div>
+        <% end %>
+        <div class="d-flex align-self-center ms-auto text-end">
+          <h2 class="font-18"><%= link_to "View Receipt", charge['charges']['data'][0]['receipt_url'], 'target' => '_blank' %></h2>
+        </div>
+      </div>
+      <div class="divider mt-2 mb-3"></div> 
     <% end %>
-  </div>
+  <% end %>
+</div>
+<% if @hasMore && @actualCharges.present? %>
+  <nav aria-label="pagination-demo">
+      <ul class="pagination pagination- justify-content-center">
+        <li class="page-item">
+            <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-xl border-0" href="/orders/?paginateBefore=<%= @actualCharges.first['id'] %>" tabindex="-1" aria-disabled="true"><i class="fa fa-angle-left"></i></a>
+            BACK
+        </li>
+        <li class="page-item">
+            <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-l border-0" href="/orders/?paginateAfter=<%= @actualCharges.last['id'] %>"><i class="fa fa-angle-right"></i></a>
+            NEXT
+        </li>
+      </ul>
+  </nav>
 <% end %>

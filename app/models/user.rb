@@ -28,6 +28,17 @@ class User < ApplicationRecord
     end
   end
 
+  def indexStripeOrdersAPI(params)
+
+    if !params['paginateAfter'].blank?
+      return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/orders?paginateAfter=#{params['paginateAfter']}`
+    elsif !params['paginateBefore'].blank?
+      return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/orders?paginateBefore=#{params['paginateBefore']}`
+    else
+      return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/orders`
+    end
+  end
+
   def resetPassword(user)
     # get reset password from api then set in brand
     # hashed = Devise.token_generator.generate(User, :reset_password_token)
