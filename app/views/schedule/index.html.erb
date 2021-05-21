@@ -1,3 +1,15 @@
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="card card-style">
   <div class="content mt-3 mb-3">
     <h3>Schedule Services</h3>
@@ -6,9 +18,48 @@
     </p>
   </div>
 </div>
-<div class="card card-style">
-  <%= @services %>
-</div>
+<% @services.each do |serviceX| %>
+  <div class="card card-style">
+    <%= serviceX %>
+    <div class="content">
+      <div class="row mb-0">
+        <div class="col-12 ps-4">
+          <div class="d-flex">
+              <div class="col-3"><p class="font-700 color-theme">From</p></div>
+              <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= serviceX['customerName'] %></p></div>
+          </div>
+          <div class="d-flex">
+              <div class="col-3"><p class="font-700 color-theme">Via</p></div>
+              <div class="ms-auto col-9 ml-4"><p class="pull-right"> Credit Card</p></div>
+          </div>
+          <div class="d-flex">
+              <div class="col-3"><p class="font-700 color-theme">Date</p></div>
+              <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= Time.at(serviceX['dateCreated']).strftime("%a %b #{Time.at(serviceX['dateCreated']).day.ordinalize}, %Y") %></p></div>
+          </div>
+        </div>
+      </div>
+      <div class="divider mt-3 mb-3"></div>
+      <div class="row mb-0">
+        <div class="col-6"><h4 class="font-15">Type</h4></div>
+        <div class="col-6"><h4 class="font-15 pull-right text-end">Instant </h4></div>
+        <div class="divider divider-margins w-100 mt-2 mb-2"></div>
+        <div class="col-6"><h4 class="font-15 mt-1">Amount</h4></div>
+        <div class="col-6"><h4 class="font-15 pull-right text-end mt-1 color-green1-dark">$140.21</h4></div>
+        <div class="divider divider-margins w-100 mt-2 mb-2"></div>
+        <div class="col-6"><h4 class="font-15 mt-1">Comission</h4></div>
+        <div class="col-6"><h4 class="font-15 pull-right text-end mt-1 color-red1-dark">$ -2.50</h4></div>
+        <div class="divider divider-margins w-100 mt-2 mb-2"></div>
+        <div class="col-6"><h4 class="font-15 mt-1">Transaction ID</h4></div>
+        <div class="col-6"><h4 class="font-15 pull-right text-end mt-1">#987-456-165</h4></div>
+        <div class="divider divider-margins w-100 mt-2 mb-2"></div>
+        <div class="col-6"><h4 class="font-15 mt-1">Status</h4></div>
+        <div class="col-6"><h4 class="font-15 pull-right text-end mt-1 color-blue1-dark">Completed</h4></div>
+        <div class="divider divider-margins w-100 mt-2 mb-3"></div>
+        <div class="col-12"><a href="#" class="btn btn-full btn-m bg-blue2-dark rounded-sm text-uppercase font-800 mt-3">View Receipt</a></div>
+      </div>
+    </div>
+  </div>
+<% end %>
 <% if @hasMore %>
   <nav aria-label="pagination-demo">
       <ul class="pagination pagination- justify-content-center">
@@ -24,42 +75,3 @@
   </nav>
 <% end %>
 
-<div class="card card-style">
-  <div class="content">
-      <div class="row mb-0">
-          <div class="col-12 ps-4">
-              <div class="d-flex">
-                  <div class="col-3"><p class="font-700 color-theme">From</p></div>
-                  <div class="ms-auto col-9 ml-4"><p class="pull-right">John Doe</p></div>
-              </div>
-              <div class="d-flex">
-                  <div class="col-3"><p class="font-700 color-theme">Via</p></div>
-                  <div class="ms-auto col-9 ml-4"><p class="pull-right"> Credit Card</p></div>
-              </div>
-              <div class="d-flex">
-                  <div class="col-3"><p class="font-700 color-theme">Date</p></div>
-                  <div class="ms-auto col-9 ml-4"><p class="pull-right">15th July 2021</p></div>
-              </div>
-          </div>
-      </div>
-      <div class="divider mt-3 mb-3"></div>
-      <div class="row mb-0">
-          <div class="col-6"><h4 class="font-15">Type</h4></div>
-          <div class="col-6"><h4 class="font-15 pull-right text-end">Instant </h4></div>
-          <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-          <div class="col-6"><h4 class="font-15 mt-1">Amount</h4></div>
-          <div class="col-6"><h4 class="font-15 pull-right text-end mt-1 color-green1-dark">$140.21</h4></div>
-          <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-          <div class="col-6"><h4 class="font-15 mt-1">Comission</h4></div>
-          <div class="col-6"><h4 class="font-15 pull-right text-end mt-1 color-red1-dark">$ -2.50</h4></div>
-          <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-          <div class="col-6"><h4 class="font-15 mt-1">Transaction ID</h4></div>
-          <div class="col-6"><h4 class="font-15 pull-right text-end mt-1">#987-456-165</h4></div>
-          <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-          <div class="col-6"><h4 class="font-15 mt-1">Status</h4></div>
-          <div class="col-6"><h4 class="font-15 pull-right text-end mt-1 color-blue1-dark">Completed</h4></div>
-          <div class="divider divider-margins w-100 mt-2 mb-3"></div>
-          <div class="col-12"><a href="#" class="btn btn-full btn-m bg-blue-dark rounded-sm text-uppercase font-800 mt-3">Download PDF</a></div>
-      </div>
-  </div>
-</div>

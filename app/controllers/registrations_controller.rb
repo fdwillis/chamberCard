@@ -19,9 +19,6 @@ class RegistrationsController < Devise::RegistrationsController
         flash[:alert] = createAtt['error']
         resource.destroy!
       end
-    else
-      flash[:alert] = resource.errors.full_messages.join(", ")
-      resource.destroy!
     end
   end
 end
