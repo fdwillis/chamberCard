@@ -34,7 +34,17 @@
             <div class="col-6"><h4 class="font-15 mt-1">Amount</h4></div>
             <div class="col-6"><h4 class="font-15 pull-right text-end mt-1 color-green1-dark"><%= number_to_currency(chargeX['amount'] * 0.01, precision: 2) %></h4></div>
             <div class="divider divider-margins w-100 mt-2 mb-3"></div>
-            <div class="col-12"><a href="<%= chargeX['receiptURL'] %>" target="_blank" class="btn btn-full btn-m bg-blue2-dark rounded-sm text-uppercase font-800 mt-3">View Receipt</a></div>
+            <div class="col-12">
+              <a href="<%= chargeX['receiptURL'] %>" target="_blank" class="btn btn-full btn-m bg-green1-dark rounded-sm text-uppercase font-800 mt-3">
+                <% if current_user&.owner? %>
+                  Collect Payment
+                <% end %>
+
+                <% if current_user&.customer? %>
+                  Pay Invoice
+                <% end %>
+              </a>
+            </div>
           </div>
         </div>
       </div>
