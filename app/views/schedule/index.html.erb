@@ -28,7 +28,17 @@
               <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= serviceX['sellerName'] %></p></div>
             <% end %>
           </div>
-          <%= serviceX['metadata'] %>
+          <% if User.find_by(email:  serviceX['customerEmail']) %>
+            <div class="d-flex">
+                <div class="col-3"><p class="font-700 color-theme">Contact</p></div>
+                <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= serviceX['customerEmail'] %> - <%= User.find_by(email:  serviceX['customerEmail']).phone %></p></div>
+            </div>
+          <% else %>
+            <div class="d-flex">
+                <div class="col-3"><p class="font-700 color-theme">Contact</p></div>
+                <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= serviceX['customerEmail'] %></p></div>
+            </div>
+          <% end %>
           <div class="d-flex">
               <div class="col-3"><p class="font-700 color-theme">Date</p></div>
               <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= Time.at(serviceX['dateCreated']).strftime("%a %b #{Time.at(serviceX['dateCreated']).day.ordinalize}, %Y") %></p></div>

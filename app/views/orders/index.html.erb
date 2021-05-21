@@ -2,7 +2,13 @@
   <div class="content mt-3 mb-3">
     <h3>Tracking Number Update</h3>
     <p class='text-justify'>
-      After you have updated the order, it will be removed from the list below.
+      <% if current_user&.owner? %>
+        After you have updated the order, it will be removed from the list below.
+      <% end %>
+
+      <% if current_user&.customer? %>
+        Once tracking details are provided they will be shown in the list below!
+      <% end %>
     </p>
   </div>
 </div>
@@ -11,7 +17,6 @@
   <% @orders.each do |orderX| %>
     <div class="card card-style">
       <!-- <%= orderX %> -->
-      <%= orderX['metadata'] %>
       <div class="content">
         <div class="row mb-2">
           <div class="col-12 ps-4">
@@ -30,26 +35,46 @@
                 <div class="col-3"><p class="font-700 color-theme">Date</p></div>
                 <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= Time.at(orderX['dateCreated']).strftime("%a %b #{Time.at(orderX['dateCreated']).day.ordinalize}, %Y") %></p></div>
             </div>
+            <% if !orderX['metadata']['trackingNumbers'].blank? %>
+              <div class="d-flex">
+                  <div class="col-3"><p class="font-700  color-green2-dark ">Tracking</p></div>
+                  <div class="ms-auto col-9 ml-4">
+                    <p class="pull-right">
+                      <% orderX['metadata']['trackingNumbers'].split(",").each do |t| %>
+                        <%=  link_to t, "https://www.google.com/search?q=#{t}&oq=#{t}", 'target' => '_blank' %> &nbsp;
+                          
+                      <% end %>
+                    </p>
+                  </div>
+              </div>
+            <% else %>
+              <div class="d-flex">
+                  <div class="col-3"><p class="font-700  color-red2-dark ">Tracking Missing</p></div>
+                  <div class="ms-auto col-9 ml-4"><p class="pull-right">-</p></div>
+              </div>
+            <% end %>
           </div>
         </div>
-        <%= form_for :trackingNumber, url: trackingNumber_path(id: orderX['invoiceOrSessionID']) do |f| %>
-          <div class="input-style input-style-2">
-              <span class="input-style-1-active">Tracking Number</span>
-              <%= f.text_field :trackingIDs, required: true  %>
-          </div>
-          <div class="input-style has-borders no-icon mb-4">
+        <% if current_user&.owner? && orderX['metadata']['trackingNumbers'].blank? %>
+          <%= form_for :trackingNumber, url: trackingNumber_path(id: orderX['invoiceOrSessionID']) do |f| %>
+            <div class="input-style input-style-2">
+                <span class="input-style-1-active">Tracking Number</span>
+                <%= f.text_field :trackingIDs, required: true  %>
+            </div>
+            <div class="input-style has-borders no-icon mb-4">
 
-              <label for="session<%= orderX['invoiceOrSessionID'] %>" class="color-highlight">Seperate tracking numbers by comma</label>
-              <i class="fa fa-check disabled valid me-4 pe-3 font-12 color-green-dark"></i>
-              <i class="fa fa-check disabled invalid me-4 pe-3 font-12 color-red-dark"></i>
-          </div>
+                <label for="session<%= orderX['invoiceOrSessionID'] %>" class="color-highlight">Seperate tracking numbers by comma</label>
+                <i class="fa fa-check disabled valid me-4 pe-3 font-12 color-green-dark"></i>
+                <i class="fa fa-check disabled invalid me-4 pe-3 font-12 color-red-dark"></i>
+            </div>
 
-          <div class="input-style has-borders no-icon mb-4">
-            <%= f.hidden_field :sessionOrInvoiceID, value: orderX['invoiceOrSessionID'] %>
-          </div>
-          <div class="input-style has-borders no-icon mb-4">
-            <%= f.submit "Update tracking", class: "btn bg-green1-dark text-uppercase rounded-sm font-900" %>
-          </div>
+            <div class="input-style has-borders no-icon mb-4">
+              <%= f.hidden_field :sessionOrInvoiceID, value: orderX['invoiceOrSessionID'] %>
+            </div>
+            <div class="input-style has-borders no-icon mb-4">
+              <%= f.submit "Update tracking", class: "btn bg-green1-dark text-uppercase rounded-sm font-900" %>
+            </div>
+          <% end %>
         <% end %>
         <div class="divider mt-3 mb-3"></div>
         <div class="row mb-0">
