@@ -20,17 +20,20 @@
 </div>
 <% @services.each do |serviceX| %>
   <div class="card card-style">
-    <%= serviceX %>
+    <!-- <%= serviceX %> -->
     <div class="content">
       <div class="row mb-0">
         <div class="col-12 ps-4">
           <div class="d-flex">
+            <% if current_user&.owner? %>
               <div class="col-3"><p class="font-700 color-theme">From</p></div>
               <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= serviceX['customerName'] %></p></div>
-          </div>
-          <div class="d-flex">
-              <div class="col-3"><p class="font-700 color-theme">Via</p></div>
-              <div class="ms-auto col-9 ml-4"><p class="pull-right"> Credit Card</p></div>
+            <% end %>
+
+            <% if current_user&.customer? %>
+              <div class="col-3"><p class="font-700 color-theme">Seller</p></div>
+              <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= serviceX['sellerName'] %></p></div>
+            <% end %>
           </div>
           <div class="d-flex">
               <div class="col-3"><p class="font-700 color-theme">Date</p></div>
@@ -40,22 +43,10 @@
       </div>
       <div class="divider mt-3 mb-3"></div>
       <div class="row mb-0">
-        <div class="col-6"><h4 class="font-15">Type</h4></div>
-        <div class="col-6"><h4 class="font-15 pull-right text-end">Instant </h4></div>
-        <div class="divider divider-margins w-100 mt-2 mb-2"></div>
         <div class="col-6"><h4 class="font-15 mt-1">Amount</h4></div>
-        <div class="col-6"><h4 class="font-15 pull-right text-end mt-1 color-green1-dark">$140.21</h4></div>
-        <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-        <div class="col-6"><h4 class="font-15 mt-1">Comission</h4></div>
-        <div class="col-6"><h4 class="font-15 pull-right text-end mt-1 color-red1-dark">$ -2.50</h4></div>
-        <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-        <div class="col-6"><h4 class="font-15 mt-1">Transaction ID</h4></div>
-        <div class="col-6"><h4 class="font-15 pull-right text-end mt-1">#987-456-165</h4></div>
-        <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-        <div class="col-6"><h4 class="font-15 mt-1">Status</h4></div>
-        <div class="col-6"><h4 class="font-15 pull-right text-end mt-1 color-blue1-dark">Completed</h4></div>
+        <div class="col-6"><h4 class="font-15 pull-right text-end mt-1 color-green1-dark"><%= number_to_currency(serviceX['amount'] * 0.01, precision: 2) %></h4></div>
         <div class="divider divider-margins w-100 mt-2 mb-3"></div>
-        <div class="col-12"><a href="#" class="btn btn-full btn-m bg-blue2-dark rounded-sm text-uppercase font-800 mt-3">View Receipt</a></div>
+        <div class="col-12"><a href="<%= serviceX['receiptURL'] %>" target="_blank" class="btn btn-full btn-m bg-blue2-dark rounded-sm text-uppercase font-800 mt-3">View Receipt</a></div>
       </div>
     </div>
   </div>
