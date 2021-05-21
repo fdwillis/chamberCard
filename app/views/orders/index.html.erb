@@ -11,8 +11,9 @@
   <% @orders.each do |orderX| %>
     <div class="card card-style">
       <!-- <%= orderX %> -->
+      <%= orderX['metadata'] %>
       <div class="content">
-        <div class="row mb-0">
+        <div class="row mb-2">
           <div class="col-12 ps-4">
             <div class="d-flex">
               <% if current_user&.owner? %>
@@ -31,6 +32,25 @@
             </div>
           </div>
         </div>
+        <%= form_for :trackingNumber, url: trackingNumber_path(id: orderX['invoiceOrSessionID']) do |f| %>
+          <div class="input-style input-style-2">
+              <span class="input-style-1-active">Tracking Number</span>
+              <%= f.text_field :trackingIDs, required: true  %>
+          </div>
+          <div class="input-style has-borders no-icon mb-4">
+
+              <label for="session<%= orderX['invoiceOrSessionID'] %>" class="color-highlight">Seperate tracking numbers by comma</label>
+              <i class="fa fa-check disabled valid me-4 pe-3 font-12 color-green-dark"></i>
+              <i class="fa fa-check disabled invalid me-4 pe-3 font-12 color-red-dark"></i>
+          </div>
+
+          <div class="input-style has-borders no-icon mb-4">
+            <%= f.hidden_field :sessionOrInvoiceID, value: orderX['invoiceOrSessionID'] %>
+          </div>
+          <div class="input-style has-borders no-icon mb-4">
+            <%= f.submit "Update tracking", class: "btn bg-green1-dark text-uppercase rounded-sm font-900" %>
+          </div>
+        <% end %>
         <div class="divider mt-3 mb-3"></div>
         <div class="row mb-0">
           <div class="col-6"><h4 class="font-15 mt-1">Amount</h4></div>

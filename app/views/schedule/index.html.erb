@@ -2,7 +2,13 @@
   <div class="content mt-3 mb-3">
     <h3>Schedule Services</h3>
     <p class='text-justify'>
-      After you have contacted the customer &amp; scheduled their service, please click to remove it from the list below.
+      <% if current_user&.owner? %>
+        After you have contacted the customer &amp; scheduled their service, please click to remove it from the list below.
+      <% end %>
+
+      <% if current_user&.customer? %>
+        All services not scheduled will appear below. A representative from <%= ENV["siteName"] %> will confirm your service soon &amp; it will be removed from the list below!
+      <% end %>
     </p>
   </div>
 </div>
@@ -38,6 +44,7 @@
           <a href="<%= serviceX['receiptURL'] %>" target="_blank" class="btn btn-full btn-m bg-blue2-dark rounded-sm text-uppercase font-800 mt-3">View Receipt</a>
         </div>
       </div>
+      <% if current_user&.owner? %>
         <%= form_for :scheduleService, url: schedule_index_path(id: serviceX['invoiceOrSessionID']) do |f| %>
 
           <div class="input-style has-borders no-icon mb-4">
@@ -54,6 +61,7 @@
             <%= f.submit "Service Confirmed", class: "btn btn-full btn-m bg-yellow2-dark rounded-sm text-uppercase font-800 mt-3 col-12" %>
           </div>
         <% end %>
+      <% end %>
     </div>
   </div>
 <% end %>
