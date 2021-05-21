@@ -1,15 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
 <div class="card card-style">
   <div class="content mt-3 mb-3">
     <h3>Schedule Services</h3>
@@ -29,12 +17,12 @@
               <div class="col-3"><p class="font-700 color-theme">From</p></div>
               <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= serviceX['customerName'] %></p></div>
             <% end %>
-
             <% if current_user&.customer? %>
               <div class="col-3"><p class="font-700 color-theme">Seller</p></div>
               <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= serviceX['sellerName'] %></p></div>
             <% end %>
           </div>
+          <%= serviceX['metadata'] %>
           <div class="d-flex">
               <div class="col-3"><p class="font-700 color-theme">Date</p></div>
               <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= Time.at(serviceX['dateCreated']).strftime("%a %b #{Time.at(serviceX['dateCreated']).day.ordinalize}, %Y") %></p></div>
@@ -46,8 +34,26 @@
         <div class="col-6"><h4 class="font-15 mt-1">Amount</h4></div>
         <div class="col-6"><h4 class="font-15 pull-right text-end mt-1 color-green1-dark"><%= number_to_currency(serviceX['amount'] * 0.01, precision: 2) %></h4></div>
         <div class="divider divider-margins w-100 mt-2 mb-3"></div>
-        <div class="col-12"><a href="<%= serviceX['receiptURL'] %>" target="_blank" class="btn btn-full btn-m bg-blue2-dark rounded-sm text-uppercase font-800 mt-3">View Receipt</a></div>
+        <div class="col-12">
+          <a href="<%= serviceX['receiptURL'] %>" target="_blank" class="btn btn-full btn-m bg-blue2-dark rounded-sm text-uppercase font-800 mt-3">View Receipt</a>
+        </div>
       </div>
+        <%= form_for :scheduleService, url: schedule_index_path(id: serviceX['invoiceOrSessionID']) do |f| %>
+
+          <div class="input-style has-borders no-icon mb-4">
+            <%= f.hidden_field :sessionOrInvoiceID, value: serviceX['invoiceOrSessionID'] %>
+          </div>
+          <div class="divider divider-margins w-100 mt-2 mb-3"></div>
+          <div class="input-style has-borders no-icon mb-4 text-center">
+              
+              <p for="session<%= serviceX['invoiceOrSessionID'] %>" class="color-highlight">Confirm &amp; schedule service with the customer</p>
+              <i class="fa fa-check disabled valid me-4 pe-3 font-12 color-green-dark"></i>
+              <i class="fa fa-check disabled invalid me-4 pe-3 font-12 color-red-dark"></i>
+          </div>
+          <div class="col-12">
+            <%= f.submit "Service Confirmed", class: "btn btn-full btn-m bg-yellow2-dark rounded-sm text-uppercase font-800 mt-3 col-12" %>
+          </div>
+        <% end %>
     </div>
   </div>
 <% end %>
