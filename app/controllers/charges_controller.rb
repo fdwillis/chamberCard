@@ -109,6 +109,7 @@ class ChargesController < ApplicationController
 			
 	    if response['success']
 				@pending = response['pending']
+				debugger
 	    else
 				flash[:error] = response['message']
 	      redirect_to charges_path

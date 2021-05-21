@@ -1,2 +1,56 @@
-<em><strong>Payments are processed by <a href="https://www.tewcode.com" target="_blank">TewCode</a> &amp; <%= link_to "Stripe", "https://stripe.com", 'target' => '_blank' %></strong></em>
-<%= @pending %>
+<div class="card card-style text-center">
+    <div class="content">
+        <h2 class="mb-0"> Outstanding Invoices </h2>
+        <p><br><em><strong>Payments are processed by <a href="https://www.tewcode.com" target="_blank">TewCode</a> &amp; <%= link_to "Stripe", "https://stripe.com", 'target' => '_blank' %></strong></em></p>
+    </div>
+</div>
+
+<div class="card card-style">
+    <% @pending.each do |chargeX| %>
+      <div class="card card-style">
+        <!-- <%= chargeX %> -->
+        <div class="content">
+          <div class="row mb-0">
+            <div class="col-12 ps-4">
+              <div class="d-flex">
+                <% if current_user&.owner? %>
+                  <div class="col-3"><p class="font-700 color-theme">From</p></div>
+                  <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= chargeX['customerName'] %></p></div>
+                <% end %>
+
+                <% if current_user&.customer? %>
+                  <div class="col-3"><p class="font-700 color-theme">Seller</p></div>
+                  <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= chargeX['sellerName'] %></p></div>
+                <% end %>
+              </div>
+              <div class="d-flex">
+                  <div class="col-3"><p class="font-700 color-theme">Date</p></div>
+                  <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= Time.at(chargeX['dateCreated']).strftime("%a %b #{Time.at(chargeX['dateCreated']).day.ordinalize}, %Y") %></p></div>
+              </div>
+            </div>
+          </div>
+          <div class="divider mt-3 mb-3"></div>
+          <div class="row mb-0">
+            <div class="col-6"><h4 class="font-15 mt-1">Amount</h4></div>
+            <div class="col-6"><h4 class="font-15 pull-right text-end mt-1 color-green1-dark"><%= number_to_currency(chargeX['amount'] * 0.01, precision: 2) %></h4></div>
+            <div class="divider divider-margins w-100 mt-2 mb-3"></div>
+            <div class="col-12"><a href="<%= chargeX['receiptURL'] %>" target="_blank" class="btn btn-full btn-m bg-blue2-dark rounded-sm text-uppercase font-800 mt-3">View Receipt</a></div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <% if @hasMore %>
+      <nav aria-label="pagination-demo">
+          <ul class="pagination pagination- justify-content-center">
+            <li class="page-item">
+                <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-xl border-0" href="/charges/?paginateBefore=<%= @payments.first['id'] %>" tabindex="-1" aria-disabled="true"><i class="fa fa-angle-left"></i></a>
+                BACK
+            </li>
+            <li class="page-item">
+                <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-l border-0" href="/charges/?paginateAfter=<%= @payments.last['id'] %>"><i class="fa fa-angle-right"></i></a>
+                NEXT
+            </li>
+          </ul>
+      </nav>
+    <% end %>
+  </div>
