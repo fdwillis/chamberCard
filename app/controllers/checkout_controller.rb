@@ -1,6 +1,4 @@
 class CheckoutController < ApplicationController
-	protect_from_forgery with: :null_session, only: [:checkout, :checkout_anon]
-
 	def create
 		params = session[:cart].to_json
 		
@@ -18,7 +16,7 @@ class CheckoutController < ApplicationController
 	    end
 	  else
 	  	@checkoutAnon = Stripe::Checkout::Session.create({
-			  success_url: success_url+'?session_id={CHECKOUT_SESSION_ID}&customer={CHECKOUT_SESSION_CUSTOMER}',
+			  success_url: success_url+'?session_id={CHECKOUT_SESSION_ID}',
 			  cancel_url: carts_url,
 			  payment_method_types: ['card'],
 			  line_items: [session[:lineItems]],
