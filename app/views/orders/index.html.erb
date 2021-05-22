@@ -14,8 +14,8 @@
 </div>
 <% if @orders.present? %>
     <!--<%= @orders %> -->
-    <div class="card card-style">
-      <% @orders.each do |orderX| %>
+    <% @orders.each do |orderX| %>
+      <div class="card card-style">
         <!-- <%= orderX %> -->
         <% if current_user&.owner? %>
           <% if orderX['metadata']['trackingNumbers'].blank? %>
@@ -160,8 +160,8 @@
             </div>
           </div>
         <% end %>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
   <% if @hasMore  && @order&.size == 10 %>
     <nav aria-label="pagination-demo">
         <ul class="pagination pagination- justify-content-center">
