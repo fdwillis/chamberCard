@@ -155,10 +155,7 @@
         
           <div class="card card-style">
               <div class="content mb-0">
-                  <h2>Product Gallery</h2>
-                  <p class="mt-n1">
-                      Here are the best and most beautiful features our product has to offer. Just tap and move through the images.
-                  </p>
+                  <h2>Product Images</h2>
                   <div class="row text-center row-cols-3 mb-0">
                     <% @product['images'][0].split(",").each do |imgx| %>
                       <a class="col mb-4" data-gallery="gallery-1" href="<%= imgx %>" title="A beautiful Retro Camera">
