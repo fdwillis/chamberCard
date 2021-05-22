@@ -1,6 +1,6 @@
 console.log('<%= @checkoutAnon["id"] %>');
 
-var stripe = Stripe('pk_test_51HGYikHvKdEDURjLgT8xONPGMsHFuSzSjnBdPmkhDIWTvPaJPemADUh5b1o3zyo6rjLRBOVRD5dIgPFYlajQ05zy00yRYPDNxL', {stripeAccount: "<%= ENV['connectAccount'] %>"});
+var stripe = Stripe('<%= ENV["stripeLivePublish"] %>', {stripeAccount: "<%= ENV['connectAccount'] %>"});
 
 stripe.redirectToCheckout({
   	sessionId: '<%= @checkoutAnon["id"] %>'
