@@ -72,7 +72,6 @@ class ChargesController < ApplicationController
 		response = Oj.load(curlCall)
 
     if response['success']
-			pullChargesAPI
 			flash[:success] = "Invoice Created"
       redirect_to charges_path
     else
