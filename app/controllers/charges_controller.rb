@@ -11,9 +11,6 @@ class ChargesController < ApplicationController
 				@payments = response['payments'] #edit stripe session meta for scheduling
 				@pending = response['pending'] #edit stripe session meta for scheduling
 				@hasMore = response['has_more']
-	    else
-				flash[:error] = response['error']
-	      redirect_to root_path
 	    end
 
 		else
