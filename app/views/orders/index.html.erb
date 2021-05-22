@@ -12,7 +12,7 @@
     </p>
   </div>
 </div>
-<% unless @orders.blank? %>
+<% if @orders.present? %>
     <!--<%= @orders %> -->
     <% @orders.each do |orderX| %>
       <div class="card card-style">

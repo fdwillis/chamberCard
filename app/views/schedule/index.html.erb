@@ -12,7 +12,7 @@
     </p>
   </div>
 </div>
-<% unless @services.blank? %>
+<% if @services.present? %>
   <% @services.each do |serviceX| %>
     <div class="card card-style">
       <!-- <%= serviceX %> -->
