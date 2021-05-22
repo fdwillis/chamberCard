@@ -6,6 +6,39 @@ class User < ApplicationRecord
 
   geocoded_by :address
 
+  def indexStripeChargesAPI(params)
+
+    if !params['paginateAfter'].blank?
+      return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/charges?paginateAfter=#{params['paginateAfter']}`
+    elsif !params['paginateBefore'].blank?
+      return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/charges?paginateBefore=#{params['paginateBefore']}`
+    else
+      return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/charges`
+    end
+  end
+
+  def indexStripeScheduleAPI(params)
+
+    if !params['paginateAfter'].blank?
+      return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/schedules?paginateAfter=#{params['paginateAfter']}`
+    elsif !params['paginateBefore'].blank?
+      return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/schedules?paginateBefore=#{params['paginateBefore']}`
+    else
+      return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/schedules`
+    end
+  end
+
+  def indexStripeOrdersAPI(params)
+
+    if !params['paginateAfter'].blank?
+      return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/orders?paginateAfter=#{params['paginateAfter']}`
+    elsif !params['paginateBefore'].blank?
+      return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/orders?paginateBefore=#{params['paginateBefore']}`
+    else
+      return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/orders`
+    end
+  end
+
   def resetPassword(user)
     # get reset password from api then set in brand
     # hashed = Devise.token_generator.generate(User, :reset_password_token)
@@ -159,10 +192,16 @@ class User < ApplicationRecord
     end
   end
 
-  def indexStripeCustomerAPI
-
-    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/stripe-customers`
-
+  def indexStripeCustomerAPI(params)
+  
+    if !params['paginateAfter'].blank?
+      curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/stripe-customers?paginateAfter=#{params['paginateAfter']}`
+    elsif !params['paginateBefore'].blank?
+      curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/stripe-customers?paginateBefore=#{params['paginateBefore']}`
+    else
+      curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/v1/stripe-customers`
+    end
+    
     response = Oj.load(curlCall)
     
     if !response.blank? && response['success']

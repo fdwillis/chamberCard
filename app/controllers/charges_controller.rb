@@ -3,19 +3,15 @@ class ChargesController < ApplicationController
 	
 	def index
 		if current_user&.authentication_token
+			curlCall = current_user&.indexStripeChargesAPI(params)
+			
+		  response = Oj.load(curlCall)
 
-			if !session[:customerCharges].blank?
-				@invoices = session[:invoices]
-				@pending = session[:pending]
-				@anonCharges = session[:charges] #edit stripe session meta for scheduling
-				@customerCharges = session[:customerCharges] #edit lineItems meta for scheduling
-			else
-				chargesNcustomers
-				@pending = session[:pending]
-				@invoices = session[:invoices]
-				@anonCharges = session[:charges] #edit stripe session meta for scheduling
-				@customerCharges = session[:customerCharges] #edit lineItems meta for scheduling
-			end
+		  if response['success']
+				@payments = response['payments'] #edit stripe session meta for scheduling
+				@pending = response['pending'] #edit stripe session meta for scheduling
+				@hasMore = response['has_more']
+	    end
 
 		else
 			current_user = nil
@@ -76,7 +72,6 @@ class ChargesController < ApplicationController
 		response = Oj.load(curlCall)
 
     if response['success']
-			chargesNcustomers
 			flash[:success] = "Invoice Created"
       redirect_to charges_path
     else
@@ -104,11 +99,18 @@ class ChargesController < ApplicationController
 
 	def payNow
 		if current_user&.authentication_token
-			chargesNcustomers
-			@invoices = session[:invoices]
-			@pending = session[:pending]
-			@anonCharges = session[:charges] #edit stripe session meta for scheduling
-			@customerCharges = session[:customerCharges] #edit lineItems meta for scheduling
+			curlCall = current_user&.indexStripeChargesAPI(params)
+
+			response = Oj.load(curlCall)
+			
+	    if response['success']
+				@pending = response['pending']
+	    else
+				flash[:error] = response['message']
+	      redirect_to charges_path
+	    end
+
+
 		else
 			current_user = nil
       reset_session

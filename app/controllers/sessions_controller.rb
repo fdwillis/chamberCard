@@ -10,10 +10,6 @@ class SessionsController < Devise::SessionsController
       reset_session
       current_user = nil
       flash[:success] = "See ya later"
-    else
-      reset_session
-      current_user = nil
-      flash[:alert] = "You've been signed out"
     end
   end
 
@@ -22,11 +18,6 @@ class SessionsController < Devise::SessionsController
 
     if response['success']
       flash[:success] = "Welcome"
-    else
-      reset_session
-      current_user = nil
-      flash[:alert] = response['message']
-      # redirect_to new_user_session_path
     end
   end
 end

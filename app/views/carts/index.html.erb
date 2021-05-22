@@ -4,7 +4,7 @@
         <h2 class="mb-8">
             Checkout
         </h2>
-        <p>Your shopping cart before checking out.<br><em><strong>This payment will be processed by <a href="https://www.tewcode.com" target="_blank">TewCode</a> &amp; <%= link_to "Stripe", "https://stripe.com", 'target' => '_blank' %></strong></em></p>
+        <p>Your shopping cart before checking out.<br><em><strong>Payments are processed by <a href="https://www.tewcode.com" target="_blank">TewCode</a> &amp; <%= link_to "Stripe", "https://stripe.com", 'target' => '_blank' %></strong></em></p>
     </div>
 </div>
 
@@ -145,10 +145,10 @@
             <% if current_user&.authentication_token %>
               <%= form_for :checkout, url: checkout_index_path do |f| %>
                 <div class="input-style input-style-2 mb-4">
-                <% if !current_user&.address.blank? %>
+                <% if current_user&.paymentOn? && current_user&.address %>
                   <%= f.submit "Charge Me", class: "btn btn-full bg-green1-dark text-uppercase rounded-sm font-900"%>
                 <% else %>
-                  <h4 class="font-20"><%= link_to "Click here", profile_path %> to add shipping address</h4>
+                  <h4 class="font-20"><%= link_to "Click here", profile_path %> to complete profile &amp; payment setup</h4>
                 <% end %>
                 </div>
 

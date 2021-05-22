@@ -3,51 +3,21 @@ class OrdersController < ApplicationController
 	
 	def index
 		if current_user&.authentication_token
-				chargesNcustomers
-
-			if !session[:invoices].blank?
-				@invoices = session[:invoices]
-				@pending = session[:pending]
-				@customerCharges = session[:customerCharges] #edit lineItems meta for scheduling
+			curlCall = current_user&.indexStripeOrdersAPI(params)
 				
-				if session[:charges].blank?
-					anonCharges = []
-
-					session[:charges].each do |anon|
-						
-						if anon['lineItems'].map{|litm| Stripe::Product.retrieve(litm['price']['product'], {stripe_account: ENV['connectAccount']})['type'] }.include?("service")
-							anonCharges << anon
-						end
-					end
-					session[:charges] = anonCharges
-					@anonCharges = session[:charges] #edit stripe session meta for scheduling
-				else
-					@anonCharges = session[:charges] #edit stripe session meta for scheduling
-				end
+    	response = Oj.load(curlCall)
+	    if response['success']
+				@orders = response['orders']
+				@hasMore = response['has_more']
+			elsif response['message'] == "No purchases found"
+				@message = response['message']
+			else
+				flash[:error] = response['message']
 			end
+
 		else
 			current_user = nil
       reset_session
 		end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		
 	end
 end

@@ -4,10 +4,12 @@ before_action :authenticate_user!
 	
 
 	def index
-		callCurl = current_user&.indexStripeCustomerAPI
+		callCurl = current_user&.indexStripeCustomerAPI(params)
 
 		if callCurl['success']
-			@customers = callCurl['customers']
+			@info = callCurl
+			@customers = callCurl['customers']['data']
+			@hasMore = callCurl['customers']['has_more']
 			@stripeMerchantID = callCurl['stripeMerchantID']
 		else
 			flash[:error] = callCurl['message']

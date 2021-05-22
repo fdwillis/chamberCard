@@ -2,44 +2,19 @@ class ApplicationController < ActionController::Base
 	before_action :configure_permitted_parameters, if: :devise_controller?
 	before_action :grabCart
 
-	def chargesNcustomers
-		if current_user&.owner?
-			# user
-			# what
-			# sess or inv
-			curlCall = Charge.APIindex(current_user)
+	def pullChargesAPI
+		curlCall = current_user&.indexStripeChargesAPI(params)
 			
-	    response = Oj.load(curlCall)
-	    
-	    if response['success']
-				session[:invoices] = response['invoices']
-				session[:pending] = response['pending']
-				session[:charges] = response['charges'] #edit stripe session meta for scheduling
-				session[:customerCharges] = response['customerCharges']#edit lineItems meta for scheduling
-			elsif response['message'] == "No purchases found"
-				@message = response['message']
-			else
-				flash[:error] = response['message']
-			end
-		end
+	  response = Oj.load(curlCall)
 
-		if current_user&.customer?
-			curlCall = Charge.APIindex(current_user)
-			
-	    response = Oj.load(curlCall)
-	    
-	    if response['success']
-				session[:invoices] = response['invoices']
-				session[:pending] = response['pending']
-				session[:charges] = response['charges'] #edit stripe session meta for scheduling
-				session[:customerCharges] = response['customerCharges']#edit lineItems meta for scheduling
-			elsif response['message'] == "No purchases found"
-				@message = response['message']
-			else
-				flash[:error] = response['message']
-			end
+    if response['success']
+			session[:payments] = response['payments']
+			session[:pending] = response['pending']
+		elsif response['message'] == "No purchases found"
+			@message = response['message']
+		else
+			flash[:error] = response['message']
 		end
-		
 	end
 
 	def grabCart

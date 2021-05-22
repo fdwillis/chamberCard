@@ -15,9 +15,9 @@
     <link rel="stylesheet" type="text/css" href="/assets/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="/assets/style.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900,900i|Source+Sans+Pro:300,300i,400,400i,600,600i,700,700i,900,900i&display=swap" rel="stylesheet">
-    <link rel="apple-touch-icon" sizes="512x512" href="/assets/ML_512-01.png">
-    <link rel="shortcut icon" href="/assets/ML_512-01.png" />
     <link rel="manifest" href="/manifest" data-pwa-version="set_in_manifest_and_pwa_js">
+    <!--     <link rel="apple-touch-icon" sizes="512x512" href="/assets/ML_512-01.png">
+        <link rel="shortcut icon" href="/assets/ML_512-01.png" /> -->
   </head>
 
   <body class="theme-light" data-background="none" data-highlight="green1">
@@ -60,13 +60,13 @@
             <a href="/customers"><i class="fa fa-users"></i><span>Customers</span></a>
           <% end %>
 
+        <% end %>
+
           <% if request.fullpath.include?('/schedule') %>
             <a href="/schedule"><i class="fa fa-calendar-check color-highlight"></i><span>Schedule</span></a>
           <% else %>
             <a href="/schedule"><i class="fa fa-calendar-check"></i><span>Schedule</span></a>
           <% end %>
-        <% end %>
-
         <% if current_user&.customer? && current_user&.stripeCustomerID && current_user&.checkStripeSource %>
           <% if request.fullpath.include?('/customers') %>
             <a href="/customers/<%= current_user&.stripeCustomerID %>"><i class="fa fa-user color-highlight"></i><span>Profile</span></a>

@@ -102,19 +102,19 @@ p {
 }
 
 .theme-light .header .header-logo {
-  background-image: url(/assets/ML_512-01.png);
+  /*background-image: url(/assets/ML_512-01.png);*/
 }
 
 .theme-dark .header .header-logo {
-  background-image: url(/assets/ML_512-01.png);
+  /*background-image: url(/assets/ML_512-01.png);*/
 }
 
 .theme-light .footer .footer-logo {
-  background-image: url(/assets/ML_512-01.png);
+  /*background-image: url(/assets/ML_512-01.png);*/
 }
 
 .theme-dark .footer .footer-logo {
-  background-image: url(/assets/ML_512-01.png);
+  /*background-image: url(/assets/ML_512-01.png);*/
 }
 
 /*--Header---*/

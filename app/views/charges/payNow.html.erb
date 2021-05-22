@@ -1,141 +1,66 @@
-
-
-<% if current_user.present? %>
-	<div class="card card-style">
-    <div class="content mt-3 mb-3">
-      <h3>Outstanding Invoices</h3>
-      <p>
-        <% if !current_user&.manager? %>
-          View your payment history any time anywhere!
-        <% else%>
-          View invoices yet to be paid here.  Payment is one-click processing after adding a card on file.
-        <% end %>
-      </p>
+<div class="card card-style text-center">
+    <div class="content">
+        <h2 class="mb-0"> Outstanding Invoices </h2>
+        <p><br><em><strong>Payments are processed by <a href="https://www.tewcode.com" target="_blank">TewCode</a> &amp; <%= link_to "Stripe", "https://stripe.com", 'target' => '_blank' %></strong></em></p>
     </div>
-  </div>
+</div>
 
-  <% if @pending || @payments %>
-
-    <% if @pending.present? %>
-      <% @pending.each do |h| %> 
-        <div class="card card-style bg-theme pb-0">
-          <div class="content mb-0">
-            PENDING
-            <div class="content">
-              <div class="row mb-0">
-                  <div class="col-3 icon icon-xl">
-                      <i class="fa fa-exclamation-triangle bg-fade-red2-dark rounded-xl color-red2-dark" width='80'></i>
-                  </div>
-                  <div class="col-9 pl-4">
-                      <% if current_user&.customer? %>
-                        <div class="d-flex">
-                            <div><p class="font-700 color-theme">Seller</p></div>
-                            <div class="ml-auto"><p><%= h['merchantName'] %></p></div>
-                        </div>
-                      <% end %>
-                      <% if current_user&.manager? %>
-                        <% userShow = User.find_by(email: h['customerStripeInfo']['email']) %>
-                        <div class="d-flex">
-                            <div><p class="font-700 color-theme">Customer</p></div>
-                            <div class="ml-auto"><p><%= link_to h['customerStripeInfo']['name'].split(" ")[0], "/customers/#{ h['invoice']['customer']}" %></p></div>
-                        </div>
-                      <% end %>
-                      <div class="d-flex">
-                          <div><p class="font-700 color-theme">Date</p></div>
-                          <div class="ml-auto"><p><%= h['date'] %></p></div>
-                      </div>
-                  </div>
-              </div>
-              <div class="divider mt-3 mb-3"></div>
-              <% h['invoice']['lines']['data'].each_with_index do |itm,indx| %>
-                  
-                    
-                <h4 class="font-14 text-center"><%= itm['description'] %> <%= number_to_currency((itm['amount'] * 0.01), precision: 2) %></h4>
-              <% end %>
-
-                
-                <div class="row mb-0">
-                  <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-                  <div class="divider divider-margins w-100 mt-2 mb-2"></div>
-                  <div class="col-6"><h4 class="font-14 mt-1">Total</h4></div>
-                  <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency( h['invoice']['subtotal']  * 0.01, precision: 2) %></h4></div>
-                  <div class="col-6"><h4 class="font-14 mt-1">Paid</h4></div>
-                  <div class="col-6"><h4 class="font-14 text-right mt-1"><%=  h['invoice']['status'] == 'draft' ? number_to_currency(h['invoice']['total_discount_amounts'][0]['amount']  * 0.01, precision: 2) : number_to_currency(h['invoice']['amount_paid']  * 0.01, precision: 2) %></h4></div>
-                  
-
-          
-                  <div class="divider divider-margins w-100 mt-2 mb-3"></div>
-                  <div class="col-6"><h4 class="font-14 mt-1">Due</h4></div>
-                  <div class="col-6"><h4 class="font-14 text-right mt-1"><%= number_to_currency(h['invoice']['amount_remaining'] * 0.01, precision: 2) %></h4></div>
-
-                </div>
-              <% if h['invoice']['amount_remaining'] > 0 %>
-                <%= form_for :customerPayInvoice, url: customer_pay_path do |f| %>
-                  <%= f.hidden_field :sellerToChargeAs, value: h['merchantStripeID'] %>
-                  <%= f.hidden_field :invoiceToPay, value: h['invoice']['id'] %>
-                  <% if current_user&.customer? %>
-                    <%= f.submit "Pay Now", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
-                  <% end %>
-
-                  <% if current_user&.owner? %>
-                    <%= f.submit "Collect Payment", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
-                  <% end %>
+<div class="card card-style">
+    <% @pending.each do |chargeX| %>
+      <div class="card card-style">
+        <!-- <%= chargeX %> -->
+        <div class="content">
+          <div class="row mb-0">
+            <div class="col-12 ps-4">
+              <div class="d-flex">
+                <% if current_user&.owner? %>
+                  <div class="col-3"><p class="font-700 color-theme">From</p></div>
+                  <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= chargeX['customerName'] %></p></div>
                 <% end %>
-              <% end%>
+
+                <% if current_user&.customer? %>
+                  <div class="col-3"><p class="font-700 color-theme">Seller</p></div>
+                  <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= chargeX['sellerName'] %></p></div>
+                <% end %>
+              </div>
+              <div class="d-flex">
+                  <div class="col-3"><p class="font-700 color-theme">Date</p></div>
+                  <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= Time.at(chargeX['dateCreated']).strftime("%a %b #{Time.at(chargeX['dateCreated']).day.ordinalize}, %Y") %></p></div>
+              </div>
+            </div>
+          </div>
+          <div class="divider mt-3 mb-3"></div>
+          <div class="row mb-0">
+            <div class="col-6"><h4 class="font-15 mt-1">Amount</h4></div>
+            <div class="col-6"><h4 class="font-15 pull-right text-end mt-1 color-green1-dark"><%= number_to_currency(chargeX['amount'] * 0.01, precision: 2) %></h4></div>
+            <div class="divider divider-margins w-100 mt-2 mb-3"></div>
+            <div class="col-12">
+              <a href="<%= chargeX['receiptURL'] %>" target="_blank" class="btn btn-full btn-m bg-green1-dark rounded-sm text-uppercase font-800 mt-3">
+                <% if current_user&.owner? %>
+                  Collect Payment
+                <% end %>
+
+                <% if current_user&.customer? %>
+                  Pay Invoice
+                <% end %>
+              </a>
             </div>
           </div>
         </div>
-      <% end %>
-    <% end %>
-
-       
-
-  <% else %>
-    <% if current_user&.customer? %>
-      <% if  current_user&.paymentOn?%>
-        <div class="content mb-0 text-center">
-          <h5>You have not been charged</h5>
-        </div>
-
-      <% else %>
-        <%= link_to "Setup Payment", '/profile', class: 'btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm' %>
-      <% end %>
-    <% end %>
-
-    <% if current_user&.manager? %>
-      <div class="content mb-0 text-center">
-        <h5>No payments posted</h5>
       </div>
     <% end %>
-  <% end %>
-<% else %>
-  <div class="page-content header-clear-medium">
-        
-        <div class="card card-style">
-            
-            <div class="d-flex content mb-1">
-                <!-- left side of profile -->
-                <div class="flex-grow-1">
-                    <h1 class="font-700">Book Now</h1>
-                    <p class="mb-2">
-                      Once you've created an account and have made a successful payment, it will be posted here.
-                    </p>
-                </div>
-                <!-- right side of profile. increase image width to increase column size-->
-            </div>
-            <!-- follow buttons-->
-            <div class="content mb-0">
-                <div class="row mb-0">
-                    <div class="col-6">
-                        <a href="<%= new_user_registration_url %>" class="btn btn-full btn-s rounded-s text-uppercase font-900 bg-green1-dark">Create Account</a>
-                    </div>
-                    <div class="col-6">
-                        <a href="<%= new_user_session_url %>" class="btn btn-full btn-s rounded-s text-uppercase font-900 color-theme border-green1-dark">Login</a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="divider mt-4 mb-0"></div>
-        </div>
+    <% if @hasMore %>
+      <nav aria-label="pagination-demo">
+          <ul class="pagination pagination- justify-content-center">
+            <li class="page-item">
+                <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-xl border-0" href="/charges/?paginateBefore=<%= @payments.first['id'] %>" tabindex="-1" aria-disabled="true"><i class="fa fa-angle-left"></i></a>
+                BACK
+            </li>
+            <li class="page-item">
+                <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-l border-0" href="/charges/?paginateAfter=<%= @payments.last['id'] %>"><i class="fa fa-angle-right"></i></a>
+                NEXT
+            </li>
+          </ul>
+      </nav>
+    <% end %>
   </div>
-<% end %>
