@@ -76,15 +76,16 @@
       </div>
     </div>
   <% end %>
-  <% if @hasMore %>
+
+  <% if @hasMore && @services&.size == 10 %>
     <nav aria-label="pagination-demo">
         <ul class="pagination pagination- justify-content-center">
           <li class="page-item">
-              <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-xl border-0" href="/orders/?paginateBefore=<%= @actualCharges.first['id'] %>" tabindex="-1" aria-disabled="true"><i class="fa fa-angle-left"></i></a>
+              <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-xl border-0" href="/orders/?paginateBefore=<%= @services.first['id'] %>" tabindex="-1" aria-disabled="true"><i class="fa fa-angle-left"></i></a>
               BACK
           </li>
           <li class="page-item">
-              <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-l border-0" href="/orders/?paginateAfter=<%= @actualCharges.last['id'] %>"><i class="fa fa-angle-right"></i></a>
+              <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-l border-0" href="/orders/?paginateAfter=<%= @services.last['id'] %>"><i class="fa fa-angle-right"></i></a>
               NEXT
           </li>
         </ul>

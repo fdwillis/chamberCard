@@ -14,89 +14,163 @@
 </div>
 <% if @orders.present? %>
     <!--<%= @orders %> -->
-    <% @orders.each do |orderX| %>
-      <div class="card card-style">
+    <div class="card card-style">
+      <% @orders.each do |orderX| %>
         <!-- <%= orderX %> -->
-        <div class="content">
-          <div class="row mb-2">
-            <div class="col-12 ps-4">
-              <div class="d-flex">
-                <% if current_user&.owner? %>
-                  <div class="col-3"><p class="font-700 color-theme">From</p></div>
-                  <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= orderX['customerName'] %></p></div>
-                <% end %>
+        <% if current_user&.owner? %>
+          <% if orderX['metadata']['trackingNumbers'].blank? %>
+            <div class="content">
+              <div class="row mb-2">
+                <div class="col-12 ps-4">
+                  <div class="d-flex">
+                    <% if current_user&.owner? %>
+                      <div class="col-3"><p class="font-700 color-theme">From</p></div>
+                      <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= orderX['customerName'] %></p></div>
+                    <% end %>
 
-                <% if current_user&.customer? %>
-                  <div class="col-3"><p class="font-700 color-theme">Seller</p></div>
-                  <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= orderX['sellerName'] %></p></div>
-                <% end %>
-              </div>
-              <div class="d-flex">
-                  <div class="col-3"><p class="font-700 color-theme">Date</p></div>
-                  <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= Time.at(orderX['dateCreated']).strftime("%a %b #{Time.at(orderX['dateCreated']).day.ordinalize}, %Y") %></p></div>
-              </div>
-              <% if !orderX['metadata']['trackingNumbers'].blank? %>
-                <div class="d-flex">
-                    
+                    <% if current_user&.customer? %>
+                      <div class="col-3"><p class="font-700 color-theme">Seller</p></div>
+                      <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= orderX['sellerName'] %></p></div>
+                    <% end %>
+                  </div>
+                  <div class="d-flex">
+                      <div class="col-3"><p class="font-700 color-theme">Date</p></div>
+                      <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= Time.at(orderX['dateCreated']).strftime("%a %b #{Time.at(orderX['dateCreated']).day.ordinalize}, %Y") %></p></div>
+                  </div>
+                  <% if !orderX['metadata']['trackingNumbers'].blank? %>
+                    <div class="d-flex">
+                        
 
-                      <div class="col-4">
-                        <p class="font-700 color-theme">Tracking:</p>
-                      </div>
-                      <% orderX['metadata']['trackingNumbers'].split(",").each do |t| %>
-                        <div class="ms-auto pr-2 ml-4 col-8">
-                          <p class="pull-right">
-                            <%=  link_to t, "https://www.google.com/search?q=#{t}&oq=#{t}", 'target' => '_blank' %> &nbsp;
-                          </p>
-                        </div>
-                      <% end %>
+                          <div class="col-4">
+                            <p class="font-700 color-theme">Tracking:</p>
+                          </div>
+                          <% orderX['metadata']['trackingNumbers'].split(",").each do |t| %>
+                            <div class="ms-auto pr-2 ml-4 col-8">
+                              <p class="pull-right">
+                                <%=  link_to t, "https://www.google.com/search?q=#{t}&oq=#{t}", 'target' => '_blank' %> &nbsp;
+                              </p>
+                            </div>
+                          <% end %>
+                    </div>
+                  <% else %>
+                    <div class="d-flex">
+                        <div class="col-12"><p class="font-700  color-red2-dark ">Tracking Missing</p></div>
+                    </div>
+                  <% end %>
                 </div>
-              <% else %>
+              </div>
+              <% if current_user&.owner? && orderX['metadata']['trackingNumbers'].blank? %>
+                <%= form_for :trackingNumber, url: trackingNumber_path(id: orderX['invoiceOrSessionID']) do |f| %>
+                  <div class="input-style input-style-2">
+                      <span class="input-style-1-active">Tracking Number</span>
+                      <%= f.text_field :trackingIDs, required: true  %>
+                  </div>
+                  <div class="input-style has-borders no-icon mb-4">
+
+                      <label for="session<%= orderX['invoiceOrSessionID'] %>" class="color-highlight">Seperate tracking numbers by comma</label>
+                      <i class="fa fa-check disabled valid me-4 pe-3 font-12 color-green-dark"></i>
+                      <i class="fa fa-check disabled invalid me-4 pe-3 font-12 color-red-dark"></i>
+                  </div>
+
+                  <div class="input-style has-borders no-icon mb-4">
+                    <%= f.hidden_field :sessionOrInvoiceID, value: orderX['invoiceOrSessionID'] %>
+                  </div>
+                  <div class="input-style has-borders no-icon mb-4">
+                    <%= f.submit "Update tracking", class: "btn bg-green1-dark text-uppercase rounded-sm font-900" %>
+                  </div>
+                <% end %>
+              <% end %>
+              <div class="divider mt-3 mb-3"></div>
+              <div class="row mb-0">
+                <div class="col-6"><h4 class="font-15 mt-1">Amount</h4></div>
+                <div class="col-6"><h4 class="font-15 pull-right text-end mt-1 color-green1-dark"><%= number_to_currency(orderX['amount'] * 0.01, precision: 2) %></h4></div>
+                <div class="divider divider-margins w-100 mt-2 mb-3"></div>
+                <div class="col-12"><a href="<%= orderX['receiptURL'] %>" target="_blank" class="btn btn-full btn-m bg-blue2-dark rounded-sm text-uppercase font-800 mt-3">View Receipt</a></div>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="content">
+            <div class="row mb-2">
+              <div class="col-12 ps-4">
                 <div class="d-flex">
-                    <div class="col-12"><p class="font-700  color-red2-dark ">Tracking Missing</p></div>
+                  <% if current_user&.owner? %>
+                    <div class="col-3"><p class="font-700 color-theme">From</p></div>
+                    <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= orderX['customerName'] %></p></div>
+                  <% end %>
+
+                  <% if current_user&.customer? %>
+                    <div class="col-3"><p class="font-700 color-theme">Seller</p></div>
+                    <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= orderX['sellerName'] %></p></div>
+                  <% end %>
+                </div>
+                <div class="d-flex">
+                    <div class="col-3"><p class="font-700 color-theme">Date</p></div>
+                    <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= Time.at(orderX['dateCreated']).strftime("%a %b #{Time.at(orderX['dateCreated']).day.ordinalize}, %Y") %></p></div>
+                </div>
+                <% if !orderX['metadata']['trackingNumbers'].blank? %>
+                  <div class="d-flex">
+                      
+
+                        <div class="col-4">
+                          <p class="font-700 color-theme">Tracking:</p>
+                        </div>
+                        <% orderX['metadata']['trackingNumbers'].split(",").each do |t| %>
+                          <div class="ms-auto pr-2 ml-4 col-8">
+                            <p class="pull-right">
+                              <%=  link_to t, "https://www.google.com/search?q=#{t}&oq=#{t}", 'target' => '_blank' %> &nbsp;
+                            </p>
+                          </div>
+                        <% end %>
+                  </div>
+                <% else %>
+                  <div class="d-flex">
+                      <div class="col-12"><p class="font-700  color-red2-dark ">Tracking Missing</p></div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+            <% if current_user&.owner? && orderX['metadata']['trackingNumbers'].blank? %>
+              <%= form_for :trackingNumber, url: trackingNumber_path(id: orderX['invoiceOrSessionID']) do |f| %>
+                <div class="input-style input-style-2">
+                    <span class="input-style-1-active">Tracking Number</span>
+                    <%= f.text_field :trackingIDs, required: true  %>
+                </div>
+                <div class="input-style has-borders no-icon mb-4">
+
+                    <label for="session<%= orderX['invoiceOrSessionID'] %>" class="color-highlight">Seperate tracking numbers by comma</label>
+                    <i class="fa fa-check disabled valid me-4 pe-3 font-12 color-green-dark"></i>
+                    <i class="fa fa-check disabled invalid me-4 pe-3 font-12 color-red-dark"></i>
+                </div>
+
+                <div class="input-style has-borders no-icon mb-4">
+                  <%= f.hidden_field :sessionOrInvoiceID, value: orderX['invoiceOrSessionID'] %>
+                </div>
+                <div class="input-style has-borders no-icon mb-4">
+                  <%= f.submit "Update tracking", class: "btn bg-green1-dark text-uppercase rounded-sm font-900" %>
                 </div>
               <% end %>
+            <% end %>
+            <div class="divider mt-3 mb-3"></div>
+            <div class="row mb-0">
+              <div class="col-6"><h4 class="font-15 mt-1">Amount</h4></div>
+              <div class="col-6"><h4 class="font-15 pull-right text-end mt-1 color-green1-dark"><%= number_to_currency(orderX['amount'] * 0.01, precision: 2) %></h4></div>
+              <div class="divider divider-margins w-100 mt-2 mb-3"></div>
+              <div class="col-12"><a href="<%= orderX['receiptURL'] %>" target="_blank" class="btn btn-full btn-m bg-blue2-dark rounded-sm text-uppercase font-800 mt-3">View Receipt</a></div>
             </div>
           </div>
-          <% if current_user&.owner? && orderX['metadata']['trackingNumbers'].blank? %>
-            <%= form_for :trackingNumber, url: trackingNumber_path(id: orderX['invoiceOrSessionID']) do |f| %>
-              <div class="input-style input-style-2">
-                  <span class="input-style-1-active">Tracking Number</span>
-                  <%= f.text_field :trackingIDs, required: true  %>
-              </div>
-              <div class="input-style has-borders no-icon mb-4">
-
-                  <label for="session<%= orderX['invoiceOrSessionID'] %>" class="color-highlight">Seperate tracking numbers by comma</label>
-                  <i class="fa fa-check disabled valid me-4 pe-3 font-12 color-green-dark"></i>
-                  <i class="fa fa-check disabled invalid me-4 pe-3 font-12 color-red-dark"></i>
-              </div>
-
-              <div class="input-style has-borders no-icon mb-4">
-                <%= f.hidden_field :sessionOrInvoiceID, value: orderX['invoiceOrSessionID'] %>
-              </div>
-              <div class="input-style has-borders no-icon mb-4">
-                <%= f.submit "Update tracking", class: "btn bg-green1-dark text-uppercase rounded-sm font-900" %>
-              </div>
-            <% end %>
-          <% end %>
-          <div class="divider mt-3 mb-3"></div>
-          <div class="row mb-0">
-            <div class="col-6"><h4 class="font-15 mt-1">Amount</h4></div>
-            <div class="col-6"><h4 class="font-15 pull-right text-end mt-1 color-green1-dark"><%= number_to_currency(orderX['amount'] * 0.01, precision: 2) %></h4></div>
-            <div class="divider divider-margins w-100 mt-2 mb-3"></div>
-            <div class="col-12"><a href="<%= orderX['receiptURL'] %>" target="_blank" class="btn btn-full btn-m bg-blue2-dark rounded-sm text-uppercase font-800 mt-3">View Receipt</a></div>
-          </div>
-        </div>
-      </div>
-    <% end %>
-  <% if @hasMore %>
+        <% end %>
+      <% end %>
+    </div>
+  <% if @hasMore  && @order&.size == 10 %>
     <nav aria-label="pagination-demo">
         <ul class="pagination pagination- justify-content-center">
           <li class="page-item">
-              <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-xl border-0" href="/orders/?paginateBefore=<%= @actualCharges.first['id'] %>" tabindex="-1" aria-disabled="true"><i class="fa fa-angle-left"></i></a>
+              <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-xl border-0" href="/orders/?paginateBeforeInvoice=<%= @orders.first['id'] %>" tabindex="-1" aria-disabled="true"><i class="fa fa-angle-left"></i></a>
               BACK
           </li>
           <li class="page-item">
-              <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-l border-0" href="/orders/?paginateAfter=<%= @actualCharges.last['id'] %>"><i class="fa fa-angle-right"></i></a>
+              <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-l border-0" href="/orders/?paginateAfterInvoice=<%= @orders.last['id'] %>"><i class="fa fa-angle-right"></i></a>
               NEXT
           </li>
         </ul>
