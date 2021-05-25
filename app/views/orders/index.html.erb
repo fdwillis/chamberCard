@@ -16,7 +16,6 @@
     <!--<%= @orders %> -->
     <% @orders.each do |orderX| %>
       <div class="card card-style">
-        <!-- <%= orderX %> -->
         <% if current_user&.owner? %>
           <% if orderX['metadata']['trackingNumbers'].blank? %>
             <div class="content">
@@ -24,7 +23,7 @@
                 <div class="col-12 ps-4">
                   <div class="d-flex">
                     <% if current_user&.owner? %>
-                      <div class="col-3"><p class="font-700 color-theme">From</p></div>
+                      <div class="col-3"><p class="font-700 color-theme">Name</p></div>
                       <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= orderX['customerName'] %></p></div>
                     <% end %>
 
@@ -37,6 +36,11 @@
                       <div class="col-3"><p class="font-700 color-theme">Date</p></div>
                       <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= Time.at(orderX['dateCreated']).strftime("%a %b #{Time.at(orderX['dateCreated']).day.ordinalize}, %Y") %></p></div>
                   </div>
+                  <% if !orderX['customerAddress'].blank? %>
+                    <div class="d-flex">
+                        <div class="ms-auto col-12 ml-4"><p class="pull-right"><%= orderX['customerAddress'] %></p></div>
+                    </div>
+                  <% end %>
                   <% if !orderX['metadata']['trackingNumbers'].blank? %>
                     <div class="d-flex">
                         

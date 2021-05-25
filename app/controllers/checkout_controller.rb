@@ -34,8 +34,12 @@ class CheckoutController < ApplicationController
 
 		@sessionPaid = Stripe::Checkout::Session.retrieve(params[:session_id], {stripe_account: ENV['connectAccount']})
 
+		@customerUpdated = Stripe::Customer.update(@sessionPaid.customer,{phone: session[:phone], address: session[:address]},{stripe_account: ENV['connectAccount']})
+
 		@paymentCharge = Stripe::PaymentIntent.retrieve(@sessionPaid.payment_intent,{stripe_account: ENV['connectAccount']})
-		# edit payment intent for application fee @serviceFee
+
+		# @paymentUpdated = Stripe::PaymentIntent.update(@sessionPaid.payment_intent,{metadata: {phone: '4144444444', address: '222 w washington madison wi 53703'}},{stripe_account: ENV['connectAccount']})
+	
 		@line_items = Stripe::Checkout::Session.list_line_items(@sessionPaid.id, {limit: 100}, {stripe_account: ENV['connectAccount']})['data']
 
 		@collecctAnonFee = Stripe::Charge.create({

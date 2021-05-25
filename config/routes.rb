@@ -23,6 +23,7 @@ Rails.application.routes.draw do
 		end
 		resources :stripe_tokens, :path => '/stripe-tokens'
 				
+		post "setSessionVar", to: 'sessions#setSessionVar', as: "set-session-vars"
 		post "initiateCharge", to: 'charges#initiateCharge', as: "initiateCharge"
 		post "newInvoice", to: 'charges#newInvoice', as: "newInvoice"
 		post "acceptInvoice", to: 'charges#acceptInvoice', as: "acceptInvoice"

@@ -116,14 +116,14 @@ class User < ApplicationRecord
 
     city = params[:city]
     state = params[:state]
-    country = "USA"
+    country = "US"
 
     if street.present?
       saved = self.update(street: street, city: city, state: state, country: country, phone: phone)
     end
     # build the address by saving to user and passing param
 
-    curlCall  = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "email=#{email}&name=#{stripeName}&phone=#{phone}&source=#{source}" -X PATCH #{SITEurl}/v1/stripe-customers/#{self.uuid}`
+    curlCall  = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "country=#{country}&state=#{state}&city=#{city}&line1=#{street}&email=#{email}&name=#{stripeName}&phone=#{phone}&source=#{source}" -X PATCH #{SITEurl}/v1/stripe-customers/#{self.uuid}`
 
     response = Oj.load(curlCall)
 
