@@ -36,7 +36,7 @@ class CheckoutController < ApplicationController
 
 		@paymentCharge = Stripe::PaymentIntent.retrieve(@sessionPaid.payment_intent,{stripe_account: ENV['connectAccount']})
 
-		@customerUpdated = Stripe::Customer.update(@sessionPaid.customer,{phone: '4144444444'},{stripe_account: ENV['connectAccount']})
+		@customerUpdated = Stripe::Customer.update(@sessionPaid.customer,{phone: session[:phone], address: session[:address]},{stripe_account: ENV['connectAccount']})
 
 		# @paymentUpdated = Stripe::PaymentIntent.update(@sessionPaid.payment_intent,{metadata: {phone: '4144444444', address: '222 w washington madison wi 53703'}},{stripe_account: ENV['connectAccount']})
 	
