@@ -21,7 +21,7 @@
           <div class="col-12 ps-4">
             <div class="d-flex">
               <% if current_user&.owner? %>
-                <div class="col-3"><p class="font-700 color-theme">From</p></div>
+                <div class="col-3"><p class="font-700 color-theme">Customer</p></div>
                 <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= serviceX['customerName'] %></p></div>
               <% end %>
               <% if current_user&.customer? %>
