@@ -2,7 +2,6 @@ class CartsController < ApplicationController
 	
 
 	def index
-		session[:coupon] = nil
 	end
 
 
