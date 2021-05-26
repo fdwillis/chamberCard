@@ -9,6 +9,7 @@ class CheckoutController < ApplicationController
 	    
 	    if response['success']
 	    	session[:coupon] = nil
+	    	session[:percentOff] = nil
 	    	flash[:success] = "Purchase Complete"
 	    	redirect_to pay_now_path
 	    else

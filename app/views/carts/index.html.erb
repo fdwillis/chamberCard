@@ -127,7 +127,7 @@
                 </div>
             </div>
 
-            <% if session[:percentOff] %>
+            <% if session[:percentOff] && session[:coupon] %>
               <div class="d-flex mb-3">
                 <div class="mr-3 text-left">
                   <h5 class="font-600">Coupon (<%= session[:percentOff].to_i %>% off)</h5>
