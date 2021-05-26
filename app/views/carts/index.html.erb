@@ -184,6 +184,16 @@
           <% end %>
 
           <% if !current_user %>
+            <div class="d-flex">
+              <div class="mr-3 text-left">
+                  <h5 class="font-600">Items</h5>
+              </div>
+              <div class="ml-auto text-right">
+                  <h5 class="font-600">
+                    <%= number_to_currency(@cart['subItemsTotal'] * 0.01, precision: 2) %>
+                  </h5>
+              </div>
+            </div>
 
             <% if session[:percentOff] %>
               <div class="d-flex mb-3">
@@ -202,7 +212,7 @@
                 </div>
                 <div class="ml-auto text-right">
                   <h5 class="font-600">
-                    <%= number_to_currency((@cart['subItemsTotal'] * 0.01) * (session[:percentOff] * 0.01), precision: 2) %>
+                    <%= number_to_currency((@cart['subItemsTotal'] * 0.01)-(@cart['subItemsTotal'] * 0.01) * (session[:percentOff] * 0.01), precision: 2) %>
                   </h5>
                 </div>
               </div>

@@ -48,7 +48,7 @@ class CheckoutController < ApplicationController
 		@line_items = Stripe::Checkout::Session.list_line_items(@sessionPaid.id, {limit: 100}, {stripe_account: ENV['connectAccount']})['data']
 
 		@collecctAnonFee = Stripe::Charge.create({
-		  amount: !session[:percentOff].blank? ? (@serviceFee * (session[:percentOff]*0.01)).to_i : @serviceFee,
+		  amount: @serviceFee,
 		  currency: 'usd',
 		  description: "#{ENV['appName']} Transaction Fee - ##{@paymentCharge.id} | TewCode",
 		  source: ENV['connectAccount'],

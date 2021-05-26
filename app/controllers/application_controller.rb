@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
 	    	@cart['carts'].each do |cartInfo|
 					cartInfo['cart'].each do |item|
 						@lineItems << {price: item['stripePriceInfo']['id'], quantity: item['quantity']}
-						@serviceFee = @cart['serviceFee']
+						@serviceFee =  !session[:coupon].blank? ? (@cart['serviceFee'] * (0.01 * (100-session[:percentOff]))).to_i : @cart['serviceFee']
 					end
 				end
 
