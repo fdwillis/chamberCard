@@ -21,6 +21,9 @@ class CheckoutController < ApplicationController
 			  payment_method_types: ['card'],
 			  line_items: [session[:lineItems]],
 			  mode: 'payment',
+			  discounts: [{
+			  	coupon: session[:coupon]
+			  }]
 			}, stripe_account: ENV['connectAccount'])
 
 			respond_to do |format|

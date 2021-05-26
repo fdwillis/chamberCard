@@ -5,6 +5,14 @@
             Checkout
         </h2>
         <p>Your shopping cart before checking out.<br><em><strong>Payments are processed by <a href="https://www.tewcode.com" target="_blank">TewCode</a> &amp; <%= link_to "Stripe", "https://stripe.com", 'target' => '_blank' %></strong></em></p>
+      <%= form_for :setSessionVar, url: set_session_vars_path do |f| %>
+        <div class="input-style has-icon">
+          <span class="color-highlight input-style-2">Coupon Code?</span>
+          <%= f.text_field :coupon, class: "form-control", value: !session[:coupon].blank? ? session[:coupon] : nil %>
+          <p>Coupon will be applied before checkout</p>
+          <%= f.submit "Apply", class: 'mb-2 mt-2 col-12 btn btn-full bg-yellow1-dark btn-m text-uppercase font-800 rounded-sm' %>
+        </div> 
+      <% end %>
     </div>
 </div>
 
