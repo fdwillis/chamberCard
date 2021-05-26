@@ -5,7 +5,8 @@ class SessionsController < Devise::SessionsController
   
   def setSessionVar
     session[:phone] = setSessionVarParams[:phone]
-    session[:coupon] = setSessionVarParams[:coupon]
+
+
     session[:address] = {
       line1: setSessionVarParams[:line1],
       line2: setSessionVarParams[:line2],
@@ -14,7 +15,15 @@ class SessionsController < Devise::SessionsController
       postal_code: setSessionVarParams[:postal_code],
       country: setSessionVarParams[:country],
     }
-    flash[:success] = "Information Saved"
+
+    if setSessionVarParams[:coupon] && couponFound = Stripe::Coupon.retrieve(setSessionVarParams[:coupon], stripe_account: ENV['connectAccount'])
+      session[:coupon] = setSessionVarParams[:coupon]
+      session[:percentOff] = couponFound['percent_off']
+      flash[:success] = "Coupon Applied"
+    else
+      flash[:success] = "Information Saved"
+    end
+
     redirect_to request.referrer
   end
   

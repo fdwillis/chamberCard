@@ -8,6 +8,7 @@ class CheckoutController < ApplicationController
 	    response = Oj.load(curlCall)
 	    
 	    if response['success']
+	    	session[:coupon] = nil
 	    	flash[:success] = "Purchase Complete"
 	    	redirect_to pay_now_path
 	    else
