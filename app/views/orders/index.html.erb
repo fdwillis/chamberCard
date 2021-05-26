@@ -15,9 +15,9 @@
 <% if @orders.present? %>
     <!--<%= @orders %> -->
     <% @orders.each do |orderX| %>
-      <div class="card card-style">
-        <% if current_user&.owner? %>
-          <% if orderX['metadata']['trackingNumbers'].blank? %>
+      <% if current_user&.owner? %>
+        <% if orderX['metadata']['trackingNumbers'].blank? %>
+          <div class="card card-style">
             <div class="content">
               <div class="row mb-2">
                 <div class="col-12 ps-4">
@@ -92,8 +92,10 @@
                 <div class="col-12"><a href="<%= orderX['receiptURL'] %>" target="_blank" class="btn btn-full btn-m bg-blue2-dark rounded-sm text-uppercase font-800 mt-3">View Receipt</a></div>
               </div>
             </div>
-          <% end %>
-        <% else %>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="card card-style">
           <div class="content">
             <div class="row mb-2">
               <div class="col-12 ps-4">
@@ -163,8 +165,8 @@
               <div class="col-12"><a href="<%= orderX['receiptURL'] %>" target="_blank" class="btn btn-full btn-m bg-blue2-dark rounded-sm text-uppercase font-800 mt-3">View Receipt</a></div>
             </div>
           </div>
-        <% end %>
-      </div>
+        </div>
+      <% end %>
     <% end %>
   <% if @hasMore  && @order&.size == 10 %>
     <nav aria-label="pagination-demo">
