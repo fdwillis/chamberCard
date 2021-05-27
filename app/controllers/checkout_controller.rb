@@ -8,6 +8,8 @@ class CheckoutController < ApplicationController
 	    response = Oj.load(curlCall)
 	    
 	    if response['success']
+	    	session[:coupon] = nil
+	    	session[:percentOff] = nil
 	    	flash[:success] = "Purchase Complete"
 	    	redirect_to pay_now_path
 	    else
@@ -21,6 +23,9 @@ class CheckoutController < ApplicationController
 			  payment_method_types: ['card'],
 			  line_items: [session[:lineItems]],
 			  mode: 'payment',
+			  discounts: [{
+			  	coupon: session[:coupon]
+			  }]
 			}, stripe_account: ENV['connectAccount'])
 
 			respond_to do |format|

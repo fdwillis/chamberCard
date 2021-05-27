@@ -30,8 +30,12 @@
               <% end %>
             </div>
             <div class="d-flex">
-                <div class="col-3"><p class="font-700 color-theme">Contact</p></div>
-                <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= serviceX['customerEmail'] %> - <%= serviceX['customerPhone'] %></p></div>
+                <div class="col-3"><p class="font-700 color-theme">Email</p></div>
+                <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= serviceX['customerEmail'] %></p></div>
+            </div>
+            <div class="d-flex">
+                <div class="col-3"><p class="font-700 color-theme">Phone</p></div>
+                <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= number_to_phone(serviceX['customerPhone']) %></p></div>
             </div>
             <div class="d-flex">
                 <div class="col-3"><p class="font-700 color-theme">Date</p></div>

@@ -5,6 +5,16 @@
             Checkout
         </h2>
         <p>Your shopping cart before checking out.<br><em><strong>Payments are processed by <a href="https://www.tewcode.com" target="_blank">TewCode</a> &amp; <%= link_to "Stripe", "https://stripe.com", 'target' => '_blank' %></strong></em></p>
+      <% if !@cart['carts'].blank? %>
+        <%= form_for :setSessionVar, url: set_session_vars_path do |f| %>
+          <div class="input-style has-icon">
+            <span class="color-highlight input-style-2">Coupon Code?</span>
+            <%= f.text_field :coupon, class: "form-control", value: !session[:coupon].blank? ? session[:coupon] : nil %>
+            <p>Coupon will be applied before checkout</p>
+            <%= f.submit "Apply", class: 'mb-2 mt-2 col-12 btn btn-full bg-yellow1-dark btn-m text-uppercase font-800 rounded-sm' %>
+          </div> 
+        <% end %>
+      <% end %>
     </div>
 </div>
 
@@ -116,29 +126,108 @@
                     </h5>
                 </div>
             </div>
-            <div class="d-flex mb-3">
+
+            <% if session[:percentOff] && session[:coupon] %>
+              <div class="d-flex mb-3">
                 <div class="mr-3 text-left">
-                    <h5 class="font-600">Due Today</h5>
+                  <h5 class="font-600">Coupon (<%= session[:percentOff].to_i %>% off)</h5>
                 </div>
                 <div class="ml-auto text-right">
-                    <h5 class="font-600">
-                      <%= number_to_currency((@cart['subTotal'] * 0.01) * (ENV['stripeCapturePercentage'].to_i*0.01), precision: 2) %>
-                    </h5>
+                  <h5 class="font-600">
+                    <%= number_to_currency((@cart['subTotal'] * 0.01) * (session[:percentOff] * 0.01), precision: 2) %>
+                  </h5>
                 </div>
-            </div>
+              </div>
+              <div class="d-flex mb-3">
+                <div class="mr-3 text-left">
+                  <h5 class="font-600">Due Today</h5>
+                </div>
+                <div class="ml-auto text-right">
+                  <h5 class="font-600">
+                    <%= number_to_currency((@cart['subTotal'] * 0.01) * (ENV['stripeCapturePercentage'].to_i*0.01) * (session[:percentOff] * 0.01), precision: 2) %>
+                  </h5>
+                </div>
+              </div>
+            <% else %>
+              <div class="d-flex mb-3">
+                  <div class="mr-3 text-left">
+                      <h5 class="font-600">Due Today</h5>
+                  </div>
+                  <div class="ml-auto text-right">
+                      <h5 class="font-600">
+                        <%= number_to_currency((@cart['subTotal'] * 0.01) * (ENV['stripeCapturePercentage'].to_i*0.01), precision: 2) %>
+                      </h5>
+                  </div>
+              </div>
+            <% end %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           <% end %>
 
           <% if !current_user %>
-            <div class="d-flex mb-3">
+            <div class="d-flex">
+              <div class="mr-3 text-left">
+                  <h5 class="font-600">Items</h5>
+              </div>
+              <div class="ml-auto text-right">
+                  <h5 class="font-600">
+                    <%= number_to_currency(@cart['subItemsTotal'] * 0.01, precision: 2) %>
+                  </h5>
+              </div>
+            </div>
+
+            <% if session[:percentOff] %>
+              <div class="d-flex mb-3">
                 <div class="mr-3 text-left">
-                    <h5 class="font-600">Due Today</h5>
+                  <h5 class="font-600">Coupon (<%= session[:percentOff].to_i %>% off)</h5>
                 </div>
                 <div class="ml-auto text-right">
-                    <h5 class="font-600">
-                      <%= number_to_currency(@cart['subItemsTotal'] * 0.01, precision: 2) %>
-                    </h5>
+                  <h5 class="font-600">
+                    <%= number_to_currency((@cart['subItemsTotal'] * 0.01) * (session[:percentOff] * 0.01), precision: 2) %>
+                  </h5>
                 </div>
-            </div>
+              </div>
+              <div class="d-flex mb-3">
+                <div class="mr-3 text-left">
+                  <h5 class="font-600">Due Today</h5>
+                </div>
+                <div class="ml-auto text-right">
+                  <h5 class="font-600">
+                    <%= number_to_currency((@cart['subItemsTotal'] * 0.01)-(@cart['subItemsTotal'] * 0.01) * (session[:percentOff] * 0.01), precision: 2) %>
+                  </h5>
+                </div>
+              </div>
+            <% else %>
+              <div class="d-flex mb-3">
+                <div class="mr-3 text-left">
+                  <h5 class="font-600">Due Today</h5>
+                </div>
+                <div class="ml-auto text-right">
+                  <h5 class="font-600">
+                    <%= number_to_currency(@cart['subItemsTotal'] * 0.01, precision: 2) %>
+                  </h5>
+                </div>
+              </div>
+            <% end %>
           <% end %>
           
           <% if @cart['carts'].map{|c,i| c['cart']}.flatten.map{|c,i|c['quantity']}.sum != 0 %>

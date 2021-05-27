@@ -4,17 +4,42 @@ class SessionsController < Devise::SessionsController
   # before_action :after_login, :only => :create
   
   def setSessionVar
-    session[:phone] = setSessionVarParams[:phone]
-    session[:address] = {
-      line1: setSessionVarParams[:line1],
-      line2: setSessionVarParams[:line2],
-      city: setSessionVarParams[:city],
-      state: setSessionVarParams[:state],
-      postal_code: setSessionVarParams[:postal_code],
-      country: setSessionVarParams[:country],
-    }
-    flash[:success] = "Information Saved"
-    redirect_to request.referrer
+    begin
+      if setSessionVarParams[:phone]
+        session[:phone] = setSessionVarParams[:phone]
+
+
+        session[:address] = {
+          line1: setSessionVarParams[:line1],
+          line2: setSessionVarParams[:line2],
+          city: setSessionVarParams[:city],
+          state: setSessionVarParams[:state],
+          postal_code: setSessionVarParams[:postal_code],
+          country: setSessionVarParams[:country],
+        }
+      end
+
+      if setSessionVarParams[:coupon] == 'clear'
+        session[:coupon] = nil
+        session[:percentOff] = nil
+      elsif setSessionVarParams[:coupon] && couponFound = Stripe::Coupon.retrieve(setSessionVarParams[:coupon], stripe_account: ENV['connectAccount'])
+        session[:coupon] = setSessionVarParams[:coupon]
+        session[:percentOff] = couponFound['percent_off']
+        flash[:success] = "Coupon Applied"
+      else
+        flash[:success] = "Information Saved"
+      end
+
+      redirect_to request.referrer
+    rescue Stripe::StripeError => e
+      flash[:error] = e.error.message
+      redirect_to request.referrer
+      return
+    rescue Exception => e
+      flash[:error] = e
+      redirect_to request.referrer
+      return
+    end
   end
   
   def after_logout
@@ -37,7 +62,7 @@ class SessionsController < Devise::SessionsController
   private
 
   def setSessionVarParams
-    paramsClean = params.require(:setSessionVar).permit(:phone, :line1, :line2, :city, :state, :postal_code, :country)
+    paramsClean = params.require(:setSessionVar).permit(:coupon, :phone, :line1, :line2, :city, :state, :postal_code, :country)
     return paramsClean.reject{|_, v| v.blank?}
   end
 end

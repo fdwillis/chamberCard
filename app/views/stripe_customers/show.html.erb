@@ -2,11 +2,9 @@
   <div class="content">
       <div class="d-flex">
           <div class="w-100 align-self-center">
-              <h1 class="mb-2"><%= @customer['email'] %></h1>
-              <% if current_user&.owner? %>
-                <p class="font-11 opacity-60 mb-0"><%= link_to "Email Customer", "mailto:#{@customer['email']}"  %></p>
-              <% end %>
-              
+              <h3 class="mb-2"><%= @customer['name'] %></h3>
+              <p class="mb-2"><%= !@customer['phone'].blank? ? number_to_phone(@customer['phone']) : nil %></p>
+              <p class="mb-2"><%= @customer['email'] %></p>
           </div>
       </div>
   </div>
