@@ -64,7 +64,7 @@ Rails.application.routes.draw do
 	  end
 
 	  unauthenticated :user do
-	    root 'registrations#new', as: :unauthenticated_root
+	    root 'services#index', as: :unauthenticated_root
 	  end
 	end	
 end
