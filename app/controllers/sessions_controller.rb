@@ -19,7 +19,10 @@ class SessionsController < Devise::SessionsController
         }
       end
 
-      if setSessionVarParams[:coupon] && couponFound = Stripe::Coupon.retrieve(setSessionVarParams[:coupon], stripe_account: ENV['connectAccount'])
+      if setSessionVarParams[:coupon] == 'clear'
+        session[:coupon] = nil
+        session[:percentOff] = nil
+      elsif setSessionVarParams[:coupon] && couponFound = Stripe::Coupon.retrieve(setSessionVarParams[:coupon], stripe_account: ENV['connectAccount'])
         session[:coupon] = setSessionVarParams[:coupon]
         session[:percentOff] = couponFound['percent_off']
         flash[:success] = "Coupon Applied"
