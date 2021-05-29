@@ -244,11 +244,13 @@
                     
               <% end %>
             <% else %>
-              <p class="color-highlight mt-4 text-center">Please be sure the information below is correct</p>
             <% end %>
 
             <% if !current_user %>
               <%= form_for :setSessionVar, url: set_session_vars_path do |f| %>
+                <% if session[:phone] %>  
+                  <p class="color-highlight mt-4 text-center">Please be sure the information below is correct</p>
+                <% end %>
                   <div class="input-style has-icon">
                     <span class="color-highlight input-style-2">Phone</span>
                     <%= f.telephone_field :phone, class: "form-control",required: true, value: !session[:phone].blank? ? session[:phone] : nil %>

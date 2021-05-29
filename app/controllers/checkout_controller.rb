@@ -72,7 +72,7 @@ class CheckoutController < ApplicationController
 						if session[:coupon]
 							listInvoice = Stripe::Invoice.create({
 								customer: connectAccountCus,
-								application_fee_amount: (appFeeAmount * (session[:percentOff] * 0.01)).to_i,
+								application_fee_amount: (appFeeAmount * (1 - (session[:percentOff] * 0.01))).to_i,
 								discounts: [
 									{coupon: session[:coupon]},
 								],
@@ -120,14 +120,12 @@ class CheckoutController < ApplicationController
 					redirect_to carts_path
 				end
 			rescue Stripe::StripeError => e
-				render json: {
-					error: e.error.message
-				}
+				flash[:error] = e.error.message
+				redirect_to carts_path
 				return
 			rescue Exception => e
-				render json: {
-					error: e
-				}
+				flash[:error] = e
+				redirect_to carts_path
 				return
 			end
 	  end
