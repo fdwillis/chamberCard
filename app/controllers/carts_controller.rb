@@ -20,7 +20,7 @@ class CartsController < ApplicationController
 		if current_user&.authentication_token
 			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X PATCH #{SITEurl}/v1/carts/#{grabID}`
 		else	
-			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{params}' -X PATCH #{SITEurl}/v1/carts/#{grabID}?cartID=#{@cartID}`
+			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{params}' -X PATCH #{SITEurl}/v1/carts/#{@cartID}`
 	  end
 			
 	    response = Oj.load(curlCall)
@@ -32,6 +32,7 @@ class CartsController < ApplicationController
 	end
 
 	def updateQuantity
+		grabCart
 		params = {
 			'line_items' => [
 				{
@@ -41,7 +42,7 @@ class CartsController < ApplicationController
 			]
 		}.to_json
 
-		curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{params}' -X PATCH #{SITEurl}/v1/carts/#{grabID}?cartID=#{@cartID}`
+		curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{params}' -X PATCH #{SITEurl}/v1/carts/#{@cartID}`
 		
 		
     response = Oj.load(curlCall)
