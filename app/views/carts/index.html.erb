@@ -244,12 +244,12 @@
                     
               <% end %>
             <% else %>
-              <%= form_for :checkout, url: checkout_index_path, remote: true  do |f| %>
+              <%= form_for :checkout, url: checkout_index_path  do |f| %>
                 <div class="input-style input-style-2 mb-4">
                 <% if @cart.present? %>
 
                   <% if session[:phone] && session[:address] %>
-                    <%= f.submit "Charge Me",remote: true, class: "btn btn-full bg-green1-dark text-uppercase rounded-sm font-900" %>
+                    <%= f.submit "Charge Me", class: "btn btn-full bg-green1-dark text-uppercase rounded-sm font-900" %>
                     <p class="color-highlight mt-4 text-center">Please be sure the information below is correct</p>
                   <% end %>
 

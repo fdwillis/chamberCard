@@ -1,6 +1,7 @@
 class CheckoutController < ApplicationController
 	def create
 		params = session[:cart].to_json
+  	invoicesToPay = []
 		
 		if current_user&.authentication_token
 			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X POST #{SITEurl}/v1/checkout`
@@ -17,19 +18,121 @@ class CheckoutController < ApplicationController
 	    	redirect_to carts_path
 	    end
 	  else
-	  	@checkoutAnon = Stripe::Checkout::Session.create({
-			  success_url: success_url+'?session_id={CHECKOUT_SESSION_ID}',
-			  cancel_url: carts_url,
-			  payment_method_types: ['card'],
-			  line_items: [session[:lineItems]],
-			  mode: 'payment',
-			  discounts: [{
-			  	coupon: session[:coupon]
-			  }]
-			}, stripe_account: ENV['connectAccount'])
+	  	begin
+			  if !session[:lineItems].blank?	
 
-			respond_to do |format|
-				format.js
+			  	token = Stripe::Token.create({
+					  card: {
+					    number: '4242424242424242',
+					    exp_month: 5,
+					    exp_year: 2022,
+					    cvc: '314',
+					  },
+					})
+
+					connectAccountCus = Stripe::Customer.create({
+						email: "hardcoded.#{SecureRandom.uuid}@gmail.com",
+						name: SecureRandom.uuid[0..7],
+						phone: '4144444444',
+					  source: token['id']
+					}, {stripe_account: ENV['connectAccount']})
+
+					session[:lineItems].each do |lineItem|
+						stripePriceInfo = Stripe::Price.retrieve(lineItem[:price], {stripe_account: ENV['connectAccount']})
+						stripeProductInfo = Stripe::Product.retrieve(stripePriceInfo[:product], {stripe_account: ENV['connectAccount']})
+						# debugger
+
+						if !stripeProductInfo.shippable
+							inI = Stripe::InvoiceItem.create({
+								currency: 'usd',
+							  customer: connectAccountCus,
+							  description: stripeProductInfo[:name],
+							  unit_amount_decimal: stripePriceInfo[:unit_amount_decimal],
+							  quantity: lineItem[:quantity],
+							  metadata: {
+							  	price: stripePriceInfo[:id]
+							  }
+							}, {stripe_account: ENV['connectAccount']})
+
+
+						else
+							# debugger
+							inI = Stripe::InvoiceItem.create({
+								currency: 'usd',
+							  customer: connectAccountCus,
+							  description: stripeProductInfo[:name],
+							  unit_amount_decimal: stripePriceInfo[:unit_amount_decimal],
+							  quantity: lineItem[:quantity],
+							  metadata: {
+							  	shipping: "true",
+							  	pickup: "",
+							  	price:  stripePriceInfo[:id]
+							  }
+							}, {stripe_account: ENV['connectAccount']})
+						end
+						# debugger
+						appFeeAmount = ((stripePriceInfo[:unit_amount_decimal].to_i * lineItem[:quantity].to_i) * (ENV['serviceFee'].to_i * 0.01) ).to_i
+
+						if session[:coupon]
+							listInvoice = Stripe::Invoice.create({
+								customer: connectAccountCus,
+								application_fee_amount: (appFeeAmount * (session[:percentOff] * 0.01)).to_i,
+								discounts: [
+									{coupon: session[:coupon]},
+								],
+								metadata: {
+									goodOrService: stripeProductInfo.shippable == true ? 'good' : 'service',
+									trackingNumbers: "",
+							  	orderIssue: '',
+							  	issueResolved: '',
+								}
+							}, {stripe_account: ENV['connectAccount']})
+						else
+							listInvoice = Stripe::Invoice.create({
+								customer: connectAccountCus,
+								application_fee_amount: appFeeAmount,
+								discounts: [
+									{coupon: session[:coupon]},
+								],
+								metadata: {
+									goodOrService: stripeProductInfo.shippable == true ? 'good' : 'service',
+									trackingNumbers: "",
+							  	orderIssue: '',
+							  	issueResolved: '',
+								}
+							}, {stripe_account: ENV['connectAccount']})
+						end
+
+						openInvoice = Stripe::Invoice.finalize_invoice(listInvoice[:id], {}, {stripe_account: ENV['connectAccount']})
+						payInvoice  = Stripe::Invoice.pay(listInvoice[:id], {}, {stripe_account: ENV['connectAccount']})
+					  invoicesToPay << payInvoice[:id]
+
+					end
+
+					if invoicesToPay.size == session[:lineItems].size
+						reset_session
+						redirect_to request.referrer
+						flash[:success] = "Purchase Complete"
+						return
+					else
+					end
+
+
+					
+				else
+					flash[:alert] = 'Add items to your cart'
+					redirect_to carts_path
+				end
+			rescue Stripe::StripeError => e
+				render json: {
+					error: e.error.message
+				}
+				return
+			rescue Exception => e
+				render json: {
+					error: e
+				}
+				return
 			end
 	  end
 		
