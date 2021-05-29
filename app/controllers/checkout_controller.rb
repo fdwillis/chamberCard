@@ -1,10 +1,10 @@
 class CheckoutController < ApplicationController
 	def create
-		# params = session[:cart].to_json
   	invoicesToPay = []
 		
 		if current_user&.authentication_token
-			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X POST #{SITEurl}/v1/checkout`
+			datax = session[:cart].to_json
+			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{datax}' -X POST #{SITEurl}/v1/checkout`
 			
 	    response = Oj.load(curlCall)
 	    
