@@ -140,7 +140,7 @@ $(document).ready(function(){
                 var dt = new Date();
                 var maniTimeVersion = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
                 var localVersionNumber = $('link[rel="manifest"]').data('pwa-version');
-                var onlineVersionJSON = "manifest?ver=" + maniTimeVersion;
+                var onlineVersionJSON = "?manifest?ver=" + maniTimeVersion;
                 var onlineVersionNumber = "Connection Offline. Waiting to Reconect";
                 $.getJSON(onlineVersionJSON, function(onlineData) {onlineVersionNumber = onlineData.version;}); 
                 setTimeout(function(){

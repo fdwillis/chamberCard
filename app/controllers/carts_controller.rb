@@ -2,10 +2,12 @@ class CartsController < ApplicationController
 	
 
 	def index
+		grabCart
 	end
 
 
 	def update
+		grabCart
 		params = {
 			'line_items' => [
 				{
@@ -50,7 +52,8 @@ class CartsController < ApplicationController
     end
 	end
 
-	def show
+	def destroy
+		grabCart
 		params = {
 			'line_items' => [
 				{
@@ -59,7 +62,7 @@ class CartsController < ApplicationController
 			]
 		}.to_json
 
-		curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{params}' -X DELETE #{SITEurl}/v1/carts/#{grabID}`
+		curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{params}' -X DELETE #{SITEurl}/v1/carts/#{@cartID}`
 		
     response = Oj.load(curlCall)
     if response['success']

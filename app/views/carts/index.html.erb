@@ -24,7 +24,10 @@
     <div class="card card-style shadow-s">
       <% stored.each do |cart| %>
         <div class="content">
-            <%= link_to ('<i class=“fa fa-times pr-2 color-red2-dark”> </i>').html_safe, cart_path(id: @cart['carts'][indx]['connectAccount'], item: cart['stripePriceInfo']['id']), :method=> :delete, :remote=> true%>
+            <%= button_to cart_path(id: @cart['carts'][indx]['connectAccount'], item: cart['stripePriceInfo']['id']), :method=> :delete, class: "d-block float-right opacity-90" do   %>
+              <i class="fa fa-times pr-2 color-red2-dark"></i>
+            <% end %>
+
             <a href="carts/<%= @cart['carts'][indx]['connectAccount'] %>?item=<%= cart['stripePriceInfo']['id']%>" method="DELETE" class="d-block float-right opacity-90"><i class="fa fa-times pr-2 color-red2-dark"></i></a>
           <%= form_for :addToCart, :html => {:id => cart['stripePriceInfo']['id']}, url: updateQuantity_path(id: @cart['carts'][indx]['connectAccount']) do |f| %>
             <%= f.hidden_field :sellerItem, value: cart['stripePriceInfo']['id'] %>
@@ -234,7 +237,7 @@
             <% if current_user&.authentication_token %>
               <%= form_for :checkout, url: checkout_index_path do |f| %>
                 <div class="input-style input-style-2 mb-4">
-                  <% if current_user&.paymentOn? && current_user&.address %>
+                  <% if current_user&.paymentOn? %>
                     <%= f.submit "Charge Me", class: "btn btn-full bg-green1-dark text-uppercase rounded-sm font-900"%>
                   <% else %>
                     <h4 class="font-20"><%= link_to "Click here", profile_path %> to complete profile &amp; payment setup</h4>
@@ -255,33 +258,7 @@
                     <span class="color-highlight input-style-2">Phone</span>
                     <%= f.telephone_field :phone, class: "form-control",required: true, value: !session[:phone].blank? ? session[:phone] : nil %>
                   </div>
-
                   
-
-                  <div class="input-style has-icon">
-                    <span class="color-highlight input-style-2">Street Address or PO Box</span>
-                    <%= f.text_field :line1, class: "form-control",required: true, value: !session[:address].blank? ? session[:address][:line1] : nil, placeholder: '123 street ave' %>
-                  </div> 
-                  <div class="input-style has-icon">
-                    <span class="color-highlight input-style-2">Apartment, Suite, Unit, etc.</span>
-                    <%= f.text_field :line2, class: "form-control", value: !session[:address].blank? ? session[:address][:line2] : nil, placeholder: 'suite 12' %>
-                  </div> 
-                  <div class="input-style has-icon">
-                    <span class="color-highlight input-style-2">City</span>
-                    <%= f.text_field :city, class: "form-control",required: true, value: !session[:address].blank? ? session[:address][:city] : nil %>
-                  </div> 
-                  <div class="input-style has-icon">
-                    <span class="color-highlight input-style-2">State</span>
-                    <%= f.text_field :state, class: "form-control",required: true, value: !session[:address].blank? ? session[:address][:state] : nil %>
-                  </div> 
-                  <div class="input-style has-icon">
-                    <span class="color-highlight input-style-2">ZIP</span>
-                    <%= f.text_field :postal_code, class: "form-control",required: true, value: !session[:address].blank? ? session[:address][:postal_code] : nil %>
-                  </div> 
-                  <div class="input-style has-icon">
-                    <span class="color-highlight input-style-2">Country</span>
-                    <%= f.text_field :country, class: "form-control",required: true, value: "US", readonly: true %>
-                  </div> 
                   <div class="input-style input-style-2 mt-2">
                     <%= f.submit "Update Information", class: "btn btn-full bg-yellow1-dark text-uppercase rounded-sm font-900"%>
                   </div> 

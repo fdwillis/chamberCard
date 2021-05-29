@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
 	before_action :configure_permitted_parameters, if: :devise_controller?
-	before_action :grabCart
 
 	def pullChargesAPI
 		curlCall = current_user&.indexStripeChargesAPI(params)
@@ -35,7 +34,6 @@ class ApplicationController < ActionController::Base
 	  	@cartID = session[:cart_id].present? ? session[:cart_id] : session[:cart_id] = rand(0..1000) + rand(0..1000000)
 
 	  	curlCall = `curl -H "appName: #{ENV['appName']}" -X GET #{SITEurl}/v1/carts?cartID=#{@cartID}`
-			
 	    response = Oj.load(curlCall)
 	    
 	    if response['success']
