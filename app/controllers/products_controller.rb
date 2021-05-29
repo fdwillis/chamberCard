@@ -2,6 +2,7 @@ class ProductsController < ApplicationController
 	before_action :authenticate_user!, only: [:create, :update, :edit, :new]
 
 	def index
+		grabCart
 		if current_user&.authentication_token
 			curlCall = Product.APIindex(current_user)
 		else
@@ -41,6 +42,7 @@ class ProductsController < ApplicationController
 	end
 
 	def show
+		grabCart
 		curlCall = Product.APIshow(params)
 	
 		response = Oj.load(curlCall)
@@ -49,9 +51,6 @@ class ProductsController < ApplicationController
 			@product = response['product']
 			@connectAccount = response['connectAccount']
 			@prices = response['prices']
-		else
-			flash[:alert] = "Trouble connecting..."
-			redirect_to products_path
 		end
 	end
 
@@ -81,9 +80,6 @@ class ProductsController < ApplicationController
 			if response['success']
 				flash[:success] = "Product Updated"
 				redirect_to product_path(id: params[:id][5..params[:id].length], connectAccount: current_user&.stripeMerchantID)
-			else
-				flash[:alert] = "Trouble connecting..."
-				redirect_to request.referrer
 			end
 		end
 	end
