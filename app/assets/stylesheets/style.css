@@ -5970,3 +5970,10 @@ html.lb-disable-scrolling {
 .owl-dots-no-footer .owl-dots {
   transform: translateY(-18px) !important;
 }
+
+button.style-cclose.float-right.opacity-90 {
+  text-decoration: none !important;
+  padding: 0;
+  border: none;
+  background: none;
+}
