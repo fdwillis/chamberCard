@@ -26,11 +26,6 @@
                       <div class="col-3"><p class="font-700 color-theme">Name</p></div>
                       <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= orderX['customerName'] %></p></div>
                     <% end %>
-
-                    <% if current_user&.customer? %>
-                      <div class="col-3"><p class="font-700 color-theme">Seller</p></div>
-                      <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= orderX['sellerName'] %></p></div>
-                    <% end %>
                   </div>
                   <div class="d-flex">
                       <div class="col-3"><p class="font-700 color-theme">Date</p></div>
@@ -41,6 +36,10 @@
                         <div class="ms-auto col-12 ml-4"><p class="pull-right"><%= orderX['customerAddress'] %></p></div>
                     </div>
                   <% end %>
+                  <div class="d-flex">
+                      <div class="col-3"><p class="font-700 color-theme">Email</p></div>
+                      <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= orderX['customerEmail'] %></p></div>
+                  </div>
                   <% if !orderX['metadata']['trackingNumbers'].blank? %>
                     <div class="d-flex">
                         

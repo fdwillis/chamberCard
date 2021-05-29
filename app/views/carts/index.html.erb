@@ -244,26 +244,19 @@
                     
               <% end %>
             <% else %>
-              <%= form_for :checkout, url: checkout_index_path, remote: true  do |f| %>
-                <div class="input-style input-style-2 mb-4">
-                <% if @cart.present? %>
-
-                  <% if session[:phone] && session[:address] %>
-                    <%= f.submit "Charge Me",remote: true, class: "btn btn-full bg-green1-dark text-uppercase rounded-sm font-900" %>
-                    <p class="color-highlight mt-4 text-center">Please be sure the information below is correct</p>
-                  <% end %>
-
-                  
-                <% end %>
-                </div>
-              <% end %>
             <% end %>
+
             <% if !current_user %>
               <%= form_for :setSessionVar, url: set_session_vars_path do |f| %>
+                <% if session[:phone] %>  
+                  <p class="color-highlight mt-4 text-center">Please be sure the information below is correct</p>
+                <% end %>
                   <div class="input-style has-icon">
                     <span class="color-highlight input-style-2">Phone</span>
                     <%= f.telephone_field :phone, class: "form-control",required: true, value: !session[:phone].blank? ? session[:phone] : nil %>
-                  </div> 
+                  </div>
+
+                  
 
                   <div class="input-style has-icon">
                     <span class="color-highlight input-style-2">Street Address or PO Box</span>
@@ -292,6 +285,33 @@
                   <div class="input-style input-style-2 mt-2">
                     <%= f.submit "Update Information", class: "btn btn-full bg-yellow1-dark text-uppercase rounded-sm font-900"%>
                   </div> 
+              <% end %>
+
+                      
+              <% if session[:phone] && @cart %>
+
+                    
+                <%= form_for :checkout, url: checkout_index_path do |f| %>
+                  <div class="input-style has-icon">
+                    <span class="color-highlight input-style-2">Card Number</span>
+                    <%= f.text_field :card, class: "form-control",minlength: 16, maxlength: 16,required: true %>
+                  </div>
+                  <div class="input-style has-icon">
+                    <span class="color-highlight input-style-2">Exp Month</span>
+                    <%= f.text_field :exp_month, class: "form-control",required: true %>
+                  </div>
+                  <div class="input-style has-icon">
+                    <span class="color-highlight input-style-2">Exp Year</span>
+                    <%= f.text_field :exp_year, class: "form-control", minlength: 4,required: true %>
+                  </div>
+                  <div class="input-style has-icon">
+                    <span class="color-highlight input-style-2">CVC</span>
+                    <%= f.text_field :cvc, class: "form-control", required: true %>
+                  </div> 
+                  <div class="input-style input-style-2 mt-2">
+                    <%= f.submit "Charge Me", class: "btn btn-full bg-green1-dark text-uppercase rounded-sm font-900" %>
+                  </div> 
+                <% end %>
               <% end %>
             <% end %>
             
