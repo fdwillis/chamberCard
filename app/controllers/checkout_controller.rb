@@ -1,6 +1,6 @@
 class CheckoutController < ApplicationController
 	def create
-		params = session[:cart].to_json
+		# params = session[:cart].to_json
   	invoicesToPay = []
 		
 		if current_user&.authentication_token
@@ -20,27 +20,25 @@ class CheckoutController < ApplicationController
 	  else
 	  	begin
 			  if !session[:lineItems].blank?	
-
 			  	token = Stripe::Token.create({
 					  card: {
-					    number: '4242424242424242',
-					    exp_month: 5,
-					    exp_year: 2022,
-					    cvc: '314',
+					    number: params[:checkout][:card],
+					    exp_month:params[:checkout][:exp_month],
+					    exp_year:params[:checkout][:exp_year],
+					    cvc: params[:checkout][:cvc],
 					  },
 					})
 
 					connectAccountCus = Stripe::Customer.create({
 						email: "hardcoded.#{SecureRandom.uuid}@gmail.com",
 						name: SecureRandom.uuid[0..7],
-						phone: '4144444444',
+						phone: session[:phone],
 					  source: token['id']
 					}, {stripe_account: ENV['connectAccount']})
 
 					session[:lineItems].each do |lineItem|
 						stripePriceInfo = Stripe::Price.retrieve(lineItem[:price], {stripe_account: ENV['connectAccount']})
 						stripeProductInfo = Stripe::Product.retrieve(stripePriceInfo[:product], {stripe_account: ENV['connectAccount']})
-						# debugger
 
 						if !stripeProductInfo.shippable
 							inI = Stripe::InvoiceItem.create({
@@ -56,7 +54,6 @@ class CheckoutController < ApplicationController
 
 
 						else
-							# debugger
 							inI = Stripe::InvoiceItem.create({
 								currency: 'usd',
 							  customer: connectAccountCus,
@@ -70,7 +67,6 @@ class CheckoutController < ApplicationController
 							  }
 							}, {stripe_account: ENV['connectAccount']})
 						end
-						# debugger
 						appFeeAmount = ((stripePriceInfo[:unit_amount_decimal].to_i * lineItem[:quantity].to_i) * (ENV['serviceFee'].to_i * 0.01) ).to_i
 
 						if session[:coupon]
