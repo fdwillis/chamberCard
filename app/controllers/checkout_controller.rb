@@ -30,8 +30,8 @@ class CheckoutController < ApplicationController
 					})
 
 					connectAccountCus = Stripe::Customer.create({
-						email: "hardcoded.#{SecureRandom.uuid}@gmail.com",
-						name: SecureRandom.uuid[0..7],
+						email: params[:checkout][:email],
+						name: params[:checkout][:name],
 						phone: session[:phone],
 					  source: token['id']
 					}, {stripe_account: ENV['connectAccount']})
