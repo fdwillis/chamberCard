@@ -2,6 +2,7 @@ class ProductsController < ApplicationController
 	before_action :authenticate_user!, only: [:create, :update, :edit, :new]
 
 	def index
+		grabCart
 		if current_user&.authentication_token
 			curlCall = Product.APIindex(current_user)
 		else
@@ -41,6 +42,7 @@ class ProductsController < ApplicationController
 	end
 
 	def show
+		grabCart
 		curlCall = Product.APIshow(params)
 	
 		response = Oj.load(curlCall)
