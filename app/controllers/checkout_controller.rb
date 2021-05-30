@@ -67,6 +67,7 @@ class CheckoutController < ApplicationController
 							  }
 							}, {stripe_account: ENV['connectAccount']})
 						end
+						# make one invoice with all line items? in v2 here
 						appFeeAmount = ((stripePriceInfo[:unit_amount_decimal].to_i * lineItem[:quantity].to_i) * (ENV['serviceFee'].to_i * 0.01) ).to_i
 
 						if session[:coupon]
@@ -102,16 +103,29 @@ class CheckoutController < ApplicationController
 						openInvoice = Stripe::Invoice.finalize_invoice(listInvoice[:id], {}, {stripe_account: ENV['connectAccount']})
 						payInvoice  = Stripe::Invoice.pay(listInvoice[:id], {}, {stripe_account: ENV['connectAccount']})
 					  invoicesToPay << payInvoice[:id]
+					  # email customer with receipt_email update via payment intent
+					  # text owner with invoice id and ENV['connectAccount']
+					  receiptEmailX = Stripe::PaymentIntent.update(
+						  payInvoice['payment_intent'],{
+						  	receipt_email: connectAccountCus['email'],
+						  },
+						  {stripe_account: ENV['connectAccount']},
+						)
 
+					  textData = {
+							'stripeMerchantID' => ENV['connectAccount'],
+							'stripePaymentIntentID' => payInvoice['payment_intent'],
+						}.to_json
+
+					  notifyTwilio = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{textData}' -X POST #{SITEurl}/v1/twilioText`
+			
+				    response = Oj.load(notifyTwilio)
 					end
 
-					if invoicesToPay.size == session[:lineItems].size
-						reset_session
-						redirect_to request.referrer
-						flash[:success] = "Purchase Complete"
-						return
-					else
-					end
+					reset_session
+					redirect_to request.referrer
+					flash[:success] = "Purchase Complete"
+					return
 
 
 					
