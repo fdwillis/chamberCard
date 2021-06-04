@@ -33,9 +33,9 @@ class CheckoutController < ApplicationController
 						email: params[:checkout][:email],
 						name: params[:checkout][:name],
 						phone: session[:phone],
+						address: session[:address],
 					  source: token['id']
 					}, {stripe_account: ENV['connectAccount']})
-
 					session[:lineItems].each do |lineItem|
 						stripePriceInfo = Stripe::Price.retrieve(lineItem[:price], {stripe_account: ENV['connectAccount']})
 						stripeProductInfo = Stripe::Product.retrieve(stripePriceInfo[:product], {stripe_account: ENV['connectAccount']})
@@ -69,7 +69,7 @@ class CheckoutController < ApplicationController
 						end
 						# make one invoice with all line items? in v2 here
 						appFeeAmount = ((stripePriceInfo[:unit_amount_decimal].to_i * lineItem[:quantity].to_i) * (ENV['serviceFee'].to_i * 0.01) ).to_i
-
+						
 						if session[:coupon]
 							listInvoice = Stripe::Invoice.create({
 								customer: connectAccountCus,
@@ -111,15 +111,16 @@ class CheckoutController < ApplicationController
 						  },
 						  {stripe_account: ENV['connectAccount']},
 						)
+					  if (Rails.env.production?)
+						  textData = {
+								'stripeMerchantID' => ENV['connectAccount'],
+								'stripePaymentIntentID' => payInvoice['payment_intent'],
+							}.to_json
 
-					  textData = {
-							'stripeMerchantID' => ENV['connectAccount'],
-							'stripePaymentIntentID' => payInvoice['payment_intent'],
-						}.to_json
-
-					  notifyTwilio = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{textData}' -X POST #{SITEurl}/v1/twilioText`
-			
-				    response = Oj.load(notifyTwilio)
+						  notifyTwilio = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{textData}' -X POST #{SITEurl}/v1/twilioText`
+				
+					    response = Oj.load(notifyTwilio)
+						end
 					end
 
 					reset_session
