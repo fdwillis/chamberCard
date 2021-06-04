@@ -51,73 +51,74 @@
           <% end %>
         <% end %>
       </div>
-      <div id="footer-bar" class="footer-bar-1">
-        <% if current_user&.owner? %>
-          <% if request.fullpath.include?('/customers')%>
-            <a href="/customers"><i class="fa fa-users color-highlight"></i><span>Customers</span></a>
-          <% else %>
-            <a href="/customers"><i class="fa fa-users"></i><span>Customers</span></a>
+      <% if current_user %>
+        <div id="footer-bar" class="footer-bar-1">
+          <% if current_user&.owner? %>
+            <% if request.fullpath.include?('/customers')%>
+              <a href="/customers"><i class="fa fa-users color-highlight"></i><span>Customers</span></a>
+            <% else %>
+              <a href="/customers"><i class="fa fa-users"></i><span>Customers</span></a>
+            <% end %>
+
           <% end %>
 
-        <% end %>
-
-          <% if request.fullpath.include?('/schedule') %>
-            <a href="/schedule"><i class="fa fa-calendar-check color-highlight"></i><span>Schedule</span></a>
-          <% else %>
-            <a href="/schedule"><i class="fa fa-calendar-check"></i><span>Schedule</span></a>
+            <% if request.fullpath.include?('/schedule') %>
+              <a href="/schedule"><i class="fa fa-calendar-check color-highlight"></i><span>Schedule</span></a>
+            <% else %>
+              <a href="/schedule"><i class="fa fa-calendar-check"></i><span>Schedule</span></a>
+            <% end %>
+          <% if current_user&.customer? && current_user&.stripeCustomerID && current_user&.checkStripeSource %>
+            <% if request.fullpath.include?('/customers') %>
+              <a href="/customers/<%= current_user&.stripeCustomerID %>"><i class="fa fa-user color-highlight"></i><span>Profile</span></a>
+            <% else %>
+              <a href="/customers/<%= current_user&.stripeCustomerID %>"><i class="fa fa-user"></i><span>Profile</span></a>
+            <% end %>
           <% end %>
-        <% if current_user&.customer? && current_user&.stripeCustomerID && current_user&.checkStripeSource %>
-          <% if request.fullpath.include?('/customers') %>
-            <a href="/customers/<%= current_user&.stripeCustomerID %>"><i class="fa fa-user color-highlight"></i><span>Profile</span></a>
+
+          <% if request.fullpath.include?('/services') || request.fullpath.include?('?service_id') %>
+            <a href="/services"><i class="fa fa-shopping-bag color-highlight"></i><span>Services</span></a>
           <% else %>
-            <a href="/customers/<%= current_user&.stripeCustomerID %>"><i class="fa fa-user"></i><span>Profile</span></a>
+            <a href="/services"><i class="fa fa-shopping-bag"></i><span>Services</span></a>
           <% end %>
-        <% end %>
 
-        <% if request.fullpath.include?('/services') || request.fullpath.include?('?service_id') %>
-          <a href="/services"><i class="fa fa-shopping-bag color-highlight"></i><span>Services</span></a>
-        <% else %>
-          <a href="/services"><i class="fa fa-shopping-bag"></i><span>Services</span></a>
-        <% end %>
+          <% if request.fullpath.include?('/products') || request.fullpath.include?('?product_id') %>
+            <a href="/products"><i class="fa fa-shopping-basket color-highlight"></i><span>Shop</span></a>
+          <% else %>
+            <a href="/products"><i class="fa fa-shopping-basket"></i><span>Shop</span></a>
+          <% end %>
 
-        <% if request.fullpath.include?('/products') || request.fullpath.include?('?product_id') %>
-          <a href="/products"><i class="fa fa-shopping-basket color-highlight"></i><span>Shop</span></a>
-        <% else %>
-          <a href="/products"><i class="fa fa-shopping-basket"></i><span>Shop</span></a>
-        <% end %>
+          
 
-        
+          <% if request.fullpath.include?('/orders') %>
+            <a href="/orders"><i class="fa fa-truck color-highlight"></i><span>Orders</span></a>
+          <% else %>
+            <a href="/orders"><i class="fa fa-truck"></i><span>Orders</span></a>
+          <% end %>
 
-        <% if request.fullpath.include?('/orders') %>
-          <a href="/orders"><i class="fa fa-truck color-highlight"></i><span>Orders</span></a>
-        <% else %>
-          <a href="/orders"><i class="fa fa-truck"></i><span>Orders</span></a>
-        <% end %>
+          <% if request.fullpath.include?('/charges') %>
+            <a href="/charges"><i class="fa fa-dollar-sign color-highlight"></i><span>Payments</span></a>
+          <% else %>
+            <a href="/charges"><i class="fa fa-dollar-sign"></i><span>Payments</span></a>
+          <% end %>
 
-        <% if request.fullpath.include?('/charges') %>
-          <a href="/charges"><i class="fa fa-dollar-sign color-highlight"></i><span>Payments</span></a>
-        <% else %>
-          <a href="/charges"><i class="fa fa-dollar-sign"></i><span>Payments</span></a>
-        <% end %>
+          <% if request.fullpath.include?('/pay-now') %>
+              <a href="/pay-now"><i class="fa fa-money-bill color-highlight"></i><span>Invoices</span></a>
+          <% else %>
+              <a href="/pay-now"><i class="fa fa-money-bill"></i><span>Invoices</span></a>
+          <% end %>
 
-        <% if request.fullpath.include?('/pay-now') %>
-            <a href="/pay-now"><i class="fa fa-money-bill color-highlight"></i><span>Invoices</span></a>
-        <% else %>
-            <a href="/pay-now"><i class="fa fa-money-bill"></i><span>Invoices</span></a>
-        <% end %>
-
-        <% if request.fullpath.include?('/profile') || request.fullpath.include?('/auth/login')|| request.fullpath.include?('/auth/sign-up')|| request.fullpath.include?('/membership') %>
-          <a href="/profile"><i class="fa fa-cog color-highlight"></i><span>Settings</span></a>
-        <% else %>
-          <a href="/profile"><i class="fa fa-cog"></i><span>Settings</span></a>
-        <% end %>
+          <% if request.fullpath.include?('/profile') || request.fullpath.include?('/auth/login')|| request.fullpath.include?('/auth/sign-up')|| request.fullpath.include?('/membership') %>
+            <a href="/profile"><i class="fa fa-cog color-highlight"></i><span>Settings</span></a>
+          <% else %>
+            <a href="/profile"><i class="fa fa-cog"></i><span>Settings</span></a>
+          <% end %>
 
 
 
 
-          <!-- <a href="#" data-menu="menu-settings"><i class="fa fa-cog"></i><span>Settings</span></a> -->
-      </div>
-
+            <!-- <a href="#" data-menu="menu-settings"><i class="fa fa-cog"></i><span>Settings</span></a> -->
+        </div>
+      <% end %>
       <div class="page-content mt-4">
         <% if flash[:success] %>
           <div id="toast-2" class="toast text-center toast-tiny toast-top bg-green1-dark fade" data-delay="3000" data-autohide="true"><i class="fa fa-info mr-3"></i><%= flash[:success] %></div>

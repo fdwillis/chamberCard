@@ -42,7 +42,7 @@
                 <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= Time.at(serviceX['dateCreated']).strftime("%a %b #{Time.at(serviceX['dateCreated']).day.ordinalize}, %Y") %></p></div>
             </div>
             <div class="d-flex">
-                <div class="col-3"><p class="font-700 color-theme">Paid</p></div>
+                <div class="col-3"><p class="font-700">Paid</p></div>
                 <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= number_to_currency(serviceX['amount'] * 0.01, precision: 2) %></p></div>
             </div>
           </div>
@@ -73,7 +73,7 @@
             <div class="input-style has-borders no-icon mb-4 text-center">
                 
                 <p for="session<%= serviceX['invoiceOrSessionID'] %>" class="color-highlight">Confirm &amp; schedule service with the customer</p>
-                <i class="fa fa-check disabled valid me-4 pe-3 font-12 color-green-dark"></i>
+                <i class="fa fa-check disabled valid me-4 pe-3 font-12 color-green2-dark"></i>
                 <i class="fa fa-check disabled invalid me-4 pe-3 font-12 color-red-dark"></i>
             </div>
             <div class="col-12">
