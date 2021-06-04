@@ -18,9 +18,7 @@ Rails.application.routes.draw do
 		resources :pricing
 		resources :checkout
 
-		resources :stripe_customers, :path => '/customers' do 
-			resources :payments
-		end
+		resources :stripe_customers, :path => '/customers'
 		resources :stripe_tokens, :path => '/stripe-tokens'
 				
 		post "setSessionVar", to: 'sessions#setSessionVar', as: "set-session-vars"
@@ -46,6 +44,7 @@ Rails.application.routes.draw do
 		post "confirm", to: 'schedule#confirm', as: "confirm"
 		post "customer-pay", to: 'charges#customerPay', as: "customer-pay"
 		
+		get "/customers/:id/payments", to: 'charges#payments', as: "payments"
 		get "success", to: 'checkout#success', as: "success"
 		get "cancel", to: 'checkout#cancel', as: "cancel"
 
