@@ -1,6 +1,31 @@
 class ApplicationController < ActionController::Base
 	before_action :configure_permitted_parameters, if: :devise_controller?
 
+	def stripeCustomerRequest()
+		
+	end
+
+	def stripeTokenRequest(newStripeCardTokenParams)
+		number = newStripeCardTokenParams[:number]
+    exp_year = newStripeCardTokenParams[:exp_year]
+    exp_month = newStripeCardTokenParams[:exp_month]
+    cvc = newStripeCardTokenParams[:cvc]
+
+    if ENV['connectAccount'].present?
+	    curlCall = `curl -H "appName: #{ENV['appName']}" -d "connectAccount=#{ENV['connectAccount']}&number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/v2/stripe-tokens`
+	  else
+	    curlCall = `curl -H "appName: #{ENV['appName']}" -d "number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/v2/stripe-tokens`
+	  end
+
+    response = Oj.load(curlCall)
+    
+    if !response.blank? && response['success']
+      return response['token']
+    else
+      return response['error']
+    end
+	end
+
 	def pullChargesAPI
 		curlCall = current_user&.indexStripeChargesAPI(params)
 			

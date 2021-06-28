@@ -19,15 +19,11 @@ class CheckoutController < ApplicationController
 	    end
 	  else
 	  	begin
-			  if !session[:lineItems].blank?	
-			  	token = Stripe::Token.create({
-					  card: {
-					    number: params[:checkout][:card],
-					    exp_month:params[:checkout][:exp_month],
-					    exp_year:params[:checkout][:exp_year],
-					    cvc: params[:checkout][:cvc],
-					  },
-					})
+			  if !session[:lineItems].blank?
+
+				  token = stripeTokenRequest(newStripeCardTokenParams)
+
+				  connectAccountCus = stripeCustomerRequest()	
 
 					connectAccountCus = Stripe::Customer.create({
 						email: params[:checkout][:email],
@@ -35,8 +31,9 @@ class CheckoutController < ApplicationController
 						phone: session[:phone],
 					  source: token['id']
 					}, {stripe_account: ENV['connectAccount']})
+
 					session[:lineItems].each do |lineItem|
-						stripePriceInfo = Stripe::Price.retrieve(lineItem['price'], {stripe_account: ENV['connectAccount']})
+						stripePriceInfo = Stripe::Price.retrieve(lineItem[:price], {stripe_account: ENV['connectAccount']})
 						stripeProductInfo = Stripe::Product.retrieve(stripePriceInfo[:product], {stripe_account: ENV['connectAccount']})
 
 						if !stripeProductInfo.shippable
@@ -45,7 +42,7 @@ class CheckoutController < ApplicationController
 							  customer: connectAccountCus,
 							  description: stripeProductInfo[:name],
 							  unit_amount_decimal: stripePriceInfo[:unit_amount_decimal],
-							  quantity: lineItem['quantity'],
+							  quantity: lineItem[:quantity],
 							  metadata: {
 							  	price: stripePriceInfo[:id]
 							  }
@@ -58,7 +55,7 @@ class CheckoutController < ApplicationController
 							  customer: connectAccountCus,
 							  description: stripeProductInfo[:name],
 							  unit_amount_decimal: stripePriceInfo[:unit_amount_decimal],
-							  quantity: lineItem['quantity'],
+							  quantity: lineItem[:quantity],
 							  metadata: {
 							  	shipping: "true",
 							  	pickup: "",
@@ -67,7 +64,7 @@ class CheckoutController < ApplicationController
 							}, {stripe_account: ENV['connectAccount']})
 						end
 						# make one invoice with all line items? in v2 here
-						appFeeAmount = ((stripePriceInfo[:unit_amount_decimal].to_i * lineItem['quantity'].to_i) * (ENV['serviceFee'].to_i * 0.01) ).to_i
+						appFeeAmount = ((stripePriceInfo[:unit_amount_decimal].to_i * lineItem[:quantity].to_i) * (ENV['serviceFee'].to_i * 0.01) ).to_i
 						
 						if session[:coupon]
 							listInvoice = Stripe::Invoice.create({
@@ -182,5 +179,11 @@ class CheckoutController < ApplicationController
 
 	def cancel
 		
+	end
+	private
+
+	def newStripeCardTokenParams
+		paramsClean = params.require(:checkout).permit(:number, :exp_year, :exp_month, :cvc)
+		return paramsClean.reject{|_, v| v.blank?}
 	end
 end
