@@ -250,14 +250,22 @@
 
             <% if !current_user %>
               <%= form_for :setSessionVar, url: set_session_vars_path do |f| %>
-                <% if session[:phone] && session[:address] %>  
+                <% if session[:phone] && session[:name] && session[:email] %>  
                   <p class="color-highlight mt-4 text-center">Please be sure the information below is correct</p>
                 <% end %>
+                  <div class="input-style has-icon">
+                    <span class="color-highlight input-style-2">Legal Name</span>
+                    <%= f.text_field :name, class: "form-control",required: true, value: !session[:name].blank? ? session[:name] : nil, placeholder: 'Jane Doe' %>
+                  </div> 
                   <div class="input-style has-icon">
                     <span class="color-highlight input-style-2">Phone</span>
                     <%= f.telephone_field :phone, class: "form-control",required: true, value: !session[:phone].blank? ? session[:phone] : nil %>
                   </div> 
 
+                  <div class="input-style has-icon">
+                    <span class="color-highlight input-style-2">Email</span>
+                    <%= f.email_field :email, class: "form-control",required: true, value: !session[:email].blank? ? session[:email] : nil, placeholder: 'email@d.com' %>
+                  </div> 
                   <div class="input-style has-icon">
                     <span class="color-highlight input-style-2">Street Address or PO Box</span>
                     <%= f.text_field :line1, class: "form-control",required: true, value: !session[:address].blank? ? session[:address][:line1] : nil, placeholder: '123 street ave' %>
