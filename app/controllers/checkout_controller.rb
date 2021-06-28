@@ -33,11 +33,10 @@ class CheckoutController < ApplicationController
 						email: params[:checkout][:email],
 						name: params[:checkout][:name],
 						phone: session[:phone],
-						address: session[:address],
 					  source: token['id']
 					}, {stripe_account: ENV['connectAccount']})
 					session[:lineItems].each do |lineItem|
-						stripePriceInfo = Stripe::Price.retrieve(lineItem[:price], {stripe_account: ENV['connectAccount']})
+						stripePriceInfo = Stripe::Price.retrieve(lineItem['price'], {stripe_account: ENV['connectAccount']})
 						stripeProductInfo = Stripe::Product.retrieve(stripePriceInfo[:product], {stripe_account: ENV['connectAccount']})
 
 						if !stripeProductInfo.shippable
@@ -46,7 +45,7 @@ class CheckoutController < ApplicationController
 							  customer: connectAccountCus,
 							  description: stripeProductInfo[:name],
 							  unit_amount_decimal: stripePriceInfo[:unit_amount_decimal],
-							  quantity: lineItem[:quantity],
+							  quantity: lineItem['quantity'],
 							  metadata: {
 							  	price: stripePriceInfo[:id]
 							  }
@@ -59,7 +58,7 @@ class CheckoutController < ApplicationController
 							  customer: connectAccountCus,
 							  description: stripeProductInfo[:name],
 							  unit_amount_decimal: stripePriceInfo[:unit_amount_decimal],
-							  quantity: lineItem[:quantity],
+							  quantity: lineItem['quantity'],
 							  metadata: {
 							  	shipping: "true",
 							  	pickup: "",
@@ -68,7 +67,7 @@ class CheckoutController < ApplicationController
 							}, {stripe_account: ENV['connectAccount']})
 						end
 						# make one invoice with all line items? in v2 here
-						appFeeAmount = ((stripePriceInfo[:unit_amount_decimal].to_i * lineItem[:quantity].to_i) * (ENV['serviceFee'].to_i * 0.01) ).to_i
+						appFeeAmount = ((stripePriceInfo[:unit_amount_decimal].to_i * lineItem['quantity'].to_i) * (ENV['serviceFee'].to_i * 0.01) ).to_i
 						
 						if session[:coupon]
 							listInvoice = Stripe::Invoice.create({
@@ -111,7 +110,7 @@ class CheckoutController < ApplicationController
 						  },
 						  {stripe_account: ENV['connectAccount']},
 						)
-					  if (Rails.env.production?)
+					  if ENV['stripeLivePublish'].include?("pk_live_")
 						  textData = {
 								'stripeMerchantID' => ENV['connectAccount'],
 								'stripePaymentIntentID' => payInvoice['payment_intent'],
