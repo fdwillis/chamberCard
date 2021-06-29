@@ -23,14 +23,7 @@ class CheckoutController < ApplicationController
 
 				  token = stripeTokenRequest(newStripeCardTokenParams)
 
-				  connectAccountCus = stripeCustomerRequest()	
-
-					connectAccountCus = Stripe::Customer.create({
-						email: params[:checkout][:email],
-						name: params[:checkout][:name],
-						phone: session[:phone],
-					  source: token['id']
-					}, {stripe_account: ENV['connectAccount']})
+				  connectAccountCus = stripeCustomerRequest(session, token)	
 
 					session[:lineItems].each do |lineItem|
 						stripePriceInfo = Stripe::Price.retrieve(lineItem[:price], {stripe_account: ENV['connectAccount']})

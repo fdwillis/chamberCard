@@ -301,14 +301,6 @@
                     
                 <%= form_for :checkout, url: checkout_index_path do |f| %>
                   <div class="input-style has-icon">
-                    <span class="color-highlight input-style-2">Name</span>
-                    <%= f.text_field :name, class: "form-control",required: true %>
-                  </div>
-                  <div class="input-style has-icon">
-                    <span class="color-highlight input-style-2">Email</span>
-                    <%= f.text_field :email, class: "form-control",required: true %>
-                  </div>
-                  <div class="input-style has-icon">
                     <span class="color-highlight input-style-2">Card Number</span>
                     <%= f.text_field :number, class: "form-control",minlength: 16, maxlength: 16,required: true %>
                   </div>

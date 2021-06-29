@@ -1,8 +1,15 @@
 class ApplicationController < ActionController::Base
 	before_action :configure_permitted_parameters, if: :devise_controller?
 
-	def stripeCustomerRequest()
-		
+	def stripeCustomerRequest(session, token)
+		connectAccountCus = Stripe::Customer.create({
+			email: session[:email],
+			name: session[:name],
+			phone: session[:phone],
+		  source: token['id']
+		}, {stripe_account: ENV['connectAccount']})
+
+		return connectAccountCus
 	end
 
 	def stripeTokenRequest(newStripeCardTokenParams)
