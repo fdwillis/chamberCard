@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
 	  response = Oj.load(curlCall)
 	end
 
-	def stripeCustomerRequest(session, token)
+	def stripeCustomerRequest(token)
 		connectAccountCus = Stripe::Customer.create({
 			email: session[:email],
 			name: session[:name],

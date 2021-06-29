@@ -1,6 +1,5 @@
 class CheckoutController < ApplicationController
 	def create
-  	invoicesToPay = []
 		
 		if current_user&.authentication_token
 			datax = session[:cart].to_json
@@ -24,11 +23,12 @@ class CheckoutController < ApplicationController
 				  token = stripeTokenRequest(newStripeCardTokenParams)
 
 				  if token['success']
-					  connectAccountCus = stripeCustomerRequest(session, token)
+					  connectAccountCus = stripeCustomerRequest(token['token'])
 
 					  checkoutRequest = stripeInvoiceRequest(session[:lineItems], connectAccountCus)	
 
 					  if checkoutRequest['success']
+							session[:cart_id] = nil
 							redirect_to request.referrer
 							flash[:success] = "Purchase Complete"
 						elsif checkoutRequest['error']
