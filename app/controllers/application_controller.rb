@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
 			'connectAccount' => ENV['connectAccount'],
 			'serviceFee' => ENV['serviceFee'].to_i,
 		}.to_json
-		
+
     curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{params}' -X POST #{SITEurl}/v2/invoices`
 
 	  response = Oj.load(curlCall)
@@ -38,12 +38,6 @@ class ApplicationController < ActionController::Base
 	  end
 
     response = Oj.load(curlCall)
-    
-    if !response.blank? && response['success']
-      return response['token']
-    else
-      return response['error']
-    end
 	end
 
 	def pullChargesAPI

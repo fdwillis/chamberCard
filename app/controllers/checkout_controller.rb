@@ -23,19 +23,26 @@ class CheckoutController < ApplicationController
 
 				  token = stripeTokenRequest(newStripeCardTokenParams)
 
-				  connectAccountCus = stripeCustomerRequest(session, token)
+				  if token['success']
+					  connectAccountCus = stripeCustomerRequest(session, token)
 
-debugger
-				  checkoutRequest = stripeInvoiceRequest(session[:lineItems], connectAccountCus)	
-debugger
-				  if checkoutRequest['success']
-						reset_session
+					  checkoutRequest = stripeInvoiceRequest(session[:lineItems], connectAccountCus)	
+
+					  if checkoutRequest['success']
+							redirect_to request.referrer
+							flash[:success] = "Purchase Complete"
+						elsif checkoutRequest['error']
+							redirect_to request.referrer
+							flash[:error] = checkoutRequest['error']
+						else
+							redirect_to request.referrer
+							flash[:notice] = "Smethings wrng"
+						end
+				  else
 						redirect_to request.referrer
-						flash[:success] = "Purchase Complete"
-					else
-						redirect_to request.referrer
-						flash[:notice] = "Smethings wrng"
-					end
+						flash[:error] = token['error']
+				  end
+
 
 					return
 
