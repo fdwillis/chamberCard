@@ -1,8 +1,36 @@
 class CheckoutController < ApplicationController
 	def zazi
 		grabCart
-		debugger
-		if !session[:lineItems].blank?
+		
+		if @cart['subTotal'] > 0
+			token = stripeTokenRequest(newStripeCardTokenParams, nil)
+
+			datax = {
+				'token' => token['token']['id'],
+				'amount' => @cart['subTotal']
+			}.to_json
+
+			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{datax}' -X POST #{SITEurl}/v2/charges`
+			
+	    response = Oj.load(curlCall)
+
+	    if response['success']
+	    	curlCall0 = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -X DELETE #{SITEurl}/v1/carts/#{@cartID}`
+
+				response0 = Oj.load(curlCall0)
+			    
+		    if response0['success']
+					session[:cart_id] = nil
+					redirect_to request.referrer
+					flash[:success] = "Purchase Complete"
+		    else
+		    	flash[:error] = response0['error']
+		    	redirect_to carts_path
+		    end
+	    else
+	    	flash[:error] = response['error']
+	    	redirect_to carts_path
+	    end
 		else
 		end
 	end
@@ -29,7 +57,7 @@ class CheckoutController < ApplicationController
 	  	begin
 			  if !session[:lineItems].blank?
 
-				  token = stripeTokenRequest(newStripeCardTokenParams)
+				  token = stripeTokenRequest(newStripeCardTokenParams, ENV['connectAccount'])
 
 				  if token['success']
 					  connectAccountCus = stripeCustomerRequest(token['token'])

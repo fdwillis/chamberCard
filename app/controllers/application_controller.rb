@@ -25,14 +25,14 @@ class ApplicationController < ActionController::Base
 		return connectAccountCus
 	end
 
-	def stripeTokenRequest(newStripeCardTokenParams)
+	def stripeTokenRequest(newStripeCardTokenParams,connectAccount)
 		number = newStripeCardTokenParams[:number]
     exp_year = newStripeCardTokenParams[:exp_year]
     exp_month = newStripeCardTokenParams[:exp_month]
     cvc = newStripeCardTokenParams[:cvc]
 
-    if ENV['connectAccount'].present?
-	    curlCall = `curl -H "appName: #{ENV['appName']}" -d "connectAccount=#{ENV['connectAccount']}&number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/v2/tokens`
+    if connectAccount.present?
+	    curlCall = `curl -H "appName: #{ENV['appName']}" -d "connectAccount=#{connectAccount}&number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/v2/tokens`
 	  else
 	    curlCall = `curl -H "appName: #{ENV['appName']}" -d "number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/v2/tokens`
 	  end
