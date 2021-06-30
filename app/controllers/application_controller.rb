@@ -19,6 +19,7 @@ class ApplicationController < ActionController::Base
 			email: session[:email],
 			name: session[:name],
 			phone: session[:phone],
+			address: session[:address],
 		  source: token['id']
 		}, {stripe_account: ENV['connectAccount']})
 
