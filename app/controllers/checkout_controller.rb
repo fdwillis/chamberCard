@@ -1,5 +1,6 @@
 class CheckoutController < ApplicationController
 	def create
+		grabCart
 		
 		if current_user&.authentication_token
 			datax = session[:cart].to_json
@@ -28,9 +29,27 @@ class CheckoutController < ApplicationController
 					  checkoutRequest = stripeInvoiceRequest(session[:lineItems], connectAccountCus)	
 
 					  if checkoutRequest['success']
-							session[:cart_id] = nil
-							redirect_to request.referrer
-							flash[:success] = "Purchase Complete"
+
+					  	curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -X DELETE #{SITEurl}/v1/carts/#{@cartID}`
+
+							response = Oj.load(curlCall)
+						    
+					    if response['success']
+								session[:cart_id] = nil
+								redirect_to request.referrer
+								flash[:success] = "Purchase Complete"
+					    else
+					    	flash[:error] = response['error']
+					    	redirect_to carts_path
+					    end
+
+
+
+
+
+
+
+
 						elsif checkoutRequest['error']
 							redirect_to request.referrer
 							flash[:error] = checkoutRequest['error']
@@ -42,12 +61,7 @@ class CheckoutController < ApplicationController
 						redirect_to request.referrer
 						flash[:error] = token['error']
 				  end
-
-
 					return
-
-
-					
 				else
 					flash[:alert] = 'Add items to your cart'
 					redirect_to carts_path

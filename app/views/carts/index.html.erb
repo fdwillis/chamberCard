@@ -320,6 +320,28 @@
                     <%= f.submit "Charge Me", class: "btn btn-full bg-green1-dark text-uppercase rounded-sm font-900" %>
                   </div> 
                 <% end %>
+
+                <%= form_for :zaziera, url: checkout_index_path do |f| %>
+                  <div class="input-style has-icon">
+                    <span class="color-highlight input-style-2">Card Number</span>
+                    <%= f.text_field :number, class: "form-control",minlength: 16, maxlength: 16,required: true %>
+                  </div>
+                  <div class="input-style has-icon">
+                    <span class="color-highlight input-style-2">Exp Month</span>
+                    <%= f.text_field :exp_month, class: "form-control",required: true %>
+                  </div>
+                  <div class="input-style has-icon">
+                    <span class="color-highlight input-style-2">Exp Year</span>
+                    <%= f.text_field :exp_year, class: "form-control", minlength: 4,required: true %>
+                  </div>
+                  <div class="input-style has-icon">
+                    <span class="color-highlight input-style-2">CVC</span>
+                    <%= f.text_field :cvc, class: "form-control", required: true %>
+                  </div> 
+                  <div class="input-style input-style-2 mt-2">
+                    <%= f.submit "Zaziera", class: "btn btn-full bg-green1-dark text-uppercase rounded-sm font-900" %>
+                  </div> 
+                <% end %>
               <% end %>
             <% end %>
             
