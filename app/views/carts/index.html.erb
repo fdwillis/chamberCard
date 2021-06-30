@@ -186,6 +186,16 @@
           <% end %>
 
           <% if !current_user %>
+            <div class="d-flex mb-3">
+                <div class="mr-3 text-left">
+                    <h5 class="font-600">Fee &nbsp;<i class="fa fa-exclamation-circle font-14 mt-1 color-yellow2-dark scale-icon mr-2" data-toggle="tooltip" data-placement="right" title="" data-original-title="This fee helps us operate & upgrade <%= ENV['siteName'] %>"></i></h5>
+                    
+
+                </div>
+                <div class="ml-auto text-right">
+                    <h4><%= number_to_currency(@cart['serviceFee'] * 0.01, precision: 2) %></h4>
+                </div>
+            </div>
             <div class="d-flex">
               <div class="mr-3 text-left">
                   <h5 class="font-600">Items</h5>
@@ -225,7 +235,7 @@
                 </div>
                 <div class="ml-auto text-right">
                   <h5 class="font-600">
-                    <%= number_to_currency(@cart['subItemsTotal'] * 0.01, precision: 2) %>
+                    <%= number_to_currency((@cart['subItemsTotal'] * 0.01 + @cart['serviceFee'] * 0.01), precision: 2) %>
                   </h5>
                 </div>
               </div>
@@ -321,7 +331,7 @@
                   </div> 
                 <% end %>
 
-                <%= form_for :zaziera, url: checkout_index_path do |f| %>
+                <%= form_for :checkout, url: zazi_path do |f| %>
                   <div class="input-style has-icon">
                     <span class="color-highlight input-style-2">Card Number</span>
                     <%= f.text_field :number, class: "form-control",minlength: 16, maxlength: 16,required: true %>
@@ -339,7 +349,7 @@
                     <%= f.text_field :cvc, class: "form-control", required: true %>
                   </div> 
                   <div class="input-style input-style-2 mt-2">
-                    <%= f.submit "Zaziera", class: "btn btn-full bg-green1-dark text-uppercase rounded-sm font-900" %>
+                    <%= f.submit "Zaziera", class: "btn btn-full bg-magenta1-dark text-uppercase rounded-sm font-900" %>
                   </div> 
                 <% end %>
               <% end %>

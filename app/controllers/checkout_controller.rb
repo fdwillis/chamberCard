@@ -1,7 +1,15 @@
 class CheckoutController < ApplicationController
+	def zazi
+		grabCart
+		debugger
+		if !session[:lineItems].blank?
+		else
+		end
+	end
+
 	def create
 		grabCart
-		
+
 		if current_user&.authentication_token
 			datax = session[:cart].to_json
 			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{datax}' -X POST #{SITEurl}/v1/checkout`
@@ -26,7 +34,7 @@ class CheckoutController < ApplicationController
 				  if token['success']
 					  connectAccountCus = stripeCustomerRequest(token['token'])
 
-					  checkoutRequest = stripeInvoiceRequest(session[:lineItems], connectAccountCus)	
+					  checkoutRequest = stripeInvoiceRequest(session[:lineItems], connectAccountCus, @serviceFee, ENV['connectAccount'])	
 
 					  if checkoutRequest['success']
 

@@ -20,6 +20,8 @@ Rails.application.routes.draw do
 
 		resources :stripe_customers, :path => '/customers'
 		resources :stripe_tokens, :path => '/stripe-tokens'
+		
+		post "zazi", to: 'checkout#zazi', as: "zazi"
 				
 		post "setSessionVar", to: 'sessions#setSessionVar', as: "set-session-vars"
 		post "initiateCharge", to: 'charges#initiateCharge', as: "initiateCharge"
