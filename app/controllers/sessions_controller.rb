@@ -7,6 +7,8 @@ class SessionsController < Devise::SessionsController
     begin
       if setSessionVarParams[:phone]
         session[:phone] = setSessionVarParams[:phone]
+        session[:name] = setSessionVarParams[:name]
+        session[:email] = setSessionVarParams[:email]
 
 
         session[:address] = {
@@ -62,7 +64,7 @@ class SessionsController < Devise::SessionsController
   private
 
   def setSessionVarParams
-    paramsClean = params.require(:setSessionVar).permit(:coupon, :phone, :line1, :line2, :city, :state, :postal_code, :country)
+    paramsClean = params.require(:setSessionVar).permit(:name, :email, :coupon, :phone, :line1, :line2, :city, :state, :postal_code, :country)
     return paramsClean.reject{|_, v| v.blank?}
   end
 end

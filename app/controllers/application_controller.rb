@@ -1,6 +1,46 @@
 class ApplicationController < ActionController::Base
 	before_action :configure_permitted_parameters, if: :devise_controller?
 
+	def stripeInvoiceRequest(lineItems,connectAccountCus, serviceFee, connectAccount)
+		params = {
+			'lineItems' => lineItems,
+			'connectAccountCus' => connectAccountCus,
+			'connectAccount' => connectAccount,
+			'serviceFee' => serviceFee,
+		}.to_json
+
+    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{params}' -X POST #{SITEurl}/v2/invoices`
+
+	  response = Oj.load(curlCall)
+	end
+
+	def stripeCustomerRequest(token)
+		connectAccountCus = Stripe::Customer.create({
+			email: session[:email],
+			name: session[:name],
+			phone: session[:phone],
+			address: session[:address],
+		  source: token['id']
+		}, {stripe_account: ENV['connectAccount']})
+
+		return connectAccountCus
+	end
+
+	def stripeTokenRequest(newStripeCardTokenParams,connectAccount)
+		number = newStripeCardTokenParams[:number]
+    exp_year = newStripeCardTokenParams[:exp_year]
+    exp_month = newStripeCardTokenParams[:exp_month]
+    cvc = newStripeCardTokenParams[:cvc]
+
+    if connectAccount.present?
+	    curlCall = `curl -H "appName: #{ENV['appName']}" -d "connectAccount=#{connectAccount}&number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/v2/tokens`
+	  else
+	    curlCall = `curl -H "appName: #{ENV['appName']}" -d "number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/v2/tokens`
+	  end
+
+    response = Oj.load(curlCall)
+	end
+
 	def pullChargesAPI
 		curlCall = current_user&.indexStripeChargesAPI(params)
 			

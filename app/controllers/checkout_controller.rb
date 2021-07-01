@@ -1,7 +1,43 @@
 class CheckoutController < ApplicationController
-	def create
-  	invoicesToPay = []
+	def zazi
+		grabCart
 		
+		if @cart['subTotal'] > 0
+			token = stripeTokenRequest(newStripeCardTokenParams, nil)
+
+			datax = {
+				'token' => token['token']['id'],
+				'amount' => @cart['subTotal']
+			}.to_json
+
+			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{datax}' -X POST #{SITEurl}/v2/charges`
+			
+	    response = Oj.load(curlCall)
+
+	    if response['success']
+	    	curlCall0 = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -X DELETE #{SITEurl}/v1/carts/#{@cartID}`
+
+				response0 = Oj.load(curlCall0)
+			    
+		    if response0['success']
+					session[:cart_id] = nil
+					redirect_to request.referrer
+					flash[:success] = "Purchase Complete"
+		    else
+		    	flash[:error] = response0['error']
+		    	redirect_to carts_path
+		    end
+	    else
+	    	flash[:error] = response['error']
+	    	redirect_to carts_path
+	    end
+		else
+		end
+	end
+
+	def create
+		grabCart
+
 		if current_user&.authentication_token
 			datax = session[:cart].to_json
 			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{datax}' -X POST #{SITEurl}/v1/checkout`
@@ -19,117 +55,49 @@ class CheckoutController < ApplicationController
 	    end
 	  else
 	  	begin
-			  if !session[:lineItems].blank?	
-			  	token = Stripe::Token.create({
-					  card: {
-					    number: params[:checkout][:card],
-					    exp_month:params[:checkout][:exp_month],
-					    exp_year:params[:checkout][:exp_year],
-					    cvc: params[:checkout][:cvc],
-					  },
-					})
+			  if !session[:lineItems].blank?
 
-					connectAccountCus = Stripe::Customer.create({
-						email: params[:checkout][:email],
-						name: params[:checkout][:name],
-						phone: session[:phone],
-						address: session[:address],
-					  source: token['id']
-					}, {stripe_account: ENV['connectAccount']})
-					session[:lineItems].each do |lineItem|
-						stripePriceInfo = Stripe::Price.retrieve(lineItem[:price], {stripe_account: ENV['connectAccount']})
-						stripeProductInfo = Stripe::Product.retrieve(stripePriceInfo[:product], {stripe_account: ENV['connectAccount']})
+				  token = stripeTokenRequest(newStripeCardTokenParams, ENV['connectAccount'])
 
-						if !stripeProductInfo.shippable
-							inI = Stripe::InvoiceItem.create({
-								currency: 'usd',
-							  customer: connectAccountCus,
-							  description: stripeProductInfo[:name],
-							  unit_amount_decimal: stripePriceInfo[:unit_amount_decimal],
-							  quantity: lineItem[:quantity],
-							  metadata: {
-							  	price: stripePriceInfo[:id]
-							  }
-							}, {stripe_account: ENV['connectAccount']})
+				  if token['success']
+					  connectAccountCus = stripeCustomerRequest(token['token'])
+
+					  checkoutRequest = stripeInvoiceRequest(session[:lineItems], connectAccountCus, @serviceFee, ENV['connectAccount'])	
+
+					  if checkoutRequest['success']
+
+					  	curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -X DELETE #{SITEurl}/v1/carts/#{@cartID}`
+
+							response = Oj.load(curlCall)
+						    
+					    if response['success']
+								session[:cart_id] = nil
+								redirect_to request.referrer
+								flash[:success] = "Purchase Complete"
+					    else
+					    	flash[:error] = response['error']
+					    	redirect_to carts_path
+					    end
 
 
+
+
+
+
+
+
+						elsif checkoutRequest['error']
+							redirect_to request.referrer
+							flash[:error] = checkoutRequest['error']
 						else
-							inI = Stripe::InvoiceItem.create({
-								currency: 'usd',
-							  customer: connectAccountCus,
-							  description: stripeProductInfo[:name],
-							  unit_amount_decimal: stripePriceInfo[:unit_amount_decimal],
-							  quantity: lineItem[:quantity],
-							  metadata: {
-							  	shipping: "true",
-							  	pickup: "",
-							  	price:  stripePriceInfo[:id]
-							  }
-							}, {stripe_account: ENV['connectAccount']})
+							redirect_to request.referrer
+							flash[:notice] = "Smethings wrng"
 						end
-						# make one invoice with all line items? in v2 here
-						appFeeAmount = ((stripePriceInfo[:unit_amount_decimal].to_i * lineItem[:quantity].to_i) * (ENV['serviceFee'].to_i * 0.01) ).to_i
-						
-						if session[:coupon]
-							listInvoice = Stripe::Invoice.create({
-								customer: connectAccountCus,
-								application_fee_amount: (appFeeAmount * (1 - (session[:percentOff] * 0.01))).to_i,
-								discounts: [
-									{coupon: session[:coupon]},
-								],
-								metadata: {
-									goodOrService: stripeProductInfo.shippable == true ? 'good' : 'service',
-									trackingNumbers: "",
-							  	orderIssue: '',
-							  	issueResolved: '',
-								}
-							}, {stripe_account: ENV['connectAccount']})
-						else
-							listInvoice = Stripe::Invoice.create({
-								customer: connectAccountCus,
-								application_fee_amount: appFeeAmount,
-								discounts: [
-									{coupon: session[:coupon]},
-								],
-								metadata: {
-									goodOrService: stripeProductInfo.shippable == true ? 'good' : 'service',
-									trackingNumbers: "",
-							  	orderIssue: '',
-							  	issueResolved: '',
-								}
-							}, {stripe_account: ENV['connectAccount']})
-						end
-
-						openInvoice = Stripe::Invoice.finalize_invoice(listInvoice[:id], {}, {stripe_account: ENV['connectAccount']})
-						payInvoice  = Stripe::Invoice.pay(listInvoice[:id], {}, {stripe_account: ENV['connectAccount']})
-					  invoicesToPay << payInvoice[:id]
-					  # email customer with receipt_email update via payment intent
-					  # text owner with invoice id and ENV['connectAccount']
-					  receiptEmailX = Stripe::PaymentIntent.update(
-						  payInvoice['payment_intent'],{
-						  	receipt_email: connectAccountCus['email'],
-						  },
-						  {stripe_account: ENV['connectAccount']},
-						)
-					  if (Rails.env.production?)
-						  textData = {
-								'stripeMerchantID' => ENV['connectAccount'],
-								'stripePaymentIntentID' => payInvoice['payment_intent'],
-							}.to_json
-
-						  notifyTwilio = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{textData}' -X POST #{SITEurl}/v1/twilioText`
-				
-					    response = Oj.load(notifyTwilio)
-						end
-					end
-
-					reset_session
-					redirect_to request.referrer
-					flash[:success] = "Purchase Complete"
+				  else
+						redirect_to request.referrer
+						flash[:error] = token['error']
+				  end
 					return
-
-
-					
 				else
 					flash[:alert] = 'Add items to your cart'
 					redirect_to carts_path
@@ -183,5 +151,11 @@ class CheckoutController < ApplicationController
 
 	def cancel
 		
+	end
+	private
+
+	def newStripeCardTokenParams
+		paramsClean = params.require(:checkout).permit(:number, :exp_year, :exp_month, :cvc)
+		return paramsClean.reject{|_, v| v.blank?}
 	end
 end

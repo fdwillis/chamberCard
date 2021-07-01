@@ -36,17 +36,19 @@
           <% end %>
             
 
-        <% if current_user&.customer? %>
+        <% if !current_user&.stripeCustomerID.blank? %>
             <div class="content row text-center">
-              <% if current_user&.customer? && !current_user&.checkStripeSource && !current_user&.stripeCustomerID.blank? %>
                 <a href="#" data-menu="menu-transaction-transfer" class="col-12">
                     <div class="card card-style ml-2 mb-3">
                         <i class="fa fa-credit-card color-highlight fa-2x mt-3"></i>
                         <h1 class="pt-2 font-18">Card</h1>
-                        <p class="font-11 opacity-50 mt-n2 mb-3">Tap to add a card</p>
+                        <% if current_user&.checkStripeSource  %>
+                          <p class="font-11 opacity-50 mt-n2 mb-3">Edit Card</p>
+                        <% else %>
+                          <p class="font-11 opacity-50 mt-n2 mb-3">Add Card</p>
+                        <% end %>
                     </div>
                 </a>
-              <% end %>
             </div>
             <% @sources&.each do |s| %>
               <% if s['object'] == 'card' %>
@@ -103,7 +105,7 @@
               <%= f.text_field :phone, placeholder: "2628547895", class: "form-control", value: current_user&.phone ? current_user&.phone : @phone, required: true %>
           </div>
 
-          <h3 class="text-center"><i class="input-icon fa fa-home"></i> &nbsp; &nbsp; <%= current_user&.manager? ? "Business" : "Shipping" %> Address </h3>
+          <h3 class="text-center"><i class="input-icon fa fa-home"></i> &nbsp; &nbsp; <%= current_user&.manager? ? "Business" : "Service" %> Address </h3>
           <div class="input-style input-style-2 input-required mt-4">
               <span class="color-highlight input-style-1-active">Street Address</span>
               <em>(required)</em>
@@ -149,7 +151,7 @@
 
               
 
-              <h3 class="text-center"><i class="input-icon fa fa-home"></i> &nbsp; &nbsp; <%= current_user&.manager? ? "Business" : "Shipping" %> Information </h3>
+              <h3 class="text-center"><i class="input-icon fa fa-home"></i> &nbsp; &nbsp; <%= current_user&.manager? ? "Business" : "Service" %> Information </h3>
               <div class="input-style input-style-2 has-icon input-required mt-4">
                   <i class="input-icon fa fa-at"></i>
                   <span class="color-highlight input-style-1-active">Email Address</span>
