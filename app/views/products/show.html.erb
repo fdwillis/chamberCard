@@ -150,24 +150,25 @@
     </div>
   </div>
 <% end %>
+
 <% if !@product['images'].blank? %>
-             
-        
-          <div class="card card-style">
-              <div class="content mb-0">
-                  <h2>Product Images</h2>
-                  <div class="row text-center row-cols-3 mb-0">
-                    <% @product['images'][0].split(",").each do |imgx| %>
-                      <a class="col mb-4" data-gallery="gallery-1" href="<%= imgx %>" title="A beautiful Retro Camera">
-                          <img src="<%= imgx %>" data-src="<%= imgx %>" class="img-fluid rounded-xs preload-img" alt="img" target="_blank">
-                      </a>
-                    <% end %>
-                  </div>
+  <div class="card card-style">
+    <div class="content">
 
-              </div>
-          </div>        
-       <% end %>
+      <div class="row text-center row-cols-1 d-sm-none mb-0">
+        <% @product['images'][0].split(",").each do |imgx| %>
+              <img src="<%= imgx %>" data-src="<%= imgx %>" class="img-fluid rounded-xs preload-img" alt="img" data-ll-status="loaded">
+        <% end %>
+      </div>
 
+      <div class="row row-cols-4 d-none d-sm-block text-center">
+          <% @product['images'][0].split(",").each do |imgx| %>
+              <img src="<%= imgx %>" data-src="<%= imgx %>" class="img-fluid rounded-lg preload-img" alt="img" data-ll-status="loaded">
+          <% end %>
+      </div>
+    </div>
+  </div>        
+<% end %>
 
 
 
@@ -235,11 +236,5 @@
   });
 
 </script>
-
-
- 
-
-
-
 
 

@@ -32,7 +32,7 @@
                 <span class="bg-red1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Unavailable</span>
               <% end %>
               <% if !h[:product]['images'].blank? %>
-                <%= cl_image_tag(h[:product]['images'][0].split(",")[0], :width => 100, :height => 50, :gravity=>:auto, class: "mr-3") %>
+                <%= cl_image_tag(h[:product]['images'][0].split(",")[0], :width => 100, :height => 80, :gravity=>:auto, class: "mr-3") %>
               <% end %>
               <h1><%= h[:product]['name'] %></h1>
               <p class="text-justify"><%= h[:product]['description'] %></p>
@@ -46,7 +46,7 @@
             <div data-filter-item="" data-filter-name="all products <%= !h[:product]['metadata'].blank? ? h[:product]['metadata']['keywords'] : h[:product][:name] %>" class="search-result-list">
 
               <% if !h[:product]['images'].blank? %>
-                <%= cl_image_tag(h[:product]['images'][0].split(",")[0], :width => 100, :height => 50, :gravity=>:auto, class: "mr-3") %>
+                <%= cl_image_tag(h[:product]['images'][0].split(",")[0], :width => 100, :height => 80, :gravity=>:auto, class: "mr-3") %>
               <% end %>
               <h1 ><%= h[:product]['name'] %></h1>
               <p><%= h[:product]['description'] %></p>
