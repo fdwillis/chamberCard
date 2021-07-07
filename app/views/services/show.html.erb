@@ -76,25 +76,7 @@
         <div class="input-style has-icon input-style-2 input-required pb-1">
             <span class="color-highlight input-style-1-active">Price</span>
             <em>(required)</em>
-            <% if current_user %>
-              <% selectPrices = [] %>
-              <% @prices.each do |pri| %>
-                <% if pri['metadata']['public'] == 'false' %>
-                  <% selectPrices << pri %>
-                <% end %>
-              <% end %>
-
-              <%= f.select :sellerItem, selectPrices.sort { |a,b| a['unit_amount'] <=> b['unit_amount'] }.map{|p,i| ["#{number_to_currency(p['unit_amount'].to_f * 0.01, precision: 2)} #{!p['transform_quantity'].blank? ? 'Package Of ' + p['transform_quantity']['divide_by'].to_s : ""}", "#{p['unit_amount']}-#{p['id'][6..p['id'].length]}-#{!p['transform_quantity'].blank? ? "package-#{p['transform_quantity']['divide_by']}" : ""}"  ]}, required: true %>
-            <% else %>
-              <% selectPrices = [] %>
-              <% @prices.each do |pri| %>
-                <% if pri['metadata']['public'] == 'true' %>
-                  <% selectPrices << pri %>
-                <% end %>
-              <% end %>
-
-              <%= f.select :sellerItem, selectPrices.sort { |a,b| a['metadata']['public'] <=> b['metadata']['public'] }.map{|p,i| ["#{number_to_currency(p['unit_amount'].to_f * 0.01, precision: 2)} #{!p['transform_quantity'].blank? ? 'Package Of ' + p['transform_quantity']['divide_by'].to_s : ""}", "#{p['unit_amount']}-#{p['id'][6..p['id'].length]}-#{!p['transform_quantity'].blank? ? "package-#{p['transform_quantity']['divide_by']}" : ""}"  ]}, required: true %>
-            <% end %>
+              <%= f.select :sellerItem, @prices.sort { |a,b| a['unit_amount'] <=> b['unit_amount'] }.map{|p,i| ["#{number_to_currency(p['unit_amount'].to_f * 0.01, precision: 2)} #{!p['transform_quantity'].blank? ? 'Package Of ' + p['transform_quantity']['divide_by'].to_s : ""}", "#{p['unit_amount']}-#{p['id'][6..p['id'].length]}-#{!p['transform_quantity'].blank? ? "package-#{p['transform_quantity']['divide_by']}" : ""}"  ]}, required: true %>
         </div>
         <div class="input-style has-icon input-style-2 input-required pb-1">
             <span class="color-highlight input-style-1-active">Quantity</span>
@@ -105,7 +87,6 @@
         <p class="mt-n1 font-12 color-highlight mb-0" id='packageSelected' style="display: none;"><i class="fa fa-info mr-3"></i> Package Selected: Includes </p>
 
         <% @prices.each do |pr| %>
-          <% if !current_user && pr['metadata']['public'] == 'true' %>
             <div class="content">
               <div class="row mb-0">
                   <div class="col-12 pl-4">
@@ -119,22 +100,6 @@
               </div>
               <div class="divider mt-3 mb-3"></div>
             </div>
-          <% end %>
-          <% if current_user&.authentication_token && pr['metadata']['public'] == 'false' %>
-            <div class="content">
-              <div class="row mb-0">
-                  <div class="col-12 pl-4">
-                      <div class="d-flex">
-                        <div><p class="font-700 color-theme"><%= number_to_currency((pr['unit_amount'] * 0.01), precision: 2) %></p></div>
-                      </div>
-                      <div class="d-flex">
-                      </div>
-                      <%= !pr['metadata'].blank? ? pr['metadata']['description'] : nil %>
-                  </div>
-              </div>
-              <div class="divider mt-3 mb-3"></div>
-            </div>
-          <% end %>
         <% end %>
 
 

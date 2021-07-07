@@ -6,7 +6,8 @@ class ApplicationController < ActionController::Base
 			'lineItems' => lineItems,
 			'connectAccountCus' => connectAccountCus,
 			'connectAccount' => connectAccount,
-			'serviceFee' => serviceFee,
+			'serviceFee' => serviceFee, #add stripe fee from subitem total 
+			'description' => "#{session[:gender].titleize}: #{session[:size]}",
 		}.to_json
 
     curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{params}' -X POST #{SITEurl}/v2/invoices`

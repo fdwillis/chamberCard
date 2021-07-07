@@ -38,6 +38,9 @@
               <span class="badge bg-green1-dark" style="width: 30px;"><%= @cart['carts'].map{|c,i| c['cart']}.flatten.map{|c,i|c['quantity']}.sum %></span>
             <% end %>
           <% end %>
+        <%= link_to '/', class: 'font-14 header-icon header-icon-3' do %>
+          <i class="fa fa-home"></i>
+        <% end %>
 
         <% if current_user&.authentication_token && current_user&.customer? %>
           <% if !current_user&.twilioPhoneVerify %>
