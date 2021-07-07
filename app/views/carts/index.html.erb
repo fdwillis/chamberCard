@@ -263,10 +263,32 @@
                 <% if session[:phone] && session[:name] && session[:email] %>  
                   <p class="color-highlight mt-4 text-center">Please be sure the information below is correct</p>
                 <% end %>
+                  <span class="color-highlight input-style-2">Gender</span>
+                  <div class="form-check icon-check">
+                    <% if session[:gender] == 'female' %>
+                      <input class="form-check-input" type="radio" name="setSessionVar[gender]" value="female" id="radio4" checked="checked">
+                    <% else %>
+                      <input class="form-check-input" type="radio" name="setSessionVar[gender]" value="female" id="radio4">
+                    <% end %>
+                      <label class="form-check-label" for="radio4">Female</label>
+                  </div>
+                  <div class="form-check icon-check">
+                    <% if session[:gender] == 'male' %>
+                      <input class="form-check-input" type="radio" name="setSessionVar[gender]" value="male" id="radio2" checked="checked">
+                    <% else %>
+                      <input class="form-check-input" type="radio" name="setSessionVar[gender]" value="male" id="radio2">
+                    <% end %>
+                    <label class="form-check-label" for="radio2">Male</label>
+                  </div>
+                  
                   <div class="input-style has-icon">
                     <span class="color-highlight input-style-2">Legal Name</span>
                     <%= f.text_field :name, class: "form-control",required: true, value: !session[:name].blank? ? session[:name] : nil, placeholder: 'Jane Doe' %>
                   </div> 
+                  <div class="input-style has-icon">
+                    <span class="color-highlight input-style-2">Shoe Size</span>
+                    <%= f.number_field :size, class: "form-control",required: true, value: !session[:size].blank? ? session[:size] : nil, placeholder: 8 %>
+                  </div>
                   <div class="input-style has-icon">
                     <span class="color-highlight input-style-2">Phone</span>
                     <%= f.telephone_field :phone, class: "form-control",required: true, value: !session[:phone].blank? ? session[:phone] : nil %>
@@ -355,13 +377,13 @@
               <% end %>
             <% end %>
             
-            <a href="/services" class="mb-2 btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm">Continue Shopping</a>
+            <a href="/products" class="mb-2 btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm">Continue Shopping</a>
 
 
 
 
           <% else %>
-            <a href="/services" class="mb-2 btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm">Continue Shopping</a>
+            <a href="/products" class="mb-2 btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm">Continue Shopping</a>
           <% end %>
           
       </div>

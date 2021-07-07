@@ -62,7 +62,7 @@ class CheckoutController < ApplicationController
 				  if token['success']
 					  connectAccountCus = stripeCustomerRequest(token['token'])
 
-					  checkoutRequest = stripeInvoiceRequest(session[:lineItems], connectAccountCus, @serviceFee, ENV['connectAccount'])	
+					  checkoutRequest = stripeInvoiceRequest(session[:lineItems], connectAccountCus)	
 
 					  if checkoutRequest['success']
 

@@ -1,12 +1,13 @@
 class ApplicationController < ActionController::Base
 	before_action :configure_permitted_parameters, if: :devise_controller?
 
-	def stripeInvoiceRequest(lineItems,connectAccountCus, serviceFee, connectAccount)
+	def stripeInvoiceRequest(lineItems,connectAccountCus)
 		params = {
 			'lineItems' => lineItems,
 			'connectAccountCus' => connectAccountCus,
-			'connectAccount' => connectAccount,
-			'serviceFee' => serviceFee,
+			'connectAccount' => ENV['connectAccount'],
+			'serviceFee' => @serviceFee, #add stripe fee from subitem total 
+			# 'description' => "#{session[:gender].titleize}: #{session[:size]}", #no description for services
 		}.to_json
 
     curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{params}' -X POST #{SITEurl}/v2/invoices`

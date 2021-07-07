@@ -2,7 +2,7 @@
   <div class="content">
       <div class="d-flex">
           <div class="w-100 align-self-center">
-              <h3 class="mb-2"><%= @customer['name'] %></h3>
+              <h3 class="mb-2"><%= !@customer['name'].blank? ? @customer['name'] : nil %></h3>
               <p class="mb-2"><%= !@customer['phone'].blank? ? number_to_phone(@customer['phone']) : nil %></p>
               <p class="mb-2"><%= @customer['email'] %></p>
           </div>
