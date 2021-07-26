@@ -27,18 +27,6 @@
           <span>NO</span>
         </div>
       </div>
-      <div class="pt-1">
-        <h5 data-activate="toggle-id-2" class="font-600"><strong><em>Public</em></strong></h5>
-      </div>
-      <div class="ml-auto mr-4 pr-2">
-        <%= %>
-        <div class="custom-control ios-switch ios-switch-icon">
-          <%= f.check_box :public, class: 'ios-input', id: 'toggle-id-278', checked: !@price['metadata'].blank? ? ActiveModel::Type::Boolean.new.cast(@price['metadata']['public']) : false %>
-          <label class="custom-control-label" for="toggle-id-278"></label>
-          <span>YES</span>
-          <span>NO</span>
-        </div>
-      </div>
 
       <%= f.submit "Update Pricing", class: "btn btn-full bg-yellow1-dark btn-m text-uppercase rounded-sm shadow-l col-12 mb-3 mt-4 font-900"%>
 

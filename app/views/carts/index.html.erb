@@ -6,14 +6,14 @@
         </h2>
         <p>Your shopping cart before checking out.<br><em><strong>Payments are processed by <a href="https://www.tewcode.com" target="_blank">TewCode</a> &amp; <%= link_to "Stripe", "https://stripe.com", 'target' => '_blank' %></strong></em></p>
       <% if !@cart['carts'].blank? %>
-        <%= form_for :setSessionVar, url: set_session_vars_path do |f| %>
+<!--         <%= form_for :setSessionVar, url: set_session_vars_path do |f| %>
           <div class="input-style has-icon">
             <span class="color-highlight input-style-2">Coupon Code?</span>
             <%= f.text_field :coupon, class: "form-control", value: !session[:coupon].blank? ? session[:coupon] : nil %>
             <p>Coupon will be applied before checkout</p>
             <%= f.submit "Apply", class: 'mb-2 mt-2 col-12 btn btn-full bg-yellow1-dark btn-m text-uppercase font-800 rounded-sm' %>
           </div> 
-        <% end %>
+        <% end %> -->
       <% end %>
     </div>
 </div>
@@ -193,7 +193,7 @@
 
                 </div>
                 <div class="ml-auto text-right">
-                    <h4><%= number_to_currency(@cart['serviceFee'] * 0.01, precision: 2) %></h4>
+                    <h4><%= number_to_currency((@application_fee_amount + @stripeFee) * 0.01) %></h4>
                 </div>
             </div>
             <div class="d-flex">
@@ -235,7 +235,7 @@
                 </div>
                 <div class="ml-auto text-right">
                   <h5 class="font-600">
-                    <%= number_to_currency((@cart['subItemsTotal'] * 0.01 + @cart['serviceFee'] * 0.01), precision: 2) %>
+                    <%= number_to_currency(((@cart['subItemsTotal'] + @application_fee_amount + @stripeFee) * 0.01), precision: 2) %>
                   </h5>
                 </div>
               </div>

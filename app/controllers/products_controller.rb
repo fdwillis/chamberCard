@@ -102,7 +102,7 @@ class ProductsController < ApplicationController
 		if !params[:trackingNumber][:trackingIDs].blank?
 			trackingIDs = params[:trackingNumber][:trackingIDs]
 
-			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"  -d 'sessionOrInvoiceID=#{sessionOrInvoiceID}&trackingIDs=#{trackingIDs}' -X POST #{SITEurl}/v1/tracking`
+			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}"  -d 'sessionOrInvoiceID=#{sessionOrInvoiceID}&trackingIDs=#{trackingIDs}' -X POST #{SITEurl}/api/v1/tracking`
 		else
 			flash[:error] = "Something was missing"
 			redirect_to request.referrer

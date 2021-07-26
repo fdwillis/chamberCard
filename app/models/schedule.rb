@@ -5,7 +5,7 @@ class Schedule < ApplicationRecord
 			serviceToAccept = params[:serviceToAccept]
 			merchantStripeID = params[:merchantStripeID]
 			
-	    return `curl -H "bxxkxmxppAuthtoken: #{userX&.authentication_token}" -d 'timeKitBookingID=#{timeKitID}&serviceToAccept=#{serviceToAccept}&merchantStripeID=#{merchantStripeID}' -X POST #{SITEurl}/v1/booking-request`
+	    return `curl -H "bxxkxmxppAuthtoken: #{userX&.authentication_token}" -d 'timeKitBookingID=#{timeKitID}&serviceToAccept=#{serviceToAccept}&merchantStripeID=#{merchantStripeID}' -X POST #{SITEurl}/api/v1/booking-request`
 		end
 	end
 
@@ -26,7 +26,7 @@ class Schedule < ApplicationRecord
 				dateRequested = params[:dateRequested]
 				merchantStripeID = params[:merchantStripeID]
 				
-				return `curl -H "bxxkxmxppAuthtoken: #{userX&.authentication_token}"  -d 'serviceToBook=#{serviceToBook}&dateRequested=#{buildDate}&merchantStripeID=#{merchantStripeID}' -X POST #{SITEurl}/v1/booking-request`
+				return `curl -H "bxxkxmxppAuthtoken: #{userX&.authentication_token}"  -d 'serviceToBook=#{serviceToBook}&dateRequested=#{buildDate}&merchantStripeID=#{merchantStripeID}' -X POST #{SITEurl}/api/v1/booking-request`
 			else
 				return {success: false, message: "Something was missing"}
 			end
