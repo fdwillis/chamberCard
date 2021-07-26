@@ -5,7 +5,7 @@ class PricingController < ApplicationController
 	def index
 		# showing all prices for one product
 		if current_user&.authentication_token
-			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/products/prod_#{!productParams.blank? ? productParams[:product_id] : serviceParams[:service_id]}/pricing`
+			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/api/v1/products/prod_#{!productParams.blank? ? productParams[:product_id] : serviceParams[:service_id]}/pricing`
 		
 			response = Oj.load(curlCall)
 
@@ -43,7 +43,7 @@ class PricingController < ApplicationController
 					
 				}.to_json
 				
-				curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X POST #{SITEurl}/v1/products/prod_#{pricingParams[:product]}/pricing`
+				curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X POST #{SITEurl}/api/v1/products/prod_#{pricingParams[:product]}/pricing`
 
 
 				response = Oj.load(curlCall)
@@ -82,7 +82,7 @@ class PricingController < ApplicationController
 				'public' => ActiveModel::Type::Boolean.new.cast(pricingParams['public']),
 			}.to_json
 
-			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X PATCH #{SITEurl}/v1/products/#{pricingParams[:product]}/pricing/#{serviceParams[:id]}`
+			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{params}' -X PATCH #{SITEurl}/api/v1/products/#{pricingParams[:product]}/pricing/#{serviceParams[:id]}`
 
 			response = Oj.load(curlCall)
 
@@ -97,7 +97,7 @@ class PricingController < ApplicationController
 	end
 
 	def grabProduct
-		curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/products/prod_#{!productParams[:product_id].blank? ? productParams[:product_id] : serviceParams[:service_id]}?connectAccount=#{current_user.stripeMerchantID}`
+		curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/api/v1/products/prod_#{!productParams[:product_id].blank? ? productParams[:product_id] : serviceParams[:service_id]}?connectAccount=#{current_user.stripeMerchantID}`
 		response = Oj.load(curlCall)
 
 		if !response['product'].blank? && response['success']

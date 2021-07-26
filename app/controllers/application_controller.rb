@@ -1,17 +1,17 @@
 class ApplicationController < ActionController::Base
 	before_action :configure_permitted_parameters, if: :devise_controller?
 
-	def stripeInvoiceRequest(lineItems,connectAccountCus)
-		params = {
-			'lineItems' => lineItems,
-			'connectAccountCus' => connectAccountCus,
-			'connectAccount' => ENV['connectAccount'],
-			'serviceFee' => @serviceFee, #add stripe fee from subitem total 
-			# 'description' => "#{session[:gender].titleize}: #{session[:size]}", #no description for services
+	def stripeInvoiceRequest(lineItems,customer, serviceFee, connectAccount)
+
+		paramsX = {
+			"customer" => customer,
+			"description" => "class bought",
+			"amount" => @subtotal + @application_fee_amount + @stripeFee,
+			"application_fee_amount" => @application_fee_amount
 		}.to_json
 
-    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{params}' -X POST #{SITEurl}/v2/invoices`
-
+    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{paramsX}' -X POST #{SITEurl}/api/v2/invoices`
+    
 	  response = Oj.load(curlCall)
 	end
 
@@ -34,9 +34,9 @@ class ApplicationController < ActionController::Base
     cvc = newStripeCardTokenParams[:cvc]
 
     if connectAccount.present?
-	    curlCall = `curl -H "appName: #{ENV['appName']}" -d "connectAccount=#{connectAccount}&number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/v2/tokens`
+	    curlCall = `curl -H "appName: #{ENV['appName']}" -d "connectAccount=#{connectAccount}&number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/api/v2/tokens`
 	  else
-	    curlCall = `curl -H "appName: #{ENV['appName']}" -d "number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/v2/tokens`
+	    curlCall = `curl -H "appName: #{ENV['appName']}" -d "number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/api/v2/tokens`
 	  end
 
     response = Oj.load(curlCall)
@@ -59,7 +59,7 @@ class ApplicationController < ActionController::Base
 
 	def grabCart
 		if current_user&.authentication_token
-			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/v1/carts`
+			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/api/v1/carts`
 			
 	    response = Oj.load(curlCall)
 	    
@@ -74,7 +74,7 @@ class ApplicationController < ActionController::Base
 	  	
 	  	@cartID = session[:cart_id].present? ? session[:cart_id] : session[:cart_id] = rand(0..1000) + rand(0..1000000)
 
-	  	curlCall = `curl -H "appName: #{ENV['appName']}" -X GET #{SITEurl}/v1/carts?cartID=#{@cartID}`
+	  	curlCall = `curl -H "appName: #{ENV['appName']}" -X GET #{SITEurl}/api/v1/carts?cartID=#{@cartID}`
 	    response = Oj.load(curlCall)
 	    
 	    if response['success']
@@ -86,7 +86,7 @@ class ApplicationController < ActionController::Base
 	    	@cart['carts'].each do |cartInfo|
 					cartInfo['cart'].each do |item|
 						@lineItems << {price: item['stripePriceInfo']['id'], quantity: item['quantity']}
-						@serviceFee =  !session[:coupon].blank? ? (@cart['serviceFee'] * (0.01 * (100-session[:percentOff]))).to_i : @cart['serviceFee']
+						@serviceFee = @cart['serviceFee']
 					end
 				end
 
@@ -94,6 +94,16 @@ class ApplicationController < ActionController::Base
 	    end
 	  end
 
+	  @subtotal = @cart["subItemsTotal"]
+		@application_fee_amount = (@subtotal * (ENV['serviceFee'].to_i * 0.01)).to_i
+		@stripeFee = (((@subtotal+@application_fee_amount) * 0.03) + 30).to_i
+
+	end
+
+	private
+
+	def newInvoiceParams
+		paramsClean = params.require(:newInvoice).permit(:customer, :amount, :desc, :title)
 	end
 
 	protected

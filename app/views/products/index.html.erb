@@ -41,8 +41,7 @@
           <% end %>
         <% end %>
       <% else %>
-        <% @activeProducts.each do |h| %>
-          <% if h[:connectAccount] && !current_user && Stripe::Price.list({limit: 100, product: h[:product]['id']}, stripe_account: h[:connectAccount])['data'].map{|prod| prod['metadata']['public'] == 'true'}.include?(true) %>
+        <% @activeProducts.uniq.each do |h| %>
             <div data-filter-item="" data-filter-name="all products <%= !h[:product]['metadata'].blank? ? h[:product]['metadata']['keywords'] : h[:product][:name] %>" class="search-result-list">
 
               <% if !h[:product]['images'].blank? %>
@@ -53,16 +52,6 @@
 
               <%= link_to "View", "/products/#{h[:product]['id'][5..h[:product]['id'].size]}?connectAccount=#{h[:connectAccount]}", class: 'btn btn-full bg-blue2-dark' %>
             </div>
-          <% end %>
-          <% if h[:connectAccount] && current_user && Stripe::Price.list({limit: 100, product: h[:product]['id']}, stripe_account: h[:connectAccount])['data'].map{|prod| prod['metadata']['public'] == 'false'}.include?(true) %>
-            <div data-filter-item="" data-filter-name="all products <%= !h[:product]['metadata'].blank? ? h[:product]['metadata']['keywords'] : h[:product][:name] %>" class="search-result-list">
-
-              <h1  style="padding-left: 5px;"><%= h[:product]['name'] %></h1>
-              <p style="padding-left: 5px;"><%= h[:product]['description'] %></p>
-
-              <%= link_to "View", "/products/#{h[:product]['id'][5..h[:product]['id'].size]}?connectAccount=#{h[:connectAccount]}", class: 'btn btn-full bg-blue2-dark' %>
-            </div>
-          <% end %>
         <% end %>
       <% end %>
     </div>

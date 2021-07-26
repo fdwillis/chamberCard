@@ -36,11 +36,6 @@
         <div class="content">
           <div class="row mb-0">
               <div class="col-12 pl-4">
-                  <% if pr['metadata']['public'] == 'true' %>
-                    <span class="bg-green1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Public Only</span>
-                  <% else %>
-                    <span class="bg-blue1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Login Required</span>
-                  <% end %>
                   <div class="d-flex">
                       <div><p class="font-700 color-theme"><%= number_to_currency((pr['unit_amount'] * 0.01), precision: 2) %></p></div>
                   </div>

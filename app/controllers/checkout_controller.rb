@@ -1,46 +1,10 @@
 class CheckoutController < ApplicationController
-	def zazi
-		grabCart
-		
-		if @cart['subTotal'] > 0
-			token = stripeTokenRequest(newStripeCardTokenParams, nil)
-
-			datax = {
-				'token' => token['token']['id'],
-				'amount' => @cart['subTotal']
-			}.to_json
-
-			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{datax}' -X POST #{SITEurl}/v2/charges`
-			
-	    response = Oj.load(curlCall)
-
-	    if response['success']
-	    	curlCall0 = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -X DELETE #{SITEurl}/v1/carts/#{@cartID}`
-
-				response0 = Oj.load(curlCall0)
-			    
-		    if response0['success']
-					session[:cart_id] = nil
-					redirect_to request.referrer
-					flash[:success] = "Purchase Complete"
-		    else
-		    	flash[:error] = response0['error']
-		    	redirect_to carts_path
-		    end
-	    else
-	    	flash[:error] = response['error']
-	    	redirect_to carts_path
-	    end
-		else
-		end
-	end
-
 	def create
 		grabCart
 
 		if current_user&.authentication_token
 			datax = session[:cart].to_json
-			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{datax}' -X POST #{SITEurl}/v1/checkout`
+			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{datax}' -X POST #{SITEurl}/api/v1/checkout`
 			
 	    response = Oj.load(curlCall)
 	    
@@ -58,33 +22,35 @@ class CheckoutController < ApplicationController
 			  if !session[:lineItems].blank?
 
 				  token = stripeTokenRequest(newStripeCardTokenParams, ENV['connectAccount'])
-
+				  
 				  if token['success']
 					  connectAccountCus = stripeCustomerRequest(token['token'])
 
-					  checkoutRequest = stripeInvoiceRequest(session[:lineItems], connectAccountCus)	
+					  checkoutRequest = stripeInvoiceRequest(session[:lineItems], connectAccountCus['id'], @serviceFee, ENV['connectAccount'])	
+					  #collect invoice payment
 
 					  if checkoutRequest['success']
+						  paidInvoice = Stripe::Invoice.pay(checkoutRequest['invoice'], {}, {stripe_account: ENV['connectAccount']})
+					
+							if paidInvoice['status'] == 'paid'
+								curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -X DELETE #{SITEurl}/api/v1/carts/#{@cartID}`
 
-					  	curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -X DELETE #{SITEurl}/v1/carts/#{@cartID}`
-
-							response = Oj.load(curlCall)
-						    
-					    if response['success']
-								session[:cart_id] = nil
-								redirect_to request.referrer
-								flash[:success] = "Purchase Complete"
-					    else
-					    	flash[:error] = response['error']
-					    	redirect_to carts_path
-					    end
-
-
-
-
-
-
-
+								response = Oj.load(curlCall)
+							    
+						    if response['success']
+									session[:cart_id] = nil
+									session[:coupon] = nil
+						    	session[:percentOff] = nil
+									redirect_to request.referrer
+									flash[:success] = "Purchase Complete"
+						    else
+						    	flash[:error] = response['error']
+						    	redirect_to carts_path
+						    end
+							else
+								flash[:alert] = "Something went wrong"
+					      redirect_to carts_path
+							end
 
 						elsif checkoutRequest['error']
 							redirect_to request.referrer
@@ -136,7 +102,7 @@ class CheckoutController < ApplicationController
 
 		# add anan user to platform as customer
 		
-		curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -X DELETE #{SITEurl}/v1/carts/#{@cartID}`
+		curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -X DELETE #{SITEurl}/api/v1/carts/#{@cartID}`
 
 		response = Oj.load(curlCall)
 	    
