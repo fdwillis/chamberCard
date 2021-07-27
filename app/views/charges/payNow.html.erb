@@ -34,15 +34,18 @@
         <div class="col-6"><h4 class="font-15 pull-right text-end mt-1 color-green1-dark"><%= number_to_currency(chargeX['amount'] * 0.01, precision: 2) %></h4></div>
         <div class="divider divider-margins w-100 mt-2 mb-3"></div>
         <div class="col-12">
-          <a href="<%= chargeX['receiptURL'] %>" target="_blank" class="btn btn-full btn-m bg-green1-dark rounded-sm text-uppercase font-800 mt-3">
-            <% if current_user&.owner? %>
-              Collect Payment
+          <%= form_for :authPay, url: customer_pay_path do |f| %>
+          <%= chargeX['connectAccount'] %>
+            <%= f.hidden_field :sellerToChargeAs, value: chargeX['metadata']['connectAccount'] %>
+            <%= f.hidden_field :invoiceToPay, value: chargeX['invoiceOrSessionID'] %>
+            <% if current_user&.customer? %>
+              <%= f.submit "Pay Now", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
             <% end %>
 
-            <% if current_user&.customer? %>
-              Pay Invoice
+            <% if current_user&.owner? %>
+              <%= f.submit "Collect Payment", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
             <% end %>
-          </a>
+          <% end %>
         </div>
       </div>
     </div>
