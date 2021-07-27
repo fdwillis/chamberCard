@@ -21,7 +21,11 @@
           <% stripeInvoices = Stripe::Invoice.list({customer: cust['id'], limit: 100}, {stripe_account: @stripeMerchantID})['data'] %>
           <% stripeInvoices.map{|inv| (inv['status'] == 'draft' || inv['status'] == 'open') ? uncollected += inv['amount_remaining'] : next } %>
           <tr>
+            <% if cust['name'].present? %>
               <td class="col-3"><%= link_to cust['name'].truncate(20), stripe_customer_path(cust['id'])  %></td>
+            <% else %>
+              <td class="col-3"><%= link_to cust['email'], stripe_customer_path(cust['id'])  %></td>
+            <% end %>
               <% if stripeSpend > 0 %>
                 <td class="col-5 color-green1-dark"><%= number_to_currency(stripeSpend, precision: 2) %></td>
               <% else %>

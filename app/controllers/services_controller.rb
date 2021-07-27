@@ -28,7 +28,7 @@ class ServicesController < ApplicationController
 						end
 					end
 				end
-
+				
 				@activeProducts = activeProducts.flatten
 				@unavailableProducts = unavailableProducts.flatten
 				@products = @activeProducts + @unavailableProducts
@@ -45,19 +45,15 @@ class ServicesController < ApplicationController
 			@product = response['product']
 			@connectAccount = response['connectAccount']
 			@prices = response['prices']
-		else
-			flash[:alert] = "Trouble connecting..."
-			redirect_to services_path
 		end
 	end
 
 	def create
-		if current_user&.manager?
+		if current_user&.admin?
 
 			curlCall = Product.APIcreate(current_user, productParams)
 
 			response = Oj.load(curlCall)
-
 			if response['success']
 				flash[:success] = "Service Created"
 				redirect_to services_path
@@ -69,7 +65,7 @@ class ServicesController < ApplicationController
 	end
 
 	def update
-		if current_user&.manager?
+		if current_user&.admin?
 			curlCall = Product.APIupdate(current_user, productParams)
 			response = Oj.load(curlCall)
 
@@ -77,9 +73,6 @@ class ServicesController < ApplicationController
 				
 				flash[:success] = "Service Updated"
 				redirect_to service_path(id: params[:id][5..params[:id].length], connectAccount: current_user&.stripeMerchantID)
-			else
-				flash[:alert] = "Trouble connecting..."
-				redirect_to request.referrer
 			end
 		end
 	end

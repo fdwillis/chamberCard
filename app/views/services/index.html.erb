@@ -44,7 +44,7 @@
           <% end %>
         <% end %>
       <% else %>
-        <% @activeProducts.each do |h| %>
+        <% @activeProducts.uniq.each do |h| %>
           <div data-filter-item="" data-filter-name="all services <%= !h[:product]['metadata'].blank? ? h[:product]['metadata']['keywords'] : h[:product][:name] %>" class="search-result-list">
 
             <h1  style="padding-left: 5px;"><%= h[:product]['name'] %></h1>
