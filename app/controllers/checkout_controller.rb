@@ -28,7 +28,6 @@ class CheckoutController < ApplicationController
 
 					  checkoutRequest = stripeCheckoutRequest(session[:lineItems], connectAccountCus['id'], @serviceFee, ENV['connectAccount'])	
 					  #collect invoice payment
-
 					  if checkoutRequest['success']
 						  paidInvoice = Stripe::Invoice.pay(checkoutRequest['invoice'], {}, {stripe_account: ENV['connectAccount']})
 					

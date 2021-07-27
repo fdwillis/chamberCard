@@ -86,11 +86,11 @@ class ChargesController < ApplicationController
 
     subtotal = stripeAmount(newInvoiceParams[:amount])
 		application_fee_amount = (subtotal * (ENV['serviceFee'].to_i * 0.01)).to_i
-		stripeFee = (((subtotal+application_fee_amount) * 0.03) + 30).to_i
+		stripeFee = (((subtotal+application_fee_amount) * 0.03) + 29).to_i
 
 		amount = subtotal + application_fee_amount + stripeFee
 
-    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "application_fee_amount=#{application_fee_amount}&customer=#{customer}&title=#{title}&description=#{title}&amount=#{amount}" -X POST #{SITEurl}/api/v2/charges`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "application_fee_amount=#{application_fee_amount}&customer=#{customer}&description=#{title}&amount=#{amount}" -X POST #{SITEurl}/api/v2/charges`
 
 		response = Oj.load(curlCall)
 
