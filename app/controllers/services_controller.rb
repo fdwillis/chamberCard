@@ -49,7 +49,7 @@ class ServicesController < ApplicationController
 	end
 
 	def create
-		if current_user&.admin?
+		if current_user&.manager?
 
 			curlCall = Product.APIcreate(current_user, productParams)
 
@@ -65,7 +65,7 @@ class ServicesController < ApplicationController
 	end
 
 	def update
-		if current_user&.admin?
+		if current_user&.manager?
 			curlCall = Product.APIupdate(current_user, productParams)
 			response = Oj.load(curlCall)
 
