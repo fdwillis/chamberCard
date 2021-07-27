@@ -86,7 +86,7 @@ class ApplicationController < ActionController::Base
 	    	
 	    	@cart['carts'].each do |cartInfo|
 					cartInfo['cart'].each do |item|
-						@lineItems << {price: item['stripePriceInfo']['id'], quantity: item['quantity'], shippable: item['stripeProductInfo']['shippable'], description: "#{item['stripeProductInfo']['name']}| #{item['stripeProductInfo']['description']}"}
+						@lineItems << {price: item['stripePriceInfo']['id'], quantity: item['quantity'], shippable: item['stripeProductInfo']['shippable'], description: "#{item['stripeProductInfo']['name']} | #{item['stripeProductInfo']['description']}"}
 						@serviceFee = @cart['serviceFee']
 					end
 				end
