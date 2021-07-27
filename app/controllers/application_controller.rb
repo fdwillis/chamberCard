@@ -118,11 +118,10 @@ class ApplicationController < ActionController::Base
         end
       end
 
-      return stripe_amount
     else
       stripe_amount = converted * 100
-      return stripe_amount
     end
+    return stripe_amount.to_i
   end
 
 	private
