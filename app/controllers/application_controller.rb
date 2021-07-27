@@ -1,12 +1,12 @@
 class ApplicationController < ActionController::Base
 	before_action :configure_permitted_parameters, if: :devise_controller?
 
-	def stripeCheckoutRequest(lineItems,customer, serviceFee, connectAccount)
+	def stripeCheckoutRequest(lineItems,customer)
 		
 		paramsX = {
 			"customer" => customer,
 			"type" => @shippable == true ? "good" : 'service' ,
-			"lineItems" => @lineItems,
+			"lineItems" => lineItems,
 			"amount" => @subtotal + @application_fee_amount + @stripeFee,
 			"application_fee_amount" => @application_fee_amount
 		}.to_json
