@@ -144,8 +144,6 @@ class ChargesController < ApplicationController
 	def customerPay
 		if current_user&.authentication_token
 			begin
-				
-				# finalizeInvoice = Stripe::Invoice.finalize_invoice(params['authPay']['invoiceToPay'],{},{stripe_account: params['authPay']['sellerToChargeAs']})
 				paidInvoice = Stripe::Invoice.pay(params['authPay']['invoiceToPay'], {}, {stripe_account: params['authPay']['sellerToChargeAs']})
 				
 				if paidInvoice['status'] == 'paid'

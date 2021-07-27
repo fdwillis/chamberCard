@@ -51,26 +51,16 @@
                 </a>
             </div>
             <% @sources&.each do |s| %>
-              <% if s['object'] == 'card' %>
-                <div style="align-items: center;" class="mb-4">
-                  <% if s['brand'] == "Visa" %>
-                    Visa
-                  <% elsif s['brand'] == "MasterCard" %>
-                    MasterCard
-                  <% elsif s['brand'] == "American Express" %>
-                    American Express
-                  <% end %>
-                    <p class="mt-n1 mb-0 font-10">**** <%= s['last4'] %></p>
-                </div>  
-              <% end %>
-
-              <% if s['object'] == 'bank_account' %>
-                <div class="text-center card card-style">
-                    <i class="fa fa-university color-highlight fa-2x mt-3"></i>
-                    <h1 class="pt-2 font-18">****<%= s['last4'] %></h1>
-                    <p class="font-11 opacity-50 mt-n2 mb-3"><%= s['routing_number'] %></p>
-                </div>
-              <% end %>
+              <div style="align-items: center;" class="mb-4">
+                <% if s['card']['brand'] == "Visa" %>
+                  Visa
+                <% elsif s['card']['brand'] == "MasterCard" %>
+                  MasterCard
+                <% elsif s['card']['brand'] == "American Express" %>
+                  American Express
+                <% end %>
+                  <p class="mt-n1 mb-0 font-10">**** <%= s['card']['last4'] %></p>
+              </div>  
             <% end %>
         <% end %>
 
