@@ -1,47 +1,6 @@
 class ApplicationController < ActionController::Base
 	before_action :configure_permitted_parameters, if: :devise_controller?
 
-	def stripeInvoiceRequest(lineItems,customer, serviceFee, connectAccount)
-
-		paramsX = {
-			"customer" => customer,
-			"description" => "class bought",
-			"amount" => @subtotal + @application_fee_amount + @stripeFee,
-			"application_fee_amount" => @application_fee_amount
-		}.to_json
-
-    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{paramsX}' -X POST #{SITEurl}/api/v2/invoices`
-    
-	  response = Oj.load(curlCall)
-	end
-
-	def stripeCustomerRequest(token)
-		connectAccountCus = Stripe::Customer.create({
-			email: session[:email],
-			name: session[:name],
-			phone: session[:phone],
-			address: session[:address],
-		  source: token['id']
-		}, {stripe_account: ENV['connectAccount']})
-
-		return connectAccountCus
-	end
-
-	def stripeTokenRequest(newStripeCardTokenParams,connectAccount)
-		number = newStripeCardTokenParams[:number]
-    exp_year = newStripeCardTokenParams[:exp_year]
-    exp_month = newStripeCardTokenParams[:exp_month]
-    cvc = newStripeCardTokenParams[:cvc]
-
-    if connectAccount.present?
-	    curlCall = `curl -H "appName: #{ENV['appName']}" -d "connectAccount=#{connectAccount}&number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/api/v2/tokens`
-	  else
-	    curlCall = `curl -H "appName: #{ENV['appName']}" -d "number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/api/v2/tokens`
-	  end
-
-    response = Oj.load(curlCall)
-	end
-
 	def pullChargesAPI
 		curlCall = current_user&.indexStripeChargesAPI(params)
 			
@@ -86,25 +45,41 @@ class ApplicationController < ActionController::Base
 	    	@cart['carts'].each do |cartInfo|
 					cartInfo['cart'].each do |item|
 						@lineItems << {price: item['stripePriceInfo']['id'], quantity: item['quantity']}
-						@serviceFee = @cart['serviceFee']
+						@serviceFee =  !session[:coupon].blank? ? (@cart['serviceFee'] * (0.01 * (100-session[:percentOff]))).to_i : @cart['serviceFee']
 					end
 				end
 
 				session[:lineItems] = @lineItems
 	    end
 	  end
-
 	  @subtotal = @cart["subItemsTotal"]
-		@application_fee_amount = (@subtotal * (ENV['serviceFee'].to_i * 0.01)).to_i
-		@stripeFee = (((@subtotal+@application_fee_amount) * 0.03) + 30).to_i
-
+    @application_fee_amount = (@subtotal * (ENV['serviceFee'].to_i * 0.01)).to_i
+    @stripeFee = (((@subtotal+@application_fee_amount) * 0.03) + 30).to_i
 	end
 
-	private
+	def stripeAmount(string)
+    converted = (string.gsub(/[^0-9]/i, '').to_i)
 
-	def newInvoiceParams
-		paramsClean = params.require(:newInvoice).permit(:customer, :amount, :desc, :title)
-	end
+    if string.include?(".")
+      dollars = string.split(".")[0]
+      cents = string.split(".")[1]
+
+      if cents.length == 2
+        stripe_amount = "#{dollars}#{cents}"
+      else
+        if cents === "0"
+          stripe_amount = ("#{dollars}00")
+        else
+          stripe_amount = ("#{dollars}#{cents.to_i * 10}")
+        end
+      end
+
+      return stripe_amount
+    else
+      stripe_amount = converted * 100
+      return stripe_amount
+    end
+  end
 
 	protected
 	def configure_permitted_parameters

@@ -1,7 +1,25 @@
 class ChargesController < ApplicationController
 	before_action :authenticate_user!
+
+	def payments
+		if current_user&.authentication_token
+			curlCall = current_user&.indexStripeChargesAPI(params)
+			
+		  response = Oj.load(curlCall)
+
+		  if response['success']
+				@payments = response['payments'] #edit stripe session meta for scheduling
+	   		@customer = Stripe::Customer.retrieve(params[:id], {stripe_account: ENV['connectAccount']})
+	    end
+
+		else
+			current_user = nil
+      reset_session
+		end
+	end
 	
 	def index
+		grabCart
 		if current_user&.authentication_token
 			curlCall = current_user&.indexStripeChargesAPI(params)
 			
@@ -63,20 +81,25 @@ class ChargesController < ApplicationController
 
 	def newInvoice
 		customer = newInvoiceParams[:customer]
-		amount = newInvoiceParams[:amount]
 		desc = newInvoiceParams[:desc]
 		title = newInvoiceParams[:title]
-    
-    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "customer=#{customer}&title=#{title}&desc=#{desc}&managerInvoice=true&amount=#{amount}" -X POST #{SITEurl}/api/v1/charges`
+
+    subtotal = stripeAmount(newInvoiceParams[:amount])
+		application_fee_amount = (subtotal * (ENV['serviceFee'].to_i * 0.01)).to_i
+		stripeFee = (((subtotal+application_fee_amount) * 0.03) + 30).to_i
+
+		amount = subtotal + application_fee_amount + stripeFee
+
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "application_fee_amount=#{application_fee_amount}&customer=#{customer}&title=#{title}&description=#{title}&amount=#{amount}" -X POST #{SITEurl}/api/v2/charges`
 
 		response = Oj.load(curlCall)
 
     if response['success']
 			flash[:success] = "Invoice Created"
-      redirect_to charges_path
+      redirect_to pay_now_path
     else
 			flash[:error] = response['message']
-      redirect_to charges_path
+      redirect_to request.referrer
     end
 	end
 
@@ -98,6 +121,7 @@ class ChargesController < ApplicationController
 	end
 
 	def payNow
+		grabCart
 		if current_user&.authentication_token
 			curlCall = current_user&.indexStripeChargesAPI(params)
 
@@ -121,9 +145,9 @@ class ChargesController < ApplicationController
 		if current_user&.authentication_token
 			begin
 				
-				# finalizeInvoice = Stripe::Invoice.finalize_invoice(params['customerPayInvoice']['invoiceToPay'],{},{stripe_account: params['customerPayInvoice']['sellerToChargeAs']})
-				paidInvoice = Stripe::Invoice.pay(params['customerPayInvoice']['invoiceToPay'], {}, {stripe_account: params['customerPayInvoice']['sellerToChargeAs']})
-
+				# finalizeInvoice = Stripe::Invoice.finalize_invoice(params['authPay']['invoiceToPay'],{},{stripe_account: params['authPay']['sellerToChargeAs']})
+				paidInvoice = Stripe::Invoice.pay(params['authPay']['invoiceToPay'], {}, {stripe_account: params['authPay']['sellerToChargeAs']})
+				
 				if paidInvoice['status'] == 'paid'
 					flash[:success] = "Invoice Paid"
 		      redirect_to pay_now_path
