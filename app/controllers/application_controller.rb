@@ -17,13 +17,17 @@ class ApplicationController < ActionController::Base
 	end
 
 	def stripeCustomerRequest(token)
-		connectAccountCus = Stripe::Customer.create({
-			email: session[:email],
-			name: session[:name],
-			phone: session[:phone],
-			address: session[:address],
-		  source: token['id']
-		}, {stripe_account: ENV['connectAccount']})
+		if (customerExists = Stripe::Customer.list({limit: 1, email: session[:email]}, {stripe_account: ENV['connectAccount']})['data']) && !customerExists.blank?
+			connectAccountCus = customerExists[0]
+		else
+			connectAccountCus = Stripe::Customer.create({
+				email: session[:email],
+				name: session[:name],
+				phone: session[:phone],
+				address: session[:address],
+			  source: token['id']
+			}, {stripe_account: ENV['connectAccount']})
+		end
 
 		return connectAccountCus
 	end
