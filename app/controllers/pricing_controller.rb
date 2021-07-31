@@ -34,7 +34,7 @@ class PricingController < ApplicationController
 				
 				params = {
 					'product' => "prod_#{pricingParams[:product]}",
-					'unit_amount' => pricingParams['unit_amount'].to_i * 100,
+					'unit_amount' => stripeAmount(pricingParams['unit_amount']),
 					'connectAccount' => current_user.stripeMerchantID,
 					'package?' => ActiveModel::Type::Boolean.new.cast(pricingParams['package']),
 					'divide_by' => pricingParams['divide_by'],
@@ -73,7 +73,7 @@ class PricingController < ApplicationController
 			
 			params = {
 				'product' => "prod_#{pricingParams[:product]}",
-				'unit_amount' => pricingParams['unit_amount'].to_i * 100,
+				'unit_amount' => stripeAmount(pricingParams['unit_amount']),
 				'connectAccount' => current_user.stripeMerchantID,
 				'package?' => ActiveModel::Type::Boolean.new.cast(pricingParams['package']),
 				'divide_by' => pricingParams['divide_by'],
