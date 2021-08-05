@@ -2,16 +2,17 @@ class ChargesController < ApplicationController
 	before_action :authenticate_user!
 
 	def payments
+		grabCart
 		if current_user&.authentication_token
+
 			curlCall = current_user&.indexStripeChargesAPI(params)
-			
 		  response = Oj.load(curlCall)
+		  
+			@customerPayments = response['charges'] #edit stripe session meta for scheduling
 
 		  if response['success']
-				@payments = response['payments'] #edit stripe session meta for scheduling
-	   		@customer = Stripe::Customer.retrieve(params[:id], {stripe_account: ENV['connectAccount']})
+				@hasMore = response['has_more']
 	    end
-
 		else
 			current_user = nil
       reset_session

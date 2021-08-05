@@ -1,5 +1,5 @@
 <% if current_user.present? %>
-	<div class="card card-style">
+  <div class="card card-style">
     <div class="content mt-3 mb-3">
       <h3>Payment History</h3>
       <p>
@@ -18,9 +18,7 @@
         <% stripeFeeAmount = chargeX['application_fee_amount'].to_i %>
         <div class="content mb-0">
             <h4 class="font-700 text-uppercase font-12 opacity-30 mb-3 mt-n2">
-              <% chargeX['charges']['data'].each do |ch| %>
-                Paid By: <%= Stripe::Customer.retrieve(ch['customer'], {stripe_account: ENV['connectAccount']})['name'] %>
-              <% end %>
+                Paid By: <%= Stripe::Customer.retrieve(chargeX['customer'], {stripe_account: ENV['connectAccount']})['name'] %>
             </h4>
             <div class="d-flex">
                 <div class="pr-4 align-self-center">

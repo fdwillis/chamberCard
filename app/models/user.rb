@@ -7,11 +7,8 @@ class User < ApplicationRecord
   geocoded_by :address
 
   def indexStripeChargesAPI(params)
-
-    if !params['paginateAfter'].blank?
-      return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?paginateAfter=#{params['paginateAfter']}`
-    elsif !params['paginateBefore'].blank?
-      return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?paginateBefore=#{params['paginateBefore']}`
+    if !params[:id].blank?
+      return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?connectCustomerID=#{params[:id].to_json}`
     else
       return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges`
     end

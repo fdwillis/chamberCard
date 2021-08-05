@@ -2,12 +2,25 @@ class PaymentsController < ApplicationController
 	before_action :authenticate_user!
 
 	def index
-		#showing payments of id passed
-		callCurl = current_user&.showStripeCustomerAPI(params[:stripe_customer_id])
-		if callCurl['success']
-			@customer = callCurl['stripeCustomer']
-			@sellerID = callCurl['stripeSeller']
-			@payments = callCurl['payments']
+		grabCart
+		if current_user&.authentication_token
+
+	  	if session[:payments]
+				@payments = session[:payments] #edit stripe session meta for scheduling
+			else
+				curlCall = current_user&.indexStripeChargesAPI(params)
+			  response = Oj.load(curlCall)
+			  
+				@payments = response['charges'] #edit stripe session meta for scheduling
+				session[:payments] = @payments
+
+			  if response['success']
+					@hasMore = response['has_more']
+		    end
+			end
+		else
+			current_user = nil
+      reset_session
 		end
 	end
 end
