@@ -7,10 +7,24 @@ class User < ApplicationRecord
   geocoded_by :address
 
   def indexStripeChargesAPI(params)
-    if !params[:id].blank?
-      return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?connectCustomerID=#{params[:id].to_json}`
+    if !params['paginateAfter'].blank?
+      if !params[:id].blank?
+        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?paginateAfter=#{params['paginateAfter']}&connectCustomerID=#{params[:id].to_json}`
+      else
+        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?paginateAfter=#{params['paginateAfter']}`
+      end
+    elsif !params['paginateBefore'].blank?
+      if !params[:id].blank?
+        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?paginateBefore=#{params['paginateBefore']}&connectCustomerID=#{params[:id].to_json}`
+      else
+        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?paginateBefore=#{params['paginateBefore']}`
+      end
     else
-      return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges`
+      if !params[:id].blank?
+        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?connectCustomerID=#{params[:id].to_json}`
+      else
+        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges`
+      end
     end
   end
 
