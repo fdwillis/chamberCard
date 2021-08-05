@@ -37,11 +37,15 @@
                 </div>
             </div>      
             <div class="divider mt-2 mb-3"></div>
-            <ul>
-              <% Stripe::InvoiceItem.list({invoice:  chargeX['invoice'], limit: 100}, {stripe_account: ENV['connectAccount']})['data'].each do |inI| %>
-                <li>(<%= inI['quantity'] %>) <%= inI['description'] %></li>
-              <% end %>
-            </ul>
+            <% if !chargeX['invoice'].blank? %>
+              <ul>
+                <% Stripe::InvoiceItem.list({invoice:  chargeX['invoice'], limit: 100}, {stripe_account: ENV['connectAccount']})['data'].each do |inI| %>
+                  <li>(<%= inI['quantity'] %>) <%= inI['description'] %></li>
+                <% end %>
+              </ul>
+              <% else %>
+                <ul><li><%= chargeX['description'] %></li></ul>
+            <% end %>
         </div>            
       </div>
     <% end %>

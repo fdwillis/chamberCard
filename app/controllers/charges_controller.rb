@@ -96,7 +96,7 @@ class ChargesController < ApplicationController
 
     if response['success']
 			flash[:success] = "Invoice Created"
-      redirect_to stripe_customers_path(params[:id])
+      redirect_to payments_path(id: customer)
     else
 			flash[:error] = response['message']
       redirect_to request.referrer
