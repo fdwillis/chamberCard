@@ -4,7 +4,7 @@ class CheckoutController < ApplicationController
 
 		if current_user&.authentication_token
 			datax = session[:cart].to_json
-			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{datax}' -X POST #{SITEurl}/api/v1/checkout`
+			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d '#{datax}' -X POST #{SITEurl}/api/v1/checkout`
 			
 	    response = Oj.load(curlCall)
 	    
@@ -32,7 +32,7 @@ class CheckoutController < ApplicationController
 						  paidInvoice = Stripe::Invoice.pay(checkoutRequest['invoice'], {}, {stripe_account: ENV['connectAccount']})
 					
 							if paidInvoice['status'] == 'paid'
-								curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -X DELETE #{SITEurl}/api/v1/carts/#{@cartID}`
+								curlCall = `curl -H "appName: #{ENV['appName']}" -X DELETE #{SITEurl}/api/v1/carts/#{@cartID}`
 
 								response = Oj.load(curlCall)
 							    
@@ -101,7 +101,7 @@ class CheckoutController < ApplicationController
 
 		# add anan user to platform as customer
 		
-		curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -X DELETE #{SITEurl}/api/v1/carts/#{@cartID}`
+		curlCall = `curl -H "appName: #{ENV['appName']}" -X DELETE #{SITEurl}/api/v1/carts/#{@cartID}`
 
 		response = Oj.load(curlCall)
 	    

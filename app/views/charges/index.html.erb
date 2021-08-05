@@ -14,35 +14,37 @@
   <% if @payments.present? %>
     <% @payments.each do |chargeX| %>
       <div class="card card-style">
-        <!-- <%= chargeX %> -->
-        <div class="content">
-          <div class="row mb-0">
-            <div class="col-12 ps-4">
-              <div class="d-flex">
-                <% if current_user&.owner? %>
-                  <div class="col-3"><p class="font-700 color-theme">From</p></div>
-                  <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= chargeX['customerName'] %></p></div>
-                <% end %>
-
-                <% if current_user&.customer? %>
-                  <div class="col-3"><p class="font-700 color-theme">Seller</p></div>
-                  <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= chargeX['sellerName'] %></p></div>
-                <% end %>
-              </div>
-              <div class="d-flex">
-                  <div class="col-3"><p class="font-700 color-theme">Date</p></div>
-                  <div class="ms-auto col-9 ml-4"><p class="pull-right"><%= Time.at(chargeX['dateCreated']).strftime("%a %b #{Time.at(chargeX['dateCreated']).day.ordinalize}, %Y") %></p></div>
-              </div>
-            </div>
-          </div>
-          <div class="divider mt-3 mb-3"></div>
-          <div class="row mb-0">
-            <div class="col-6"><h4 class="font-15 mt-1">Amount</h4></div>
-            <div class="col-6"><h4 class="font-15 pull-right text-end mt-1 color-green1-dark"><%= number_to_currency(chargeX['amount'] * 0.01, precision: 2) %></h4></div>
-            <div class="divider divider-margins w-100 mt-2 mb-3"></div>
-            <div class="col-12"><a href="<%= chargeX['receiptURL'] %>" target="_blank" class="btn btn-full btn-m bg-blue2-dark rounded-sm text-uppercase font-800 mt-3">View Receipt</a></div>
-          </div>
-        </div>
+        <% stripeFee = (((chargeX['amount'].to_i * 0.029)) + 29).to_i %>
+        <% stripeFeeAmount = chargeX['application_fee_amount'].to_i %>
+        <div class="content mb-0">
+            <h4 class="font-700 text-uppercase font-12 opacity-30 mb-3 mt-n2">
+              <% chargeX['charges']['data'].each do |ch| %>
+                Paid By: <%= Stripe::Customer.retrieve(ch['customer'], {stripe_account: ENV['connectAccount']})['name'] %>
+              <% end %>
+            </h4>
+            <div class="d-flex">
+                <div class="pr-4 align-self-center">
+                    <p class="font-600 color-highlight mb-n1">Payment</p>
+                    <h1 class="mb-2"><%= number_to_currency(chargeX['amount'].to_i * 0.01, precision: 2) %></h1>
+                    <small><%= Time.at(chargeX['created']).strftime("%b #{Time.at(chargeX['created']).day.ordinalize}, %Y") %></small>
+                </div>
+                <div class="w-100 align-self-center pl-3">
+                    <h6 class="font-14 font-700">TewCode Fee<span class="float-right color-orange2-dark"><%= number_to_currency(stripeFeeAmount.to_i * 0.01, precision: 2) %></span></h6>
+                    <div class="divider mb-2 mt-1"></div>
+                    <h6 class="font-14 font-700">Stripe Fee<span class="float-right color-red2-dark"><%= number_to_currency(stripeFee * 0.01.round(2), precision: 2) %></span></h6>
+                    <div class="divider mb-2 mt-1"></div>
+                    <%=  %>
+                    <h6 class="font-14 font-700">Net<span class="float-right color-green2-dark"><%= number_to_currency((chargeX['amount'].to_i - (stripeFeeAmount + stripeFee)) * 0.01, precision: 2) %></span></h6>
+                    <div class="divider mb-2 mt-1"></div>
+                </div>
+            </div>      
+            <div class="divider mt-2 mb-3"></div>
+            <ul>
+              <% Stripe::InvoiceItem.list({invoice:  chargeX['invoice'], limit: 100}, {stripe_account: ENV['connectAccount']})['data'].each do |inI| %>
+                <li>(<%= inI['quantity'] %>) <%= inI['description'] %></li>
+              <% end %>
+            </ul>
+        </div>            
       </div>
     <% end %>
     <% if @hasMore && @payments&.size == 100 %>
