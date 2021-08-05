@@ -50,7 +50,7 @@
                     </div>
                 </a>
             </div>
-            <% @sources&.each do |s| %>
+            <% !@sources.blank? && @sources&.each do |s| %>
               <div style="align-items: center;" class="mb-4">
                 <% if s['card']['brand'] == "Visa" %>
                   Visa
