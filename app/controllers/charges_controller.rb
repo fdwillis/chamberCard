@@ -23,10 +23,8 @@ class ChargesController < ApplicationController
 		grabCart
 		if current_user&.authentication_token
 
-
 			curlCall = current_user&.indexStripeChargesAPI(params)
 		  response = Oj.load(curlCall)
-		  
 
 		  if response['success']
 				session[:payments] = response['charges'] #edit stripe session meta for scheduling
@@ -98,7 +96,7 @@ class ChargesController < ApplicationController
 
     if response['success']
 			flash[:success] = "Invoice Created"
-      redirect_to pay_now_path
+      redirect_to charges_path
     else
 			flash[:error] = response['message']
       redirect_to request.referrer
@@ -114,7 +112,7 @@ class ChargesController < ApplicationController
     if response['success']
 			flash[:notice] = "Invoice Paid"
 			
-      redirect_to pay_now_path
+      redirect_to charges_path
     else
 			flash[:error] = response['message']
       redirect_to charges_path
@@ -150,7 +148,7 @@ class ChargesController < ApplicationController
 				
 				if paidInvoice['status'] == 'paid'
 					flash[:success] = "Invoice Paid"
-		      redirect_to pay_now_path
+		      redirect_to charges_path
 				else
 					flash[:alert] = "Invoice Not Paid"
 		      redirect_to charges_path
