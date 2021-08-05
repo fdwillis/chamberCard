@@ -52,15 +52,23 @@
             </div>
             <% @sources&.each do |s| %>
               <div style="align-items: center;" class="mb-4">
-                <% if s['card']['brand'] == "Visa" %>
+                <% if s['brand'] == "Visa" %>
                   Visa
-                <% elsif s['card']['brand'] == "MasterCard" %>
+                <% elsif s['brand'] == "MasterCard" %>
                   MasterCard
-                <% elsif s['card']['brand'] == "American Express" %>
+                <% elsif s['brand'] == "American Express" %>
                   American Express
                 <% end %>
-                  <p class="mt-n1 mb-0 font-10">**** <%= s['card']['last4'] %></p>
+                  <p class="mt-n1 mb-0 font-10">**** <%= s['last4'] %></p>
               </div>  
+
+              <% if s['object'] == 'bank_account' %>
+                <div class="text-center card card-style">
+                    <i class="fa fa-university color-highlight fa-2x mt-3"></i>
+                    <h1 class="pt-2 font-18">****<%= s['last4'] %></h1>
+                    <p class="font-11 opacity-50 mt-n2 mb-3"><%= s['routing_number'] %></p>
+                </div>
+              <% end %>
             <% end %>
         <% end %>
 
@@ -133,7 +141,7 @@
   <% end %>
 
   <!-- customers, owners, & managers that are verified in stripe with subscription if necessary -->
-  <% if !current_user&.stripeCustomerID.blank? || !current_user&.stripeMerchantID.blank? %>
+  <% if !current_user&.stripeCustomerID.blank? && current_user&.stripeMerchantID.blank? && current_user&.checkStripeSource %>
     <div class="card card-style">
         <div class="content mb-0">
             
