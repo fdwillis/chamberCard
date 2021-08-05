@@ -93,10 +93,10 @@ class ChargesController < ApplicationController
     curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "application_fee_amount=#{application_fee_amount}&customer=#{customer}&description=#{title}&amount=#{amount}" -X POST #{SITEurl}/api/v2/charges`
 
 		response = Oj.load(curlCall)
-
+debugger
     if response['success']
 			flash[:success] = "Invoice Created"
-      redirect_to charges_path
+      redirect_to payments_path
     else
 			flash[:error] = response['message']
       redirect_to request.referrer
