@@ -96,7 +96,7 @@ class ChargesController < ApplicationController
 
     if response['success']
 			flash[:success] = "Invoice Created"
-      redirect_to charges_path
+      redirect_to payments_path(id: customer)
     else
 			flash[:error] = response['message']
       redirect_to request.referrer

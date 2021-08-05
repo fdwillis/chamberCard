@@ -52,10 +52,8 @@
       <div class="col-12 pe-2">
           <div class="card card-style mx-0 mb-3">
               <div class="p-3">
-                  <h4 class="font-700 text-uppercase font-12 opacity-50 mt-n2">Unpaid Invoices</h4>
-                  <h1 class="font-700 font-34 color-red1-dark  mb-0"><%= unpaidInvoices.count %></h1>
                   <% if current_user&.owner? %>
-                    <a href="/initiateCharge?customerUUID=<%= params['id'] %>" class="mt-2 btn btn-full bg-blue2-dark btn-m text-uppercase font-800 rounded-sm">Create New Invoice</a>
+                    <a href="/initiateCharge?customerUUID=<%= params['id'] %>" class="mt-2 btn btn-full bg-yellow2-dark btn-m text-uppercase font-800 rounded-sm">Create New Charge</a>
                   <% end %>
               </div>
               <% if unpaidInvoices.count > 0%>
@@ -63,15 +61,6 @@
                     <a href="/pay-now" class="mt-2 btn btn-full bg-red1-dark btn-m text-uppercase font-800 rounded-sm">View</a>
                 </div>
               <% end %>
-          </div>
-      </div>
-      <div class="col-12 ps-2 pe-2">
-          <div class="card card-style mx-0 mb-3">
-              <div class="p-3">
-                  <h4 class="font-700 text-uppercase font-12 opacity-50 mt-n2">Subscriptions</h4>
-                  <h1 class="font-700 font-34 color-blue1-dark mb-0"><%= stripeSellerSubscriptions.count %></h1>
-                  <!-- <i class="fa fa-arrow-right float-right opacity-20"></i> -->
-              </div>
           </div>
       </div>
   </div>

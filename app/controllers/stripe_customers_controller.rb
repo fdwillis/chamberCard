@@ -25,6 +25,8 @@ before_action :authenticate_user!
 			@sellerID = callCurl['stripeSeller']
 			@payments = callCurl['payments']
 		else
+			flash[:error] = callCurl['message']
+			redirect_to stripe_customers_path
 		end
 	end
 
