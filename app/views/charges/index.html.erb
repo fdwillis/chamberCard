@@ -1,12 +1,12 @@
 <% if current_user.present? %>
   <div class="card card-style">
     <div class="content mt-3 mb-3">
-      <h3>Payment History</h3>
+      <h3><%= ENV['siteName'].titleize %>'s Payment History</h3>
       <p>
         <% if !current_user&.manager? %>
           View your payment history any time anywhere!
         <% else%>
-          View past charges &amp; create new invoices on the go!
+          Successful customer charges
         <% end %>
       </p>
     </div>
