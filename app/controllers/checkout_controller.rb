@@ -21,7 +21,7 @@ class CheckoutController < ApplicationController
 	  	begin
 			  if !session[:lineItems].blank?
 
-				  token = stripeTokenRequest(newStripeCardTokenParams, ENV['connectAccount'])
+				  token = stripeTokenRequest(attachSourceParams, ENV['connectAccount'])
 				  
 				  if token['success']
 					  connectAccountCus = stripeCustomerRequest(token['token'])
@@ -119,7 +119,7 @@ class CheckoutController < ApplicationController
 	end
 	private
 
-	def newStripeCardTokenParams
+	def attachSourceParams
 		paramsClean = params.require(:checkout).permit(:number, :exp_year, :exp_month, :cvc)
 		return paramsClean.reject{|_, v| v.blank?}
 	end

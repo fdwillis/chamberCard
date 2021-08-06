@@ -90,7 +90,7 @@ class ApplicationController < ActionController::Base
 	    	
 	    	@cart['carts'].each do |cartInfo|
 					cartInfo['cart'].each do |item|
-						@lineItems << {price: item['stripePriceInfo']['id'], quantity: item['quantity'], shippable: item['stripeProductInfo']['shippable'], description: "#{item['stripeProductInfo']['name']} | #{item['stripeProductInfo']['description']}"}
+						@lineItems << {price: item['stripePriceInfo']['id'], quantity: item['quantity'], shippable: item['stripeProductInfo']['shippable'], description: "#{item['stripeProductInfo']['name']} | #{item['stripePriceInfo']['metadata']['description']}"}
 						@serviceFee = @cart['serviceFee']
 					end
 				end
@@ -106,6 +106,7 @@ class ApplicationController < ActionController::Base
 	end
 
 	def stripeAmount(string)
+		debugger
     converted = (string.gsub(/[^0-9]/i, '').to_i)
 
     if string.include?(".")

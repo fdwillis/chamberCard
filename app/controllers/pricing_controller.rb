@@ -5,7 +5,7 @@ class PricingController < ApplicationController
 	def index
 		# showing all prices for one product
 		if current_user&.authentication_token
-			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/api/v1/products/prod_#{!productParams.blank? ? productParams[:product_id] : serviceParams[:service_id]}/pricing`
+			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/api/v1/products/prod_#{!productParams.blank? ? productParams[:product_id] : serviceParams[:service_id]}/pricing`
 		
 			response = Oj.load(curlCall)
 
@@ -13,9 +13,6 @@ class PricingController < ApplicationController
 				@prices = response['prices']
 				@productL = response['product']
 				@archived = response['archived']
-			else
-				flash[:alert] = "Trouble connecting..."
-				redirect_to services_path
 			end
 		end
 
@@ -25,7 +22,7 @@ class PricingController < ApplicationController
 	end
 
 	def new
-		
+		grabProduct
 	end
 
 	def create
@@ -35,7 +32,7 @@ class PricingController < ApplicationController
 				params = {
 					'product' => "prod_#{pricingParams[:product]}",
 					'unit_amount' => stripeAmount(pricingParams['unit_amount']),
-					'connectAccount' => current_user.stripeMerchantID,
+					'connectAccount' => ENV['connectAccount'],
 					'package?' => ActiveModel::Type::Boolean.new.cast(pricingParams['package']),
 					'divide_by' => pricingParams['divide_by'],
 					'description' => pricingParams['description'],
@@ -52,9 +49,6 @@ class PricingController < ApplicationController
 					flash[:success] = "Pricing Added"
 					redirect_to request.referrer
 					# redirect_to pricing_index_path(service_id: @productL['id'][5..@productL['id'].length])
-				else
-					flash[:alert] = "Trouble connecting..."
-					redirect_to request.referrer
 				end
 			end
 		else
@@ -73,7 +67,7 @@ class PricingController < ApplicationController
 			
 			params = {
 				'product' => "prod_#{pricingParams[:product]}",
-				'connectAccount' => current_user.stripeMerchantID,
+				'connectAccount' => ENV['connectAccount'],
 				'package?' => ActiveModel::Type::Boolean.new.cast(pricingParams['package']),
 				'divide_by' => pricingParams['divide_by'],
 				'description' => pricingParams['description'],
@@ -88,15 +82,12 @@ class PricingController < ApplicationController
 			if response['success']
 				flash[:success] = "Pricing Updated"
 			  redirect_to pricing_index_path(service_id: pricingParams[:product][5..pricingParams[:product].length])
-			else
-				flash[:alert] = "Trouble connecting..."
-				redirect_to request.referrer
 			end
 		end
 	end
 
 	def grabProduct
-		curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/api/v1/products/prod_#{!productParams[:product_id].blank? ? productParams[:product_id] : serviceParams[:service_id]}?connectAccount=#{current_user.stripeMerchantID}`
+		curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X GET #{SITEurl}/api/v1/products/prod_#{!productParams[:product_id].blank? ? productParams[:product_id] : serviceParams[:service_id]}?connectAccount=#{ENV['connectAccount']}`
 		response = Oj.load(curlCall)
 
 		if !response['product'].blank? && response['success']

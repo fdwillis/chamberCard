@@ -1,8 +1,6 @@
 class StripeCustomersController < ApplicationController
 before_action :authenticate_user!
 
-	
-
 	def index
 		callCurl = current_user&.indexStripeCustomerAPI(params)
 
