@@ -40,7 +40,7 @@ class CheckoutController < ApplicationController
 									session[:cart_id] = nil
 									session[:coupon] = nil
 						    	session[:percentOff] = nil
-									redirect_to request.referrer
+									redirect_to thankYou_path(paidInvoice[:id][3..26])
 									flash[:success] = "Purchase Complete"
 						    else
 						    	flash[:error] = response['error']
@@ -119,9 +119,14 @@ class CheckoutController < ApplicationController
 	end
 
 	def thankYou
-		# in_1JORINQXl4puf0Hk9tA1ESXV
-		stripeInvoiceIDRender = "in_#{params[:id]}"
-		@stripeInvoiceInfo = Stripe::Invoice.retrieve(stripeInvoiceIDRender, {stripe_account: ENV['connectAccount']})
+		begin
+			# in_1JORINQXl4puf0Hk9tA1ESXV
+			stripeInvoiceIDRender = "in_#{params[:id]}"
+			@stripeInvoiceInfo = Stripe::Invoice.retrieve(stripeInvoiceIDRender, {stripe_account: ENV['connectAccount']})
+		rescue Stripe::StripeError => e
+			flash[:error] = e.error.message
+			redirect_to carts_path
+		end
 	end
 
 	private
