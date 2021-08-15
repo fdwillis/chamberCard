@@ -1,16 +1,4 @@
-<div class="d-flex">
-    <div class="pt-1">
-        <h5 data-activate="toggle-id-2" class="font-600"><strong><em>Create package pricing?</em></strong></h5>
-    </div>
-    <div class="ml-auto mr-4 pr-2">
-        <div class="custom-control ios-switch ios-switch-icon">
-            <%= f.check_box :package, class: 'ios-input', id: 'toggle-id-2', onclick: "packageOrNah()", value: !@price.blank? ? !@price['transform_quantity'].blank? : false %>
-            <label class="custom-control-label" for="toggle-id-2"></label>
-            <span>YES</span>
-            <span>NO</span>
-        </div>
-    </div>
-</div>
+
 <%= !@price.blank? ? (@price['unit_amount'] * 0.01) : nil %>
 <div class="input-style has-icon">
   <span class="color-highlight input-style-2">Description</span>

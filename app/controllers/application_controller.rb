@@ -86,18 +86,20 @@ class ApplicationController < ActionController::Base
 	    	@cart = response.merge(stripeCapturePercentage: ENV['stripeCapturePercentage'].to_f * 0.01, tenPercentDepositCoupon: ENV['tenPercentDepositCoupon'], thirtyPercentDepositCoupon: ENV['thirtyPercentDepositCoupon'], fiftyPercentDepositCoupon: ENV['fiftyPercentDepositCoupon'])
 	    	session[:cart] = response.merge(stripeCapturePercentage: ENV['stripeCapturePercentage'].to_f * 0.01, tenPercentDepositCoupon: ENV['tenPercentDepositCoupon'], thirtyPercentDepositCoupon: ENV['thirtyPercentDepositCoupon'], fiftyPercentDepositCoupon: ENV['fiftyPercentDepositCoupon'])
 	    	
-	    	@lineItems = []
 	    	
-	    	@cart['carts'].each do |cartInfo|
-					cartInfo['cart'].each do |item|
-						@lineItems << {price: item['stripePriceInfo']['id'], quantity: item['quantity'], shippable: item['stripeProductInfo']['shippable'], description: "#{item['stripeProductInfo']['name']} | #{item['stripePriceInfo']['metadata']['description']}"}
-						@serviceFee = @cart['serviceFee']
-					end
-				end
-
-				session[:lineItems] = @lineItems
 	    end
 	  end
+
+	  @lineItems = []
+	    	
+  	@cart['carts'].each do |cartInfo|
+			cartInfo['cart'].each do |item|
+				@lineItems << {price: item['stripePriceInfo']['id'], quantity: item['quantity'], shippable: item['stripeProductInfo']['shippable'], description: "#{item['stripeProductInfo']['name']} | #{item['stripePriceInfo']['metadata']['description']}"}
+				@serviceFee = @cart['serviceFee']
+			end
+		end
+
+		session[:lineItems] = @lineItems
 
 	  @subtotal = @cart["subItemsTotal"]
 		@application_fee_amount = (@subtotal * (ENV['serviceFee'].to_i * 0.01)).to_i
@@ -106,7 +108,6 @@ class ApplicationController < ActionController::Base
 	end
 
 	def stripeAmount(string)
-		debugger
     converted = (string.gsub(/[^0-9]/i, '').to_i)
 
     if string.include?(".")

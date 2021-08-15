@@ -117,6 +117,13 @@ class CheckoutController < ApplicationController
 	def cancel
 		
 	end
+
+	def thankYou
+		# in_1JORINQXl4puf0Hk9tA1ESXV
+		stripeInvoiceIDRender = "in_#{params[:id]}"
+		@stripeInvoiceInfo = Stripe::Invoice.retrieve(stripeInvoiceIDRender, {stripe_account: ENV['connectAccount']})
+	end
+
 	private
 
 	def attachSourceParams

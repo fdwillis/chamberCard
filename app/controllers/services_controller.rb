@@ -92,7 +92,7 @@ class ServicesController < ApplicationController
 	private
 
 	def productParams
-		paramsClean = params.require(:product).permit(:id, :name, :description, :type, :active, {images: []}, :keywords, :connectAccount)
+		paramsClean = params.require(:product).permit(:id, :keywords, :connectAccount, :timeKitID, :name, :description, :type, :active, {images: []} )
 		return paramsClean.reject{|_, v| v.blank?}
 	end
 end

@@ -46,6 +46,7 @@ Rails.application.routes.draw do
 		post "confirm", to: 'schedule#confirm', as: "confirm"
 		post "customer-pay", to: 'charges#customerPay', as: "customer-pay"
 		
+		get "/thank-you/:id", to: 'checkout#thankYou', as: "thankYou"
 		get "/customers/:id/payments", to: 'charges#payments', as: "payments"
 		get "success", to: 'checkout#success', as: "success"
 		get "cancel", to: 'checkout#cancel', as: "cancel"
