@@ -20,7 +20,7 @@
 			<div class="input-style has-icon">
           <span class="color-highlight input-style-2">TimeKit ID</span>
           <em>(required)</em>
-          <%= f.text_field :timeKitID, value: !@product.blank? && !@product['metadata'].blank? && !@product['metadata'].blank? ? @product['metadata']['keywords'] : nil %>
+          <%= f.text_field :bookableByTimeKitID, class: "form-control", value: !@product.blank? && !@product['metadata'].blank? && !@product['metadata']['bookableByTimeKitID'].blank? ? @product['metadata']['bookableByTimeKitID'] : nil %>
       </div>
       <br>
       <br>

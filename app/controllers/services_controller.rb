@@ -51,7 +51,7 @@ class ServicesController < ApplicationController
 	def create
 		if current_user&.manager?
 
-			curlCall = Product.APIcreate(current_user, productParams)
+			curlCall = Product.APIcreate(current_user, productParamsX)
 
 			response = Oj.load(curlCall)
 			if response['success']
@@ -66,12 +66,17 @@ class ServicesController < ApplicationController
 
 	def update
 		if current_user&.manager?
-			curlCall = Product.APIupdate(current_user, productParams)
+			curlCall = Product.APIupdate(current_user, productParamsX)
 			response = Oj.load(curlCall)
 
 			if response['success']
 				
 				flash[:success] = "Service Updated"
+				
+				if !productParamsX[:bookableByTimeKitID].blank?
+					Stripe::Product.update("prod_#{params[:id][5..params[:id].length]}", {metadata: {bookableByTimeKitID: productParamsX[:bookableByTimeKitID]}}, {stripe_account: ENV["connectAccount"]})
+				end
+
 				redirect_to service_path(id: params[:id][5..params[:id].length], connectAccount: current_user&.stripeMerchantID)
 			end
 		end
@@ -91,8 +96,8 @@ class ServicesController < ApplicationController
 
 	private
 
-	def productParams
-		paramsClean = params.require(:product).permit(:id, :keywords, :connectAccount, :timeKitID, :name, :description, :type, :active, {images: []} )
+	def productParamsX
+		paramsClean = params.require(:product).permit(:id, :keywords, :connectAccount, :timeKitID, :name, :description, :type, :active, :bookableByTimeKitID, {images: []} )
 		return paramsClean.reject{|_, v| v.blank?}
 	end
 end
