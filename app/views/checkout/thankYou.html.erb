@@ -26,11 +26,31 @@
 
                   <script>
                     window.timekitBookingConfig = {
+                      // var cors = require('cors');
+                      // app.use(cors());
                       app_key: 'test_widget_key_0sUbi4Mc5H41xn2Eb2TUclpsA90ZgneG',
                       project_id: "<%= invI[:metadata][:bookableByTimeKitID] %>",
                       callbacks: {
+                        closeBookingPage: function() {location.reload();},
                         createBookingSuccessful: function(response) {
-                          location.reload();
+                          console.log(response.data.id);
+
+                          var obj = {
+                              timeKitBookingID: response.data.id,
+                              stripeInvoiceItem: "<%= invI[:id] %>",
+                              connectAccount: "<%= ENV['connectAccount'] %>"
+                          };
+                          $.ajax({
+                              type: "POST",
+                              url: "https://evil-grasshopper-14.loca.lt/api/v2/timekit-webhooks",
+                              data: {
+                                   json: JSON.stringify(obj)
+                              },
+                              success: function (response) {
+                                  location.reload();
+                              },
+                              dataType: 'json'
+                          });
                         }
                       },
                       customer_fields: {
@@ -39,7 +59,7 @@
                             readonly: false
                           },
                           email: {
-                            prefilled: "<%= @stripeInvoiceInfo['customer_email'] %>",
+                            prefilled: "<%= !Rails.env.prod? ? "fdwillis7@gmail.com" : @stripeInvoiceInfo['customer_email'] %>",
                             readonly: false
                           },
                           phone: {
@@ -55,6 +75,18 @@
                             readonly: false,
                             format: 'textarea'
                           },
+                          serviceCode: {
+                            title: 'Service Code',
+                            prefilled: "<%= invI[:id] %>",
+                            required: false,
+                            readonly: true
+                          },
+                          sellerAccount: {
+                            title: 'Seller ID',
+                            prefilled: "<%= ENV['connectAccount'] %>",
+                            required: false,
+                            readonly: true
+                          },
                         },
                       }
                   </script>
@@ -66,3 +98,5 @@
       </div>      
   </div>            
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" defer></script>
+<script src="https://cdn.timekit.io/booking-js/v2/booking.min.js" defer></script>

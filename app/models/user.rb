@@ -6,6 +6,23 @@ class User < ApplicationRecord
 
   geocoded_by :address
 
+  def self.updateInvoiceWithTimekitMeeting(timeKitBookingID,stripeInvoiceItem,connectAccount)
+    datax = {
+      timeKitBookingID: timeKitBookingID,
+      stripeInvoiceItem: stripeInvoiceItem,
+      connectAccount: connectAccount
+    }.to_json
+    curlCall  = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{datax}' -X POST #{SITEurl}/api/v2/timekit-webhooks`
+    response = Oj.load(curlCall)
+
+    if response['success']
+      return response
+    else
+      return response
+    end
+  end
+    
+
   def indexStripeChargesAPI(params)
     if !params['paginateAfter'].blank?
       if !params[:id].blank?
