@@ -32,26 +32,6 @@
                       project_id: "<%= invI[:metadata][:bookableByTimeKitID] %>",
                       callbacks: {
                         closeBookingPage: function() {location.reload();},
-                        createBookingSuccessful: function(response) {
-                          console.log(response.data.id);
-
-                          var obj = {
-                              timeKitBookingID: response.data.id,
-                              stripeInvoiceItem: "<%= invI[:id] %>",
-                              connectAccount: "<%= ENV['connectAccount'] %>"
-                          };
-                          $.ajax({
-                              type: "POST",
-                              url: "https://evil-grasshopper-14.loca.lt/api/v2/timekit-webhooks",
-                              data: {
-                                   json: JSON.stringify(obj)
-                              },
-                              success: function (response) {
-                                  location.reload();
-                              },
-                              dataType: 'json'
-                          });
-                        }
                       },
                       customer_fields: {
                           name: {
@@ -76,13 +56,11 @@
                             format: 'textarea'
                           },
                           serviceCode: {
-                            title: 'Service Code',
                             prefilled: "<%= invI[:id] %>",
                             required: false,
                             readonly: true
                           },
                           sellerAccount: {
-                            title: 'Seller ID',
                             prefilled: "<%= ENV['connectAccount'] %>",
                             required: false,
                             readonly: true
@@ -90,6 +68,10 @@
                         },
                       }
                   </script>
+                <% elsif !invI[:metadata][:timeKitBookingID].blank? && !invI[:metadata][:timeKitReschedule].blank? %>
+                  <p><%= link_to "Reschedule", invI[:metadata][:timeKitReschedule] %></p>
+                  <%= invI[:metadata][:timeKitCancel] %><br><br><br>
+                  <%= invI[:metadata][:timeKitReschedule] %>
                 <% end %>
               </h6>
             <% end %>
