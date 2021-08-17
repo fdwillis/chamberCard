@@ -17,13 +17,17 @@
 			    <span class="color-highlight input-style-2">Keywords</span>
 			    <%= f.text_area :keywords, class: "form-control", size: "10x3", value: !@product.blank? && !@product['metadata'].blank? ? @product['metadata']['keywords'] : nil %>
 			</div> 
+			<div class="input-style has-icon">
+          <span class="color-highlight input-style-2">TimeKit ID</span>
+          <em>(required)</em>
+          <%= f.text_field :bookableByTimeKitID, class: "form-control", value: !@product.blank? && !@product['metadata'].blank? && !@product['metadata']['bookableByTimeKitID'].blank? ? @product['metadata']['bookableByTimeKitID'] : nil %>
+      </div>
       <br>
       <br>
       <br>
       <div data-switch="toggle-id-2">
           <p class="mb-0 pb-0 pt-2">This will be available for purchase immediately after adding a price for the first time.</p>
       </div>
-			
 
 
       <%= f.hidden_field :type, value: 'service' %>

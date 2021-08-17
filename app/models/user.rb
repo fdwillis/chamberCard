@@ -6,6 +6,23 @@ class User < ApplicationRecord
 
   geocoded_by :address
 
+  def self.updateInvoiceWithTimekitMeeting(timeKitBookingID,stripeInvoiceItem,connectAccount)
+    datax = {
+      timeKitBookingID: timeKitBookingID,
+      stripeInvoiceItem: stripeInvoiceItem,
+      connectAccount: connectAccount
+    }.to_json
+    curlCall  = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{datax}' -X POST #{SITEurl}/api/v2/timekit-webhooks`
+    response = Oj.load(curlCall)
+
+    if response['success']
+      return response
+    else
+      return response
+    end
+  end
+    
+
   def indexStripeChargesAPI(params)
     if !params['paginateAfter'].blank?
       if !params[:id].blank?
@@ -134,7 +151,7 @@ class User < ApplicationRecord
     end
     # build the address by saving to user and passing param
 
-    curlCall  = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "country=#{country}&state=#{state}&city=#{city}&line1=#{street}&email=#{email}&name=#{stripeName}&phone=#{phone}&source=#{source}" -X PATCH #{SITEurl}/api/v1/stripe-customers/#{self.uuid}`
+    curlCall  = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "country=#{country}&state=#{state}&city=#{city}&line1=#{street}&email=#{email}&name=#{stripeName}&phone=#{phone}&source=#{source}" -X PATCH #{SITEurl}/api/v1/stripe-customers/#{self.uuid}`
 
     response = Oj.load(curlCall)
 
@@ -150,7 +167,7 @@ class User < ApplicationRecord
     curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/stripe-customers/#{self.uuid}`
 
     response = Oj.load(curlCall)
-    if !response.blank? && response['success']
+    if response['success']
       return response
     else
       return response
@@ -159,14 +176,14 @@ class User < ApplicationRecord
 
   def attachSourceStripe(tokenSource)
 
-    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "source=#{tokenSource}" -X PATCH #{SITEurl}/api/v1/stripe-customers/#{self.uuid}`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "source=#{tokenSource}" -X PATCH #{SITEurl}/api/v2/customers/#{self.uuid}`
 
     response = Oj.load(curlCall)
     
-    if !response.blank? && response['success']
+    if response['success']
       return response
     else
-      return response['error']
+      return response['message']
     end
   end
 
@@ -175,12 +192,11 @@ class User < ApplicationRecord
     exp_year = params[:exp_year]
     exp_month = params[:exp_month]
     cvc = params[:cvc]
-
-    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/api/v2/stripe-tokens`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/api/v2/tokens`
 
     response = Oj.load(curlCall)
     
-    if !response.blank? && response['success']
+    if response['success']
       return response
     else
       return response['error']
@@ -192,11 +208,11 @@ class User < ApplicationRecord
     account_number = params[:account_number]
     routing_number = params[:routing_number]
 
-    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "account_holder_name=#{account_holder_name}&account_number=#{account_number}&routing_number=#{routing_number}" #{SITEurl}/api/v1/stripe-tokens`
+    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "account_holder_name=#{account_holder_name}&account_number=#{account_number}&routing_number=#{routing_number}" #{SITEurl}/api/v1/tokens`
 
     response = Oj.load(curlCall)
     
-    if !response.blank? && response['success']
+    if response['success']
       return response
     else
       return response['error']
@@ -215,7 +231,7 @@ class User < ApplicationRecord
     
     response = Oj.load(curlCall)
     
-    if !response.blank? && response['success']
+    if response['success']
       return response
     else
       return response
@@ -224,11 +240,11 @@ class User < ApplicationRecord
 
   def showStripeCustomerAPI(customerID)
 
-    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/stripe-customers/#{customerID}`
+    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/customers/#{customerID}`
 
     response = Oj.load(curlCall)
 
-    if !response.blank? && response['success']
+    if response['success']
       return response
     else
       return response
@@ -241,7 +257,7 @@ class User < ApplicationRecord
 
     response = Oj.load(curlCall)
     
-    if !response.blank? && response['success']
+    if response['success']
       self.update(stripeCustomerID: response['stripeCustomerID'] )
       return response
     else
@@ -267,7 +283,7 @@ class User < ApplicationRecord
     curlCall = `curl -d "uuid=#{SecureRandom.uuid[0..7]}&serviceFee=#{ENV['serviceFee']}&appName=#{ENV['appName']}&phone=#{params['phone']}&accessPin=#{params['accessPin']}&email=#{self.email}&username=#{self.username}&password=#{self.password}&password_confirmation=#{self.password}" #{SITEurl}/api/v1/users`
     response = Oj.load(curlCall)
     
-    if !response.blank? && response['success']
+    if response['success']
       self.update(uuid: response['uuid'],username: response['username'], accessPin: response['accessPin'], phone: response['phone'], twilioPhoneVerify: response['twilioPhoneVerify'] )
       return response
     else
@@ -283,7 +299,7 @@ class User < ApplicationRecord
 
     response = Oj.load(curlCall)
 
-    if !response.blank? && response['success']
+    if response['success']
       return response
     else
       return response
@@ -295,7 +311,7 @@ class User < ApplicationRecord
     
     response = Oj.load(curlCall)
     
-    if !response.blank? && response['success']
+    if response['success']
       self.update(authentication_token: nil )
       return response
     else

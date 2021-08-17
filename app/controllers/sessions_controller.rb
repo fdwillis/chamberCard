@@ -59,6 +59,11 @@ class SessionsController < Devise::SessionsController
 
     if response['success']
       flash[:success] = "Welcome"
+    else
+      reset_session
+      current_user = nil
+      flash[:error] = response["message"]
+      redirect_to new_user_session_path
     end
   end
 

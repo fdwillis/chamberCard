@@ -25,8 +25,12 @@ class ScheduleController < ApplicationController
 
 	def create
 
-		paramsX = scheduleServiceParams.to_json
+		paramsX = {
+			'sessionOrInvoiceID' => scheduleServiceParams[:sessionOrInvoiceID]
+		}.to_json
+
 		curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user&.authentication_token}" -d '#{paramsX}' -X POST #{SITEurl}/api/v1/schedules`
+		
 		response = Oj.load(curlCall)
 
     if response['success']

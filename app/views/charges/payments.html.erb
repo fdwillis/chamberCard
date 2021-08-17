@@ -1,7 +1,8 @@
 <% if current_user.present? %>
-	<div class="card card-style">
+  <div class="card card-style">
     <div class="content mt-3 mb-3">
-      <h3><%= Stripe::Customer.retrieve(params[:id], {stripe_account: ENV['connectAccount']})['name'].titleize %>'s Payment History</h3>
+      <% stripeCus = Stripe::Customer.retrieve(params[:id], {stripe_account: ENV['connectAccount']})  %>
+      <h3><%= link_to stripeCus['name'].titleize, stripe_customer_path(stripeCus['id'])  %>'s Payment History</h3>
       <p>
         <% if !current_user&.manager? %>
           View your payment history any time anywhere!
@@ -18,20 +19,18 @@
         <% stripeFeeAmount = chargeX['application_fee_amount'].to_i %>
         <div class="content mb-0">
             <div class="d-flex">
-                <div class="pr-4 align-self-center">
+                <div class="pr-0 align-self-center">
                     <p class="font-600 color-highlight mb-n1">Payment</p>
                     <h1 class="mb-2"><%= number_to_currency(chargeX['amount'].to_i * 0.01, precision: 2) %></h1>
                 </div>
                 <div class="w-100 align-self-center pl-3">
+                    <h6 class="mt-4 font-700 text-uppercase font-12 opacity-30 mb-3 mt-n2"><%= Stripe::Customer.retrieve(chargeX['customer'], {stripe_account: ENV['connectAccount']})['name'] %><span class="float-right"><%= Time.at(chargeX['created']).strftime("%b #{Time.at(chargeX['created']).day.ordinalize}, %Y") %></span></h6>
                     <h6 class="font-14 font-700">TewCode Fee<span class="float-right color-orange2-dark"><%= number_to_currency(stripeFeeAmount.to_i * 0.01, precision: 2) %></span></h6>
                     <div class="divider mb-2 mt-1"></div>
                     <h6 class="font-14 font-700">Stripe Fee<span class="float-right color-red2-dark"><%= number_to_currency(stripeFee * 0.01.round(2), precision: 2) %></span></h6>
                     <div class="divider mb-2 mt-1"></div>
-                    <%=  %>
                     <h6 class="font-14 font-700">Net<span class="float-right color-green2-dark"><%= number_to_currency((chargeX['amount'].to_i - (stripeFeeAmount + stripeFee)) * 0.01, precision: 2) %></span></h6>
                     <div class="divider mb-2 mt-1"></div>
-                    <br>
-                    <h6 class="mt-8 font-700 text-uppercase font-12 opacity-30 mb-3 mt-n2"><%= Stripe::Customer.retrieve(chargeX['customer'], {stripe_account: ENV['connectAccount']})['name'] %><span class="float-right"><%= Time.at(chargeX['created']).strftime("%b #{Time.at(chargeX['created']).day.ordinalize}, %Y") %></span></h6>
                 </div>
             </div>      
             <div class="divider mt-2 mb-3"></div>
@@ -47,15 +46,15 @@
         </div>            
       </div>
     <% end %>
-    <% if @hasMore && @customerPayments&.size == 100 %>
+    <% if @hasMore %>
       <nav aria-label="pagination-demo">
           <ul class="pagination pagination- justify-content-center">
             <li class="page-item">
-                <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-xl border-0" href="/charges/?paginateBeforeInvoice=<%= @customerPayments.first['id'] %>" tabindex="-1" aria-disabled="true"><i class="fa fa-angle-left"></i></a>
+                <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-xl border-0" href="/charges/?paginateBefore=<%= @customerPayments.first['id'] %>" tabindex="-1" aria-disabled="true"><i class="fa fa-angle-left"></i></a>
                 BACK
             </li>
             <li class="page-item">
-                <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-l border-0" href="/charges/?paginateAfterInvoice=<%= @customerPayments.last['id'] %>"><i class="fa fa-angle-right"></i></a>
+                <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-l border-0" href="/charges/?paginateAfter=<%= @customerPayments.last['id'] %>"><i class="fa fa-angle-right"></i></a>
                 NEXT
             </li>
           </ul>

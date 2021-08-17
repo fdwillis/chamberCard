@@ -86,7 +86,7 @@ class ChargesController < ApplicationController
 
     subtotal = stripeAmount(newInvoiceParams[:amount])
 		application_fee_amount = (subtotal * (ENV['serviceFee'].to_i * 0.01)).to_i
-		stripeFee = (((subtotal+application_fee_amount) * 0.03) + 29).to_i
+		stripeFee = (((subtotal+application_fee_amount) * 0.029) + 29).to_i
 
 		amount = subtotal + application_fee_amount + stripeFee
 
