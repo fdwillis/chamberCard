@@ -56,6 +56,12 @@ class SessionsController < Devise::SessionsController
 
   def after_login
     response = resource.createUserSessionAPI(params[:user])
+    pullCharges
+
+    if resource.manager?
+      pullSchedule
+      pullOrders
+    end
 
     if response['success']
       flash[:success] = "Welcome"

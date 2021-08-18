@@ -1,6 +1,38 @@
 class ApplicationController < ActionController::Base
 	before_action :configure_permitted_parameters, if: :devise_controller?
 
+	def pullCharges
+		curlCall = current_user&.indexStripeChargesAPI(params)
+	  response = Oj.load(curlCall)
+	  
+
+	  if response['success']
+			session[:fetchedPendingCharges] = response['charges']
+			session[:pendingChargesHasMore] = response['has_more']	
+    end
+	end
+
+	def pullOrders
+		curlCall = current_user&.indexStripeOrdersAPI(params)
+  	response = Oj.load(curlCall)
+				
+
+    if response['success']
+			session[:fetchedPendingOrders] = response['orders']
+			session[:pendingOrdersHasMore] = response['has_more']
+		end
+	end
+
+	def pullSchedule
+		curlCall = current_user&.indexStripeScheduleAPI(params)
+  	response = Oj.load(curlCall)
+				
+    if response['success']
+			session[:fetchedPendingServices] = response['services']
+			session[:pendingServicesHasMore] = response['has_more']
+		end
+	end
+
 	def stripeCheckoutRequest(lineItems,customer)
 		
 		paramsX = {

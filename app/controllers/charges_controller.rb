@@ -4,15 +4,10 @@ class ChargesController < ApplicationController
 	def payments
 		grabCart
 		if current_user&.authentication_token
-
-			curlCall = current_user&.indexStripeChargesAPI(params)
-		  response = Oj.load(curlCall)
-		  
-			@customerPayments = response['charges'] #edit stripe session meta for scheduling
-
-		  if response['success']
-				@hasMore = response['has_more']
-	    end
+			
+			@customerPayments = session[:fetchedPendingCharges]
+			@hasMore = session[:pendingChargesHasMore]
+			
 		else
 			current_user = nil
       reset_session
