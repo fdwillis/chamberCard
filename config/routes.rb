@@ -26,7 +26,6 @@ Rails.application.routes.draw do
 		post "setSessionVar", to: 'sessions#setSessionVar', as: "set-session-vars"
 		post "initiateCharge", to: 'charges#initiateCharge', as: "initiateCharge"
 		post "newInvoice", to: 'charges#newInvoice', as: "newInvoice"
-		post "acceptInvoice", to: 'charges#acceptInvoice', as: "acceptInvoice"
 		
 		post "trackingNumber", to: 'products#trackingNumber', as: "trackingNumber"
 		
@@ -44,7 +43,6 @@ Rails.application.routes.draw do
 		post "cancelSub", to: 'home#cancelSub', as: "cancelSub"
 		post "completed", to: 'schedule#completed', as: "completed"
 		post "confirm", to: 'schedule#confirm', as: "confirm"
-		post "customer-pay", to: 'charges#customerPay', as: "customer-pay"
 		
 		get "/thank-you/:id", to: 'checkout#thankYou', as: "thankYou"
 		get "/customers/:id/payments", to: 'charges#payments', as: "payments"
