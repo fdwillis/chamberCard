@@ -3,7 +3,7 @@ class OrdersController < ApplicationController
 	
 	def index
 		if current_user&.authentication_token
-			
+			pullOrders
 			@orders = session[:fetchedPendingOrders]
 			@hasMore = session[:pendingOrdersHasMore]
 			

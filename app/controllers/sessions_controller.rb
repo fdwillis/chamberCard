@@ -60,7 +60,7 @@ class SessionsController < Devise::SessionsController
 
     if resource.manager?
       pullCustomers
-      pullOrders
+      
       pullSchedule
     end
 
