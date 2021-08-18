@@ -69,7 +69,7 @@
                       }
                   </script>
                 <% elsif !invI[:metadata][:timeKitBookingID].blank? && !invI[:metadata][:timeKitReschedule].blank? %>
-                  <p><%= link_to "Reschedule", invI[:metadata][:timeKitReschedule] %></p>
+                  <p><%= link_to "Reschedule", invI[:metadata][:timeKitReschedule], 'target' => '_blank' %></p>
                 <% end %>
               </h6>
             <% end %>
