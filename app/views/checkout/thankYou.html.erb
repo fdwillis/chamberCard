@@ -32,9 +32,11 @@
                       callbacks: {
                         createBookingSuccessful: function() {
                           // disbale timekit buttons for closing
+                          $('.bookingjs-form-button').hide();
+                          $('.bookingjs-bookpage-close').hide();
                           setTimeout(function () {
                             location.reload();
-                          }, 5000);
+                          }, 10000);
                         },
                       },
                       customer_fields: {
@@ -73,7 +75,7 @@
                       }
                   </script>
                 <% elsif !invI[:metadata][:timeKitBookingID].blank? && !invI[:metadata][:timeKitReschedule].blank? %>
-                  <p><%= link_to "Reschedule", invI[:metadata][:timeKitReschedule], 'target' => '_blank' %></p>
+                  <!-- <p><%= link_to "Reschedule", invI[:metadata][:timeKitReschedule], 'target' => '_blank' %></p> -->
                 <% end %>
               </h6>
             <% end %>
