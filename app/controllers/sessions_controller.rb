@@ -59,8 +59,9 @@ class SessionsController < Devise::SessionsController
     pullCharges
 
     if resource.manager?
-      pullSchedule
+      pullCustomers
       pullOrders
+      pullSchedule
     end
 
     if response['success']

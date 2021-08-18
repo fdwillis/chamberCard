@@ -1,6 +1,17 @@
 class ApplicationController < ActionController::Base
 	before_action :configure_permitted_parameters, if: :devise_controller?
 
+	def pullCustomers
+		callCurl = current_user&.indexStripeCustomerAPI(params)
+
+		if callCurl['success']
+			
+			session[:fetchedCustomers] = callCurl['customers']['data']
+			session[:pendingCustomersHasMore] = callCurl['has_more']	
+
+		end
+	end
+
 	def pullCharges
 		curlCall = current_user&.indexStripeChargesAPI(params)
 	  response = Oj.load(curlCall)
