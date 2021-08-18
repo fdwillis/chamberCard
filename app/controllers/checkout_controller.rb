@@ -55,6 +55,19 @@ class CheckoutController < ApplicationController
 						  paidInvoice = Stripe::Invoice.pay(checkoutRequest['invoice'], {}, {stripe_account: ENV['connectAccount']})
 					
 							if paidInvoice['status'] == 'paid'
+								
+								stripeLineItems = Stripe::InvoiceItem.list({invoice: paidInvoice[:id]}, {stripe_account: ENV['connectAccount']})['data']
+							  stripeLineItems.each do |stripeLi|
+
+								  fetchedPrice = Stripe::Price.retrieve(stripeLi[:metadata][:truePrice], {stripe_account: ENV['connectAccount']})
+							  	productFromInvoiceLine = Stripe::Product.retrieve(fetchedPrice[:product], {stripe_account: ENV['connectAccount']})
+							  	if !productFromInvoiceLine['metadata'].blank? && !productFromInvoiceLine['metadata']['bookableByTimeKitID'].blank?
+							  		Stripe::InvoiceItem.update(
+										  stripeLi[:id],
+										  {metadata: {bookableByTimeKitID: productFromInvoiceLine['metadata']['bookableByTimeKitID']}},
+										  {stripe_account: ENV['connectAccount']})
+							  	end
+							  end
 								curlCall = `curl -H "appName: #{ENV['appName']}" -X DELETE #{SITEurl}/api/v1/carts/#{@cartID}`
 
 								response = Oj.load(curlCall)
@@ -63,8 +76,8 @@ class CheckoutController < ApplicationController
 									session[:cart_id] = nil
 									session[:coupon] = nil
 						    	session[:percentOff] = nil
-									redirect_to request.referrer
 									flash[:success] = "Purchase Complete"
+									redirect_to thankYou_path(id: paidInvoice[:id][3..paidInvoice[:id].length])
 						    else
 						    	flash[:error] = response['error']
 						    	redirect_to carts_path
