@@ -4,15 +4,9 @@ class ChargesController < ApplicationController
 	def payments
 		grabCart
 		if current_user&.authentication_token
-
-			curlCall = current_user&.indexStripeChargesAPI(params)
-		  response = Oj.load(curlCall)
-		  
-			@customerPayments = response['charges'] #edit stripe session meta for scheduling
-
-		  if response['success']
-				@hasMore = response['has_more']
-	    end
+			@customerPayments = session[:fetchedPendingCharges].select{|ch| ch['customer'] == params['id']}
+			@hasMore = session[:pendingChargesHasMore]
+			
 		else
 			current_user = nil
       reset_session
@@ -103,22 +97,6 @@ class ChargesController < ApplicationController
     end
 	end
 
-	def acceptInvoice
-		charge = params[:stripeChargeID]
-		
-    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -X PATCH #{SITEurl}/api/v1/charges/#{charge}`
-
-		response = Oj.load(curlCall)
-    if response['success']
-			flash[:notice] = "Invoice Paid"
-			
-      redirect_to charges_path
-    else
-			flash[:error] = response['message']
-      redirect_to charges_path
-    end
-		
-	end
 
 	def payNow
 		grabCart
@@ -135,32 +113,6 @@ class ChargesController < ApplicationController
 	    end
 
 
-		else
-			current_user = nil
-      reset_session
-		end
-	end
-
-	def customerPay
-		if current_user&.authentication_token
-			begin
-				paidInvoice = Stripe::Invoice.pay(params['authPay']['invoiceToPay'], {}, {stripe_account: params['authPay']['sellerToChargeAs']})
-				
-				if paidInvoice['status'] == 'paid'
-					flash[:success] = "Invoice Paid"
-		      redirect_to charges_path
-				else
-					flash[:alert] = "Invoice Not Paid"
-		      redirect_to charges_path
-				end
-			rescue Stripe::StripeError => e
-				flash[:alert] = e.error.message
-	      redirect_to charges_path
-				
-			rescue Exception => e
-				flash[:alert] = e
-	      redirect_to charges_path
-			end
 		else
 			current_user = nil
       reset_session

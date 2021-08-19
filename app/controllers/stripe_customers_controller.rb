@@ -5,7 +5,6 @@ before_action :authenticate_user!
 		callCurl = current_user&.indexStripeCustomerAPI(params)
 
 		if callCurl['success']
-			@info = callCurl
 			@customers = callCurl['customers']['data']
 			@hasMore = callCurl['customers']['has_more']
 			@stripeMerchantID = callCurl['stripeMerchantID']

@@ -104,11 +104,11 @@
             <a href="/charges"><i class="fa fa-dollar-sign"></i><span>Payments</span></a>
           <% end %>
 
-          <% if request.fullpath.include?('/pay-now') %>
-              <a href="/pay-now"><i class="fa fa-money-bill color-highlight"></i><span>Invoices</span></a>
-          <% else %>
-              <a href="/pay-now"><i class="fa fa-money-bill"></i><span>Invoices</span></a>
-          <% end %>
+          <!--           <% if request.fullpath.include?('/pay-now') %>
+                        <a href="/pay-now"><i class="fa fa-money-bill color-highlight"></i><span>Invoices</span></a>
+                    <% else %>
+                        <a href="/pay-now"><i class="fa fa-money-bill"></i><span>Invoices</span></a>
+                    <% end %> -->
 
           <% if request.fullpath.include?('/profile') || request.fullpath.include?('/auth/login')|| request.fullpath.include?('/auth/sign-up')|| request.fullpath.include?('/membership') %>
             <a href="/profile"><i class="fa fa-cog color-highlight"></i><span>Settings</span></a>

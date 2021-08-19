@@ -112,6 +112,7 @@ class ProductsController < ApplicationController
 
     if response['success']
 			flash[:success] = response['message']
+			session[:fetchedPendingOrders].delete_if{|s| s['invoiceOrSessionID'] == sessionOrInvoiceID}
 			redirect_to request.referrer
 		else
 			flash[:error] = "Something went wrong"

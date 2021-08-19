@@ -61,6 +61,8 @@ class ServicesController < ApplicationController
 				flash[:alert] = response['message']
 				redirect_to new_service_path
 			end
+		else
+			redirect_to profile_path
 		end
 	end
 
@@ -79,15 +81,21 @@ class ServicesController < ApplicationController
 
 				redirect_to service_path(id: params[:id][5..params[:id].length], connectAccount: current_user&.stripeMerchantID)
 			end
+		else
+			redirect_to profile_path
 		end
 	end
 
 	def edit
-		if !params['service'].blank?
-			@product = params['service']
+		if current_user&.manager?
+			if !params['service'].blank?
+				@product = params['service']
+			else
+				flash[:error] = "No product found"
+				redirect_to request.referrer
+			end
 		else
-			flash[:error] = "No product found"
-			redirect_to request.referrer
+			redirect_to profile_path
 		end
 	end
 

@@ -5,17 +5,9 @@ class ScheduleController < ApplicationController
 	
 	def index
 		if current_user&.authentication_token
-			curlCall = current_user&.indexStripeScheduleAPI(params)
 				
-    	response = Oj.load(curlCall)
-	    if response['success']
-				@services = response['services']
-				@hasMore = response['has_more']
-			elsif response['message'] == "No purchases found"
-				@message = response['message']
-			else
-				flash[:error] = response['message']
-			end
+			@services = session[:fetchedPendingServices]
+			@hasMore = session[:pendingServicesHasMore]
 
 		else
 			current_user = nil
@@ -25,62 +17,18 @@ class ScheduleController < ApplicationController
 
 	def create
 
-		paramsX = {
-			'sessionOrInvoiceID' => scheduleServiceParams[:sessionOrInvoiceID]
-		}.to_json
-
+		paramsX = scheduleServiceParams.to_json
 		curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user&.authentication_token}" -d '#{paramsX}' -X POST #{SITEurl}/api/v1/schedules`
-		
 		response = Oj.load(curlCall)
 
     if response['success']
 			flash[:success] = "Service Confirmed"
-			
+			session[:fetchedPendingServices].delete_if{|s| s['invoiceOrSessionID'] == params['scheduleService']['sessionOrInvoiceID']}
       redirect_to request.referrer
     else
 			flash[:error] = response['message']
       redirect_to request.referrer
     end
-	end
-	
-	def acceptBooking
-		# sync booking to manager calendar
-		bookingDone = current_user&.syncTimekit(params[:acceptBooking])
-		if bookingDone[:success]
-
-			curlCall = Schedule.APIaccept(current_user, params[:acceptBooking], bookingDone[:timeKitBookingID])
-
-			response = Oj.load(curlCall)
-
-	    if response['success']
-				flash[:success] = "Booking Scheduled"
-				
-	      redirect_to request.referrer
-	    else
-				flash[:error] = response['message']
-	      redirect_to request.referrer
-	    end
-		else
-			flash[:error] = "Please don't double book: #{bookingDone[:message]}"
-      redirect_to request.referrer
-		end
-	end
-
-	def requestBooking
-		if request.post?
-
-			curlCall = Schedule.APIrequest(current_user, params[:requestBooking])
-
-	    response = Oj.load(curlCall)
-
-	    if response['success']
-				flash[:success] = "Request Submitted"
-				redirect_to request.referrer
-			else
-				flash[:error] = "Something went wrong"
-				redirect_to request.referrer
-			end
-		end
 	end
 
 	private

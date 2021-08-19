@@ -1,13 +1,56 @@
 class ApplicationController < ActionController::Base
 	before_action :configure_permitted_parameters, if: :devise_controller?
 
+	def pullCustomers
+		callCurl = current_user&.indexStripeCustomerAPI(params)
+
+		if callCurl['success']
+			
+			session[:fetchedCustomers] = callCurl['customers']['data']
+			session[:pendingCustomersHasMore] = callCurl['has_more']	
+
+		end
+	end
+
+	def pullCharges
+		curlCall = current_user&.indexStripeChargesAPI(params)
+	  response = Oj.load(curlCall)
+	  
+
+	  if response['success']
+			session[:fetchedPendingCharges] = response['charges']
+			session[:pendingChargesHasMore] = response['has_more']	
+    end
+	end
+
+	def pullOrders
+		curlCall = current_user&.indexStripeOrdersAPI(params)
+  	response = Oj.load(curlCall)
+				
+
+    if response['success']
+			session[:fetchedPendingOrders] = response['orders']
+			session[:pendingOrdersHasMore] = response['has_more']
+		end
+	end
+
+	def pullSchedule
+		curlCall = current_user&.indexStripeScheduleAPI(params)
+  	response = Oj.load(curlCall)
+				
+    if response['success']
+			session[:fetchedPendingServices] = response['services']
+			session[:pendingServicesHasMore] = response['has_more']
+		end
+	end
+
 	def stripeCheckoutRequest(lineItems,customer)
 		
 		paramsX = {
 			"customer" => customer,
 			"type" => @shippable == true ? "good" : 'service' ,
 			"lineItems" => lineItems,
-			"amount" => @subtotal + @application_fee_amount + @stripeFee,
+			"amount" => @jsonAmount,
 			"application_fee_amount" => @application_fee_amount
 		}.to_json
 
@@ -17,8 +60,15 @@ class ApplicationController < ActionController::Base
 	end
 
 	def stripeCustomerRequest(token)
-		if (customerExists = Stripe::Customer.list({limit: 1, email: session[:email]}, {stripe_account: ENV['connectAccount']})['data']) && !customerExists.blank?
-			connectAccountCus = customerExists[0]
+		if (customerExists = Stripe::Customer.list({limit: 1, email: session[:email]}, {stripe_account: ENV['connectAccount']})['data'][0]) && !customerExists.blank?
+
+			updated = Stripe::Customer.update(
+				customerExists['id'],{
+			   	source: token['id']
+			  }, {stripe_account: ENV['connectAccount']
+			})
+			
+			connectAccountCus = customerExists
 		else
 			connectAccountCus = Stripe::Customer.create({
 				email: session[:email],
@@ -105,6 +155,8 @@ class ApplicationController < ActionController::Base
 		@application_fee_amount = (@subtotal * (ENV['serviceFee'].to_i * 0.01)).to_i
 		@stripeFee = (((@subtotal+@application_fee_amount) * 0.03) + 29).to_i
 		@shippable = @lineItems.present? ? @lineItems.map{|itm| itm[:shippable]}.uniq.include?(true) : nil
+
+		@jsonAmount = @subtotal + @application_fee_amount + @stripeFee
 	end
 
 	def stripeAmount(string)
