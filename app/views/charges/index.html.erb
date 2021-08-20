@@ -14,7 +14,7 @@
   <% if @payments.present? %>
     <% @payments.each do |chargeX| %>
       <div class="card card-style">
-        <% stripeFee = (((chargeX['amount'].to_i * 0.029)) + 29).to_i %>
+        <% stripeFee = (((chargeX['amount'].to_i * 0.029)) + 30).to_i %>
         <% stripeFeeAmount = chargeX['application_fee_amount'].to_i %>
         <div class="content mb-0">
             <div class="d-flex">
