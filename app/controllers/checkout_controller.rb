@@ -61,13 +61,19 @@ class CheckoutController < ApplicationController
 
 								  fetchedPrice = Stripe::Price.retrieve(stripeLi[:metadata][:truePrice], {stripe_account: ENV['connectAccount']})
 							  	productFromInvoiceLine = Stripe::Product.retrieve(fetchedPrice[:product], {stripe_account: ENV['connectAccount']})
-							  	if !productFromInvoiceLine['metadata'].blank? && !productFromInvoiceLine['metadata']['bookableByTimeKitID'].blank?
-							  		Stripe::InvoiceItem.update(
-										  stripeLi[:id],
-										  {metadata: {bookableByTimeKitID: productFromInvoiceLine['metadata']['bookableByTimeKitID']}},
-										  {stripe_account: ENV['connectAccount']})
+							  	if !productFromInvoiceLine['metadata'].blank?
+							  		if !productFromInvoiceLine['metadata']['bookableByTimeKitID'].blank?
+								  		Stripe::InvoiceItem.update(
+											  stripeLi[:id],
+											  {metadata: {bookableByTimeKitID: productFromInvoiceLine['metadata']['bookableByTimeKitID']}},
+											  {stripe_account: ENV['connectAccount']})
+								  	end
+							  		if !productFromInvoiceLine['metadata']['stockCount'].blank?
+							  			updatedMeta = Stripe::Product.update(productFromInvoiceLine[:id], {metadata: {stockCount: productFromInvoiceLine['metadata']['stockCount'].to_i - stripeLi[:quantity].to_i}}, {stripe_account: ENV['connectAccount']})
+							  		end
 							  	end
 							  end
+							  
 								curlCall = `curl -H "appName: #{ENV['appName']}" -X DELETE #{SITEurl}/api/v1/carts/#{@cartID}`
 
 								response = Oj.load(curlCall)

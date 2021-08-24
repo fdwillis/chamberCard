@@ -25,7 +25,9 @@
           <% if h[:connectAccount] && h[:connectAccount] == current_user&.stripeMerchantID %>
 
             <div data-filter-item="" data-filter-name="all <%= !h[:product]['metadata'].blank? ? h[:product]['metadata']['keywords'] : h[:product][:name] %>" class="search-result-list">
-
+              <% if h[:product]['metadata'] && h[:product]['metadata']['stockCount'].to_i == 0 %>
+                <span class="bg-yellow2-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Sold Out</span>
+              <% end %>
               <% if h[:product]['active'] && !Stripe::Price.list({limit: 100, product: h[:product]['id'], active: true}, {stripe_account: current_user.stripeMerchantID})['data'].blank? %>
                 <span class="bg-green1-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Active</span>
               <% else %>
@@ -43,9 +45,11 @@
       <% else %>
         <% @activeProducts.uniq.each do |h| %>
             <div data-filter-item="" data-filter-name="all products <%= !h[:product]['metadata'].blank? ? h[:product]['metadata']['keywords'] : h[:product][:name] %>" class="search-result-list">
-
               <% if !h[:product]['images'].blank? %>
                 <%= cl_image_tag(h[:product]['images'][0].split(",")[0], :width => 100, :height => 80, :gravity=>:auto, class: "mr-3") %>
+              <% end %>
+              <% if h[:product]['metadata'] && h[:product]['metadata']['stockCount'].to_i == 0 %>
+                <span class="bg-yellow2-dark float-right rounded-xs text-uppercase font-900 font-9 pr-2 pl-2 pb-0 pt-0 line-height-s mt-n1">Sold Out</span>
               <% end %>
               <h1 ><%= h[:product]['name'] %></h1>
               <p><%= h[:product]['description'] %></p>
