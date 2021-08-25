@@ -11,4 +11,4 @@ RSpec.feature "Session management", :type => :feature do
     click_button "Login"
     expect(page).to have_text("Welcome")
   end
-end
+end 

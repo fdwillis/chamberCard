@@ -21,6 +21,7 @@ FactoryBot.define do
 			email {"m@m.com"}
 			password {"mmmmmmmm"}
 			password_confirmation {"mmmmmmmm"}
+			stripeCustomerID {"cus_JBeja3MqqIeuBl"}
 	    stripeMerchantID {'acct_1Ijuj1QXl4puf0Hk'}
 	    uuid {SecureRandom.uuid[0..5]}
 		end
