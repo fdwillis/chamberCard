@@ -2,7 +2,7 @@ class CheckoutController < ApplicationController
 
 	def create
 		grabCart
-
+		# cart['connectAccount'] to loop each seller for marketplace
 		if current_user&.authentication_token
 
 			customerFetch = current_user&.showStripeCustomerAPI(current_user&.stripeCustomerID)['stripeCustomer']['id']
@@ -47,7 +47,7 @@ class CheckoutController < ApplicationController
 				  token = stripeTokenRequest(attachSourceParams, ENV['connectAccount'])
 				  
 				  if token['success']
-					  connectAccountCus = stripeCustomerRequest(token['token'])
+					  connectAccountCus = stripeCustomerRequest(token['token'], ENV['connectAccount'])
 
 					  checkoutRequest = stripeCheckoutRequest(session[:lineItems], connectAccountCus['id'])	
 					  #collect invoice payment

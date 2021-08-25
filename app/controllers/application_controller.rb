@@ -59,13 +59,13 @@ class ApplicationController < ActionController::Base
 	  response = Oj.load(curlCall)
 	end
 
-	def stripeCustomerRequest(token)
-		if (customerExists = Stripe::Customer.list({limit: 1, email: session[:email]}, {stripe_account: ENV['connectAccount']})['data'][0]) && !customerExists.blank?
+	def stripeCustomerRequest(token, connectAccount)
+		if (customerExists = Stripe::Customer.list({limit: 1, email: session[:email]}, {stripe_account: connectAccount})['data'][0]) && !customerExists.blank?
 
 			updated = Stripe::Customer.update(
 				customerExists['id'],{
 			   	source: token['id']
-			  }, {stripe_account: ENV['connectAccount']
+			  }, {stripe_account: connectAccount
 			})
 			
 			connectAccountCus = customerExists
@@ -76,7 +76,7 @@ class ApplicationController < ActionController::Base
 				phone: session[:phone],
 				address: session[:address],
 			  source: token['id']
-			}, {stripe_account: ENV['connectAccount']})
+			}, {stripe_account: connectAccount})
 		end
 
 		return connectAccountCus
@@ -144,7 +144,7 @@ class ApplicationController < ActionController::Base
 	    	
   	@cart['carts'].each do |cartInfo|
 			cartInfo['cart'].each do |item|
-				@lineItems << {price: item['stripePriceInfo']['id'], quantity: item['quantity'], shippable: item['stripeProductInfo']['shippable'], description: "#{item['stripeProductInfo']['name']} | #{item['stripePriceInfo']['metadata']['description']}"}
+				@lineItems << {connectAccount: cartInfo['connectAccount'], price: item['stripePriceInfo']['id'], quantity: item['quantity'], shippable: item['stripeProductInfo']['shippable'], description: "#{item['stripeProductInfo']['name']} | #{item['stripePriceInfo']['metadata']['description']}"}
 				@serviceFee = @cart['serviceFee']
 			end
 		end
