@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 		resources :schedule
 		resources :orders
 		resources :carts
+		resources :jobs
 	
 		resources :services
 		resources :products

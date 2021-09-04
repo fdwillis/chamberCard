@@ -20,60 +20,60 @@
    
   <% if current_user&.customer? %>
     <div class="card card-style text-center">
-      <div class="content mb-0">
-        <h2>Payment Information</h2>
 
-          <% if current_user&.customer? && current_user.stripeCustomerID.blank? %>
-            <!-- <h2>Payment Information</h2> -->
-            <p class="mb-5">
-                Your account is unable to purchase products &amp; services. If you would like to begin making purchases or setup your <%= link_to "Membership", membership_path %>, get started by clicking 'Proceed' below!
-            </p>
+      <% if current_user&.customer? && current_user.stripeCustomerID.blank? %>
+        <!-- <h2>Payment Information</h2> -->
+        <p class="mb-5">
+            Your account is unable to purchase products &amp; services. If you would like to begin making purchases or setup your <%= link_to "Membership", membership_path %>, get started by clicking 'Proceed' below!
+        </p>
 
-            <%= form_for :newStripeCustomer, url: stripe_customers_path do |f| %>
-              <%= f.submit "Proceed", class: "btn btn-full bg-yellow1-dark btn-m text-uppercase rounded-sm shadow-l col-12 mb-3 mt-4 font-900"%>
+        <%= form_for :newStripeCustomer, url: stripe_customers_path do |f| %>
+          <%= f.submit "Proceed", class: "btn btn-full bg-yellow1-dark btn-m text-uppercase rounded-sm shadow-l col-12 mb-3 mt-4 font-900"%>
 
+        <% end %>
+      <% end %>
+        
+
+      <% if !current_user&.stripeCustomerID.blank? %>
+        <% if @name %>
+          <h2 class="mt-2">Payment Information</h2>
+          <div class="row text-center">
+              <a href="#" data-menu="menu-transaction-transfer" class="col-12">
+                  <div class="card card-style ml-2 mb-3">
+                      <i class="fa fa-credit-card color-highlight fa-2x mt-3"></i>
+                      <h1 class="pt-2 font-18">Card</h1>
+                      <% if current_user&.checkStripeSource  %>
+                        <p class="font-11 opacity-50 mt-n2 mb-3">Edit Card</p>
+                      <% else %>
+                        <p class="font-11 opacity-50 mt-n2 mb-3">Add Card</p>
+                      <% end %>
+                  </div>
+              </a>
+          </div>
+          <% @sources&.each do |s| %>
+            <div style="align-items: center;" class="mb-4">
+              <% if s['brand'] == "Visa" %>
+                Visa
+              <% elsif s['brand'] == "MasterCard" %>
+                MasterCard
+              <% elsif s['brand'] == "American Express" %>
+                American Express
+              <% end %>
+                <p class="mt-n1 mb-0 font-10">**** <%= s['last4'] %></p>
+            </div>  
+
+            <% if s['object'] == 'bank_account' %>
+              <div class="text-center card card-style">
+                  <i class="fa fa-university color-highlight fa-2x mt-3"></i>
+                  <h1 class="pt-2 font-18">****<%= s['last4'] %></h1>
+                  <p class="font-11 opacity-50 mt-n2 mb-3"><%= s['routing_number'] %></p>
+              </div>
             <% end %>
           <% end %>
-            
-
-        <% if !current_user&.stripeCustomerID.blank? %>
-            <div class="content row text-center">
-                <a href="#" data-menu="menu-transaction-transfer" class="col-12">
-                    <div class="card card-style ml-2 mb-3">
-                        <i class="fa fa-credit-card color-highlight fa-2x mt-3"></i>
-                        <h1 class="pt-2 font-18">Card</h1>
-                        <% if current_user&.checkStripeSource  %>
-                          <p class="font-11 opacity-50 mt-n2 mb-3">Edit Card</p>
-                        <% else %>
-                          <p class="font-11 opacity-50 mt-n2 mb-3">Add Card</p>
-                        <% end %>
-                    </div>
-                </a>
-            </div>
-            <% @sources&.each do |s| %>
-              <div style="align-items: center;" class="mb-4">
-                <% if s['brand'] == "Visa" %>
-                  Visa
-                <% elsif s['brand'] == "MasterCard" %>
-                  MasterCard
-                <% elsif s['brand'] == "American Express" %>
-                  American Express
-                <% end %>
-                  <p class="mt-n1 mb-0 font-10">**** <%= s['last4'] %></p>
-              </div>  
-
-              <% if s['object'] == 'bank_account' %>
-                <div class="text-center card card-style">
-                    <i class="fa fa-university color-highlight fa-2x mt-3"></i>
-                    <h1 class="pt-2 font-18">****<%= s['last4'] %></h1>
-                    <p class="font-11 opacity-50 mt-n2 mb-3"><%= s['routing_number'] %></p>
-                </div>
-              <% end %>
-            <% end %>
         <% end %>
+      <% end %>
 
 
-      </div>
     </div>
   <% end %>
 
@@ -141,7 +141,7 @@
   <% end %>
 
   <!-- customers, owners, & managers that are verified in stripe with subscription if necessary -->
-  <% if !current_user&.stripeCustomerID.blank? && current_user&.stripeMerchantID.blank? && current_user&.checkStripeSource %>
+  <% if !current_user&.stripeCustomerID.blank? %>
     <div class="card card-style">
         <div class="content mb-0">
             
@@ -156,6 +156,12 @@
                   <em>(required)</em>
                   <%= f.email_field :email, value: current_user&.email ? current_user&.email : @email, class: "form-control", required: true %>
               </div> 
+              <div class="input-style input-style-2 has-icon input-required mt-4">
+                  <i class="input-icon fa fa-phone"></i>
+                  <span class="color-highlight input-style-1-active">Full Name</span>
+                  <em>(required)</em>
+                  <%= f.text_field :name, placeholder: "Jane M Dow", class: "form-control", value: !@name.blank? ? @name : nil, required: true %>
+              </div>
               <div class="input-style input-style-2 has-icon input-required mt-4">
                   <i class="input-icon fa fa-phone"></i>
                   <span class="color-highlight input-style-1-active">Phone Number</span>
@@ -196,8 +202,7 @@
             <% end %>
         </div>
     </div>   
-  <% end %>     
-      
+  <% end %>
 <% else %>
   <div class="page-content ">
         <a href="<%= new_user_registration_url %>" class="btn btn-full btn-s rounded-s text-uppercase font-900 bg-green1-dark">CREATE ACCOUNT</a>

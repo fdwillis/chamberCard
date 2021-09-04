@@ -16,10 +16,9 @@ class ApplicationController < ActionController::Base
 		curlCall = current_user&.indexStripeChargesAPI(params)
 	  response = Oj.load(curlCall)
 	  
-
 	  if response['success']
-			session[:fetchedPendingCharges] = response['charges']
-			session[:pendingChargesHasMore] = response['has_more']	
+			session[:fetchedCharges] = response['charges']
+			session[:chargesHasMore] = response['has_more']	
     end
 	end
 
@@ -119,8 +118,8 @@ class ApplicationController < ActionController::Base
 	    response = Oj.load(curlCall)
 	    
 	    if response['success']
-	    	@cart = response.merge(stripeCapturePercentage: ENV['stripeCapturePercentage'].to_f * 0.01, tenPercentDepositCoupon: ENV['tenPercentDepositCoupon'], thirtyPercentDepositCoupon: ENV['thirtyPercentDepositCoupon'], fiftyPercentDepositCoupon: ENV['fiftyPercentDepositCoupon'])
-	    	session[:cart] = response.merge(coupon: !session[:coupon].blank? ? session[:coupon] : "" , stripeCapturePercentage: ENV['stripeCapturePercentage'].to_f * 0.01, tenPercentDepositCoupon: ENV['tenPercentDepositCoupon'], thirtyPercentDepositCoupon: ENV['thirtyPercentDepositCoupon'], fiftyPercentDepositCoupon: ENV['fiftyPercentDepositCoupon'])
+	    	@cart = response.merge(stripeCapturePercentage: ENV['stripeCapturePercentage'].to_f * 0.01)
+	    	session[:cart] = response.merge(coupon: !session[:coupon].blank? ? session[:coupon] : "" , stripeCapturePercentage: ENV['stripeCapturePercentage'].to_f * 0.01)
 	    	if @cart['carts'].present?
 		    	@cartID = @cart['carts'][0]['cartID']
 		    end
@@ -133,10 +132,8 @@ class ApplicationController < ActionController::Base
 	    response = Oj.load(curlCall)
 	    
 	    if response['success']
-	    	@cart = response.merge(stripeCapturePercentage: ENV['stripeCapturePercentage'].to_f * 0.01, tenPercentDepositCoupon: ENV['tenPercentDepositCoupon'], thirtyPercentDepositCoupon: ENV['thirtyPercentDepositCoupon'], fiftyPercentDepositCoupon: ENV['fiftyPercentDepositCoupon'])
-	    	session[:cart] = response.merge(stripeCapturePercentage: ENV['stripeCapturePercentage'].to_f * 0.01, tenPercentDepositCoupon: ENV['tenPercentDepositCoupon'], thirtyPercentDepositCoupon: ENV['thirtyPercentDepositCoupon'], fiftyPercentDepositCoupon: ENV['fiftyPercentDepositCoupon'])
-	    	
-	    	
+	    	@cart = response.merge(stripeCapturePercentage: ENV['stripeCapturePercentage'].to_f * 0.01)
+	    	session[:cart] = response.merge(stripeCapturePercentage: ENV['stripeCapturePercentage'].to_f * 0.01)
 	    end
 	  end
 
@@ -151,12 +148,13 @@ class ApplicationController < ActionController::Base
 
 		session[:lineItems] = @lineItems
 
-	  @subtotal = @cart["subItemsTotal"]
+	  @subtotal = !session[:coupon].blank? ? ((100 - session[:percentOff]) * 0.01) * @cart["subItemsTotal"]  : @cart["subItemsTotal"]
 		@application_fee_amount = (@subtotal * (ENV['serviceFee'].to_i * 0.01)).to_i
-		@stripeFee = (((@subtotal+@application_fee_amount) * 0.03) + 29).to_i
+		@stripeFee = (((@subtotal+@application_fee_amount) * 0.029) + 30).to_i
 		@shippable = @lineItems.present? ? @lineItems.map{|itm| itm[:shippable]}.uniq.include?(true) : nil
 
 		@jsonAmount = @subtotal + @application_fee_amount + @stripeFee
+		
 	end
 
 	def stripeAmount(string)

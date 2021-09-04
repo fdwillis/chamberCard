@@ -8,14 +8,14 @@ class ServicesController < ApplicationController
 		else
 			curlCall = Product.APIindex(nil)
 		end
-
+		
     response = Oj.load(curlCall)
     if response['success']
 			
 			if @store = response['store']
 				activeProducts = []
 				unavailableProducts = []
-
+				
 				@store.each do |store|
 					store['products'].each do |product|
 
@@ -56,6 +56,10 @@ class ServicesController < ApplicationController
 			response = Oj.load(curlCall)
 			if response['success']
 				flash[:success] = "Service Created"
+				if !productParamsX[:bookableByTimeKitID].blank?
+					Stripe::Product.update(response'product', {metadata: {bookableByTimeKitID: productParamsX[:bookableByTimeKitID]}}, {stripe_account: ENV["connectAccount"]})
+				end
+
 				redirect_to services_path
 			else
 				flash[:alert] = response['message']

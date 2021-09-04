@@ -4,8 +4,8 @@ class ChargesController < ApplicationController
 	def payments
 		grabCart
 		if current_user&.authentication_token
-			@customerPayments = session[:fetchedPendingCharges].select{|ch| ch['customer'] == params['id']}
-			@hasMore = session[:pendingChargesHasMore]
+			@customerPayments = session[:fetchedCharges].select{|ch| ch['customer'] == params['id']}
+			@hasMore = session[:chargesHasMore]
 			
 		else
 			current_user = nil

@@ -70,6 +70,14 @@
             <% else %>
               <a href="/schedule"><i class="fa fa-calendar-check"></i><span>Schedule</span></a>
             <% end %>
+
+          <% if current_user&.owner? || current_user&.serviceProvider? %>
+            <% if request.fullpath.include?('/jobs') %>
+              <a href="/jobs"><i class="fa fa-briefcase color-highlight"></i><span>Jobs</span></a>
+            <% else %>
+              <a href="/jobs"><i class="fa fa-briefcase"></i><span>Jobs</span></a>
+            <% end %>
+          <% end %>
           <% if current_user&.customer? && current_user&.stripeCustomerID && current_user&.checkStripeSource %>
             <% if request.fullpath.include?('/customers') %>
               <a href="/customers/<%= current_user&.stripeCustomerID %>"><i class="fa fa-user color-highlight"></i><span>Profile</span></a>
@@ -285,7 +293,7 @@
             </div>        
             
 
-            <p class="footer-copyright"><%= ENV['siteName'] %> + <a target="_blank" href="http://www.tewcode.com/">TewCode</a> <br>Copyright © Enabled 2020-<%= DateTime.now.strftime("%Y") %></p>
+            <p class="footer-copyright"><%= ENV['siteName'] %> + <a target="_blank" href="https://www.tewcode.com/">TewCode</a> <br>Copyright © Enabled 2020-<%= DateTime.now.strftime("%Y") %></p>
         </div>
 
 

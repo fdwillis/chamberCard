@@ -18,7 +18,6 @@ RSpec.feature "product management", :type => :feature do
     expect(find_field("product_name").visible?).to eq(true)
     expect(find_field("product_stockCount").visible?).to eq(true)
     expect(find_field("product_description").visible?).to eq(true)
-    # debugger
     fill_in('product_name', :with => 'John')
     fill_in('product_stockCount', :with => '13')
     fill_in('product_description', :with => 'description')
