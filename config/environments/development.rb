@@ -13,7 +13,7 @@ Rails.application.configure do
 
   # Do not eager load code on boot.
   config.eager_load = false
-  config.hosts << "short-fox-76.loca.lt"
+  config.hosts << "www.example.com"
   
 
   # Show full error reports.

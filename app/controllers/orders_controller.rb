@@ -3,10 +3,12 @@ class OrdersController < ApplicationController
 	
 	def index
 		if current_user&.authentication_token
-			pullOrders
+			if session[:fetchedPendingOrders].blank? 
+				pullOrders
+			end
+			
 			@orders = session[:fetchedPendingOrders]
 			@hasMore = session[:pendingOrdersHasMore]
-			
 		else
 			current_user = nil
       reset_session

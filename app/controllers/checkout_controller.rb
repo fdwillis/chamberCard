@@ -2,7 +2,7 @@ class CheckoutController < ApplicationController
 
 	def create
 		grabCart
-
+		# cart['connectAccount'] to loop each seller for marketplace
 		if current_user&.authentication_token
 
 			customerFetch = current_user&.showStripeCustomerAPI(current_user&.stripeCustomerID)['stripeCustomer']['id']
@@ -47,7 +47,7 @@ class CheckoutController < ApplicationController
 				  token = stripeTokenRequest(attachSourceParams, ENV['connectAccount'])
 				  
 				  if token['success']
-					  connectAccountCus = stripeCustomerRequest(token['token'])
+					  connectAccountCus = stripeCustomerRequest(token['token'], ENV['connectAccount'])
 
 					  checkoutRequest = stripeCheckoutRequest(session[:lineItems], connectAccountCus['id'])	
 					  #collect invoice payment
@@ -61,13 +61,19 @@ class CheckoutController < ApplicationController
 
 								  fetchedPrice = Stripe::Price.retrieve(stripeLi[:metadata][:truePrice], {stripe_account: ENV['connectAccount']})
 							  	productFromInvoiceLine = Stripe::Product.retrieve(fetchedPrice[:product], {stripe_account: ENV['connectAccount']})
-							  	if !productFromInvoiceLine['metadata'].blank? && !productFromInvoiceLine['metadata']['bookableByTimeKitID'].blank?
-							  		Stripe::InvoiceItem.update(
-										  stripeLi[:id],
-										  {metadata: {bookableByTimeKitID: productFromInvoiceLine['metadata']['bookableByTimeKitID']}},
-										  {stripe_account: ENV['connectAccount']})
+							  	if !productFromInvoiceLine['metadata'].blank?
+							  		if !productFromInvoiceLine['metadata']['bookableByTimeKitID'].blank?
+								  		Stripe::InvoiceItem.update(
+											  stripeLi[:id],
+											  {metadata: {bookableByTimeKitID: productFromInvoiceLine['metadata']['bookableByTimeKitID']}},
+											  {stripe_account: ENV['connectAccount']})
+								  	end
+							  		if !productFromInvoiceLine['metadata']['stockCount'].blank?
+							  			updatedMeta = Stripe::Product.update(productFromInvoiceLine[:id], {metadata: {stockCount: productFromInvoiceLine['metadata']['stockCount'].to_i - stripeLi[:quantity].to_i}}, {stripe_account: ENV['connectAccount']})
+							  		end
 							  	end
 							  end
+							  
 								curlCall = `curl -H "appName: #{ENV['appName']}" -X DELETE #{SITEurl}/api/v1/carts/#{@cartID}`
 
 								response = Oj.load(curlCall)

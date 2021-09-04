@@ -3,44 +3,36 @@ before_action :authenticate_user!
 
 	def create
 		
-		callCurl2 = current_user.updateStripeCustomerAPI(!stripeCardTokenParams.blank? ? stripeCardTokenParams : newStripeBankTokenParams )
+		if !newStripeCardTokenParams.blank?
+			callCurl = current_user.createStripeCardTokenAPI(newStripeCardTokenParams)
 		
-		if callCurl2['success']
+		else
+			callCurl = current_user.createStripeBankTokenAPI(newStripeBankTokenParams)
+		end
 
-			if !stripeCardTokenParams.blank?
-				callCurl = current_user.createStripeCardTokenAPI(stripeCardTokenParams)
-			else
-				callCurl = current_user.createStripeBankTokenAPI(newStripeBankTokenParams)
-			end
-
+		if callCurl['success']
+			tokenReady = callCurl['token']['id']
 			
-			if callCurl['success']
-				tokenReady = callCurl['token']
-				
-				source = current_user.attachSourceStripe(tokenReady)
+			sourceX = current_user.attachSourceStripe(tokenReady)
 
-				if source['success']
-					flash[:success] = "Payment added"
-					redirect_to profile_path
-				else
-					flash[:error] = source
-					redirect_to profile_path
-				end
+			if sourceX['success']
+				flash[:success] = "Payment added"
+				redirect_to profile_path
 			else
-				
-				flash[:error] = callCurl
+				flash[:error] = sourceX
 				redirect_to profile_path
 			end
 		else
 			
-			flash[:error] = callCurl2
+			flash[:error] = callCurl
 			redirect_to profile_path
 		end
+		
 	end
 
 	private
 
-	def stripeCardTokenParams
+	def newStripeCardTokenParams
 		paramsClean = params.require(:newStripeCardToken).permit(:number, :exp_year, :exp_month, :cvc, :name, :phone)
 		return paramsClean.reject{|_, v| v.blank?}
 	end

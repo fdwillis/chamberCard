@@ -55,6 +55,7 @@ end
 
 group :test do
   gem 'letter_opener'
+  gem 'rails-controller-testing'
   gem 'test-unit'
   gem 'email_spec'
   gem 'factory_bot_rails'

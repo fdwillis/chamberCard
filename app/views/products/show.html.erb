@@ -78,39 +78,40 @@
             <em>(required)</em>
             <%= f.select :sellerItem, @prices.sort { |a,b| a['unit_amount'] <=> b['unit_amount'] }.map{|p,i| ["#{number_to_currency(p['unit_amount'].to_f * 0.01, precision: 2)} #{!p['transform_quantity'].blank? ? 'Package Of ' + p['transform_quantity']['divide_by'].to_s : ""}", "#{p['unit_amount']}-#{p['id'][6..p['id'].length]}-#{!p['transform_quantity'].blank? ? "package-#{p['transform_quantity']['divide_by']}" : ""}"  ]}, required: true %>
         </div>
-        <div class="input-style has-icon input-style-2 input-required pb-1">
-            <span class="color-highlight input-style-1-active">Quantity</span>
-            <em>(required)</em>
-            <%= f.select :quantity, 1..100, required: true %>
-        </div> 
+        <% if @product['metadata'] && @product['metadata']['stockCount'].to_i > 0 %>
+          <div class="input-style has-icon input-style-2 input-required pb-1">
+                <span class="color-highlight input-style-1-active">Quantity</span>
+                <em>(required)</em>
+                <%= f.select :quantity, 1..@product['metadata']['stockCount'].to_i, required: true %>
+          </div> 
+          <p class="mt-n1 font-12 color-highlight mb-0" id='packageSelected' style="display: none;"><i class="fa fa-info mr-3"></i> Package Selected: Includes </p>
 
-        <p class="mt-n1 font-12 color-highlight mb-0" id='packageSelected' style="display: none;"><i class="fa fa-info mr-3"></i> Package Selected: Includes </p>
-
-        <% @prices.each do |pr| %>
-          <div class="content">
-            <div class="row mb-0">
-                <div class="col-12 pl-4">
-                    <div class="d-flex">
-                      <div><p class="font-700 color-theme"><%= number_to_currency((pr['unit_amount'] * 0.01), precision: 2) %></p></div>
-                    </div>
-                    <div class="d-flex">
-                    </div>
-                    <%= !pr['metadata'].blank? ? pr['metadata']['description'] : nil %>
-                </div>
+          <% @prices.each do |pr| %>
+            <div class="content">
+              <div class="row mb-0">
+                  <div class="col-12 pl-4">
+                      <div class="d-flex">
+                        <div><p class="font-700 color-theme"><%= number_to_currency((pr['unit_amount'] * 0.01), precision: 2) %></p></div>
+                      </div>
+                      <div class="d-flex">
+                      </div>
+                      <%= !pr['metadata'].blank? ? pr['metadata']['description'] : nil %>
+                  </div>
+              </div>
+              <div class="divider mt-3 mb-3"></div>
             </div>
-            <div class="divider mt-3 mb-3"></div>
-          </div>
-        <% end %>
-
-
-        * Plus Service Fee: This fee helps us operate and upgrade <%= ENV['siteName'] %>
-        <% if !@prices.blank? %>
-          <% if !current_user&.manager? %>
-            <%= button_tag type: 'submit', class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" do %>
-              <i class="fa fa-shopping-cart" aria-hidden="true"></i> Add To Cart
-            <% end %>
+          <% end %>
+          * Plus Service Fee: This fee helps us operate and upgrade <%= ENV['siteName'] %>
+          <% if !@prices.blank? %>
+            <% if !current_user&.manager? %>
+              <%= button_tag type: 'submit', class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" do %>
+                <i class="fa fa-shopping-cart" aria-hidden="true"></i> Add To Cart
+              <% end %>
+            <% end %> 
           <% end %> 
-        <% end %> 
+        <% else %>
+          <%= link_to "Sold Out", "", class: "btn btn-full bg-yellow1-dark btn-m text-uppercase rounded-sm shadow-l col-12 mb-3 mt-4 font-900" %>
+        <% end %>
       <% end %> 
     </div>
   </div>

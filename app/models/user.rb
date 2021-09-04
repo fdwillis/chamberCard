@@ -343,6 +343,10 @@ class User < ApplicationRecord
     customerAccess.include?(accessPin)
   end
 
+  def serviceProvider?
+    serviceProviderAccess.include?(accessPin)
+  end
+
   def trustee?
     trusteeAccess.include?(accessPin)     
   end
@@ -415,6 +419,9 @@ class User < ApplicationRecord
   end
 
   private
+  def serviceProviderAccess
+    return ['serviceProvider']
+  end
 
   def customerAccess
     return ['customer']

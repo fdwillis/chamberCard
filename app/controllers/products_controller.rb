@@ -123,6 +123,6 @@ class ProductsController < ApplicationController
 	private
 
 	def productParams
-		paramsClean = params.require(:product).permit(:id, :name, :description, :type, :active, {images: []}, :keywords)
+		paramsClean = params.require(:product).permit(:stockCount, :id, :name, :description, :type, :active, {images: []}, :keywords)
 	end
 end
