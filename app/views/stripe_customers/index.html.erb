@@ -16,7 +16,7 @@
       </thead>
       <tbody>
         <% @customers.each do |cust| %>
-          <% stripeSpend = Stripe::Charge.list({customer: cust['id'], limit: 100}, {stripe_account: current_user&.stripeMerchantID})['data'].sum(&:amount) * 0.01 %>
+          <% stripeSpend = Stripe::Charge.list({customer: cust['id'], limit: 100, paid: true}, {stripe_account: current_user&.stripeMerchantID})['data'].sum(&:amount) * 0.01 %>
           <% uncollected = 0 %>
           <% stripeInvoices = Stripe::Invoice.list({customer: cust['id'], limit: 100}, {stripe_account: current_user&.stripeMerchantID})['data'] %>
           <% stripeInvoices.map{|inv| (inv['status'] == 'draft' || inv['status'] == 'open') ? uncollected += inv['amount_remaining'] : next } %>

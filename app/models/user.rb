@@ -45,7 +45,7 @@ class User < ApplicationRecord
     end
   end
 
-  def indexStripeScheduleAPI(params)
+  def indexStripeheduleAPI(params)
 
     if !params['paginateAfter'].blank?
       return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/schedules?paginateAfter=#{params['paginateAfter']}`

@@ -11,6 +11,7 @@ class PricingController < ApplicationController
 
 			if !response['product'].blank? && response['success']
 				@prices = response['prices']
+				# sort pricee by amount
 				@productL = response['product']
 				@archived = response['archived']
 			end
@@ -36,6 +37,7 @@ class PricingController < ApplicationController
 					'package?' => ActiveModel::Type::Boolean.new.cast(pricingParams['package']),
 					'divide_by' => pricingParams['divide_by'],
 					'description' => pricingParams['description'],
+					'stockCount' => pricingParams['stockCount'],
 					'public' => ActiveModel::Type::Boolean.new.cast(pricingParams['public']),
 					
 				}.to_json
@@ -72,6 +74,7 @@ class PricingController < ApplicationController
 				'divide_by' => pricingParams['divide_by'],
 				'description' => pricingParams['description'],
 				'active' => pricingParams['active'],
+				'stockCount' => pricingParams['stockCount'],
 				'public' => ActiveModel::Type::Boolean.new.cast(pricingParams['public']),
 			}.to_json
 
@@ -98,7 +101,7 @@ class PricingController < ApplicationController
 	private
 
 	def pricingParams
-		paramsClean = params.require(:newPricing).permit(:service_id, :product_id, :id, :unit_amount, :product, :connectAccount, :package, :divide_by, :description, :active, :public)
+		paramsClean = params.require(:newPricing).permit(:stockCount, :service_id, :product_id, :id, :unit_amount, :product, :connectAccount, :package, :divide_by, :description, :active, :public)
 		return paramsClean.reject{|_, v| v.blank?}
 	end
 
