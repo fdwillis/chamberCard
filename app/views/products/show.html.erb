@@ -56,20 +56,26 @@
   </div>
 
   <% @prices.each do |pr| %>
-    <div data-card-height="150" class="card card-style">
+    <div data-card-height="125" class="card card-style">
       <div class="card-top mt-3 ml-3">
           <h2 class="color-black pt-3 pb-3"><%= number_to_currency((pr['unit_amount'] * 0.01), precision: 2) %></h2>
           <p class="color-black font-10 opacity-80"><%= !pr['metadata'].blank? ? pr['metadata']['description'] : nil %></p>
       </div>
       <div class="card-bottom pb-3 pr-4">
           <div class="float-right">
-            <%= form_for :addToCart, url: cart_path(id: @connectAccount), method: :patch do |f|  %>
-              <div class="input-style input-style-2 mt-2">
-                <%= f.number_field :quantity, max: pr['metadata']['stockCount'], placeholder: "QTY", required: true %>
-                <%= f.hidden_field :sellerItem, value: pr['id'] %>
-              </div>
-              <%= button_tag type: 'submit', id: pr['id'], class: "float-right bg-green1-dark rounded-xl font-900 text-uppercase font-11 mb-2 btn btn-full" do %>
-                <i class="fa fa-shopping-cart" aria-hidden="true"></i> Add To Cart
+            <% if (pr['metadata']['stockCount'].to_i > 0) ||  pr['metadata']['stockCount'].blank? %>
+              <%= form_for :addToCart, url: cart_path(id: @connectAccount), method: :patch do |f|  %>
+                <div class="input-style input-style-2 mt-2">
+                  <%= f.number_field :quantity, max: pr['metadata']['stockCount'], placeholder: "QTY", required: true %>
+                  <%= f.hidden_field :sellerItem, value: pr['id'] %>
+                </div>
+                <%= button_tag type: 'submit', id: pr['id'], class: "float-right bg-green1-dark rounded-xl font-900 text-uppercase font-11 mb-2 btn btn-full" do %>
+                  <i class="fa fa-shopping-cart" aria-hidden="true"></i> Add To Cart
+                <% end %>
+              <% end %>
+            <% else %>
+              <%= button_tag type: 'submit', id: pr['id'], class: "float-right bg-green1-dark rounded-xl font-900 text-uppercase font-11 mb-2 btn btn-full", disabled: true do %>
+                  <i class="fa fa-shopping-cart" aria-hidden="true"></i> Sold Out
               <% end %>
             <% end %>
           </div>

@@ -61,6 +61,7 @@ class CheckoutController < ApplicationController
 
 								  fetchedPrice = Stripe::Price.retrieve(stripeLi[:metadata][:truePrice], {stripe_account: ENV['connectAccount']})
 							  	productFromInvoiceLine = Stripe::Product.retrieve(fetchedPrice[:product], {stripe_account: ENV['connectAccount']})
+							  	
 							  	if !productFromInvoiceLine['metadata'].blank?
 							  		if !productFromInvoiceLine['metadata']['bookableByTimeKitID'].blank?
 								  		Stripe::InvoiceItem.update(
@@ -68,10 +69,12 @@ class CheckoutController < ApplicationController
 											  {metadata: {bookableByTimeKitID: productFromInvoiceLine['metadata']['bookableByTimeKitID']}},
 											  {stripe_account: ENV['connectAccount']})
 								  	end
-							  		if !productFromInvoiceLine['metadata']['stockCount'].blank?
-							  			updatedMeta = Stripe::Product.update(productFromInvoiceLine[:id], {metadata: {stockCount: productFromInvoiceLine['metadata']['stockCount'].to_i - stripeLi[:quantity].to_i}}, {stripe_account: ENV['connectAccount']})
-							  		end
+							  		
 							  	end
+
+							  	if !fetchedPrice['metadata']['stockCount'].blank?
+						  			updatedMeta = Stripe::Price.update(fetchedPrice[:id], {metadata: {stockCount: fetchedPrice['metadata']['stockCount'].to_i - stripeLi[:quantity].to_i}}, {stripe_account: ENV['connectAccount']})
+						  		end
 							  end
 							  
 								curlCall = `curl -H "appName: #{ENV['appName']}" -X DELETE #{SITEurl}/api/v1/carts/#{@cartID}`
