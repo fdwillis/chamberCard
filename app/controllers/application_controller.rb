@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
 	end
 
 	def pullSchedule
-		curlCall = current_user&.indexStripeScheduleAPI(params)
+		curlCall = current_user&.indexStripeheduleAPI(params)
   	response = Oj.load(curlCall)
 				
     if response['success']

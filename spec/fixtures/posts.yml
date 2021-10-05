@@ -1,0 +1,21 @@
+by_user_one:
+  author: one
+  <% if Post.has_attribute?(:title) %>
+  title: 'Post by user one'
+  <% end %>
+  <% if Post.has_attribute?(:body) %>
+  body: 'Lorem ipsum 1'
+  <% end %>
+
+  <% if Post.has_attribute?(:published) %>
+  published: true
+  <% end %>  
+
+by_user_two:
+  author: two
+  <% if Post.has_attribute?(:title) %>
+  title: 'Post by user two'
+  <% end %>
+  <% if Post.has_attribute?(:body) %>
+  body: 'Lorem ipsum 2'
+  <% end %>

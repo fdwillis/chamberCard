@@ -17,6 +17,9 @@
     <%= f.hidden_field :product, value: !params["product_id"].blank? ? params["product_id"] : params["service_id"] %>
 	</div> 
 </div>
+<div class="input-style has-icon">
+  <%= f.number_field :stockCount, class: "form-control", placeholder: '0', value: !@price['metadata'].blank? && !@price['metadata']['stockCount'].blank? ? @price['metadata']['stockCount'] : "endless" %>
+</div> 
 
 <div id="one-offprice" class="switch-is-checked" style="display: block;">
   <p class="mb-0 pb-0 pt-2"><em><u>Single Purchase</u></em></p>

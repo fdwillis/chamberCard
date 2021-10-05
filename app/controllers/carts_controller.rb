@@ -10,7 +10,7 @@ class CartsController < ApplicationController
 		params = {
 			'line_items' => [
 				{
-					'stripePriceID' => "price_#{cartParams['sellerItem'].split("-")[1]}",
+					'stripePriceID' => cartParams['sellerItem'],
 				  'quantity' 			=> cartParams['quantity']
 				}
 			]

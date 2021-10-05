@@ -15,6 +15,10 @@
         <span class="color-highlight input-style-2">Description</span>
         <%= f.text_area :description, class: "form-control", size: "10x3", required: true, value: (!@price['metadata'].blank? && !@price['metadata']['description'].blank?) ? @price['metadata']['description'] : nil %>
         <%= f.hidden_field :product, value: @price['product'] %>
+      </div>
+      <div class="input-style has-icon">
+        <span class="color-highlight input-style-2">Stock Count</span>
+        <%= f.number_field :stockCount, class: "form-control", placeholder: '0', value: !@price['metadata'].blank? && !@price['metadata']['stockCount'].blank? ? @price['metadata']['stockCount'] : "endless" %>
       </div> 
       <div class="pt-1">
         <h5 data-activate="toggle-id-2" class="font-600"><strong><em>Active</em></strong></h5>

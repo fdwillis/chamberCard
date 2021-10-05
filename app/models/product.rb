@@ -14,8 +14,8 @@ class Product < ApplicationRecord
 	end
 
 	def self.APIcreate(userX, productParams)
-		productName = productParams[:name]
-		description = productParams[:description]
+		productName = productParams[:name].html_safe
+		description = productParams[:description].html_safe
 		type = productParams[:type]
 		keywords = productParams[:keywords]
 		stockCount = productParams[:stockCount].to_i
@@ -31,7 +31,7 @@ class Product < ApplicationRecord
 		end
 
 		if userX&.class == User
-			callIt = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{userX&.authentication_token}"  -d 'stockCount=#{stockCount}&keywords=#{keywords}&images=#{images.join(",")}&type=#{type}&name=#{productName}&description=#{description}&connectAccount=#{userX&.stripeMerchantID}&active=true' -X POST #{SITEurl}/api/v1/products`
+			callIt = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{userX&.authentication_token}"  -d 'stockCount=#{stockCount}keywords=#{keywords}&images=#{images.join(",")}&type=#{type}&name=#{productName}&description=#{description}&connectAccount=#{userX&.stripeMerchantID}&active=true' -X POST #{SITEurl}/api/v1/products`
 			response = Oj.load(callIt)
 
 			return callIt
@@ -39,12 +39,12 @@ class Product < ApplicationRecord
 	end
 
 	def self.APIupdate(userX, productParams)
-		productName = productParams[:name]
-		description = productParams[:description]
+		productName = productParams[:name].html_safe
+		description = productParams[:description].html_safe
 		type = productParams[:type]
 		keywords = productParams[:keywords]
-		stockCount = productParams[:stockCount].to_i
 		active = ActiveModel::Type::Boolean.new.cast(productParams[:active])
+		stockCount = productParams[:stockCount].to_i
 
 		images = []
 
@@ -57,7 +57,7 @@ class Product < ApplicationRecord
 		end
 
 		if userX&.class == User
-			return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{userX&.authentication_token}"  -d "stockCount=#{stockCount}&images=#{images.join(",")}&keywords=#{keywords}&name=#{productName}&description=#{description}&active=#{active}&type=#{type}&connectAccount=#{userX&.stripeMerchantID}" -X PATCH #{SITEurl}/api/v1/products/#{productParams[:id]}`
+			return `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{userX&.authentication_token}"  -d "stockCount=#{stockCount}images=#{images.join(",")}&keywords=#{keywords}&name=#{productName}&description=#{description}&active=#{active}&type=#{type}&connectAccount=#{userX&.stripeMerchantID}" -X PATCH #{SITEurl}/api/v1/products/#{productParams[:id]}`
 		end
 	end
 end
