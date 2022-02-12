@@ -152,7 +152,7 @@
                 </div>
                 <div class="ml-auto text-right">
                   <h5 class="font-600">
-                    <%= f.number_field :quantity, onchange: "paymentPlan();", style: "border:0", min: 1 %>
+                    <%= f.check_box :quantity, id: 'paymentPlanCheck', onchange: "paymentPlan();", style: "border:0", min: 1 %>
                   </h5>
                 </div>
               </div>
@@ -328,19 +328,23 @@
       console.log(onOffDIV);
       console.log(thisID.id);
   }
-
-
-  
-
 </script>
 
 <script type="text/javascript">
   function paymentPlan() {
     // Get the checkbox
+    var paymentCheck = document.getElementById("paymentPlanCheck");
     var paymentDiv = document.getElementById("paymentPlanX");
 
     // If the checkbox is checked, display the output text
-      paymentDiv.style.display = "block";
-      console.log(paymentDiv);
+      
+
+    if (paymentCheck.checked) {
+        paymentDiv.style.display = "block";
+        console.log("checked")
+    } else {
+        paymentDiv.style.display = "none";
+        console.log("nine")
+    }
   }
 </script>
