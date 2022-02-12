@@ -125,7 +125,6 @@ class ApplicationController < ActionController::Base
 		    end
 	    end
 	  else
-	  	
 	  	@cartID = session[:cart_id].present? ? session[:cart_id] : session[:cart_id] = rand(0..1000) + rand(0..1000000)
 
 	  	curlCall = `curl -H "appName: #{ENV['appName']}" -X GET #{SITEurl}/api/v1/carts?cartID=#{@cartID}`

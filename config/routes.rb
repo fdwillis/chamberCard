@@ -7,6 +7,14 @@ Rails.application.routes.draw do
   	get '/auth/logout' => 'devise/sessions#destroy'
   end
 
+  authenticated :user do
+    root 'home#profile', as: :authenticated_root
+  end
+
+  unauthenticated :user do
+    root 'products#index'
+  end
+
 	devise_scope :user do
 		resources :charges
 		resources :schedule
@@ -60,12 +68,6 @@ Rails.application.routes.draw do
 		get "verify-phone", to: 'home#verifyPhone'
 		get "authenticateAPI", to: 'home#authenticateAPI', as: "authenticateAPI"
 
-	  authenticated :user do
-	    root 'home#profile', as: :authenticated_root
-	  end
-
-	  unauthenticated :user do
-	    root 'products#index', as: :unauthenticated_root
-	  end
+	  
 	end	
 end
