@@ -43,14 +43,17 @@ class ApplicationController < ActionController::Base
 		end
 	end
 
-	def stripeCheckoutRequest(lineItems,customer)
-		
+	def stripeCheckoutRequest(lineItems,customer, paymentBool)
+		# paymentplan bool to filer api side
 		paramsX = {
 			"customer" => customer,
 			"type" => @shippable == true ? "good" : 'service' ,
 			"lineItems" => lineItems,
 			"amount" => @jsonAmount,
-			"application_fee_amount" => @application_fee_amount
+			"application_fee_amount" => @application_fee_amount,
+			"paymentTerms" => 4,
+			"paymentPlan" => paymentBool.to_i === 1 ? true : false,
+			"paymentCycleInDays" => 14
 		}.to_json
 
     curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{paramsX}' -X POST #{SITEurl}/api/v2/invoices`

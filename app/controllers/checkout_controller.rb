@@ -7,8 +7,8 @@ class CheckoutController < ApplicationController
 
 			customerFetch = current_user&.showStripeCustomerAPI(current_user&.stripeCustomerID)['stripeCustomer']['id']
 
-			checkoutRequest = stripeCheckoutRequest(session[:lineItems], customerFetch)	
-
+			checkoutRequest = stripeCheckoutRequest(session[:lineItems], customerFetch, attachSourceParams[:paymentPlanBox])	
+			
 			if checkoutRequest['success']
 			  paidInvoice = Stripe::Invoice.pay(checkoutRequest['invoice'], {}, {stripe_account: ENV['connectAccount']})
 		
@@ -49,7 +49,7 @@ class CheckoutController < ApplicationController
 				  if token['success']
 					  connectAccountCus = stripeCustomerRequest(token['token'], ENV['connectAccount'])
 
-					  checkoutRequest = stripeCheckoutRequest(session[:lineItems], connectAccountCus['id'])	
+					  checkoutRequest = stripeCheckoutRequest(session[:lineItems], connectAccountCus['id'], attachSourceParams[:paymentPlanBox])	
 					  #collect invoice payment
 					  if checkoutRequest['success']
 						  paidInvoice = Stripe::Invoice.pay(checkoutRequest['invoice'], {}, {stripe_account: ENV['connectAccount']})
@@ -143,7 +143,7 @@ class CheckoutController < ApplicationController
 	private
 
 	def attachSourceParams
-		paramsClean = params.require(:checkout).permit(:number, :exp_year, :exp_month, :cvc)
+		paramsClean = params.require(:checkout).permit(:number, :exp_year, :exp_month, :cvc, :paymentPlanBox)
 		return paramsClean.reject{|_, v| v.blank?}
 	end
 end
