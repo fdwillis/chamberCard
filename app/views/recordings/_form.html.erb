@@ -11,10 +11,10 @@
     </div>
   <% end %>
   <div class="input-style input-style-2">
-    <%= form.number_field :year, placeholder: 'Year' %>
+    <%= form.number_field :year, placeholder: 'Year', value: @snapshot.year, disabled: true, readonly: true %>
   </div>
   <div class="input-style input-style-2">
-    <%= form.number_field :month, placeholder: 'Month' %>
+    <%= form.number_field :month, placeholder: 'Month', value: @snapshot.month, disabled: true, readonly: true %>
   </div>
   <div class="input-style input-style-2">
     <%= form.number_field :cash, placeholder: 'Cash', step: :any %>

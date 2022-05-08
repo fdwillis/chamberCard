@@ -1,11 +1,108 @@
-<p id="notice"><%= notice %></p>
-<%= number_to_currency(@snapshot.cash) %>
-<%= number_to_currency(@snapshot.equities) %>
-<%= number_to_currency(@snapshot.expenses) %>
-<%= number_to_currency(@snapshot.income) %>
-<%= number_to_currency(@snapshot.liabilities) %>
-
 <%= link_to 'New Recording', new_recording_path(@snapshot) %> |
 
 <%= link_to 'Edit', edit_snapshot_path(@snapshot) %> |
 <%= link_to 'Back', snapshots_path %>
+
+
+<h1>Snapshots For <%= "#{@snapshot.year}-#{@snapshot.month}-01".to_date.strftime("%B %Y") %> </h1>
+
+<div class="card card-style">
+	<table class="table table-borderless text-center rounded-sm shadow-l mb-4" style="overflow: hidden;">
+	  <thead>
+	    <tr class="bg-dark3-dark">
+	        <th class="" class="color-white">Cash<br><%= number_to_currency(@snapshot.cash, precision: 2) %></th>
+	        <th class="" class="color-white">Equities<br><%= number_to_currency(@snapshot.equities, precision: 2) %></th>
+	        <th class="" class="color-white">Income<br><%= number_to_currency(@snapshot.income, precision: 2) %></th>
+	        <th class="" class="color-white">Expenses<br><%= number_to_currency(@snapshot.expenses, precision: 2) %></th>
+	        <th class="" class="color-white">Liabilities<br><%= number_to_currency(@snapshot.liabilities, precision: 2) %></th>
+	        <!-- <th class="col-3" class="color-white">Documents</th> -->
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <% @snapshot.recordings.reverse.each do |recording| %>
+	    <tr>
+	    	<td></td>
+	    	<td></td>
+	    </tr>
+	      <tr>
+	        <td class="align-self-center ms-auto text-end">
+	          <% if recording.getCash[:diff] > 0 %>
+	            <p class="mb-n1 font-18 color-green1-dark"><%= number_to_currency(recording.getCash[:cash]) %></p>
+	          <% elsif recording.getCash[:diff] == 0 %>
+	            <p class="mb-n1 font-18 color-grey1-dark"><%= number_to_currency(recording.getCash[:cash]) %></p>
+	          <% else %>
+	            <p class="mb-n1 font-18 color-red1-dark"><%= number_to_currency(recording.getCash[:cash]) %></p>
+	          <% end %>
+	          <p class="font-12 opacity-50"><%= number_with_precision(recording.getCash[:diff], precision: 2) %>%</p>
+	        </td>
+
+	        <td class="align-self-center ms-auto text-end">
+	          <% if recording.getEquities[:diff] > 0 %>
+	            <p class="mb-n1 font-18 color-green1-dark"><%= number_to_currency(recording.getEquities[:equities]) %></p>
+	          <% elsif recording.getEquities[:diff] == 0 %>
+	            <p class="mb-n1 font-18 color-grey1-dark"><%= number_to_currency(recording.getEquities[:equities]) %></p>
+	          <% else %>
+	            <p class="mb-n1 font-18 color-red1-dark"><%= number_to_currency(recording.getEquities[:equities]) %></p>
+	          <% end %>
+	          <p class="font-12 opacity-50"><%= number_with_precision(recording.getEquities[:diff], precision: 2) %>%</p>
+	        </td>
+
+	        <td class="align-self-center ms-auto text-end">
+	          <% if recording.getIncome[:diff] > 0 %>
+	            <p class="mb-n1 font-18 color-green1-dark"><%= number_to_currency(recording.getIncome[:income]) %></p>
+	          <% elsif recording.getIncome[:diff] == 0 %>
+	            <p class="mb-n1 font-18 color-grey1-dark"><%= number_to_currency(recording.getIncome[:income]) %></p>
+	          <% else %>
+	            <p class="mb-n1 font-18 color-red1-dark"><%= number_to_currency(recording.getIncome[:income]) %></p>
+	          <% end %>
+	          <p class="font-12 opacity-50"><%= number_with_precision(recording.getIncome[:diff], precision: 2) %>%</p>
+	        </td>
+
+	        <td class="align-self-center ms-auto text-end">
+	          <% if recording.getExpenses[:diff] > 0 %>
+	            <p class="mb-n1 font-18 color-red1-dark"><%= number_to_currency(recording.getExpenses[:expenses]) %></p>
+	          <% elsif recording.getExpenses[:diff] == 0 %>
+	            <p class="mb-n1 font-18 color-grey1-dark"><%= number_to_currency(recording.getExpenses[:expenses]) %></p>
+	          <% else %>
+	            <p class="mb-n1 font-18 color-green1-dark"><%= number_to_currency(recording.getExpenses[:expenses]) %></p>
+	          <% end %>
+	          <p class="font-12 opacity-50"><%= number_with_precision(recording.getExpenses[:diff], precision: 2) %>%</p>
+	        </td>
+
+	        <td class="align-self-center ms-auto text-end">
+	          <% if recording.getLiabilities[:diff] > 0 %>
+	            <p class="mb-n1 font-18 color-red1-dark"><%= number_to_currency(recording.getLiabilities[:liabilities]) %></p>
+	          <% elsif recording.getLiabilities[:diff] == 0 %>
+	            <p class="mb-n1 font-18 color-grey1-dark"><%= number_to_currency(recording.getLiabilities[:liabilities]) %></p>
+	          <% else %>
+	            <p class="mb-n1 font-18 color-green1-dark"><%= number_to_currency(recording.getLiabilities[:liabilities]) %></p>
+	          <% end %>
+	          <p class="font-12 opacity-50"><%= number_with_precision(recording.getLiabilities[:diff], precision: 2) %>%</p>
+	        </td>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	        
+	      </tr>
+	    <% end %>
+
+	    
+	    
+
+	  </tbody>
+	</table>
+</div>

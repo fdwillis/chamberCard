@@ -6,7 +6,7 @@ class Snapshot < ApplicationRecord
 			cashToRecordWith = (recordings.last.cash - self.cash)
 			return {cash: recordings.last.cash, diff: (cashToRecordWith/self.cash).round(2) * 100}
 		else
-			self.cash
+			return {cash: self.cash, diff: 0}
 		end
 	end
 
@@ -15,7 +15,7 @@ class Snapshot < ApplicationRecord
 			equitiesToRecordWith = (recordings.last.equities - self.equities)
 			return {equities: recordings.last.equities, diff: (equitiesToRecordWith/self.equities).round(2) * 100}
 		else
-			self.equities
+			return {equities: self.equities, diff: 0}
 		end
 	end
 
@@ -24,7 +24,7 @@ class Snapshot < ApplicationRecord
 			expensesToRecordWith = (recordings.last.expenses - self.expenses)
 			return {expenses: recordings.last.expenses, diff: (expensesToRecordWith/self.expenses).round(2) * 100}
 		else
-			self.expenses
+			return {expenses: self.expenses, diff: 0}
 		end
 	end
 	
@@ -33,7 +33,7 @@ class Snapshot < ApplicationRecord
 			incomeToRecordWith = (recordings.last.income - self.income)
 			return {income: recordings.last.income, diff: (incomeToRecordWith/self.income).round(2) * 100}
 		else
-			self.income
+			return {income: self.income, diff: 0}
 		end
 	end
 
@@ -42,7 +42,7 @@ class Snapshot < ApplicationRecord
 			liabilitiesToRecordWith = (recordings.last.liabilities - self.liabilities)
 			return {liabilities: recordings.last.liabilities, diff: (liabilitiesToRecordWith/self.liabilities).round(2) * 100}
 		else
-			self.liabilities
+			return {liabilities: self.liabilities, diff: 0}
 		end
 	end
 end

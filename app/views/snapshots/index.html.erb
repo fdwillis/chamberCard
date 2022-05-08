@@ -18,58 +18,58 @@
       <tr>
         <td class="col-3"><%= link_to "#{snapshot.year} - #{snapshot.month}", snapshot_path(snapshot)  %></td>
         <td class="align-self-center ms-auto text-end">
-          <% if snapshot.getCash[:diff] > 0 %>
-            <p class="mb-n1 font-18 color-green1-dark"><%= number_to_currency(snapshot.getCash[:cash]) %></p>
-          <% elsif snapshot.getCash[:diff] == 0 %>
-            <p class="mb-n1 font-18 color-grey1-dark"><%= number_to_currency(snapshot.getCash[:cash]) %></p>
+          <% if snapshot&.getCash[:diff] > 0 %>
+            <p class="mb-n1 font-18 color-green1-dark"><%= number_to_currency(snapshot&.getCash[:cash]) %></p>
+          <% elsif snapshot&.getCash[:diff] == 0 %>
+            <p class="mb-n1 font-18 color-grey1-dark"><%= number_to_currency(snapshot&.getCash[:cash]) %></p>
           <% else %>
-            <p class="mb-n1 font-18 color-red1-dark"><%= number_to_currency(snapshot.getCash[:cash]) %></p>
+            <p class="mb-n1 font-18 color-red1-dark"><%= number_to_currency(snapshot&.getCash[:cash]) %></p>
           <% end %>
-          <p class="font-12 opacity-50"><%= number_with_precision(snapshot.getCash[:diff], precision: 2) %>%</p>
+          <p class="font-12 opacity-50"><%= number_with_precision(snapshot&.getCash[:diff], precision: 2) %>%</p>
         </td>
 
         <td class="align-self-center ms-auto text-end">
-          <% if snapshot.getEquities[:diff] > 0 %>
-            <p class="mb-n1 font-18 color-green1-dark"><%= number_to_currency(snapshot.getEquities[:equities]) %></p>
-          <% elsif snapshot.getEquities[:diff] == 0 %>
-            <p class="mb-n1 font-18 color-grey1-dark"><%= number_to_currency(snapshot.getEquities[:equities]) %></p>
+          <% if snapshot&.getEquities[:diff] > 0 %>
+            <p class="mb-n1 font-18 color-green1-dark"><%= number_to_currency(snapshot&.getEquities[:equities]) %></p>
+          <% elsif snapshot&.getEquities[:diff] == 0 %>
+            <p class="mb-n1 font-18 color-grey1-dark"><%= number_to_currency(snapshot&.getEquities[:equities]) %></p>
           <% else %>
-            <p class="mb-n1 font-18 color-red1-dark"><%= number_to_currency(snapshot.getEquities[:equities]) %></p>
+            <p class="mb-n1 font-18 color-red1-dark"><%= number_to_currency(snapshot&.getEquities[:equities]) %></p>
           <% end %>
-          <p class="font-12 opacity-50"><%= number_with_precision(snapshot.getEquities[:diff], precision: 2) %>%</p>
+          <p class="font-12 opacity-50"><%= number_with_precision(snapshot&.getEquities[:diff], precision: 2) %>%</p>
         </td>
 
         <td class="align-self-center ms-auto text-end">
-          <% if snapshot.getExpenses[:diff] > 0 %>
-            <p class="mb-n1 font-18 color-red1-dark"><%= number_to_currency(snapshot.getExpenses[:expenses]) %></p>
-          <% elsif snapshot.getExpenses[:diff] == 0 %>
-            <p class="mb-n1 font-18 color-grey1-dark"><%= number_to_currency(snapshot.getExpenses[:expenses]) %></p>
+          <% if snapshot&.getExpenses[:diff] > 0 %>
+            <p class="mb-n1 font-18 color-red1-dark"><%= number_to_currency(snapshot&.getExpenses[:expenses]) %></p>
+          <% elsif snapshot&.getExpenses[:diff] == 0 %>
+            <p class="mb-n1 font-18 color-grey1-dark"><%= number_to_currency(snapshot&.getExpenses[:expenses]) %></p>
           <% else %>
-            <p class="mb-n1 font-18 color-green1-dark"><%= number_to_currency(snapshot.getExpenses[:expenses]) %></p>
+            <p class="mb-n1 font-18 color-green1-dark"><%= number_to_currency(snapshot&.getExpenses[:expenses]) %></p>
           <% end %>
-          <p class="font-12 opacity-50"><%= number_with_precision(snapshot.getExpenses[:diff], precision: 2) %>%</p>
+          <p class="font-12 opacity-50"><%= number_with_precision(snapshot&.getExpenses[:diff], precision: 2) %>%</p>
         </td>
 
         <td class="align-self-center ms-auto text-end">
-          <% if snapshot.getIncome[:diff] > 0 %>
-            <p class="mb-n1 font-18 color-green1-dark"><%= number_to_currency(snapshot.getIncome[:income]) %></p>
-          <% elsif snapshot.getIncome[:diff] == 0 %>
-            <p class="mb-n1 font-18 color-grey1-dark"><%= number_to_currency(snapshot.getIncome[:income]) %></p>
+          <% if snapshot&.getIncome[:diff] > 0 %>
+            <p class="mb-n1 font-18 color-green1-dark"><%= number_to_currency(snapshot&.getIncome[:income]) %></p>
+          <% elsif snapshot&.getIncome[:diff] == 0 %>
+            <p class="mb-n1 font-18 color-grey1-dark"><%= number_to_currency(snapshot&.getIncome[:income]) %></p>
           <% else %>
-            <p class="mb-n1 font-18 color-red1-dark"><%= number_to_currency(snapshot.getIncome[:income]) %></p>
+            <p class="mb-n1 font-18 color-red1-dark"><%= number_to_currency(snapshot&.getIncome[:income]) %></p>
           <% end %>
-          <p class="font-12 opacity-50"><%= number_with_precision(snapshot.getIncome[:diff], precision: 2) %>%</p>
+          <p class="font-12 opacity-50"><%= number_with_precision(snapshot&.getIncome[:diff], precision: 2) %>%</p>
         </td>
 
         <td class="align-self-center ms-auto text-end">
-          <% if snapshot.getLiabilities[:diff] > 0 %>
-            <p class="mb-n1 font-18 color-red1-dark"><%= number_to_currency(snapshot.getLiabilities[:liabilities]) %></p>
-          <% elsif snapshot.getLiabilities[:diff] == 0 %>
-            <p class="mb-n1 font-18 color-grey1-dark"><%= number_to_currency(snapshot.getLiabilities[:liabilities]) %></p>
+          <% if snapshot&.getLiabilities[:diff] > 0 %>
+            <p class="mb-n1 font-18 color-red1-dark"><%= number_to_currency(snapshot&.getLiabilities[:liabilities]) %></p>
+          <% elsif snapshot&.getLiabilities[:diff] == 0 %>
+            <p class="mb-n1 font-18 color-grey1-dark"><%= number_to_currency(snapshot&.getLiabilities[:liabilities]) %></p>
           <% else %>
-            <p class="mb-n1 font-18 color-green1-dark"><%= number_to_currency(snapshot.getLiabilities[:liabilities]) %></p>
+            <p class="mb-n1 font-18 color-green1-dark"><%= number_to_currency(snapshot&.getLiabilities[:liabilities]) %></p>
           <% end %>
-          <p class="font-12 opacity-50"><%= number_with_precision(snapshot.getLiabilities[:diff], precision: 2) %>%</p>
+          <p class="font-12 opacity-50"><%= number_with_precision(snapshot&.getLiabilities[:diff], precision: 2) %>%</p>
         </td>
 
 
