@@ -1,6 +1,36 @@
 class HomeController < ApplicationController
 	before_action :authenticate_user!, except: [:welcome, :membership, :profile]
 
+	def plaid
+    require 'plaid'
+		
+
+    configuration = Plaid::Configuration.new
+    configuration.server_index = Plaid::Configuration::Environment["sandbox"]
+    configuration.api_key["PLAID-CLIENT-ID"] = ENV['plaidClient']
+    configuration.api_key["PLAID-SECRET"] = ENV['plaidSecret']
+
+    api_client = Plaid::ApiClient.new(configuration)
+
+    @plaidClient = Plaid::PlaidApi.new(api_client)
+
+    # Create the link_token with all of your configurations
+    link_token_create_request = Plaid::LinkTokenCreateRequest.new({
+      :user => { :client_user_id => current_user.uuid.to_s },
+      :client_name => 'Netwerth',
+      :products => %w[investments],
+      # :products => %w[assets auth identity investments liabilities transactions],
+      :country_codes => ['US'],
+      :language => 'en',
+      redirect_uri: 'http://localhost:3001/plaid'
+    })
+
+    @linkToken = @plaidClient.link_token_create(link_token_create_request).link_token
+    session[:link_token] = @linkToken
+		
+		debugger
+	end
+
 	def profile
 		if current_user&.authentication_token
 			if !current_user&.stripeCustomerID.blank? || !current_user&.stripeMerchantID.blank?

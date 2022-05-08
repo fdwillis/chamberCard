@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_09_062954) do
+ActiveRecord::Schema.define(version: 2022_05_08_130414) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,20 @@ ActiveRecord::Schema.define(version: 2021_05_09_062954) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "recordings", force: :cascade do |t|
+    t.integer "year"
+    t.integer "month"
+    t.float "cash"
+    t.float "equities"
+    t.float "expenses"
+    t.float "income"
+    t.float "liabilites"
+    t.bigint "snapshot_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["snapshot_id"], name: "index_recordings_on_snapshot_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.string "session_id", null: false
     t.text "data"
@@ -36,6 +50,18 @@ ActiveRecord::Schema.define(version: 2021_05_09_062954) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
+  end
+
+  create_table "snapshots", force: :cascade do |t|
+    t.integer "year"
+    t.integer "month"
+    t.float "cash"
+    t.float "equities"
+    t.float "expenses"
+    t.float "income"
+    t.float "liabilites"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -72,4 +98,5 @@ ActiveRecord::Schema.define(version: 2021_05_09_062954) do
   end
 
   add_foreign_key "images", "products"
+  add_foreign_key "recordings", "snapshots"
 end
