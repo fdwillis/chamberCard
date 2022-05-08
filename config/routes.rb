@@ -17,6 +17,11 @@ Rails.application.routes.draw do
 
 	devise_scope :user do
 		resources :charges
+		resources :snapshots do
+		  member do
+				resources :recordings
+		  end
+	  end
 		resources :schedule
 		resources :orders
 		resources :carts
@@ -42,6 +47,8 @@ Rails.application.routes.draw do
 		# post "checkout", to: 'carts#checkout', as: "checkout"
 		post "updateQuantity", to: 'carts#updateQuantity', as: "updateQuantity"
 		
+		match "/plaid" => "home#plaid", as: :plaid, via: [:get, :post]
+
 		post "join", to: 'home#join', as: "join"
 		post "verify-phone", to: 'home#verifyPhone', as: "verifyPhone"
 		

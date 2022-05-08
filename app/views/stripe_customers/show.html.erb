@@ -58,7 +58,7 @@
               </div>
               <% if unpaidInvoices.count > 0%>
                 <div class="p-3">
-                    <a href="/pay-now" class="mt-2 btn btn-full bg-red1-dark btn-m text-uppercase font-800 rounded-sm">View</a>
+                    <a href="/pay-now/<%= params['id'] %>" class="mt-2 btn btn-full bg-red1-dark btn-m text-uppercase font-800 rounded-sm">View</a>
                 </div>
               <% end %>
           </div>
