@@ -1,10 +1,115 @@
+<h1>Snapshots For <%= "#{@snapshot.year}-#{@snapshot.month}-01".to_date.strftime("%B %Y") %> </h1>
 <%= link_to 'New Recording', new_recording_path(@snapshot) %> |
 
 <%= link_to 'Edit', edit_snapshot_path(@snapshot) %> |
 <%= link_to 'Back', snapshots_path %>
+<% cashToMake = @snapshot.cash * 0.15 %>
+<% cashMade = @snapshot.recordings.reverse.first.cash - @snapshot.cash %>
+
+<% equitiesToMake = @snapshot.equities * 0.15 %>
+<% equitiesMade = @snapshot.recordings.reverse.first.equities - @snapshot.equities %>
+
+<% incomeToMake = @snapshot.income * 0.15 %>
+<% incomeMade = @snapshot.recordings.reverse.first.income - @snapshot.income %>
+
+<% expensesToReduce = @snapshot.expenses * 0.15 %>
+<% expensesReduced = @snapshot.recordings.reverse.first.expenses - @snapshot.expenses %>
+
+<% liabilitiesToReduce = @snapshot.liabilities * 0.15 %>
+<% liabilitiesReduced = @snapshot.recordings.reverse.first.liabilities - @snapshot.liabilities %>
+
+<div class="card card-style">
+            <div class="content mb-3">
+                <div class="row mb-0">
+                    <div class="col-12">
+                        <div class="mb-3">
+                            <h2 class="font-700 text-uppercase opacity-30 mb-3 mt-n2">Cash</h2>
+                            <div class="progress mb-4" style="height:7px;">
+                                <div class="progress-bar bg-green1-dark" role="progressbar" style="width: <%= number_with_precision((cashMade/cashToMake) * 100, precision: 2) %>%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="row mb-0">
+                                <div class="col-6">
+                                    <h5 class="mt-n3 font-13 pb-2">Goal: <%= number_to_currency((@snapshot.cash * 1.15), precision: 2) %></h5>
+                                    <h5 class="mt-n3 font-13 pb-2">Actual: <%= number_to_currency((@snapshot.recordings.reverse.first.cash), precision: 2) %></h5>
+
+                                    <h5 class="mt-n3 font-13 pb-2"><%= number_with_precision((cashMade/cashToMake) * 100, precision: 2) %>% Complete</h5>
+                                </div>
+                                <div class="col-6">
+                                    <h5 class="mt-n3 font-13 pb-2">Goal: <%= number_to_currency((@snapshot.cash * 1.15) * 2, precision: 2) %></h5>
+                                    <h5 class="mt-n3 font-13 pb-2">Goal: <%= number_to_currency((@snapshot.cash * 1.15) * 3, precision: 2) %></h5>
+                                    <h5 class="mt-n3 font-13 pb-2">Goal: <%= number_to_currency((@snapshot.cash * 1.15) * 4, precision: 2) %></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <h2 class="font-700 text-uppercase opacity-30 mb-3 mt-n2">Equities</h2>
+                            <div class="progress mb-4" style="height:7px;">
+                                <div class="progress-bar bg-green1-dark" role="progressbar" style="width: <%= number_with_precision((equitiesMade/equitiesToMake) * 100, precision: 2) %>%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="row mb-0">
+                                <div class="col-6">
+                                    <h5 class="mt-n3 font-13 pb-2">Goal: <%= number_to_currency((@snapshot.equities * 1.15), precision: 2) %></h5>
+                                    <h5 class="mt-n3 font-13 pb-2">Actual: <%= number_to_currency((@snapshot.recordings.reverse.first.equities), precision: 2) %></h5>
+
+                                    <h5 class="mt-n3 font-13 pb-2"><%= number_with_precision((equitiesMade/equitiesToMake) * 100, precision: 2) %>% Complete</h5>
+                                </div>
+                                <div class="col-6">
+                                    <h5 class="mt-n3 font-13 pb-2">Goal: <%= number_to_currency((@snapshot.equities * 1.15)* 2, precision: 2) %></h5>
+                                    <h5 class="mt-n3 font-13 pb-2">Goal: <%= number_to_currency((@snapshot.equities * 1.15) * 3, precision: 2) %></h5>
+                                    <h5 class="mt-n3 font-13 pb-2">Goal: <%= number_to_currency((@snapshot.equities * 1.15) * 4, precision: 2) %></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <h2 class="font-700 text-uppercase opacity-30 mb-3 mt-n2">Income</h2>
+                            <div class="progress mb-4" style="height:7px;">
+                                <div class="progress-bar bg-green1-dark" role="progressbar" style="width: <%= number_with_precision((incomeMade/incomeToMake) * 100, precision: 2) %>%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="row mb-0">
+                                <div class="col-6">
+                                    <h5 class="mt-n3 font-13 pb-2">Goal: <%= number_to_currency((@snapshot.income * 1.15), precision: 2) %></h5>
+                                    <h5 class="mt-n3 font-13 pb-2">Actual: <%= number_to_currency((@snapshot.recordings.reverse.first.income), precision: 2) %></h5>
+                                    <h5 class="mt-n3 font-13 pb-2"><%= number_with_precision((incomeMade/incomeToMake) * 100, precision: 2) %>% Complete</h5>
+                                </div>
+                                <div class="col-6">
+                                    <h5 class="mt-n3 font-13 pb-2">Goal: <%= number_to_currency((@snapshot.income * 1.15)* 2, precision: 2) %></h5>
+                                    <h5 class="mt-n3 font-13 pb-2">Goal: <%= number_to_currency((@snapshot.income * 1.15) * 3, precision: 2) %></h5>
+                                    <h5 class="mt-n3 font-13 pb-2">Goal: <%= number_to_currency((@snapshot.income * 1.15) * 4, precision: 2) %></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-0">
+                            <h2 class="font-700 text-uppercase opacity-30 mb-3 mt-n2">Expenses</h2>
+                            <div class="progress mb-4" style="height:7px;">
+                                <div class="progress-bar bg-green1-dark" role="progressbar" style="width: <%= number_with_precision(-(expensesReduced/expensesToReduce) * 100, precision: 2) %>%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="row mb-0">
+                                <div class="col-7">
+                                    <h5 class="mt-n3 font-13 pb-2">Goal: <%= number_to_currency((@snapshot.expenses * 0.85), precision: 2) %></h5>
+                                    <h5 class="mt-n3 font-13 pb-2">Actual: <%= number_to_currency((@snapshot.recordings.reverse.first.expenses), precision: 2) %></h5>
+                                    <h5 class="mt-n3 font-13 pb-2"><%= number_with_precision(-(expensesReduced/expensesToReduce) * 100, precision: 2) %>% Complete</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-0">
+                            <h2 class="font-700 text-uppercase opacity-30 mb-3 mt-n2">Liabilities</h2>
+                            <div class="progress mb-4" style="height:7px;">
+                                <div class="progress-bar bg-green1-dark" role="progressbar" style="width: <%= number_with_precision(-(liabilitiesReduced/liabilitiesToReduce) * 100, precision: 2) %>%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="row mb-0">
+                                <div class="col-7">
+                                    <h5 class="mt-n3 font-13 pb-2">Goal: <%= number_to_currency((@snapshot.liabilities * 0.85), precision: 2) %></h5>
+                                    <h5 class="mt-n3 font-13 pb-2">Actual: <%= number_to_currency((@snapshot.recordings.reverse.first.liabilities), precision: 2) %></h5>
+                                    <h5 class="mt-n3 font-13 pb-2"><%= number_with_precision(-(liabilitiesReduced/liabilitiesToReduce) * 100, precision: 2) %>% Complete</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
-<h1>Snapshots For <%= "#{@snapshot.year}-#{@snapshot.month}-01".to_date.strftime("%B %Y") %> </h1>
 
 <div class="card card-style">
 	<table class="table table-borderless text-center rounded-sm shadow-l mb-4" style="overflow: hidden;">

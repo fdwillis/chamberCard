@@ -26,7 +26,7 @@ Rails.application.configure do
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
   config.cache_store = :null_store
-  config.hosts << "www.example.com"
+  config.hosts << "four-ideas-itch-75-86-54-224.loca.lt"
 
   # Raise exceptions instead of rendering exception templates.
   config.action_dispatch.show_exceptions = false
