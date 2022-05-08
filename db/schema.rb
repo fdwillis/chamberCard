@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 2022_05_08_130414) do
     t.float "equities"
     t.float "expenses"
     t.float "income"
-    t.float "liabilites"
+    t.float "liabilities"
     t.bigint "snapshot_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(version: 2022_05_08_130414) do
     t.float "equities"
     t.float "expenses"
     t.float "income"
-    t.float "liabilites"
+    t.float "liabilities"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

@@ -7,7 +7,7 @@ class CreateSnapshots < ActiveRecord::Migration[6.0]
       t.float :equities
       t.float :expenses
       t.float :income
-      t.float :liabilites
+      t.float :liabilities
 
       t.timestamps
     end

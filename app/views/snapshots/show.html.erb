@@ -1,4 +1,11 @@
 <p id="notice"><%= notice %></p>
+<%= number_to_currency(@snapshot.cash) %>
+<%= number_to_currency(@snapshot.equities) %>
+<%= number_to_currency(@snapshot.expenses) %>
+<%= number_to_currency(@snapshot.income) %>
+<%= number_to_currency(@snapshot.liabilities) %>
+
+<%= link_to 'New Recording', new_recording_path(@snapshot) %> |
 
 <%= link_to 'Edit', edit_snapshot_path(@snapshot) %> |
 <%= link_to 'Back', snapshots_path %>

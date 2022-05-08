@@ -1,9 +1,10 @@
 class RecordingsController < ApplicationController
+  before_action :set_snapshot
   before_action :set_recording, only: %i[ show edit update destroy ]
 
   # GET /recordings or /recordings.json
   def index
-    @recordings = Recording.all
+    @recordings = @snapshot.recordings
   end
 
   # GET /recordings/1 or /recordings/1.json
@@ -12,7 +13,7 @@ class RecordingsController < ApplicationController
 
   # GET /recordings/new
   def new
-    @recording = Recording.new
+    @recording = @snapshot.recordings.new
   end
 
   # GET /recordings/1/edit
@@ -21,11 +22,12 @@ class RecordingsController < ApplicationController
 
   # POST /recordings or /recordings.json
   def create
-    @recording = Recording.new(recording_params)
+    
+    @recording = @snapshot.recordings.new(recording_params)
 
     respond_to do |format|
       if @recording.save
-        format.html { redirect_to @recording, notice: "Recording was successfully created." }
+        format.html { redirect_to @recording.snapshot, notice: "Recording was successfully created." }
         format.json { render :show, status: :created, location: @recording }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -58,12 +60,16 @@ class RecordingsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def set_snapshot
+      @snapshot = Snapshot.find(params[:id])
+    end
+
     def set_recording
-      @recording = Recording.find(params[:id])
+      @recording = @snapshot.recordings.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def recording_params
-      params.fetch(:recording, {})
+      params.require(:recording).permit(:year, :month, :cash, :equities, :expenses, :income, :liabilities)
     end
 end

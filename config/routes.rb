@@ -17,8 +17,11 @@ Rails.application.routes.draw do
 
 	devise_scope :user do
 		resources :charges
-		resources :snapshots
-		resources :recordings
+		resources :snapshots do
+		  member do
+				resources :recordings
+		  end
+	  end
 		resources :schedule
 		resources :orders
 		resources :carts

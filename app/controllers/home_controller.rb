@@ -28,7 +28,6 @@ class HomeController < ApplicationController
     @linkToken = @plaidClient.link_token_create(link_token_create_request).link_token
     session[:link_token] = @linkToken
 		
-		debugger
 	end
 
 	def profile

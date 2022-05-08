@@ -22,10 +22,9 @@ class SnapshotsController < ApplicationController
   # POST /snapshots or /snapshots.json
   def create
     @snapshot = Snapshot.new(snapshot_params)
-
     respond_to do |format|
       if @snapshot.save
-        format.html { redirect_to @snapshot, notice: "Snapshot was successfully created." }
+        format.html { redirect_to snapshots_path, notice: "Snapshot was successfully created." }
         format.json { render :show, status: :created, location: @snapshot }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -64,6 +63,6 @@ class SnapshotsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def snapshot_params
-      params.fetch(:snapshot, {})
+      params.require(:snapshot).permit(:year, :month, :cash, :equities, :expenses, :income, :liabilities)
     end
 end
