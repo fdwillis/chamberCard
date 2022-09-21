@@ -1,4 +1,4 @@
-class StripeTokensController < ApplicationController
+	class StripeTokensController < ApplicationController
 before_action :authenticate_user!
 
 	def create

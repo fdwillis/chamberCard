@@ -42,7 +42,7 @@ class ChargesController < ApplicationController
 		quantity = newChargeParams[:quantity]
 		desc = newChargeParams[:desc]
     
-    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "quantity=#{quantity}&timeSlot=#{timeSlot}&timeSlotCharge=true&description=#{desc}" #{SITEurl}/api/v1/charges`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{current_user.authentication_token}" -d "quantity=#{quantity}&timeSlot=#{timeSlot}&timeSlotCharge=true&description=#{desc}" #{SITEurl}/api/v1/charges`
 
 		response = Oj.load(curlCall)
     
@@ -59,7 +59,7 @@ class ChargesController < ApplicationController
 	def initiateCharge
 		if request.post?
 			uuid = params[:initiateCharge][:customerID]
-			curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "" -X GET #{SITEurl}/api/v1/users/#{uuid}`
+			curlCall = `curl -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{current_user.authentication_token}" -d "" -X GET #{SITEurl}/api/v1/users/#{uuid}`
 				
 	    response = Oj.load(curlCall)
 	    
@@ -84,7 +84,7 @@ class ChargesController < ApplicationController
 
 		amount = subtotal + application_fee_amount + stripeFee
 
-    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user.authentication_token}" -d "application_fee_amount=#{application_fee_amount}&customer=#{customer}&description=#{title}&amount=#{amount}" -X POST #{SITEurl}/api/v2/charges`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{current_user.authentication_token}" -d "application_fee_amount=#{application_fee_amount}&customer=#{customer}&description=#{title}&amount=#{amount}" -X POST #{SITEurl}/api/v2/charges`
 
 		response = Oj.load(curlCall)
 

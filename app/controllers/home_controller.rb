@@ -79,7 +79,7 @@ class HomeController < ApplicationController
 		if current_user&.paymentOn?
 			params = {price: joinParams[:plan], serviceFee: joinParams[:serviceFee]}.to_json
 			
-			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user&.authentication_token}" -d '#{params}' -X POST #{SITEurl}/api/v1/subscriptions`
+			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{current_user&.authentication_token}" -d '#{params}' -X POST #{SITEurl}/api/v1/subscriptions`
 			
 			response = Oj.load(curlCall)
 
@@ -98,7 +98,7 @@ class HomeController < ApplicationController
 
 	def cancelSub
 
-    curlCall = `curl -H "bxxkxmxppAuthtoken: #{current_user&.authentication_token}" -X DELETE #{SITEurl}/api/v1/subscriptions/#{params[:cancel][:subscription]}?serviceFee=#{ENV['serviceFee']}`
+    curlCall = `curl -H "nxtwxrthxxthToken: #{current_user&.authentication_token}" -X DELETE #{SITEurl}/api/v1/subscriptions/#{params[:cancel][:subscription]}?serviceFee=#{ENV['serviceFee']}`
 
 		response = Oj.load(curlCall)
 
@@ -123,7 +123,7 @@ class HomeController < ApplicationController
 		end
 
 		if request.post?
-			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{current_user&.authentication_token}" -d '#{params[:verifyPhone].to_json}' -X PATCH #{SITEurl}/api/v1/verify`
+			curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{current_user&.authentication_token}" -d '#{params[:verifyPhone].to_json}' -X PATCH #{SITEurl}/api/v1/verify`
 
 			response = Oj.load(curlCall)
 

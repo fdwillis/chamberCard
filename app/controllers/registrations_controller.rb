@@ -1,24 +1,95 @@
-class RegistrationsController < Devise::RegistrationsController
-  after_action :createAccount 
+class RegistrationsController < ApplicationController 
 
-  protected
+  def new
+  end
 
-  def createAccount
-    if resource.persisted? && !params[:user][:accessPin].blank? # user is created successfuly
-      createAtt = resource.createUserAPI(params[:user])
+  def create
+    begin
+            
+      curlCall = User.pipeline(params['newRegistration'])
+      debugger
 
-      if createAtt['success']
-        auth = resource.createUserSessionAPI(params[:user])
-        
-        if auth['success']
-          flash[:success] = "Created account"
-        else
-          flash[:alert] = "You will need to verify later"
-        end
-      else
-        flash[:alert] = createAtt['error']
-        resource.destroy!
+      if curlCall[:success]
+        # User.create(userParams(curlCall['user']))
       end
+
+      # cardHolderNew = Stripe::Issuing::Cardholder.create({
+      #   type: newRegistrationData['type'],
+      #   name: newRegistrationData['name'],
+      #   email: newRegistrationData['email'],
+      #   phone_number: newRegistrationData['phone_number'],
+      #   billing: {
+      #     address: {
+      #       line1: newRegistrationData['line1'],
+      #       city: newRegistrationData['city'],
+      #       state: newRegistrationData['state'],
+      #       country: "US",
+      #       postal_code: newRegistrationData['postal_code'],
+      #     },
+      #   },
+      # })
+
+      # cardNew = Stripe::Issuing::Card.create({
+      #   cardholder: cardHolderNew['id'],
+      #   currency: 'usd',
+      #   type: 'physical',
+      #   spending_controls: {spending_limits: {}},
+      #   status: 'active',
+      #   shipping: {
+      #     name: newRegistrationData['name'],
+      #     address: {
+      #       line1: newRegistrationData['line1'],
+      #       city: newRegistrationData['city'],
+      #       state: newRegistrationData['state'],
+      #       country: "US",
+      #       postal_code: newRegistrationData['postal_code'],
+      #     }
+      #   }
+      # })
+
+      # customerViaStripe = Stripe::Customer.create({
+      #   description: 'Netwerth Debit Card Holder',
+      #   name: newRegistrationData['name'],
+      #   email: newRegistrationData['email'],
+      #   phone: newRegistrationData['phone_number'],
+      #   address: {
+      #     line1: newRegistrationData['line1'],
+      #     city: newRegistrationData['city'],
+      #     state: newRegistrationData['state'],
+      #     country: "US",
+      #     postal_code: newRegistrationData['postal_code'],
+      #   },
+      #   metadata: {
+      #     cardHolder: cardHolderNew['id'],
+      #     issuedCard: cardNew['id'],
+      #     percentToInvest: newRegistrationData['percentToInvest'],
+      #   }
+      # })
+
+      # Stripe::Issuing::Cardholder.update(cardHolderNew['id'], metadata: {stripeCustomerID: customerViaStripe['id']})
+      # # make user account so they can access the app and make transfers
+
+      # @user = User.create!(uuid: SecureRandom.uuid[0..7], stripeCustomerID: customerViaStripe['id'], appName: 'netwethCard', accessPin: 'customer', email: newRegistrationData['email'], password: newRegistrationData['password'], password_confirmation: newRegistrationData['password_confirmation'], referredBy: newRegistrationData['referredBy'].nil? ? "admin" : newRegistrationData['referredBy'], phone: newRegistrationData['phone'])
+
+      # render json: {success: true}
+            
+    rescue Stripe::StripeError => e
+      render json: {
+        error: e.error.message,
+        success: false
+      }
+    rescue Exception => e
+      render json: {
+        message: e,
+        success: false
+      }
     end
+  end
+
+  private
+
+  def userParams(dataX)
+    paramsClean = dataX.slice(:stripeCustomerID, :phone, :accessPin, :twilioPhoneVerify, :referredBy, :authentication_token, :uuid, :email)
+    return paramsClean.reject{|_, v| v.blank?}
   end
 end

@@ -3,25 +3,17 @@
 class DeviseCreateUsers < ActiveRecord::Migration[6.0]
   def change
     create_table :users do |t|
+      t.integer :percentToInvest, default: 30
+      t.string :appName, null: false, default: 'netwethCard' #for subsc to app
       t.string :stripeCustomerID, unique: true
-      t.string :stripeMerchantID, unique: true
-      t.string :timeKitID, unique: true
       ## Database authenticatable
       t.string :phone
       t.string :accessPin
-
-      t.string :street
-      t.string :city
-      t.string :state
-      t.string :country
-      t.float  :latitude
-      t.float  :longitude
 
       t.boolean :twilioPhoneVerify, default: nil
 
       t.string :referredBy
       t.string :authentication_token, unique: true
-      t.string :username, unique: true, null: false
       t.string :uuid, unique: true
 
       t.string :email,              null: false, default: ""

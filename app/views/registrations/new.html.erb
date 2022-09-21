@@ -1,0 +1,142 @@
+
+  <div class="bg-image" style="background-image: url('/assets/loginwatertable.jpeg');">
+    <div class="row g-0 bg-primary-dark-op">
+      <!-- Meta Info Section -->
+      <div class="hero-static col-lg-4 d-none d-lg-flex flex-column justify-content-center">
+        <div class="p-4 p-xl-5 flex-grow-1 d-flex align-items-center">
+          <div class="w-100">
+            <a class="link-fx fw-semibold fs-2 text-white" href="index.html">
+              Netwerth<span class="fw-normal">Card</span>
+            </a>
+            <p class="text-white-75 me-xl-8 mt-2">
+              Welcome to your amazing app. Feel free to login and start managing your projects and clients.
+            </p>
+          </div>
+        </div>
+        <div class="p-4 p-xl-5 d-xl-flex justify-content-between align-items-center fs-sm">
+          <p class="fw-medium text-white-50 mb-0">
+            <strong>Netwerth Card</strong> © <span data-toggle="year-copy" class="js-year-copy-enabled">2022</span>
+          </p>
+          <ul class="list list-inline mb-0 py-2">
+            <li class="list-inline-item">
+              <a class="text-white-75 fw-medium" href="javascript:void(0)">Legal</a>
+            </li>
+            <li class="list-inline-item">
+              <a class="text-white-75 fw-medium" href="javascript:void(0)">Contact</a>
+            </li>
+            <li class="list-inline-item">
+              <a class="text-white-75 fw-medium" href="javascript:void(0)">Terms</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- END Meta Info Section -->
+
+      <!-- Main Section -->
+      <div class="hero-static col-lg-8 d-flex flex-column align-items-center bg-body-extra-light">
+        <div class="p-3 w-100 d-lg-none text-center">
+          <a class="link-fx fw-semibold fs-3 text-dark" href="index.html">
+            Netwerth<span class="fw-normal">Card</span>
+          </a>
+        </div>
+        <div class="p-4 w-100 flex-grow-1 d-flex align-items-center">
+          <div class="w-100">
+            <!-- Header -->
+            <div class="text-center mb-5">
+              <p class="mb-3">
+                <%= image_tag "sublogo.png", width: 250, height: 100 %>
+              </p>
+              <h1 class="fw-bold mb-2">
+                Sign Up
+              </h1>
+              <p class="fw-medium text-muted">
+                Welcome, please create your account or <a href="/auth/login">Login</a> for a new account.
+              </p>
+            </div>
+            <!-- END Header -->
+
+            <!-- Sign In Form -->
+            <!-- jQuery Validation (.js-validation-signin class is initialized in js/pages/op_auth_signin.min.js which was auto compiled from _js/pages/op_auth_signin.js) -->
+            <!-- For more info and examples you can check out https://github.com/jzaefferer/jquery-validation -->
+            <div class="row g-0 justify-content-center">
+              <%= form_for(:newRegistration, url: user_registration_path) do |f| %>
+                <div class="row">
+                  <div class="col-sm-8 col-xl-6 p-3">
+                    <div class="field">
+                      <%= f.label :legalName %><br />
+                      <%= f.text_field :legalName, autocomplete: "name", class: "form-control form-control-lg form-control-alt py-3", placeholder: 'Legal Name' %>
+                    </div>
+                    <div class="field">
+                      <%= f.label :line1 %><br />
+                      <%= f.text_field :line1, autocomplete: "street", class: "form-control form-control-lg form-control-alt py-3", placeholder: '2343 West Mason' %>
+                    </div>
+                    <div class="field">
+                      <%= f.label :city %><br />
+                      <%= f.text_field :city, class: "form-control form-control-lg form-control-alt py-3", placeholder: 'Milwaukee' %>
+                    </div>
+                    <div class="field">
+                      <%= f.label :state %><br />
+                      <%= f.text_field :state, autocomplete: "state", class: "form-control form-control-lg form-control-alt py-3", placeholder: 'WI' %>
+                    </div>
+                    <div class="field">
+                      <%= f.label :postal_code %><br />
+                      <%= f.text_field :postal_code, autocomplete: "postal_code", class: "form-control form-control-lg form-control-alt py-3", placeholder: '53218' %>
+                    </div>
+                    <div class="mb-4">
+                      <label class="form-label" for="newRegistration_type">Choose Your Card</label>
+                      <select class="form-select" id="newRegistration_type" name="newRegistration[type]" required="true">
+                        <option value="individual">Individual</option>
+                        <option value="company">Company</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-sm-8 col-xl-6 p-3">
+                      <div class="field">
+                        <%= f.label :email %><br />
+                        <%= f.email_field :email, class: "form-control form-control-lg form-control-alt py-3", placeholder: 'yourEmail@forDeposits.com' %>
+                      </div>
+                      <div class="field">
+                        <%= f.label :phone_number %><br />
+                        <%= f.text_field :phone_number, autocomplete: "phone_number", class: "form-control form-control-lg form-control-alt py-3", placeholder: '4147583858', maxlength: 10 %>
+                      </div>
+                      <div class="field">
+                        <%= f.label "Percentage To Invest" %><br />
+                        <%= f.number_field :percentToInvest, class: "form-control form-control-lg form-control-alt py-3", placeholder: '80', min: 1, max: 99 %>
+                      </div>
+                      <div class="field">
+                        <%= f.label :password %><br />
+                        <%= f.password_field :password, class: "form-control form-control-lg form-control-alt py-3" %>
+                      </div>
+                      <div class="field">
+                        <%= f.label :password_confirmation %><br />
+                        <%= f.password_field :password_confirmation, class: "form-control form-control-lg form-control-alt py-3" %>
+                      </div>
+                      <br>
+                      <%= f.submit "Sign Up", class: "btn btn-lg btn-alt-primary form-control py-3" %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+            <!-- END Sign In Form -->
+          </div>
+        </div>
+        <div class="px-4 py-3 w-100 d-lg-none d-flex flex-column flex-sm-row justify-content-between fs-sm text-center text-sm-start">
+          <p class="fw-medium text-black-50 py-2 mb-0">
+            <strong>Netwerth Card</strong> © <span data-toggle="year-copy" class="js-year-copy-enabled">2022</span>
+          </p>
+          <ul class="list list-inline py-2 mb-0">
+            <li class="list-inline-item">
+              <a class="text-muted fw-medium" href="javascript:void(0)">Legal</a>
+            </li>
+            <li class="list-inline-item">
+              <a class="text-muted fw-medium" href="javascript:void(0)">Contact</a>
+            </li>
+            <li class="list-inline-item">
+              <a class="text-muted fw-medium" href="javascript:void(0)">Terms</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- END Main Section -->
+    </div>
+  </div>

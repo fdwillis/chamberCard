@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   end
 
   unauthenticated :user do
-    root 'products#index'
+    root 'registrations#new'
   end
 
 	devise_scope :user do

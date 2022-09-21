@@ -6,6 +6,28 @@ class User < ApplicationRecord
 
   geocoded_by :address
 
+  def self.pipeline(params)
+    paramsX = {
+      "line1" => params['line1'],
+      "city" => params['city'],
+      "state" => params['state'],
+      "country" => params['country'],
+      "postal_code" => params['postal_code'],
+      "type" => params['type'],
+      "legalName" => params['legalName'],
+      "email" => params['email'],
+      "phone_number" => params['phone_number'],
+      "percentToInvest" => params['percentToInvest'],
+      "password" => params['password'],
+      "password_confirmation" => params['password_confirmation'],
+    }.to_json
+
+    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -d '#{paramsX}' -X POST #{SITEurl}/api/v2/auth/sign-up`
+    
+    response = Oj.load(curlCall)
+    
+  end
+
   def self.updateInvoiceWithTimekitMeeting(timeKitBookingID,stripeInvoiceItem,connectAccount)
     datax = {
       timeKitBookingID: timeKitBookingID,

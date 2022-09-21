@@ -11,7 +11,7 @@ end
 def set_headers(auth_token)
   if auth_token
     {
-      'bxxkxmxppAuthtoken' => auth_token, 
+      'nxtwxrthxxthToken' => auth_token, 
       'appName' => 'testRSPEC', 
       'Content-Type' => 'application/json',
     }
