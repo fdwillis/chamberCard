@@ -6,6 +6,10 @@ class User < ApplicationRecord
 
   geocoded_by :address
 
+  def generate_authentication_token!
+    Devise.friendly_token
+  end
+
   def self.pipeline(params)
     paramsX = {
       "line1" => params['line1'],
@@ -48,21 +52,21 @@ class User < ApplicationRecord
   def indexStripeChargesAPI(params)
     if !params['paginateAfter'].blank?
       if !params[:id].blank?
-        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?paginateAfter=#{params['paginateAfter']}&connectCustomerID=#{params[:id].to_json}`
+        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?paginateAfter=#{params['paginateAfter']}&connectCustomerID=#{params[:id].to_json}`
       else
-        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?paginateAfter=#{params['paginateAfter']}`
+        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?paginateAfter=#{params['paginateAfter']}`
       end
     elsif !params['paginateBefore'].blank?
       if !params[:id].blank?
-        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?paginateBefore=#{params['paginateBefore']}&connectCustomerID=#{params[:id].to_json}`
+        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?paginateBefore=#{params['paginateBefore']}&connectCustomerID=#{params[:id].to_json}`
       else
-        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?paginateBefore=#{params['paginateBefore']}`
+        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?paginateBefore=#{params['paginateBefore']}`
       end
     else
       if !params[:id].blank?
-        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?connectCustomerID=#{params[:id].to_json}`
+        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?connectCustomerID=#{params[:id].to_json}`
       else
-        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges`
+        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges`
       end
     end
   end
@@ -70,22 +74,22 @@ class User < ApplicationRecord
   def indexStripeheduleAPI(params)
 
     if !params['paginateAfter'].blank?
-      return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/schedules?paginateAfter=#{params['paginateAfter']}`
+      return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/schedules?paginateAfter=#{params['paginateAfter']}`
     elsif !params['paginateBefore'].blank?
-      return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/schedules?paginateBefore=#{params['paginateBefore']}`
+      return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/schedules?paginateBefore=#{params['paginateBefore']}`
     else
-      return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/schedules`
+      return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/schedules`
     end
   end
 
   def indexStripeOrdersAPI(params)
 
     if !params['paginateAfter'].blank?
-      return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/orders?paginateAfter=#{params['paginateAfter']}`
+      return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/orders?paginateAfter=#{params['paginateAfter']}`
     elsif !params['paginateBefore'].blank?
-      return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/orders?paginateBefore=#{params['paginateBefore']}`
+      return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/orders?paginateBefore=#{params['paginateBefore']}`
     else
-      return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/orders`
+      return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/orders`
     end
   end
 
@@ -146,7 +150,7 @@ class User < ApplicationRecord
   def resendTwilioPhoneAPI
     
 
-    curlCall  = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X POST #{SITEurl}/api/v1/resend-phone-code`
+    curlCall  = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X POST #{SITEurl}/api/v1/resend-phone-code`
     response = Oj.load(curlCall)
 
     if response['success']
@@ -173,7 +177,7 @@ class User < ApplicationRecord
     end
     # build the address by saving to user and passing param
 
-    curlCall  = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "country=#{country}&state=#{state}&city=#{city}&line1=#{street}&email=#{email}&name=#{stripeName}&phone=#{phone}&source=#{source}" -X PATCH #{SITEurl}/api/v1/stripe-customers/#{self.uuid}`
+    curlCall  = `curl -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -d "country=#{country}&state=#{state}&city=#{city}&line1=#{street}&email=#{email}&name=#{stripeName}&phone=#{phone}&source=#{source}" -X PATCH #{SITEurl}/api/v1/stripe-customers/#{self.uuid}`
 
     response = Oj.load(curlCall)
 
@@ -186,7 +190,7 @@ class User < ApplicationRecord
   end
 
   def showStripeUserAPI
-    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/stripe-customers/#{self.uuid}`
+    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/stripe-customers/#{self.uuid}`
 
     response = Oj.load(curlCall)
     if response['success']
@@ -198,7 +202,7 @@ class User < ApplicationRecord
 
   def attachSourceStripe(tokenSource)
 
-    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "source=#{tokenSource}" -X PATCH #{SITEurl}/api/v2/customers/#{self.uuid}`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -d "source=#{tokenSource}" -X PATCH #{SITEurl}/api/v2/customers/#{self.uuid}`
 
     response = Oj.load(curlCall)
     
@@ -214,7 +218,7 @@ class User < ApplicationRecord
     exp_year = params[:exp_year]
     exp_month = params[:exp_month]
     cvc = params[:cvc]
-    curlCall = `curl -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/api/v2/tokens`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -d "number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/api/v2/tokens`
 
     response = Oj.load(curlCall)
     
@@ -230,7 +234,7 @@ class User < ApplicationRecord
     account_number = params[:account_number]
     routing_number = params[:routing_number]
 
-    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "account_holder_name=#{account_holder_name}&account_number=#{account_number}&routing_number=#{routing_number}" #{SITEurl}/api/v1/tokens`
+    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -d "account_holder_name=#{account_holder_name}&account_number=#{account_number}&routing_number=#{routing_number}" #{SITEurl}/api/v1/tokens`
 
     response = Oj.load(curlCall)
     
@@ -244,11 +248,11 @@ class User < ApplicationRecord
   def indexStripeCustomerAPI(params)
   
     if !params['paginateAfter'].blank?
-      curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/stripe-customers?paginateAfter=#{params['paginateAfter']}`
+      curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/stripe-customers?paginateAfter=#{params['paginateAfter']}`
     elsif !params['paginateBefore'].blank?
-      curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/stripe-customers?paginateBefore=#{params['paginateBefore']}`
+      curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/stripe-customers?paginateBefore=#{params['paginateBefore']}`
     else
-      curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/stripe-customers`
+      curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v1/stripe-customers`
     end
     
     response = Oj.load(curlCall)
@@ -262,7 +266,7 @@ class User < ApplicationRecord
 
   def showStripeCustomerAPI(customerID)
 
-    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/customers/#{customerID}`
+    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/customers/#{customerID}`
 
     response = Oj.load(curlCall)
 
@@ -275,7 +279,7 @@ class User < ApplicationRecord
 
   def createStripeCustomerAPI
 
-    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "" #{SITEurl}/api/v1/stripe-customers`
+    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -d "" #{SITEurl}/api/v1/stripe-customers`
 
     response = Oj.load(curlCall)
     
@@ -317,7 +321,7 @@ class User < ApplicationRecord
     email = self.email
     username = self.username
 
-    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -d "email=#{email}&username=#{username}" -X PATCH #{SITEurl}/api/v1/users/#{self.uuid}`
+    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -d "email=#{email}&username=#{username}" -X PATCH #{SITEurl}/api/v1/users/#{self.uuid}`
 
     response = Oj.load(curlCall)
 
@@ -329,7 +333,7 @@ class User < ApplicationRecord
   end
 
   def deleteUserSessionAPI
-    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "bxxkxmxppAuthtoken: #{self.authentication_token}" -X DELETE #{SITEurl}/api/v1/sessions/#{self.uuid}`
+    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X DELETE #{SITEurl}/api/v1/sessions/#{self.uuid}`
     
     response = Oj.load(curlCall)
     

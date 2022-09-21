@@ -7,10 +7,13 @@ class RegistrationsController < ApplicationController
     begin
             
       curlCall = User.pipeline(params['newRegistration'])
-      debugger
 
+      debugger
       if curlCall[:success]
-        # User.create(userParams(curlCall['user']))
+        newUser = User.create(userParams(curlCall['user']).merge({'password'=> params['newRegistration']['password']}))
+        debugger
+        sign_in(:user, newUser)
+        redirect_to profile_path
       end
 
       # cardHolderNew = Stripe::Issuing::Cardholder.create({
@@ -89,7 +92,7 @@ class RegistrationsController < ApplicationController
   private
 
   def userParams(dataX)
-    paramsClean = dataX.slice(:stripeCustomerID, :phone, :accessPin, :twilioPhoneVerify, :referredBy, :authentication_token, :uuid, :email)
+    paramsClean = dataX.slice('stripeCustomerID', 'phone', 'accessPin', 'twilioPhoneVerify', 'referredBy', 'authentication_token', 'uuid', 'email', 'authentication_token')
     return paramsClean.reject{|_, v| v.blank?}
   end
 end

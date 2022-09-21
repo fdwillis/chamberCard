@@ -31,8 +31,9 @@ class HomeController < ApplicationController
 	end
 
 	def profile
+				debugger
 		if current_user&.authentication_token
-			if !current_user&.stripeCustomerID.blank? || !current_user&.stripeMerchantID.blank?
+			if !current_user&.stripeCustomerID.blank?
 				callCurl = current_user&.showStripeCustomerAPI(current_user&.stripeCustomerID)
 
 				if callCurl['success']
@@ -44,9 +45,6 @@ class HomeController < ApplicationController
 					flash[:error] = callCurl['message']
 				end
 			end
-		else
-			redirect_to carts_path
-			flash[:notice] = "To manage setting please create an account"
 		end
 	end
 
