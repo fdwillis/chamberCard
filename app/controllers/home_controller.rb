@@ -31,7 +31,6 @@ class HomeController < ApplicationController
 	end
 
 	def profile
-				debugger
 		if current_user&.authentication_token
 			if !current_user&.stripeCustomerID.blank?
 				callCurl = current_user&.showStripeCustomerAPI(current_user&.stripeCustomerID)

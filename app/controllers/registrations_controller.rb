@@ -8,12 +8,12 @@ class RegistrationsController < ApplicationController
             
       curlCall = User.pipeline(params['newRegistration'])
 
-      debugger
-      if curlCall[:success]
+      if curlCall['success']
         newUser = User.create(userParams(curlCall['user']).merge({'password'=> params['newRegistration']['password']}))
-        debugger
         sign_in(:user, newUser)
+        flash[:success] = "Payment added"
         redirect_to profile_path
+        return
       end
 
       # cardHolderNew = Stripe::Issuing::Cardholder.create({
