@@ -52,21 +52,21 @@ class User < ApplicationRecord
   def indexStripeChargesAPI(params)
     if !params['paginateAfter'].blank?
       if !params[:id].blank?
-        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?paginateAfter=#{params['paginateAfter']}&connectCustomerID=#{params[:id].to_json}`
+        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/stripe-charges?paginateAfter=#{params['paginateAfter']}&connectCustomerID=#{params[:id].to_json}`
       else
-        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?paginateAfter=#{params['paginateAfter']}`
+        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/stripe-charges?paginateAfter=#{params['paginateAfter']}`
       end
     elsif !params['paginateBefore'].blank?
       if !params[:id].blank?
-        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?paginateBefore=#{params['paginateBefore']}&connectCustomerID=#{params[:id].to_json}`
+        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/stripe-charges?paginateBefore=#{params['paginateBefore']}&connectCustomerID=#{params[:id].to_json}`
       else
-        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?paginateBefore=#{params['paginateBefore']}`
+        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/stripe-charges?paginateBefore=#{params['paginateBefore']}`
       end
     else
       if !params[:id].blank?
-        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges?connectCustomerID=#{params[:id].to_json}`
+        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/stripe-charges?connectCustomerID=#{params[:id].to_json}`
       else
-        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/charges`
+        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/stripe-charges`
       end
     end
   end
@@ -218,7 +218,7 @@ class User < ApplicationRecord
     exp_year = params[:exp_year]
     exp_month = params[:exp_month]
     cvc = params[:cvc]
-    curlCall = `curl -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -d "number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/api/v2/tokens`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -d "number=#{number}&exp_month=#{exp_month}&exp_year=#{exp_year}&cvc=#{cvc}" #{SITEurl}/api/v2/stripe-tokens`
 
     response = Oj.load(curlCall)
     
@@ -355,10 +355,6 @@ class User < ApplicationRecord
 
   def paymentOn?
     !stripeCustomerID.blank? && !checkStripeSource.blank?
-  end
-
-  def owner?
-    admin? || (!stripeMerchantID.blank? && stripeMerchantID[5..stripeMerchantID.length] == ENV['appName'][0..15] && manager?)
   end
  
   def member?

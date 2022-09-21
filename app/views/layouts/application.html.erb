@@ -37,60 +37,11 @@
       </div>
       <% if current_user %>
         <div id="footer-bar" class="footer-bar-1">
-          <% if current_user&.owner? %>
-            <% if request.fullpath.include?('/customers')%>
-              <a href="/customers"><i class="fa fa-users color-highlight"></i><span>Customers</span></a>
-            <% else %>
-              <a href="/customers"><i class="fa fa-users"></i><span>Customers</span></a>
-            <% end %>
-
-          <% end %>
-
-            <% if request.fullpath.include?('/schedule') %>
-              <a href="/schedule"><i class="fa fa-calendar-check color-highlight"></i><span>Schedule</span></a>
-            <% else %>
-              <a href="/schedule"><i class="fa fa-calendar-check"></i><span>Schedule</span></a>
-            <% end %>
-
-          <% if current_user&.owner? || current_user&.serviceProvider? %>
-            <% if request.fullpath.include?('/jobs') %>
-              <a href="/jobs"><i class="fa fa-briefcase color-highlight"></i><span>Jobs</span></a>
-            <% else %>
-              <a href="/jobs"><i class="fa fa-briefcase"></i><span>Jobs</span></a>
-            <% end %>
-          <% end %>
-          <% if current_user&.customer? && current_user&.stripeCustomerID && current_user&.checkStripeSource %>
-            <% if request.fullpath.include?('/customers') %>
-              <a href="/customers/<%= current_user&.stripeCustomerID %>"><i class="fa fa-user color-highlight"></i><span>Profile</span></a>
-            <% else %>
-              <a href="/customers/<%= current_user&.stripeCustomerID %>"><i class="fa fa-user"></i><span>Profile</span></a>
-            <% end %>
-          <% end %>
-
-          <% if request.fullpath.include?('/services') || request.fullpath.include?('?service_id') %>
-            <a href="/services"><i class="fa fa-shopping-bag color-highlight"></i><span>Services</span></a>
-          <% else %>
-            <a href="/services"><i class="fa fa-shopping-bag"></i><span>Services</span></a>
-          <% end %>
-
-          <% if request.fullpath.include?('/products') || request.fullpath.include?('?product_id') %>
-            <a href="/products"><i class="fa fa-shopping-basket color-highlight"></i><span>Shop</span></a>
-          <% else %>
-            <a href="/products"><i class="fa fa-shopping-basket"></i><span>Shop</span></a>
-          <% end %>
-
-          
-
-          <% if request.fullpath.include?('/orders') %>
-            <a href="/orders"><i class="fa fa-truck color-highlight"></i><span>Orders</span></a>
-          <% else %>
-            <a href="/orders"><i class="fa fa-truck"></i><span>Orders</span></a>
-          <% end %>
 
           <% if request.fullpath.include?('/charges') %>
-            <a href="/charges"><i class="fa fa-dollar-sign color-highlight"></i><span>Payments</span></a>
+            <a href="/charges"><i class="fa fa-dollar-sign color-highlight"></i><span>Deposits</span></a>
           <% else %>
-            <a href="/charges"><i class="fa fa-dollar-sign"></i><span>Payments</span></a>
+            <a href="/charges"><i class="fa fa-dollar-sign"></i><span>Deposits</span></a>
           <% end %>
 
           <!--           <% if request.fullpath.include?('/pay-now') %>
@@ -238,20 +189,6 @@
               </div> -->
             <% end %>
 
-            <% if !current_user&.customer? && current_user&.owner? %>
-              <div class="mr-3 ml-3">
-                <span class="text-uppercase font-900 font-11 opacity-30">Customers</span>
-                <div class="list-group list-custom-small list-icon-0">
-                    <a href="/customers">
-                        <i class="fa font-14 fa-users color-green1-dark"></i>
-                        <span>Customers</span>
-                        <i class="fa fa-angle-right"></i>
-                    </a>   
-                </div>
-              </div>
-            <% end %>
-
-            
             <div class="mr-3 ml-3 mt-4">
                 <span class="text-uppercase font-900 font-11 opacity-30">FIND US</span>
                 <div class="list-group list-custom-small list-icon-0">

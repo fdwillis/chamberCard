@@ -34,9 +34,10 @@ class HomeController < ApplicationController
 		if current_user&.authentication_token
 			if !current_user&.stripeCustomerID.blank?
 				callCurl = current_user&.showStripeCustomerAPI(current_user&.stripeCustomerID)
-
 				if callCurl['success']
-					@sources = callCurl['sources']
+					@cards = callCurl['cards']
+					@bankAccounts = callCurl['bankAccounts']
+					@sources = @cards + @bankAccounts
 					@phone = callCurl['stripeCustomer']['phone']
 					@name = callCurl['stripeCustomer']['name']
 					@email = current_user&.email

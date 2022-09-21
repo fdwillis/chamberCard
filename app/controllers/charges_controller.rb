@@ -2,7 +2,6 @@ class ChargesController < ApplicationController
 	before_action :authenticate_user!
 
 	def payments
-		grabCart
 		if current_user&.authentication_token
 			@customerPayments = session[:fetchedCharges].select{|ch| ch['customer'] == params['id']}
 			@hasMore = session[:chargesHasMore]
@@ -14,15 +13,14 @@ class ChargesController < ApplicationController
 	end
 	
 	def index
-		grabCart
 		if current_user&.authentication_token
 
 			curlCall = current_user&.indexStripeChargesAPI(params)
 		  response = Oj.load(curlCall)
 
 		  if response['success']
-				session[:payments] = response['charges'] #edit stripe session meta for scheduling
-				@payments = response['charges'] #edit stripe session meta for scheduling
+				session[:payments] = response['deposits'] #edit stripe session meta for scheduling
+				@payments = response['deposits'] #edit stripe session meta for scheduling
 				@hasMore = response['has_more']
 	    end
 		else
@@ -42,7 +40,7 @@ class ChargesController < ApplicationController
 		quantity = newChargeParams[:quantity]
 		desc = newChargeParams[:desc]
     
-    curlCall = `curl -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{current_user.authentication_token}" -d "quantity=#{quantity}&timeSlot=#{timeSlot}&timeSlotCharge=true&description=#{desc}" #{SITEurl}/api/v1/charges`
+    curlCall = `curl -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{current_user.authentication_token}" -d "quantity=#{quantity}&timeSlot=#{timeSlot}&timeSlotCharge=true&description=#{desc}" #{SITEurl}/api/v2/stripe-charges`
 
 		response = Oj.load(curlCall)
     
@@ -99,7 +97,6 @@ class ChargesController < ApplicationController
 
 
 	def payNow
-		grabCart
 		if current_user&.authentication_token
 			curlCall = current_user&.indexStripeChargesAPI(params)
 
