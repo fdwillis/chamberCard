@@ -50,25 +50,7 @@ class User < ApplicationRecord
     
 
   def indexStripeChargesAPI(params)
-    if !params['paginateAfter'].blank?
-      if !params[:id].blank?
-        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/stripe-charges?paginateAfter=#{params['paginateAfter']}&connectCustomerID=#{params[:id].to_json}`
-      else
-        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/stripe-charges?paginateAfter=#{params['paginateAfter']}`
-      end
-    elsif !params['paginateBefore'].blank?
-      if !params[:id].blank?
-        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/stripe-charges?paginateBefore=#{params['paginateBefore']}&connectCustomerID=#{params[:id].to_json}`
-      else
-        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/stripe-charges?paginateBefore=#{params['paginateBefore']}`
-      end
-    else
-      if !params[:id].blank?
-        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/stripe-charges?connectCustomerID=#{params[:id].to_json}`
-      else
-        return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/stripe-charges`
-      end
-    end
+    return `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/stripe-charges`
   end
 
   def indexStripeheduleAPI(params)

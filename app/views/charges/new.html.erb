@@ -1,27 +1,14 @@
+<%= form_for :newInvoice, url: newInvoice_path do |f| %>
 
-
- <div class="card card-style">
-  <div class="content mb-0">
-    <h2>Purchase: <%= @title.titleize %></h2>
-    <p class="mb-5"><%= @desc %></p>
-        <%= form_for :newCharge, url: charges_path do |f| %>
-
-            <div class="row mb-0">
-          <div class="col-4">
+        <div class="row mb-0">
+            <div class="col-12">
               <div class="input-style input-style-2">
-                  <span class="input-style-1-active">Qty</span>
-                  <%= f.number_field :quantity, style: "border-width:1px;", placeholder: '0', required: true %>
-                  <%= f.hidden_field :uuid, value: @uuid %>
-                  <%= f.hidden_field :desc, value: @desc %>
+                  <span class="input-style-1-active">Amount</span>
+                  <%= f.number_field :amount, placeholder: "20.45", class: "form-control", required: true, :step => "0.01" %>
               </div>
-          </div>
-          <div class="col-8">
-            <div class="input-style input-style-2">
-                          <%= f.submit "Purchase", class: "btn btn-full bg-green1-dark text-uppercase rounded-sm font-900"%>
+              <div class="input-style input-style-2">
+                <%= f.submit "Create Invoice", class: "btn btn-full bg-green1-dark text-uppercase rounded-sm font-900"%>
               </div>
-          </div>
-      </div>
-        <% end %>
-        <p class="mb-5">* 15% service fee</p>
-    </div>
-</div>
+            </div>
+        </div>
+      <% end %>

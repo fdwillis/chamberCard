@@ -22,7 +22,7 @@
       <div class="block block-rounded d-flex flex-column h-100 mb-0">
         <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
           <dl class="mb-0">
-            <dt class="fs-3 fw-bold">$2,000</dt>
+            <dt class="fs-3 fw-bold"><%= number_to_currency(@invested * 0.01, precision: 2)  %></dt>
             <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">Invested</dd>
           </dl>
         </div>
@@ -34,8 +34,7 @@
       </div>
       <!-- END New Customers -->
     </div>
-    <div class="col-sm-6 col-xxl-3">
-      <!-- Messages -->
+    <!-- <div class="col-sm-6 col-xxl-3">
       <div class="block block-rounded d-flex flex-column h-100 mb-0">
         <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
           <dl class="mb-0">
@@ -49,10 +48,8 @@
           </a>
         </div>
       </div>
-      <!-- END Messages -->
-    </div>
-    <div class="col-sm-6 col-xxl-3">
-      <!-- Conversion Rate -->
+    </div> -->
+    <!-- <div class="col-sm-6 col-xxl-3">
       <div class="block block-rounded d-flex flex-column h-100 mb-0">
         <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
           <dl class="mb-0">
@@ -66,8 +63,7 @@
           </a>
         </div>
       </div>
-      <!-- END Conversion Rate-->
-    </div>
+    </div> -->
   </div>
   <!-- Recent Orders -->
   <div class="block block-rounded">
@@ -75,7 +71,7 @@
       <h3 class="block-title">Deposits</h3>
       <div class="block-options space-x-1">
         <% if @cardSource %>
-          <a href="#" data-menu="menu-transaction-deposit" class="col-12">
+          <a href="/charges/new" class="col-12">
               <button type="button" class="btn btn-sm btn-alt-secondary" data-toggle="class-toggle" data-target="#one-dashboard-search-orders" data-class="d-none">
                 ADD
               </button>
@@ -181,7 +177,7 @@
                   <% end %>
                   <td class="d-none d-sm-table-cell text-center">
                     <strong><%= number_to_currency((chargeX['amount'].to_i - ( + stripeFee)) * 0.01, precision: 2) %></strong><br>
-                    <small>4 min ago</small>
+                    <small><%= distance_of_time_in_words(0.minutes.ago, Time.at(chargeX['created']).to_datetime) %> ago</small>
                   </td>
                 </tr>
               <% end %>

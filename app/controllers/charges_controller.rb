@@ -1,6 +1,7 @@
 class ChargesController < ApplicationController
 	before_action :authenticate_user!
-
+	include ActionView::Helpers::DateHelper
+	
 	def payments
 		if current_user&.authentication_token
 			@customerPayments = session[:fetchedCharges].select{|ch| ch['customer'] == params['id']}
@@ -14,7 +15,7 @@ class ChargesController < ApplicationController
 	
 	def index
 		if current_user&.authentication_token
-
+			sleep 3
 			curlCall = current_user&.indexStripeChargesAPI(params)
 			response = Oj.load(curlCall)
 
@@ -23,6 +24,7 @@ class ChargesController < ApplicationController
 				@payments = response['deposits'] #edit stripe session meta for scheduling
 				@available = response['available'] #edit stripe session meta for scheduling
 				@depositTotal = response['depositTotal'] #edit stripe session meta for scheduling
+				@invested = response['invested'] #edit stripe session meta for scheduling
 				@hasMore = response['has_more']
 	    end
 		else
@@ -32,27 +34,6 @@ class ChargesController < ApplicationController
 	end
 
 	def new
-		@title = params[:title]
-		@uuid = params[:uuid]
-		@desc = params[:desc]
-	end
-
-	def create
-		timeSlot = newChargeParams[:uuid]
-		quantity = newChargeParams[:quantity]
-		desc = newChargeParams[:desc]
-    
-    curlCall = `curl -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{current_user.authentication_token}" -d "quantity=#{quantity}&timeSlot=#{timeSlot}&timeSlotCharge=true&description=#{desc}" #{SITEurl}/api/v2/stripe-charges`
-
-		response = Oj.load(curlCall)
-    
-    if response['success']
-			flash[:success] = "Purchase successful"
-      redirect_to service_path(id: timeSlot)
-    else
-			flash[:error] = response['error']
-      redirect_to service_path(id: timeSlot)
-    end
 
 	end
 

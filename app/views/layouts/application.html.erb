@@ -358,23 +358,6 @@
             <% end %>
     </div>
 
-    <div id="menu-transaction-deposit" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-height="440" style="height: 440px; display: block;">
-      <div class="menu-title"><h1>New Deposit</h1><p class="color-highlight">Enter Deposit Amount</p><a href="#" class="close-menu"><i class="fa fa-times"></i></a></div>
-      <%= form_for :newInvoice, url: newInvoice_path do |f| %>
-
-        <div class="row mb-0">
-            <div class="col-12">
-              <div class="input-style input-style-2">
-                  <span class="input-style-1-active">Amount</span>
-                  <%= f.number_field :amount, placeholder: "20.45", class: "form-control", required: true, :step => "0.01" %>
-              </div>
-              <div class="input-style input-style-2">
-                <%= f.submit "Create Invoice", class: "btn btn-full bg-green1-dark text-uppercase rounded-sm font-900"%>
-              </div>
-            </div>
-        </div>
-      <% end %>
-    </div>
 
     <div id="menu-transaction-request" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-height="440" style="height: 440px; display: block;">
       <div class="menu-title"><h1>New Bank Source</h1><p class="color-highlight">Enter Bank Details</p><a href="#" class="close-menu"><i class="fa fa-times"></i></a></div>
@@ -440,7 +423,7 @@
             <i class="fa-ios-arrow fa fa-caret-down font-40"></i>
         </div>
     </div> -->
-    <!-- <script type="text/javascript" src="/assets/jquery.js"></script> -->
+    <script type="text/javascript" src="/assets/jquery.js"></script>
     <script type="text/javascript" src="/assets/bootstrap.min.js"></script>
     <script type="text/javascript" src="/assets/custom.js"></script>
     <script src="https://js.stripe.com/v3/"></script>
