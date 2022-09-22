@@ -19,9 +19,10 @@ class ChargesController < ApplicationController
 			response = Oj.load(curlCall)
 
 		  if response['success']
-			  	pullSource
-				session[:payments] = response['deposits'] #edit stripe session meta for scheduling
+		  	pullSource
 				@payments = response['deposits'] #edit stripe session meta for scheduling
+				@available = response['available'] #edit stripe session meta for scheduling
+				@depositTotal = response['depositTotal'] #edit stripe session meta for scheduling
 				@hasMore = response['has_more']
 	    end
 		else

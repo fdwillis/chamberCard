@@ -5,7 +5,7 @@
       <div class="block block-rounded d-flex flex-column h-100 mb-0">
         <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
           <dl class="mb-0">
-            <dt class="fs-3 fw-bold">$8,000</dt>
+            <dt class="fs-3 fw-bold"><%= number_to_currency(@available * 0.01, precision: 2)  %></dt>
             <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">Available</dd>
           </dl>
         </div>
@@ -108,42 +108,11 @@
         <ul class="pagination pagination-sm justify-content-end mb-0">
           <li class="page-item">
             <a class="page-link" href="javascript:void(0)" tabindex="-1" aria-label="Previous">
-              Total: $10,000
+              Total: <%= number_to_currency((@depositTotal * 0.01) - (((@depositTotal * 0.029) * 0.01) + 0.30), precision: 2) %>
             </a>
           </li>
         </ul>
       </nav>
-      <!-- END total -->
-      <!-- Pagination -->
-      <!--                   <nav aria-label="Photos Search Navigation">
-                          <ul class="pagination pagination-sm justify-content-end mb-0">
-                            <li class="page-item">
-                              <a class="page-link" href="javascript:void(0)" tabindex="-1" aria-label="Previous">
-                                Prev
-                              </a>
-                            </li>
-                            <li class="page-item active">
-                              <a class="page-link" href="javascript:void(0)">1</a>
-                            </li>
-                            <li class="page-item">
-                              <a class="page-link" href="javascript:void(0)">2</a>
-                            </li>
-                            <li class="page-item">
-                              <a class="page-link" href="javascript:void(0)">3</a>
-                            </li>
-                            <li class="page-item">
-                              <a class="page-link" href="javascript:void(0)">4</a>
-                            </li>
-                            <li class="page-item">
-                              <a class="page-link" href="javascript:void(0)" aria-label="Next">
-                                Next
-                              </a>
-                            </li>
-                          </ul>
-                        </nav>
-      -->                  
-      <!-- END Pagination -->
-      
     </div>
     </div>
     <div id="one-dashboard-search-orders" class="block-content border-bottom d-none">
@@ -173,27 +142,51 @@
               <th class="d-none d-sm-table-cell text-center">Deposit</th>
             </tr>
           </thead>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           <tbody class="fs-sm">
-            <tr>
-              <td class="text-center">
-                <a class="fw-semibold" href="javascript:void(0)">
-                  ORD.00925                  </a>
-                <p class="fs-sm fw-medium text-muted mb-0">Premium</p>
-              </td>
-              <td class="text-center">
-                <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning">Pending</span>
-              </td>
-              <td class="text-center">
-                <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning">Pending</span>
-              </td>
-              <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong>$400</strong></td>
-              <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong>$1,600</strong></td>
-              <td class="d-none d-sm-table-cell text-center">
-                <strong>$2,000</strong><br>
-                <small>4 min ago</small>
-              </td>
-            </tr>
-            <tr>
+            <% if !@payments.blank? %>
+              <% @payments.each do |chargeX| %>
+                <tr>
+                  <% stripeFee = (((chargeX['amount'].to_i * 0.029)) + 30).to_i %>
+              
+                  <td class="text-center">
+                    <a class="fw-semibold" href="javascript:void(0)"><%= chargeX['id'][3..7] %></a>
+                    <p class="fs-sm fw-medium text-muted mb-0">Complete</p>
+                  </td>
+                  <td class="text-center">
+                    <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning">Pending</span>
+                  </td>
+                  <td class="text-center">
+                    <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning">Pending</span>
+                  </td>
+                  <% if !chargeX['metadata'].blank? %>
+                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency((chargeX['amount'].to_i - ( + stripeFee)) * 0.01 - Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01, precision: 2) %></strong></td>
+                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency(Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01, precision: 2) %></strong></td>
+                  <% else %>
+                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
+                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
+                  <% end %>
+                  <td class="d-none d-sm-table-cell text-center">
+                    <strong><%= number_to_currency((chargeX['amount'].to_i - ( + stripeFee)) * 0.01, precision: 2) %></strong><br>
+                    <small>4 min ago</small>
+                  </td>
+                </tr>
+              <% end %>
+            <% end %>
+            <!-- <tr>
               <td class="text-center">
                 <a class="fw-semibold" href="javascript:void(0)">
                   ORD.00924                  </a>
@@ -237,7 +230,7 @@
                 <strong>$2,000</strong><br>
                 <small>1 week ago</small>
               </td>
-            </tr>
+            </tr> -->
           </tbody>
         </table>
       </div>
@@ -248,84 +241,3 @@
   <!-- END Recent Orders -->
 </div>
 <!-- END Page Content -->
-<% if current_user.present? %>
-  
-  <% if @payments.present? %>
-    <% @payments.each do |chargeX| %>
-      <div class="card card-style">
-        <% stripeFee = (((chargeX['amount'].to_i * 0.029)) + 30).to_i %>
-        <% stripeFeeAmount = chargeX['application_fee_amount'].to_i %>
-        <div class="content mb-0">
-            <div class="d-flex">
-                <div class="pr-0 align-self-center">
-                    <p class="font-600 color-highlight mb-n1">Deposit</p>
-                    <h1 class="mb-2"><%= number_to_currency(chargeX['amount'].to_i * 0.01, precision: 2) %></h1>
-                </div>
-                <div class="w-100 align-self-center pl-3">
-                    <h6 class="mt-4 font-700 text-uppercase font-12 opacity-30 mb-3 mt-n2"><%= chargeX['customer'] ? Stripe::Customer.retrieve(chargeX['customer'], {stripe_account: ENV['connectAccount']})['name'] : nil %><span class="float-right"><%= Time.at(chargeX['created']).strftime("%b #{Time.at(chargeX['created']).day.ordinalize}, %Y") %></span></h6>
-                    <div class="divider mb-2 mt-1"></div>
-                    <h6 class="font-14 font-700">Processing Fee<span class="float-right color-red2-dark"><%= number_to_currency(stripeFee * 0.01.round(2), precision: 2) %></span></h6>
-                    <div class="divider mb-2 mt-1"></div>
-                    <h6 class="font-14 font-700">Net<span class="float-right color-green2-dark"><%= number_to_currency((chargeX['amount'].to_i - (stripeFeeAmount + stripeFee)) * 0.01, precision: 2) %></span></h6>
-                    <div class="divider mb-2 mt-1"></div>
-                </div>
-            </div>      
-            <div class="divider mt-2 mb-3"></div>
-            <% if !chargeX['invoice'].blank? %>
-              <ul>
-                <% Stripe::InvoiceItem.list({invoice:  chargeX['invoice'], limit: 100}, {stripe_account: ENV['connectAccount']})['data'].each do |inI| %>
-                  <li>(<%= inI['quantity'] %>) <%= inI['description'] %></li>
-                <% end %>
-              </ul>
-              <% else %>
-                <ul><li><%= chargeX['description'] %></li></ul>
-            <% end %>
-        </div>            
-      </div>
-    <% end %>
-    <% if @hasMore %>
-      <nav aria-label="pagination-demo">
-          <ul class="pagination pagination- justify-content-center">
-            <li class="page-item">
-                <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-xl border-0" href="/charges/?paginateBefore=<%= @payments.first['id'] %>" tabindex="-1" aria-disabled="true"><i class="fa fa-angle-left"></i></a>
-                BACK
-            </li>
-            <li class="page-item">
-                <a class="page-link rounded-xs color-black bg-transparent bg-theme shadow-l border-0" href="/charges/?paginateAfter=<%= @payments.last['id'] %>"><i class="fa fa-angle-right"></i></a>
-                NEXT
-            </li>
-          </ul>
-      </nav>
-    <% end %>
-  <% end %>
-<% else %>
-  <div class="page-content header-clear-medium">
-        
-        <div class="card card-style">
-            
-            <div class="d-flex content mb-1">
-                <!-- left side of profile -->
-                <div class="flex-grow-1">
-                    <h1 class="font-700">Book Now</h1>
-                    <p class="mb-2">
-                      Once you've created an account and have made a successful payment, it will be posted here.
-                    </p>
-                </div>
-                <!-- right side of profile. increase image width to increase column size-->
-            </div>
-            <!-- follow buttons-->
-            <div class="content mb-0">
-                <div class="row mb-0">
-                    <div class="col-6">
-                        <a href="<%= new_user_registration_url %>" class="btn btn-full btn-s rounded-s text-uppercase font-900 bg-green1-dark">Create Account</a>
-                    </div>
-                    <div class="col-6">
-                        <a href="<%= new_user_session_url %>" class="btn btn-full btn-s rounded-s text-uppercase font-900 color-theme border-green1-dark">Login</a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="divider mt-4 mb-0"></div>
-        </div>
-  </div>
-<% end %>
