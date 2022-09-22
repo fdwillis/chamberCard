@@ -73,23 +73,17 @@ class ChargesController < ApplicationController
 
 
 	def newInvoice
-		customer = newInvoiceParams[:customer]
-		desc = newInvoiceParams[:desc]
-		title = newInvoiceParams[:title]
+		paramsX = {
+      "amount" => newInvoiceParams[:amount].to_s,
+    }.to_json
 
-    subtotal = stripeAmount(newInvoiceParams[:amount])
-		application_fee_amount = (subtotal * (ENV['serviceFee'].to_i * 0.01)).to_i
-		stripeFee = (((subtotal+application_fee_amount) * 0.029) + 30).to_i
-
-		amount = subtotal + application_fee_amount + stripeFee
-
-    curlCall = `curl -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{current_user.authentication_token}" -d "application_fee_amount=#{application_fee_amount}&customer=#{customer}&description=#{title}&amount=#{amount}" -X POST #{SITEurl}/api/v2/charges`
+    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{current_user.authentication_token}" -d '#{paramsX}' -X POST #{SITEurl}/api/v2/stripe-charges`
 
 		response = Oj.load(curlCall)
 
     if response['success']
-			flash[:success] = "Invoice Created"
-      redirect_to payments_path(id: customer)
+			flash[:success] = "Deposit Made"
+      redirect_to charges_path
     else
 			flash[:error] = response['message']
       redirect_to request.referrer
@@ -126,4 +120,28 @@ class ChargesController < ApplicationController
 	def newChargeParams
 		paramsClean = params.require(:newCharge).permit(:uuid, :quantity, :desc)
 	end
+
+	def stripeAmount(string)
+    converted = (string.gsub(/[^0-9]/i, '').to_i)
+
+    if string.include?(".")
+      dollars = string.split(".")[0]
+      cents = string.split(".")[1]
+
+      if cents.length == 2
+        stripe_amount = "#{dollars}#{cents}"
+      else
+        if cents === "0"
+          stripe_amount = ("#{dollars}00")
+        else
+          stripe_amount = ("#{dollars}#{cents.to_i * 10}")
+        end
+      end
+
+      return stripe_amount
+    else
+      stripe_amount = converted * 100
+      return stripe_amount
+    end
+  end
 end
