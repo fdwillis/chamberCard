@@ -1,7 +1,9 @@
 <div class="card card-style">
     <div class="content mt-3 mb-3">
       <h3>Your <%= ENV['siteName'].titleize %> Depost History</h3>
-      <%= link_to "New Deposit", '#', class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
+      <% if @cardSource %>
+        <%= link_to "New Deposit", '#', class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
+      <% end %>
     </div>
   </div>
 <div class="content">
@@ -80,9 +82,11 @@
     <div class="block-header block-header-default">
       <h3 class="block-title">Deposits</h3>
       <div class="block-options space-x-1">
-        <button type="button" class="btn btn-sm btn-alt-secondary" data-toggle="class-toggle" data-target="#one-dashboard-search-orders" data-class="d-none">
-          ADD
-        </button>
+        <% if @cardSource %>
+          <button type="button" class="btn btn-sm btn-alt-secondary" data-toggle="class-toggle" data-target="#one-dashboard-search-orders" data-class="d-none">
+            ADD
+          </button>
+        <% end %>
         <div class="dropdown d-inline-block">
           <div class="dropdown-menu dropdown-menu-md dropdown-menu-end fs-sm" aria-labelledby="dropdown-recent-orders-filters">
             <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">

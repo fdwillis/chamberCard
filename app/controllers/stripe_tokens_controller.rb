@@ -2,12 +2,12 @@
 before_action :authenticate_user!
 
 	def create
-		
-		if !newStripeCardTokenParams.blank?
-			callCurl = current_user.createStripeCardTokenAPI(newStripeCardTokenParams)
-		
-		else
-			callCurl = current_user.createStripeBankTokenAPI(newStripeBankTokenParams)
+		if !stripeTokenParams.blank?
+			if !stripeTokenParams[:routing_number].blank?
+				callCurl = current_user.createStripeBankTokenAPI(stripeTokenParams)
+			elsif !stripeTokenParams[:cvc].blank?
+				callCurl = current_user.createStripeCardTokenAPI(stripeTokenParams)
+			end
 		end
 
 		if callCurl['success']
@@ -32,14 +32,8 @@ before_action :authenticate_user!
 
 	private
 
-	def newStripeCardTokenParams
-		paramsClean = params.require(:newStripeCardToken).permit(:number, :exp_year, :exp_month, :cvc, :name, :phone)
+	def stripeTokenParams
+		paramsClean = params.require(:stripeToken).permit(:number, :exp_year, :exp_month, :cvc, :name, :phone, :account_holder_name, :account_holder_type, :routing_number, :account_number)
 		return paramsClean.reject{|_, v| v.blank?}
 	end
-
-	def newStripeBankTokenParams
-		paramsClean = params.require(:newStripeBankToken).permit(:account_holder_name, :routing_number, :account_number)
-		return paramsClean.reject{|_, v| v.blank?}
-	end
-
 end

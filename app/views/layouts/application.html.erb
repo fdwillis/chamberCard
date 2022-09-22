@@ -155,7 +155,7 @@
             <% end %>
             <% if current_user&.customer? %>
 
-            <!--               <% if current_user&.stripeCustomerID && current_user&.checkStripeSource %>
+            <!--               <% if current_user&.stripeCustomerID && current_user&.checkStripeCard %>
                             <div class="mr-3 ml-3">
                               <span class="text-uppercase font-900 font-11 opacity-30">Financials</span>
                               <div class="list-group list-custom-small list-icon-0">
@@ -316,7 +316,7 @@
       <div class="menu-title"><h1>New Card Source</h1><p class="color-highlight">Enter Card Details</p><a href="#" class="close-menu"><i class="fa fa-times"></i></a></div>
 
       <div class="divider divider-margins mt-3 mb-3"></div>
-      <%= form_for :newStripeCardToken, url: stripe_tokens_path do |f| %>
+      <%= form_for :stripeToken, url: stripe_tokens_path do |f| %>
               <div class="input-style input-style-2 has-icon input-required">
                   <i class="input-icon fa fa-user"></i>
                   <span class="color-highlight input-style-1-active">Legal Name</span>
@@ -362,7 +362,14 @@
       <div class="menu-title"><h1>New Bank Source</h1><p class="color-highlight">Enter Bank Details</p><a href="#" class="close-menu"><i class="fa fa-times"></i></a></div>
 
       <div class="divider divider-margins mt-3 mb-3"></div>
-        <%= form_for :newStripeBankToken, url: stripe_tokens_path do |f| %>
+        <%= form_for :stripeToken, url: stripe_tokens_path do |f| %>
+          <div class="input-style input-style-2 has-icon input-required mt-4">
+            <span class="color-highlight input-style-1-active" for="stripeToken_account_holder_type">Company or Personal Account?</span>
+            <select class="form-select" id="stripeToken_account_holder_type" name="stripeToken[account_holder_type]" required="true">
+              <option value="individual">Personal</option>
+              <option value="company">Company</option>
+            </select>
+          </div>
           <div class="input-style input-style-2 has-icon input-required mt-4">
               <i class="input-icon fa fa-user"></i>
               <span class="color-highlight input-style-1-active">Full Legal Name</span>

@@ -36,38 +36,34 @@
 
       <% if !current_user&.stripeCustomerID.blank? %>
         <% if @name %>
-          <h2 class="mt-2">Payment Information</h2>
+          <h2 class="mt-2">Funding Sources</h2>
           <div class="row text-center">
               <a href="#" data-menu="menu-transaction-transfer" class="col-12">
                   <div class="card card-style ml-2 mb-3">
                       <i class="fa fa-credit-card color-highlight fa-2x mt-3"></i>
-                      <h1 class="pt-2 font-18">Card</h1>
-                      <% if current_user&.checkStripeSource  %>
-                        <p class="font-11 opacity-50 mt-n2 mb-3">Edit Card</p>
-                      <% else %>
-                        <p class="font-11 opacity-50 mt-n2 mb-3">Add Card</p>
-                      <% end %>
+                      <h1 class="pt-2 font-18"></h1>
+                        <p class="font-11 opacity-50 mt-n2 mb-3">New Card</p>
                   </div>
               </a>
+              <!-- <a href="#" data-menu="menu-transaction-request" class="col-6">
+                  <div class="card card-style ml-2 mb-3">
+                      <i class="fa fa-credit-card color-highlight fa-2x mt-3"></i>
+                      <h1 class="pt-2 font-18">Bank Account</h1>
+                        <p class="font-11 opacity-50 mt-n2 mb-3">Bank Account</p>
+                  </div>
+              </a> -->
           </div>
           <% @sources&.each do |s| %>
-            <div style="align-items: center;" class="mb-4">
-              <% if s['brand'] == "Visa" %>
-                Visa
-              <% elsif s['brand'] == "MasterCard" %>
-                MasterCard
-              <% elsif s['brand'] == "American Express" %>
-                American Express
-              <% end %>
-                <p class="mt-n1 mb-0 font-10">**** <%= s['last4'] %></p>
-            </div>  
+          Current Deposit Source
 
             <% if s['object'] == 'bank_account' %>
-              <div class="text-center card card-style">
                   <i class="fa fa-university color-highlight fa-2x mt-3"></i>
                   <h1 class="pt-2 font-18">****<%= s['last4'] %></h1>
-                  <p class="font-11 opacity-50 mt-n2 mb-3"><%= s['routing_number'] %></p>
-              </div>
+            <% end %>
+
+            <% if s['object'] == 'card' %>
+                  <i class="fa fa-credit-card color-highlight fa-2x mt-3"></i>
+                  <h1 class="pt-2 font-18">****<%= s['last4'] %></h1>
             <% end %>
           <% end %>
         <% end %>

@@ -16,9 +16,10 @@ class ChargesController < ApplicationController
 		if current_user&.authentication_token
 
 			curlCall = current_user&.indexStripeChargesAPI(params)
-		  response = Oj.load(curlCall)
+			response = Oj.load(curlCall)
 
 		  if response['success']
+			  	pullSource
 				session[:payments] = response['deposits'] #edit stripe session meta for scheduling
 				@payments = response['deposits'] #edit stripe session meta for scheduling
 				@hasMore = response['has_more']

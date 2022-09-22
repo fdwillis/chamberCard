@@ -230,14 +230,17 @@ class User < ApplicationRecord
   end
 
   def createStripeBankTokenAPI(params)
-    account_holder_name = params[:account_holder_name]
-    account_number = params[:account_number]
-    routing_number = params[:routing_number]
+    paramsX = {
+      "account_holder_name" => params['account_holder_name'],
+      "account_holder_type" => params['account_holder_type'],
+      "account_number" => params['account_number'],
+      "routing_number" =>params['routing_number'],
+    }.to_json
 
-    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -d "account_holder_name=#{account_holder_name}&account_number=#{account_number}&routing_number=#{routing_number}" #{SITEurl}/api/v1/tokens`
+    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -d '#{paramsX}' -X POST #{SITEurl}/api/v2/stripe-tokens`
 
     response = Oj.load(curlCall)
-    
+
     if response['success']
       return response
     else
@@ -292,7 +295,7 @@ class User < ApplicationRecord
   end
 
   def createUserSessionAPI(user)
-    curlCall = `curl -d "email=#{user['email']}&password=#{user['password']}" #{SITEurl}/api/v1/sessions`
+    curlCall = `curl -d "email=#{user['email']}&password=#{user['password']}" #{SITEurl}/api/v2/auth/login`
     
     response = Oj.load(curlCall)
     
@@ -333,7 +336,7 @@ class User < ApplicationRecord
   end
 
   def deleteUserSessionAPI
-    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X DELETE #{SITEurl}/api/v1/sessions/#{self.uuid}`
+    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X DELETE #{SITEurl}/api/v2/auth/login/#{self.uuid}`
     
     response = Oj.load(curlCall)
     
@@ -354,7 +357,7 @@ class User < ApplicationRecord
   end
 
   def paymentOn?
-    !stripeCustomerID.blank? && !checkStripeSource.blank?
+    !stripeCustomerID.blank? && !checkStripeCard.blank?
   end
  
   def member?
@@ -391,27 +394,17 @@ class User < ApplicationRecord
     end
   end
 
-  def checkStripeSource
-    if manager?
-      accountCapabilities = Stripe::Account.retrieve(stripeMerchantID)['capabilities']
-
-      if accountCapabilities['card_payments'] == "active" && accountCapabilities['transfers'] == "active" #charge stripeSubscription to cover heroku fees
+  def checkStripeCard
+    if !stripeCustomerID.blank?
+      stripeCustomer = Stripe::Customer.retrieve(stripeCustomerID)
+      #make phone number required for purchase
+      if stripeCustomer['default_source']
         return true
       else
         return false
       end
     else
-      if !stripeCustomerID.blank?
-        stripeCustomer = Stripe::Customer.retrieve(stripeCustomerID)
-        #make phone number required for purchase
-        if stripeCustomer['default_source']
-          return true
-        else
-          return false
-        end
-      else
-        return false
-      end
+      return false
     end
   end
 
