@@ -50,7 +50,7 @@
                 Sign Up
               </h1>
               <p class="fw-medium text-muted">
-                Welcome, please create your account or <a href="/auth/login">Login</a> for a new account.
+                Welcome, please create your account or <a href="/auth/login">Login</a>
               </p>
             </div>
             <!-- END Header -->
@@ -63,11 +63,11 @@
                 <div class="row">
                   <div class="col-sm-8 col-xl-6 p-3">
                     <div class="field">
-                      <%= f.label :legalName %><br />
+                      <%= f.label "Legal Name" %><br />
                       <%= f.text_field :legalName, autocomplete: "name", class: "form-control form-control-lg form-control-alt py-3", placeholder: 'Legal Name' %>
                     </div>
                     <div class="field">
-                      <%= f.label :line1 %><br />
+                      <%= f.label "Street Address" %><br />
                       <%= f.text_field :line1, autocomplete: "street", class: "form-control form-control-lg form-control-alt py-3", placeholder: '2343 West Mason' %>
                     </div>
                     <div class="field">
@@ -105,14 +105,14 @@
                       </div>
                       <div class="field">
                         <%= f.label :password %><br />
-                        <%= f.password_field :password, class: "form-control form-control-lg form-control-alt py-3" %>
+                        <%= f.password_field :password, class: "form-control form-control-lg form-control-alt py-3", placeholder: '6 characters or more' %>
                       </div>
                       <div class="field">
                         <%= f.label :password_confirmation %><br />
-                        <%= f.password_field :password_confirmation, class: "form-control form-control-lg form-control-alt py-3" %>
+                        <%= f.password_field :password_confirmation, class: "form-control form-control-lg form-control-alt py-3", placeholder: 'repeat your password' %>
                       </div>
                       <br>
-                      <%= f.submit "Sign Up", class: "btn btn-lg btn-alt-primary form-control py-3" %>
+                      <%= f.submit "Sign Up", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
                   </div>
                 </div>
               <% end %>

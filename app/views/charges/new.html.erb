@@ -1,14 +1,17 @@
-<%= form_for :newInvoice, url: newInvoice_path do |f| %>
+<div class="content">
 
-        <div class="row mb-0">
-            <div class="col-12">
-              <div class="input-style input-style-2">
-                  <span class="input-style-1-active">Amount</span>
-                  <%= f.number_field :amount, placeholder: "20.45", class: "form-control", required: true, :step => "0.01" %>
+  <%= form_for :newInvoice, url: newInvoice_path do |f| %>
+
+          <div class="row mb-0">
+              <div class="col-12">
+                <div class="input-style input-style-2">
+                    <span class="input-style-1-active">Deposit Amount</span>
+                    <%= f.number_field :amount, placeholder: "20.45", class: "form-control", required: true, :step => "0.01" %>
+                </div>
+                <div class="input-style input-style-2">
+                  <%= f.submit "Create Invoice", class: "btn btn-full bg-green1-dark text-uppercase rounded-sm font-900"%>
+                </div>
               </div>
-              <div class="input-style input-style-2">
-                <%= f.submit "Create Invoice", class: "btn btn-full bg-green1-dark text-uppercase rounded-sm font-900"%>
-              </div>
-            </div>
-        </div>
-      <% end %>
+          </div>
+        <% end %>
+</div>

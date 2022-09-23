@@ -52,6 +52,7 @@ class SessionsController < Devise::SessionsController
       reset_session
       current_user = nil
       flash[:success] = "See ya later"
+      redirect_to root_path
     end
   end
 

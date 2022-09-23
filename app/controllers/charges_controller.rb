@@ -14,8 +14,8 @@ class ChargesController < ApplicationController
 	end
 	
 	def index
+		sleep 1
 		if current_user&.authentication_token
-			sleep 3
 			curlCall = current_user&.indexStripeChargesAPI(params)
 			response = Oj.load(curlCall)
 
@@ -62,7 +62,7 @@ class ChargesController < ApplicationController
     curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{current_user.authentication_token}" -d '#{paramsX}' -X POST #{SITEurl}/api/v2/stripe-charges`
 
 		response = Oj.load(curlCall)
-
+		sleep 3
     if response['success']
 			flash[:success] = "Deposit Made"
       redirect_to charges_path

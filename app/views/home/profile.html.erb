@@ -80,22 +80,14 @@
 
 <% else %>
   <div class="page-content ">
+        <h1 class="font-700 font-32 mb-0 text-center">Netwerth Card</h1>
+        <h6 class="font-400 font-15 mb-3 pb-1 color-highlight text-center">The Only Debit Card Designed To Pay You Back</h6>
+        <p class="color-theme boxed-text-xl opacity-80 mb-5">
+            Expect payouts to occur every 90 days
+        </p>
+        <p class="pb-4"></p>
         <a href="<%= new_user_registration_url %>" class="btn btn-full btn-s rounded-s text-uppercase font-900 bg-green1-dark">CREATE ACCOUNT</a>
         <a href="<%= new_user_session_path %>" class="btn btn-full btn-s rounded-s text-uppercase font-900 color-theme border-green1-dark">LOGIN</a>
-        <div class="cover-slider owl-carousel">
-            <div data-card-height="cover" class="card text-center pb-5">
-                <div class="card-bottom">
-                    <h1 class="font-700 font-32 mb-0">Hello. I'm Sticky</h1>
-                    <h6 class="font-400 font-15 mb-3 pb-1 color-highlight">An absolutely amazing Mobile Website</h6>
-                    <p class="color-theme boxed-text-xl opacity-80 pb-5 mb-5">
-                        I'm Sticky Footer Menu that everyone requested, packed with tons of awesome features.
-                    </p>
-                    <p class="pb-4"></p>
-                </div>
-                <div class="card-overlay bg-0" style="height:70vh"></div> <!--setting height to 70% to make text more easy to read-->
-                <div class="card-overlay bg-gradient-fade"></div>
-            </div>
-        </div>
 
         
   </div>
@@ -103,14 +95,3 @@
   <div class="cover-button-bottom">
   </div>
 <% end %>
-
-
-
-
-
-
-
-
-
-<%= link_to "hi", "https://cdn.plaid.com/link/v2/stable/link.html?isWebview=true&token=#{session[:link_token]}" %>
-

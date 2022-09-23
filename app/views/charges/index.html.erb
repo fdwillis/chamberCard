@@ -5,13 +5,13 @@
       <div class="block block-rounded d-flex flex-column h-100 mb-0">
         <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
           <dl class="mb-0">
-            <dt class="fs-3 fw-bold"><%= number_to_currency(@available * 0.01, precision: 2)  %></dt>
-            <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">Available</dd>
+            <dt class="fs-3 fw-bold"><%= number_to_currency((@available * 0.01).round, precision: 2)  %></dt>
+            <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">Available (approx.)</dd>
           </dl>
         </div>
         <div class="bg-body-light rounded-bottom">
           <a class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
-            <span>View</span>
+            <!-- <span>View</span> -->
           </a>
         </div>
       </div>
@@ -22,13 +22,13 @@
       <div class="block block-rounded d-flex flex-column h-100 mb-0">
         <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
           <dl class="mb-0">
-            <dt class="fs-3 fw-bold"><%= number_to_currency(@invested * 0.01, precision: 2)  %></dt>
-            <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">Invested</dd>
+            <dt class="fs-3 fw-bold"><%= number_to_currency((@invested * 0.01).round, precision: 2)  %></dt>
+            <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">Invested (approx.)</dd>
           </dl>
         </div>
         <div class="bg-body-light rounded-bottom">
           <a class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
-            <span>View</span>
+            <!-- <span>View</span> -->
           </a>
         </div>
       </div>
@@ -104,7 +104,11 @@
         <ul class="pagination pagination-sm justify-content-end mb-0">
           <li class="page-item">
             <a class="page-link" href="javascript:void(0)" tabindex="-1" aria-label="Previous">
-              Total: <%= number_to_currency((@depositTotal * 0.01) - (((@depositTotal * 0.029) * 0.01) + 0.30), precision: 2) %>
+              <% if @depositTotal > 0 %>
+                Total: <%= number_to_currency((@depositTotal * 0.01).round - (((@depositTotal * 0.029) * 0.01) + 0.30).round, precision: 2) %>
+              <% else %>
+                Total: $0
+              <% end %>
             </a>
           </li>
         </ul>
@@ -132,7 +136,6 @@
             <tr>
               <th class="text-center">Deposit ID</th>
               <th class="text-center">Payout</th>
-              <th class="d-none d-sm-table-cell text-center">Profit</th>
               <th class="d-none d-sm-table-cell text-center">Invested</th>
               <th class="d-none d-sm-table-cell text-center">Available</th>
               <th class="d-none d-sm-table-cell text-center">Deposit</th>
@@ -159,24 +162,21 @@
                   <% stripeFee = (((chargeX['amount'].to_i * 0.029)) + 30).to_i %>
               
                   <td class="text-center">
-                    <a class="fw-semibold" href="javascript:void(0)"><%= chargeX['id'][3..7] %></a>
+                    <a class="fw-semibold" ><%= chargeX['id'][3..17] %></a>
                     <p class="fs-sm fw-medium text-muted mb-0">Complete</p>
                   </td>
                   <td class="text-center">
                     <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning">Pending</span>
                   </td>
-                  <td class="text-center">
-                    <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning">Pending</span>
-                  </td>
                   <% if !chargeX['metadata'].blank? %>
-                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency((chargeX['amount'].to_i - ( + stripeFee)) * 0.01 - Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01, precision: 2) %></strong></td>
-                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency(Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01, precision: 2) %></strong></td>
+                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency(((chargeX['amount'].to_i - ( + stripeFee)) * 0.01 - Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01).round, precision: 2) %></strong></td>
+                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency((Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01).round, precision: 2) %></strong></td>
                   <% else %>
                     <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
                     <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
                   <% end %>
                   <td class="d-none d-sm-table-cell text-center">
-                    <strong><%= number_to_currency((chargeX['amount'].to_i - ( + stripeFee)) * 0.01, precision: 2) %></strong><br>
+                    <strong><%= number_to_currency(((chargeX['amount'].to_i - ( + stripeFee)) * 0.01).round, precision: 2) %></strong><br>
                     <small><%= distance_of_time_in_words(0.minutes.ago, Time.at(chargeX['created']).to_datetime) %> ago</small>
                   </td>
                 </tr>
