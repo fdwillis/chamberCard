@@ -2,5 +2,8 @@
   "devDependencies": {
     "webpack": "^5.74.0",
     "webpack-dev-server": "^4.11.1"
-  }
+  },
+  "scripts": {
+   "start": "node index.js"
+  },
 }
