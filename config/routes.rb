@@ -24,7 +24,7 @@ Rails.application.routes.draw do
 	  end
 		resources :schedule
 		resources :orders
-		resources :carts
+		resources :stripe_sources, path: '/sources'
 		resources :jobs
 	
 		resources :services
