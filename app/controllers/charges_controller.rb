@@ -14,24 +14,33 @@ class ChargesController < ApplicationController
 	end
 	
 	def index
-		sleep 1
-		if current_user&.authentication_token
-			curlCall = current_user&.indexStripeChargesAPI(params)
-			response = Oj.load(curlCall)
+		begin
 
-	  	puts response
-		  if response['success']
-		  	pullSource
-				@payments = response['deposits'] #edit stripe session meta for scheduling
-				@available = response['available'] #edit stripe session meta for scheduling
-				@depositTotal = response['depositTotal'] #edit stripe session meta for scheduling
-				@invested = response['invested'] #edit stripe session meta for scheduling
-				@hasMore = response['has_more']
-	    end
-		else
-			flash[:error] = "Something is wrong"
+			sleep 1
+			if current_user&.authentication_token
+				curlCall = current_user&.indexStripeChargesAPI(params)
+				response = Oj.load(curlCall)
+
+		  	puts response
+			  if response['success']
+			  	pullSource
+					@payments = response['deposits'] #edit stripe session meta for scheduling
+					@available = response['available'] #edit stripe session meta for scheduling
+					@depositTotal = response['depositTotal'] #edit stripe session meta for scheduling
+					@invested = response['invested'] #edit stripe session meta for scheduling
+					@hasMore = response['has_more']
+		    end
+			else
+				flash[:error] = "Something is wrong"
+				redirect_to root_path
+			end
+		rescue Stripe::StripeError => e
+			flash[:error] = "Something is wrong. \n #{e}"
 			redirect_to root_path
-		end
+		rescue Exception => e
+			flash[:error] = "Something is wrong. \n #{e}"
+			redirect_to root_path
+		end	
 	end
 
 	def new
