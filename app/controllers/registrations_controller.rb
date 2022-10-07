@@ -21,11 +21,15 @@ class RegistrationsController < ApplicationController
         error: e.error.message,
         success: false
       }
+      flash[:error] = e
+      redirect_to request.referrer
     rescue Exception => e
       render json: {
         message: e,
         success: false
       }
+      flash[:error] = e
+      redirect_to request.referrer
     end
   end
 
