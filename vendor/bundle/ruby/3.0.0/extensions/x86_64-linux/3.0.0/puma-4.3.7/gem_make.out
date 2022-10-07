@@ -1,0 +1,55 @@
+current directory: /home/netwerth/code/netwerthCard/vendor/bundle/ruby/3.0.0/gems/puma-4.3.7/ext/puma_http11
+/usr/bin/ruby3.0 -I /usr/lib/ruby/vendor_ruby -r ./siteconf20221007-396640-y8o5sa.rb extconf.rb
+checking for BIO_read() in -lcrypto... yes
+checking for SSL_CTX_new() in -lssl... yes
+checking for openssl/bio.h... yes
+checking for DTLS_method() in openssl/ssl.h... yes
+checking for TLS_server_method() in openssl/ssl.h... yes
+checking for SSL_CTX_set_min_proto_version in openssl/ssl.h... yes
+creating Makefile
+
+current directory: /home/netwerth/code/netwerthCard/vendor/bundle/ruby/3.0.0/gems/puma-4.3.7/ext/puma_http11
+make DESTDIR\= clean
+
+current directory: /home/netwerth/code/netwerthCard/vendor/bundle/ruby/3.0.0/gems/puma-4.3.7/ext/puma_http11
+make DESTDIR\=
+compiling http11_parser.c
+compiling io_buffer.c
+compiling mini_ssl.c
+mini_ssl.c: In function ‘get_dh1024’:
+mini_ssl.c:89:3: warning: ‘DH_new’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+   89 |   dh = DH_new();
+      |   ^~
+In file included from /usr/include/openssl/dsa.h:51,
+                 from /usr/include/openssl/x509.h:37,
+                 from /usr/include/openssl/ssl.h:31,
+                 from mini_ssl.c:15:
+/usr/include/openssl/dh.h:199:27: note: declared here
+  199 | OSSL_DEPRECATEDIN_3_0 DH *DH_new(void);
+      |                           ^~~~~~
+mini_ssl.c:104:3: warning: ‘DH_set0_pqg’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+  104 |   if (p == NULL || g == NULL || !DH_set0_pqg(dh, p, NULL, g)) {
+      |   ^~
+In file included from /usr/include/openssl/dsa.h:51,
+                 from /usr/include/openssl/x509.h:37,
+                 from /usr/include/openssl/ssl.h:31,
+                 from mini_ssl.c:15:
+/usr/include/openssl/dh.h:255:27: note: declared here
+  255 | OSSL_DEPRECATEDIN_3_0 int DH_set0_pqg(DH *dh, BIGNUM *p, BIGNUM *q, BIGNUM *g);
+      |                           ^~~~~~~~~~~
+mini_ssl.c:105:5: warning: ‘DH_free’ is deprecated: Since OpenSSL 3.0 [-Wdeprecated-declarations]
+  105 |     DH_free(dh);
+      |     ^~~~~~~
+In file included from /usr/include/openssl/dsa.h:51,
+                 from /usr/include/openssl/x509.h:37,
+                 from /usr/include/openssl/ssl.h:31,
+                 from mini_ssl.c:15:
+/usr/include/openssl/dh.h:200:28: note: declared here
+  200 | OSSL_DEPRECATEDIN_3_0 void DH_free(DH *dh);
+      |                            ^~~~~~~
+compiling puma_http11.c
+linking shared-object puma/puma_http11.so
+
+current directory: /home/netwerth/code/netwerthCard/vendor/bundle/ruby/3.0.0/gems/puma-4.3.7/ext/puma_http11
+make DESTDIR\= install
+/usr/bin/install -c -m 0755 puma_http11.so ./.gem.20221007-396640-56invr/puma
