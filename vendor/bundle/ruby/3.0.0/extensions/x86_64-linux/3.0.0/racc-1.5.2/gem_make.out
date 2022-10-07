@@ -1,0 +1,16 @@
+current directory: /home/netwerth/code/netwerthCard/vendor/bundle/ruby/3.0.0/gems/racc-1.5.2/ext/racc/cparse
+/usr/bin/ruby3.0 -I /usr/lib/ruby/vendor_ruby -r ./siteconf20221007-394793-jvct7r.rb extconf.rb
+checking for rb_ary_subseq()... yes
+creating Makefile
+
+current directory: /home/netwerth/code/netwerthCard/vendor/bundle/ruby/3.0.0/gems/racc-1.5.2/ext/racc/cparse
+make DESTDIR\= clean
+
+current directory: /home/netwerth/code/netwerthCard/vendor/bundle/ruby/3.0.0/gems/racc-1.5.2/ext/racc/cparse
+make DESTDIR\=
+compiling cparse.c
+linking shared-object racc/cparse.so
+
+current directory: /home/netwerth/code/netwerthCard/vendor/bundle/ruby/3.0.0/gems/racc-1.5.2/ext/racc/cparse
+make DESTDIR\= install
+/usr/bin/install -c -m 0755 cparse.so ./.gem.20221007-394793-ht4uhy/racc
