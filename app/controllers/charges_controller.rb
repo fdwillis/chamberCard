@@ -18,19 +18,19 @@ class ChargesController < ApplicationController
 		if current_user&.authentication_token
 			curlCall = current_user&.indexStripeChargesAPI(params)
 			response = Oj.load(curlCall)
-	  	puts response
 
+	  	puts response
 		  if response['success']
 		  	pullSource
 				@payments = response['deposits'] #edit stripe session meta for scheduling
-				@available = response['available']  > 0 ? response['available'] : 0#edit stripe session meta for scheduling
-				@depositTotal = response['depositTotal']  > 0 ? response['depositTotal'] : 0#edit stripe session meta for scheduling
-				@invested = response['invested']  > 0 ? response['invested'] : 0#edit stripe session meta for scheduling
+				@available = response['available'] #edit stripe session meta for scheduling
+				@depositTotal = response['depositTotal'] #edit stripe session meta for scheduling
+				@invested = response['invested'] #edit stripe session meta for scheduling
 				@hasMore = response['has_more']
 	    end
 		else
-			current_user = nil
-      reset_session
+			flash[:error] = "Something is wrong"
+			redirect_to root_path
 		end
 	end
 
