@@ -65,7 +65,6 @@ class SessionsController < Devise::SessionsController
       reset_session
       current_user = nil
       flash[:error] = response["message"]
-      redirect_to new_user_session_path
     end
   end
 
