@@ -64,7 +64,7 @@
                 <i class="fa fa-credit-card color-highlight fa-2x mt-3"></i>
                 <h1 class="pt-2 font-18">****<%= s['last4'] %></h1>
           <% end %>
-          <h3 class=" opacity-50 mt-n2 mb-3">To Deposit Funds, Go to your <%= link_to "Dashboard", charges_path %> and click "ADD" in the table</h3>
+          <h3 class=" opacity-50 mt-n2 mb-3"><%= link_to "Click here", new_charge_path %> to deposit Funds</h3>
         <% end %>
       <% end %>
 
