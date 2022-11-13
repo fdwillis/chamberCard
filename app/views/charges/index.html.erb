@@ -135,26 +135,11 @@
           <thead>
             <tr>
               <th class="text-center">Deposit ID</th>
-              <th class="text-center">Payout</th>
               <th class="d-none d-sm-table-cell text-center">Invested</th>
               <th class="d-none d-sm-table-cell text-center">Available</th>
               <th class="d-none d-sm-table-cell text-center">Deposit</th>
             </tr>
           </thead>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
           <tbody class="fs-sm">
             <% if !@payments.blank? %>
               <% @payments.each do |chargeX| %>
@@ -164,9 +149,6 @@
                   <td class="text-center">
                     <a class="fw-semibold" ><%= chargeX['id'][3..17] %></a>
                     <p class="fs-sm fw-medium text-muted mb-0">Complete</p>
-                  </td>
-                  <td class="text-center">
-                    <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning">Pending</span>
                   </td>
                   <% if !chargeX['metadata'].blank? %>
                     <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency(((chargeX['amount'].to_i - ( + stripeFee)) * 0.01 - Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01).round, precision: 2) %></strong></td>
@@ -182,51 +164,6 @@
                 </tr>
               <% end %>
             <% end %>
-            <!-- <tr>
-              <td class="text-center">
-                <a class="fw-semibold" href="javascript:void(0)">
-                  ORD.00924                  </a>
-                <p class="fs-sm fw-medium text-muted mb-0">Premium</p>
-              </td>
-              <td class="text-center">
-                <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-info-light text-info">Active</span>
-              </td>
-              <td class="d-none d-sm-table-cell text-center">
-                <div class="progress mb-1" style="height: 5px;">
-                  <div class="progress-bar bg-success" role="progressbar" style="width: 46%;" aria-valuenow="6" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="fs-xs fw-semibold mb-0">46%</p>
-              </td>
-              <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong>$1,200</strong></td>
-
-              <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong>$4,800</strong></td>
-              <td class="d-none d-sm-table-cell text-center">
-                <strong>$6,000</strong><br>
-                <small>4 min ago</small>
-              </td>
-            </tr>
-            <tr>
-              <td class="text-center">
-                <a class="fw-semibold" href="javascript:void(0)">
-                  ORD.00922                  </a>
-                <p class="fs-sm fw-medium text-muted mb-0">Premium</p>
-              </td>
-              <td class="text-center">
-                <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success">Completed</span>
-              </td>
-              <td class="d-none d-sm-table-cell text-center">
-                <div class="progress mb-1" style="height: 5px;">
-                  <div class="progress-bar bg-success" role="progressbar" style="width: 65%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <p class="fs-xs fw-semibold mb-0">65%</p>
-              </td>
-              <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong>$400</strong></td>
-              <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong>$1,600</strong></td>
-              <td class="d-none d-sm-table-cell text-center">
-                <strong>$2,000</strong><br>
-                <small>1 week ago</small>
-              </td>
-            </tr> -->
           </tbody>
         </table>
       </div>
