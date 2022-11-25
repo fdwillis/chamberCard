@@ -249,6 +249,25 @@ class User < ApplicationRecord
     end
   end
 
+  def indexStripePayoutsAPI(params)
+  
+    if !params['paginateAfter'].blank?
+      curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/payouts`
+    elsif !params['paginateBefore'].blank?
+      curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/payouts`
+    else
+      curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/payouts`
+    end
+    
+    response = Oj.load(curlCall)
+    
+    if response['success']
+      return response
+    else
+      return response
+    end
+  end
+
   def showStripeCustomerAPI(customerID)
 
     curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/customers/#{customerID}`
