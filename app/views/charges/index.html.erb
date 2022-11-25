@@ -158,8 +158,12 @@
                     <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
                   <% end %>
                   <td class="d-none d-sm-table-cell text-center">
-                    <strong><%= number_to_currency(((chargeX['amount'].to_i - ( + stripeFee)) * 0.01).round, precision: 2) %></strong><br>
-                    <small><%= distance_of_time_in_words(0.minutes.ago, Time.at(chargeX['created']).to_datetime) %> ago</small>
+                    <% if !chargeX['metadata']['paidBy'].blank? && !chargeX['metadata']['amountPaid'].blank? %>
+                      <strong><%= number_to_currency((chargeX['metadata']['amountPaid'].to_i * 0.01).round, precision: 2) %></strong><br>
+                      <small><%= distance_of_time_in_words(0.minutes.ago, Time.at(chargeX['created']).to_datetime) %> ago</small>
+                    <% else %>
+                      Payout Pending
+                    <% end %>
                   </td>
                 </tr>
               <% end %>
