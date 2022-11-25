@@ -136,8 +136,7 @@
             <tr>
               <th class="text-center">Deposit ID</th>
               <th class="d-none d-sm-table-cell text-center">Invested</th>
-              <th class="d-none d-sm-table-cell text-center">Available</th>
-              <th class="d-none d-sm-table-cell text-center">Deposit</th>
+              <th class="d-none d-sm-table-cell text-center">Payout</th>
             </tr>
           </thead>
           <tbody class="fs-sm">
@@ -150,17 +149,16 @@
                     <a class="fw-semibold" ><%= chargeX['id'][3..17] %></a>
                     <p class="fs-sm fw-medium text-muted mb-0">Complete</p>
                   </td>
+
                   <% if !chargeX['metadata'].blank? %>
                     <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency(((chargeX['amount'].to_i - ( + stripeFee)) * 0.01 - Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01).round, precision: 2) %></strong></td>
-                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency((Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01).round, precision: 2) %></strong></td>
                   <% else %>
                     <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
-                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
                   <% end %>
+                  
                   <td class="d-none d-sm-table-cell text-center">
                     <% if !chargeX['metadata']['paidBy'].blank? && !chargeX['metadata']['amountPaid'].blank? %>
                       <strong><%= number_to_currency((chargeX['metadata']['amountPaid'].to_i * 0.01).round, precision: 2) %></strong><br>
-                      <small><%= distance_of_time_in_words(0.minutes.ago, Time.at(chargeX['created']).to_datetime) %> ago</small>
                     <% else %>
                       Payout Pending
                     <% end %>
