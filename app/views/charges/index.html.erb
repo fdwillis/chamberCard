@@ -5,6 +5,7 @@
       <div class="block block-rounded d-flex flex-column h-100 mb-0">
         <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
           <dl class="mb-0">
+            <dt class="fs-3 fw-bold"><%= number_to_currency((@available * 0.01).round, precision: 2)  %></dt>
             <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">Available (approx.)</dd>
           </dl>
         </div>
@@ -135,6 +136,7 @@
             <tr>
               <th class="text-center">Deposit ID</th>
               <th class="d-none d-sm-table-cell text-center">Invested</th>
+              <th class="d-none d-sm-table-cell text-center">Available</th>
               <th class="d-none d-sm-table-cell text-center">Payout</th>
             </tr>
           </thead>
@@ -145,23 +147,23 @@
                   <% stripeFee = (((chargeX['amount'].to_i * 0.029)) + 30).to_i %>
               
                   <td class="text-center">
-                    <a class="fw-semibold" ><%= chargeX['id'][3..17] %></a>
-                    <p class="fs-sm fw-medium text-muted mb-0">Complete</p>
+                    <a class="fw-semibold" ><%= chargeX['id'][3..17] %></a><br>
+                    <small class="fs-sm fw-medium text-muted mb-0"><%= distance_of_time_in_words(0.minutes.ago, Time.at(chargeX['created']).to_datetime) %> ago
+                    </small>
                   </td>
-
                   <% if !chargeX['metadata'].blank? %>
                     <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency(((chargeX['amount'].to_i - ( + stripeFee)) * 0.01 - Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01).round, precision: 2) %></strong></td>
+                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency((Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01).round, precision: 2) %></strong></td>
                   <% else %>
                     <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
+                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
                   <% end %>
-
-                  <td class="d-none d-sm-table-cell text-center">
-                    <% if !chargeX['metadata']['paidBy'].blank? %>
-                      <strong>Need To calculate on the fly</strong><br>
-                    <% else %>
-                      Payout Pending
-                    <% end %>
-                  </td>
+                  <% if !chargeX['metadata']['paidBy'].blank? && !chargeX['metadata']['amountPaid'].blank? %>
+                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= 
+                    (((chargeX['amount'].to_i - ( + stripeFee)) * 0.01)/(Stripe::Payout.retrieve(chargeX['metadata']['fromPayout'])['amount']) * Stripe::Topup.retrieve(chargeX['metadata']['paidBy'])['amount']) %></strong></td>
+                  <% else %>
+                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong>Payout Pending</strong></td>
+                  <% end %>
                 </tr>
               <% end %>
             <% end %>
