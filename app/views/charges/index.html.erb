@@ -77,25 +77,25 @@
               </button>
           </a>
         <% end %>
-        <div class="dropdown d-inline-block">
-          <div class="dropdown-menu dropdown-menu-md dropdown-menu-end fs-sm" aria-labelledby="dropdown-recent-orders-filters">
-            <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
-              Pending
-              <span class="badge bg-primary rounded-pill">20</span>
-            </a>
-            <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
-              Active
-              <span class="badge bg-primary rounded-pill">72</span>
-            </a>
-            <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
-              Completed
-              <span class="badge bg-primary rounded-pill">890</span>
-            </a>
-            <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
-              All
-              <span class="badge bg-primary rounded-pill">997</span>
-            </a>
-          </div>
+      </div>
+      <div class="dropdown d-inline-block">
+        <div class="dropdown-menu dropdown-menu-md dropdown-menu-end fs-sm" aria-labelledby="dropdown-recent-orders-filters">
+          <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
+            Pending
+            <span class="badge bg-primary rounded-pill">20</span>
+          </a>
+          <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
+            Active
+            <span class="badge bg-primary rounded-pill">72</span>
+          </a>
+          <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
+            Completed
+            <span class="badge bg-primary rounded-pill">890</span>
+          </a>
+          <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
+            All
+            <span class="badge bg-primary rounded-pill">997</span>
+          </a>
         </div>
       </div>
       <div class="block-content block-content-full bg-body-light">
@@ -138,6 +138,7 @@
               <th class="d-none d-sm-table-cell text-center">Invested</th>
               <th class="d-none d-sm-table-cell text-center">Available</th>
               <th class="d-none d-sm-table-cell text-center">Payout</th>
+              
             </tr>
           </thead>
           <tbody class="fs-sm">
@@ -160,7 +161,7 @@
                   <% end %>
                   <% if !chargeX['metadata']['paidBy'].blank? && !chargeX['metadata']['amountPaid'].blank? %>
                     <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= 
-                    (((chargeX['amount'].to_i - ( + stripeFee)) * 0.01)/(Stripe::Payout.retrieve(chargeX['metadata']['fromPayout'])['amount']) * Stripe::Topup.retrieve(chargeX['metadata']['paidBy'])['amount']) %></strong></td>
+                    number_to_currency((((chargeX['amount'] - stripeFee) * 0.01)/Stripe::Payout.retrieve(chargeX['metadata']['fromPayout'])['amount']) * Stripe::Topup.retrieve(chargeX['metadata']['paidBy'])['amount'], precision: 0) %></strong></td>
                   <% else %>
                     <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong>Payout Pending</strong></td>
                   <% end %>
