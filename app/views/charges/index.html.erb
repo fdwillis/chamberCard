@@ -1,23 +1,6 @@
 <div class="content">
   <div class="row items-push">
     <div class="col-sm-6 col-xxl-3">
-      <!-- Pending Orders -->
-      <div class="block block-rounded d-flex flex-column h-100 mb-0">
-        <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
-          <dl class="mb-0">
-            <dt class="fs-3 fw-bold"><%= number_to_currency((@available * 0.01).round, precision: 2)  %></dt>
-            <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">Available (approx.)</dd>
-          </dl>
-        </div>
-        <div class="bg-body-light rounded-bottom">
-          <a class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
-            <!-- <span>View</span> -->
-          </a>
-        </div>
-      </div>
-      <!-- END Pending Orders -->
-    </div>
-    <div class="col-sm-6 col-xxl-3">
       <!-- New Customers -->
       <div class="block block-rounded d-flex flex-column h-100 mb-0">
         <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
@@ -34,6 +17,24 @@
       </div>
       <!-- END New Customers -->
     </div>
+    <div class="col-sm-6 col-xxl-3">
+      <!-- Pending Orders -->
+      <div class="block block-rounded d-flex flex-column h-100 mb-0">
+        <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
+          <dl class="mb-0">
+            <dt class="fs-3 fw-bold"><%= number_to_currency((@available * 0.01).round, precision: 2)  %></dt>
+            <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">Available (approx.)</dd>
+          </dl>
+        </div>
+        <div class="bg-body-light rounded-bottom">
+          <a class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
+            <!-- <span>View</span> -->
+          </a>
+        </div>
+      </div>
+      <!-- END Pending Orders -->
+    </div>
+    
     <!-- <div class="col-sm-6 col-xxl-3">
       <div class="block block-rounded d-flex flex-column h-100 mb-0">
         <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
@@ -72,7 +73,7 @@
       <div class="block-options space-x-1">
         <% if @cardSource %>
           <a href="/charges/new" class="col-12">
-              <button type="button" class="btn btn-sm btn-alt-secondary" data-toggle="class-toggle" data-target="#one-dashboard-search-orders" data-class="d-none">
+              <button type="button" class="btn btn-sm bg-green1-dark" data-toggle="class-toggle" data-target="#one-dashboard-search-orders" data-class="d-none">
                 ADD
               </button>
           </a>
