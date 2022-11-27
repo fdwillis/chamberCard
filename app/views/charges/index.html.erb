@@ -1,195 +1,162 @@
-<div class="content">
-  <div class="row items-push">
-    <div class="block-header block-header-default">
-      <h3 class="block-title">Personal</h3>
+<div class="row items-push">
+  <div class="block-header block-header-default">
+    <h3 class="block-title">Personal</h3>
+  </div>
+  <div class="row">
+    <div class="col-12 col-lg-4">
+      <a class="block block-rounded block-link-shadow text-center">
+        <div class="block-content block-content-full">
+          <div class="fs-2 fw-semibold text-primary"><%= (@depositTotal&.present? && @depositTotal > 0) ? number_to_currency(@depositTotal * 0.01, precision: 2) : 0 %></div>
+        </div>
+        <div class="block-content py-2 bg-body-light">
+          <p class="fw-medium fs-sm text-muted mb-0">
+            Total Charges
+          </p>
+        </div>
+      </a>
     </div>
-    <div class="row">
-      <div class="col-12 col-lg-4">
-        <a class="block block-rounded block-link-shadow text-center">
-          <div class="block-content block-content-full">
-            <div class="fs-2 fw-semibold text-primary"><%= (@depositTotal&.present? && @depositTotal > 0) ? number_to_currency(@depositTotal * 0.01, precision: 2) : 0 %></div>
-          </div>
-          <div class="block-content py-2 bg-body-light">
-            <p class="fw-medium fs-sm text-muted mb-0">
-              Total Charges
-            </p>
-          </div>
-        </a>
-      </div>
-      <div class="col-12 col-lg-4">
-        <a class="block block-rounded block-link-shadow text-center">
-          <div class="block-content block-content-full">
-            <div class="fs-2 fw-semibold text-success"><%= (@invested&.present? && @invested > 0) ? number_to_currency(@invested  * 0.01, precision: 2) : 0 %></div>
+    <div class="col-12 col-lg-4">
+      <a class="block block-rounded block-link-shadow text-center">
+        <div class="block-content block-content-full">
+          <div class="fs-2 fw-semibold text-success"><%= (@invested&.present? && @invested > 0) ? number_to_currency(@invested  * 0.01, precision: 2) : 0 %></div>
 
 
-            
-          </div>
-          <div class="block-content py-2 bg-body-light">
-            <p class="fw-medium fs-sm text-muted mb-0">
-              Total For Investment
-            </p>
-          </div>
-        </a>
-      </div>
-      
-      <div class="col-12 col-lg-4">
-        <a class="block block-rounded block-link-shadow text-center">
-          <div class="block-content block-content-full">
-            <div class="fw-semibold text-dark">Coming Soon</div>
-          </div>
-          <div class="block-content py-2 bg-body-light">
-            <p class="fw-medium fs-sm text-muted mb-0">
-              Total Reinvested
-            </p>
-          </div>
-        </a>
-      </div>
+          
+        </div>
+        <div class="block-content py-2 bg-body-light">
+          <p class="fw-medium fs-sm text-muted mb-0">
+            Total For Investment
+          </p>
+        </div>
+      </a>
     </div>
     
-    <!-- <div class="col-sm-6 col-xxl-3">
-      <div class="block block-rounded d-flex flex-column h-100 mb-0">
-        <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
-          <dl class="mb-0">
-            <dt class="fs-3 fw-bold">$13,934.89</dt>
-            <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">Liquidity</dd>
-          </dl>
+    <div class="col-12 col-lg-4">
+      <a class="block block-rounded block-link-shadow text-center">
+        <div class="block-content block-content-full">
+          <div class="fw-semibold text-dark">Coming Soon</div>
         </div>
-        <div class="bg-body-light rounded-bottom">
-          <a class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
-            <span>View</span>
-          </a>
+        <div class="block-content py-2 bg-body-light">
+          <p class="fw-medium fs-sm text-muted mb-0">
+            Total Reinvested
+          </p>
         </div>
-      </div>
-    </div> -->
-    <!-- <div class="col-sm-6 col-xxl-3">
-      <div class="block block-rounded d-flex flex-column h-100 mb-0">
-        <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
-          <dl class="mb-0">
-            <dt class="fs-3 fw-bold">96.74%</dt>
-            <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">ROI</dd>
-          </dl>
-        </div>
-        <div class="bg-body-light rounded-bottom">
-          <a class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
-            <span>View</span>
-          </a>
-        </div>
-      </div>
-    </div> -->
+      </a>
+    </div>
   </div>
-  <!-- Recent Orders -->
-  <div class="block block-rounded">
-    <div class="block-header block-header-default">
-      <h3 class="block-title">Deposits</h3>
-      <div class="block-options space-x-1">
-        <% if @cardSource %>
-          <a href="/charges/new" class="col-12">
-              <button type="button" class="btn btn-sm bg-green1-dark" data-toggle="class-toggle" data-target="#one-dashboard-search-orders" data-class="d-none">
-                ADD
-              </button>
-          </a>
-        <% end %>
-      </div>
-      <div class="dropdown d-inline-block">
-        <div class="dropdown-menu dropdown-menu-md dropdown-menu-end fs-sm" aria-labelledby="dropdown-recent-orders-filters">
-          <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
-            Pending
-            <span class="badge bg-primary rounded-pill">20</span>
-          </a>
-          <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
-            Active
-            <span class="badge bg-primary rounded-pill">72</span>
-          </a>
-          <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
-            Completed
-            <span class="badge bg-primary rounded-pill">890</span>
-          </a>
-          <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
-            All
-            <span class="badge bg-primary rounded-pill">997</span>
-          </a>
-        </div>
-      </div>
-      <div class="block-content block-content-full bg-body-light">
-        <!-- total -->
-      <nav aria-label="Photos Search Navigation">
-        <ul class="pagination pagination-sm justify-content-end mb-0">
-          <li class="page-item">
-            <a class="page-link" href="javascript:void(0)" tabindex="-1" aria-label="Previous">
-              <% if @depositTotal.present? && @depositTotal > 0 %>
-                Available To Spend: <%= @available.present? && @available > 0 ? number_to_currency((@available * 0.01), precision: 2) : 0 %>
-              <% else %>
-                Total: $0
-              <% end %>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-    </div>
-    <div id="one-dashboard-search-orders" class="block-content border-bottom d-none">
-      <!-- Search Form -->
-      <form action="be_pages_dashboard.html" method="POST" onsubmit="return false;">
-        <div class="push">
-          <div class="input-group">
-            <input type="text" class="form-control form-control-alt" id="one-ecom-orders-search" name="one-ecom-orders-search" placeholder="Search all orders..">
-            <span class="input-group-text bg-body border-0">
-            </span>
-          </div>
-        </div>
-      </form>
-      <!-- END Search Form -->
-    </div>
-    <div class="block-content block-content-full">
-      <!-- Recent Orders Table -->
-      <div class="table-responsive">
-        <table class="table table-hover table-vcenter">
-          <thead>
-            <tr>
-              <th class="text-center">Deposit ID</th>
-              <th class="d-none d-sm-table-cell text-center">Invested</th>
-              <th class="d-none d-sm-table-cell text-center">Available</th>
-              <th class="d-none d-sm-table-cell text-center">Payout</th>
-              
-            </tr>
-          </thead>
-          <tbody class="fs-sm">
-            <% if !@payments.blank? %>
-              <% @payments.each do |chargeX| %>
-                <tr>
-                  <% stripeFee = (((chargeX['amount'].to_i * 0.029)) + 30).to_i %>
-              
-                  <td class="text-center">
-                    <a class="fw-semibold" ><%= chargeX['id'][3..17] %></a><br>
-                    <small class="fs-sm fw-medium text-muted mb-0"><%= distance_of_time_in_words(0.minutes.ago, Time.at(chargeX['created']).to_datetime) %> ago
-                    </small>
-                  </td>
-                  <% if !chargeX['metadata'].blank? %>
-                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency(((chargeX['amount'].to_i - ( + stripeFee)) * 0.01 - Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01), precision: 2) %></strong></td>
-                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency((Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01), precision: 2) %></strong></td>
-                  <% else %>
-                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
-                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
-                  <% end %>
-                  <% if !chargeX['metadata']['paidBy'].blank? %>
-                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center">
-                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success"><%= link_to "View", stripe_payouts_path, :style=>'color: green;'%></span>
-                    </td>
-                  <% else %>
-                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center">
-                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-danger-light text-danger"><%= link_to "Pending",stripe_payouts_path, :style=>'color: red;', disabled: true%></span>
-                    </td>
-                  <% end %>
-                </tr>
-              <% end %>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-      <!-- END Recent Orders Table -->
-    </div>
-    
-  </div>
-  <!-- END Recent Orders -->
 </div>
+
+<div class="block block-rounded">
+  <div class="block-header block-header-default">
+    <h3 class="block-title">Deposits</h3>
+    <div class="block-options space-x-1">
+      <% if @cardSource %>
+        <a href="/charges/new" class="col-12">
+            <button type="button" class="btn btn-sm bg-green1-dark" data-toggle="class-toggle" data-target="#one-dashboard-search-orders" data-class="d-none">
+              ADD
+            </button>
+        </a>
+      <% end %>
+    </div>
+    <div class="dropdown d-inline-block">
+      <div class="dropdown-menu dropdown-menu-md dropdown-menu-end fs-sm" aria-labelledby="dropdown-recent-orders-filters">
+        <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
+          Pending
+          <span class="badge bg-primary rounded-pill">20</span>
+        </a>
+        <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
+          Active
+          <span class="badge bg-primary rounded-pill">72</span>
+        </a>
+        <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
+          Completed
+          <span class="badge bg-primary rounded-pill">890</span>
+        </a>
+        <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
+          All
+          <span class="badge bg-primary rounded-pill">997</span>
+        </a>
+      </div>
+    </div>
+    <div class="block-content block-content-full bg-body-light">
+      <!-- total -->
+    <nav aria-label="Photos Search Navigation">
+      <ul class="pagination pagination-sm justify-content-end mb-0">
+        <li class="page-item">
+          <a class="page-link" href="javascript:void(0)" tabindex="-1" aria-label="Previous">
+            <% if @depositTotal.present? && @depositTotal > 0 %>
+              Available To Spend: <%= @available.present? && @available > 0 ? number_to_currency((@available * 0.01), precision: 2) : 0 %>
+            <% else %>
+              Total: $0
+            <% end %>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  </div>
+  <div id="one-dashboard-search-orders" class="block-content border-bottom d-none">
+    <!-- Search Form -->
+    <form action="be_pages_dashboard.html" method="POST" onsubmit="return false;">
+      <div class="push">
+        <div class="input-group">
+          <input type="text" class="form-control form-control-alt" id="one-ecom-orders-search" name="one-ecom-orders-search" placeholder="Search all orders..">
+          <span class="input-group-text bg-body border-0">
+          </span>
+        </div>
+      </div>
+    </form>
+    <!-- END Search Form -->
+  </div>
+  <div class="block-content block-content-full">
+    <!-- Recent Orders Table -->
+    <div class="table-responsive">
+      <table class="table table-hover table-vcenter">
+        <thead>
+          <tr>
+            <th class="text-center">Deposit ID</th>
+            <th class="d-none d-sm-table-cell text-center">Invested</th>
+            <th class="d-none d-sm-table-cell text-center">Available</th>
+            <th class="d-none d-sm-table-cell text-center">Payout</th>
+            
+          </tr>
+        </thead>
+        <tbody class="fs-sm">
+          <% if !@payments.blank? %>
+            <% @payments.each do |chargeX| %>
+              <tr>
+                <% stripeFee = (((chargeX['amount'].to_i * 0.029)) + 30).to_i %>
+            
+                <td class="text-center">
+                  <a class="fw-semibold" ><%= chargeX['id'][3..17] %></a><br>
+                  <small class="fs-sm fw-medium text-muted mb-0"><%= distance_of_time_in_words(0.minutes.ago, Time.at(chargeX['created']).to_datetime) %> ago
+                  </small>
+                </td>
+                <% if !chargeX['metadata'].blank? %>
+                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency(((chargeX['amount'].to_i - ( + stripeFee)) * 0.01 - Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01), precision: 2) %></strong></td>
+                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency((Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01), precision: 2) %></strong></td>
+                <% else %>
+                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
+                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
+                <% end %>
+                <% if !chargeX['metadata']['paidBy'].blank? %>
+                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-center">
+                      <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success"><%= link_to "View", stripe_payouts_path, :style=>'color: green;'%></span>
+                  </td>
+                <% else %>
+                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-center">
+                      <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-danger-light text-danger"><%= link_to "Pending",stripe_payouts_path, :style=>'color: red;', disabled: true%></span>
+                  </td>
+                <% end %>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <!-- END Recent Orders Table -->
+  </div>
+  
+</div>
+  <!-- END Recent Orders -->
 <!-- END Page Content -->

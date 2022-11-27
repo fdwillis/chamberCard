@@ -1,15 +1,36 @@
-<% @payouts.reverse.each_with_index do |payout, indx| %>
-<div class="content">
-	
-	<div class="block block-rounded h-100 mb-0">
-	  <div class="block-header block-header-default">
-	    <h3 class="block-title"><%= payout['payoutID'][3..payout['payoutID'].size] %></h3>
-	    <div class="block-options">
-	      <button type="button" class="btn-block-option" data-toggle="block-option" data-action="state_toggle" data-action-mode="demo">
-	      </button>
-	    </div>
-	  </div>
-	  <div class="row content">
+<div class="row items-push">        
+  <div class="row text-center">
+    <div class="col-12 col-lg-6">
+      <a class="block block-rounded block-link-shadow text-center">
+        <div class="block-content block-content-full">
+          <div class="fs-2 fw-semibold text-success"><i class="fa fa-2x fa-check-circle text-success"></i></div>
+        </div>
+        <div class="block-content py-2">
+          <p class="fw-medium fs-sm text-muted mb-0">
+            Payouts For You
+          </p>
+        </div>
+      </a>
+    </div>
+
+    <div class="col-12 col-lg-6">
+      <a class="block block-rounded block-link-shadow text-center">
+        <div class="block-content block-content-full">
+          <div class="fs-2 fw-semibold text-success"><i class="fa fa-2x fa-minus-circle text-warning" ></i></div>
+        </div>
+        <div class="block-content py-2">
+          <p class="fw-medium fs-sm text-muted mb-0">
+            Payouts For Others
+          </p>
+        </div>
+      </a>
+    </div>
+  </div>
+  <% @payouts.reverse.each_with_index do |payout, indx| %>
+    <div class="row items-push text-center">
+      <div class="block-header block-header-default">
+        <h3 class="block-title"><%= payout['payoutID'][3..payout['payoutID'].size] %></h3>
+      </div>
       <div class="col-12 col-lg-3">
         <a class="block block-rounded block-link-shadow text-center">
           <div class="block-content block-content-full">
@@ -37,25 +58,25 @@
       <div class="col-12 col-lg-3">
         <a class="block block-rounded block-link-shadow text-center">
         	<% if payout['returnOnInvestmentPercentage'].negative? %>
-	        	<div class="block-content block-content-full">
-	            <div class="fs-2 fw-semibold text-danger"><%= number_to_percentage(payout['returnOnInvestmentPercentage'] * 100, precision: 2)%>
-	            </div>
-	          </div>
-	          <div class="block-content py-2 bg-danger-light">
-	            <p class="fw-medium fs-sm text-muted mb-0">
-	              Return On Investment
-	            </p>
-	          </div>
+          	<div class="block-content block-content-full">
+              <div class="fs-2 fw-semibold text-danger"><%= number_to_percentage(payout['returnOnInvestmentPercentage'] * 100, precision: 2)%>
+              </div>
+            </div>
+            <div class="block-content py-2 bg-danger-light">
+              <p class="fw-medium fs-sm text-muted mb-0">
+                Return On Investment
+              </p>
+            </div>
         	<% else %>
-	          <div class="block-content block-content-full">
-	            <div class="fs-2 fw-semibold text-success"><%= number_to_percentage(payout['returnOnInvestmentPercentage'] * 100, precision: 2)%>
-	            </div>
-	          </div>
-	          <div class="block-content py-2 bg-success-light">
-	            <p class="fw-medium fs-sm text-muted mb-0">
-	              ROI
-	            </p>
-	          </div>
+            <div class="block-content block-content-full">
+              <div class="fs-2 fw-semibold text-success"><%= number_to_percentage(payout['returnOnInvestmentPercentage'] * 100, precision: 2)%>
+              </div>
+            </div>
+            <div class="block-content py-2 bg-success-light">
+              <p class="fw-medium fs-sm text-muted mb-0">
+                ROI
+              </p>
+            </div>
           <% end %>
         </a>
       </div>
@@ -122,71 +143,62 @@
           </div>
         </a>
       </div>
-    </div>
-	  <div class="block-content">
-	    <table class="table table-borderless table-striped table-vcenter fs-sm">
-	    	<thead>
-          <tr>
-            <th class="text-center">&nbsp;</th>
-            <th class="text-center">Payout</th>
-            <th class="text-center">Invested</th>
-            <th class="text-center">Deposited</th>
-            <th class="text-center">Ownership</th>
-            
-          </tr>
-        </thead>
-        <div class="row text-center">
-          <div class="col-6">
-            <i class="fa fa-2x fa-check-circle text-success"></i><p style="line-height: -50px;padding-left: 5px;">Payouts For You</p>
-          </div>
-          <div class="col-6">
-            <i class="fa fa-2x fa-minus-circle text-warning" ></i><p style="line-height: -50px;padding-left: 5px;">Payouts For Others</p>
-          </div>
-        </div>
-    		
+  	  <div class="block-content">
+  	    <table class="table table-borderless table-striped table-vcenter fs-sm">
+  	    	<thead>
+            <tr>
+              <th class="text-center">ID</th>
+              <th class="text-center">Payout</th>
+              <th class="text-center">Invested</th>
+              <th class="text-center d-none d-sm-table-cell">Deposited</th>
+              <th class="text-center d-none d-sm-table-cell">Ownership</th>
+              
+            </tr>
+          </thead>
+          
+      		
 
-	    	
-	    	<% payout['deposits'].each do |payoutX| %>
-	    		<% payoutXChargeAmount = (payoutX['amount'] - (payoutX['amount']*0.029).to_i + 30) * 0.01 %>
-	    		<% investedFromPayoutX = payoutXChargeAmount * (payoutX['metadata']['percentToInvest'].to_i * 0.01) %>
-		      <% ownershipForPayoutx = ((investedFromPayoutX/(payout['depositTotal'] - payout['asideToSpend']))) %>
+  	    	
+  	    	<% payout['deposits'].each do |payoutX| %>
+  	    		<% payoutXChargeAmount = (payoutX['amount'] - (payoutX['amount']*0.029).to_i + 30) * 0.01 %>
+  	    		<% investedFromPayoutX = payoutXChargeAmount * (payoutX['metadata']['percentToInvest'].to_i * 0.01) %>
+  		      <% ownershipForPayoutx = ((investedFromPayoutX/(payout['depositTotal'] - payout['asideToSpend']))) %>
 
-		      <tbody>
-		        <tr>
-		          <td class="d-none d-sm-table-cell text-center mb-2">
-  		          <% if payoutX['customer'] == current_user&.stripeCustomerID %>
-			            <div class="text-success">
-			              <i class="fa fa-2x fa-check-circle"></i>
-			            </div>
-  		          <% else %>
-  			            <div class="text-warning">
-  			              <i class="fa fa-2x fa-minus-circle" ></i>
+  		      <tbody>
+  		        <tr>
+  		          <td class="text-center">
+    		          <% if payoutX['customer'] == current_user&.stripeCustomerID %>
+  			            <div class="text-success">
+  			              <i class="fa fa-2x fa-check-circle"><p class="font-11 d-none d-sm-table-cell"><%= payoutX['id'][3..payoutX['id'].size] %></p></i>
+
   			            </div>
-  			       <% end %>
-               <%= payoutX['id'] %>
-		          </td>
-		          <td class="text-center">
-		            <a><%= number_to_currency(((ownershipForPayoutx * 100) *  payout['payoutTotal']) * 0.01, precision: 2) %></a>
-		          </td>
-		          <td class="text-center">
-		            <a><%= number_to_currency(payoutXChargeAmount, precision: 2)%></a>
-		          </td>
-		          <td class="text-center">
-		            <a><%= number_to_currency(investedFromPayoutX, precision: 2)%></a>
-		          </td>
+    		          <% else %>
+    			            <div class="text-warning">
+    			              <i class="fa fa-2x fa-minus-circle" ><p class="font-11 d-none d-sm-table-cell"><%= payoutX['id'][3..payoutX['id'].size] %></p></i>
+    			            </div>
+    			        <% end %>
+                  
+  		          </td>
+  		          <td class="text-center">
+  		            <a><%= number_to_currency(((ownershipForPayoutx * 100) *  payout['payoutTotal']) * 0.01, precision: 2) %></a>
+  		          </td>
+  		          <td class="text-center">
+  		            <a><%= number_to_currency(payoutXChargeAmount, precision: 2)%></a>
+  		          </td>
+  		          <td class="text-center d-none d-sm-table-cell">
+  		            <a><%= number_to_currency(investedFromPayoutX, precision: 2)%></a>
+  		          </td>
 
-		          <td class="text-center">
-		            <a><%= number_to_percentage(ownershipForPayoutx * 10000, precision: 2) %></a>
-		          </td>
+  		          <td class="text-center d-none d-sm-table-cell">
+  		            <a><%= number_to_percentage(ownershipForPayoutx * 10000, precision: 2) %></a>
+  		          </td>
 
-		        </tr>
-		      </tbody>
-	      <% end %>
-	    </table>
-	  </div>
-	</div>
-</div>
-	        
-		        
-		        
-<% end %>
+  		        </tr>
+  		      </tbody>
+  	      <% end %>
+  	    </table>
+  	  </div>
+    </div>
+    <div class="dropdown-divider"></div>
+  <% end %>
+</div>        
