@@ -59,10 +59,10 @@
         <a class="block block-rounded block-link-shadow text-center">
         	<% if payout['returnOnInvestmentPercentage'].negative? %>
           	<div class="block-content block-content-full">
-              <div class="fs-2 fw-semibold text-danger"><%= number_to_percentage(payout['returnOnInvestmentPercentage'] * 100, precision: 2)%>
+              <div class="fs-2 fw-semibold text-warning"><%= number_to_percentage(payout['returnOnInvestmentPercentage'] * 100, precision: 2)%>
               </div>
             </div>
-            <div class="block-content py-2 bg-danger-light">
+            <div class="block-content py-2 bg-warning-light">
               <p class="fw-medium fs-sm text-muted mb-0">
                 Return On Investment
               </p>
