@@ -64,23 +64,23 @@
                   <div class="col-sm-8 col-xl-6 p-3">
                     <div class="field">
                       <%= f.label "Legal Name" %><br />
-                      <%= f.text_field :legalName, autocomplete: "name", class: "form-control form-control-lg form-control-alt py-3", placeholder: 'Legal Name' %>
+                      <%= f.text_field :legalName, autocomplete: "name", class: "form-control form-control-lg form-control-alt py-3"%>
                     </div>
                     <div class="field">
                       <%= f.label "Street Address" %><br />
-                      <%= f.text_field :line1, autocomplete: "street", class: "form-control form-control-lg form-control-alt py-3", placeholder: '2343 West Mason' %>
+                      <%= f.text_field :line1, autocomplete: "street", class: "form-control form-control-lg form-control-alt py-3"%>
                     </div>
                     <div class="field">
                       <%= f.label :city %><br />
-                      <%= f.text_field :city, class: "form-control form-control-lg form-control-alt py-3", placeholder: 'Milwaukee' %>
+                      <%= f.text_field :city, class: "form-control form-control-lg form-control-alt py-3"%>
                     </div>
                     <div class="field">
                       <%= f.label :state %><br />
-                      <%= f.text_field :state, autocomplete: "state", class: "form-control form-control-lg form-control-alt py-3", placeholder: 'WI' %>
+                      <%= f.text_field :state, autocomplete: "state", class: "form-control form-control-lg form-control-alt py-3"%>
                     </div>
                     <div class="field">
                       <%= f.label :postal_code %><br />
-                      <%= f.text_field :postal_code, autocomplete: "postal_code", class: "form-control form-control-lg form-control-alt py-3", placeholder: '53218' %>
+                      <%= f.text_field :postal_code, autocomplete: "postal_code", class: "form-control form-control-lg form-control-alt py-3"%>
                     </div>
                     <div class="mb-4">
                       <label class="form-label" for="newRegistration_type">Choose Your Card</label>
@@ -93,23 +93,23 @@
                   <div class="col-sm-8 col-xl-6 p-3">
                       <div class="field">
                         <%= f.label :email %><br />
-                        <%= f.email_field :email, class: "form-control form-control-lg form-control-alt py-3", placeholder: 'yourEmail@forDeposits.com' %>
+                        <%= f.email_field :email, class: "form-control form-control-lg form-control-alt py-3"%>
                       </div>
                       <div class="field">
                         <%= f.label :phone_number %><br />
-                        <%= f.text_field :phone_number, autocomplete: "phone_number", class: "form-control form-control-lg form-control-alt py-3", placeholder: '4147583858', maxlength: 10 %>
+                        <%= f.text_field :phone_number, autocomplete: "phone_number", class: "form-control form-control-lg form-control-alt py-3"%>
                       </div>
                       <div class="field">
                         <%= f.label "Percentage To Invest" %><br />
-                        <%= f.number_field :percentToInvest, class: "form-control form-control-lg form-control-alt py-3", placeholder: '80', min: 1, max: 99 %>
+                        <%= f.number_field :percentToInvest, class: "form-control form-control-lg form-control-alt py-3"%>
                       </div>
                       <div class="field">
                         <%= f.label :password %><br />
-                        <%= f.password_field :password, class: "form-control form-control-lg form-control-alt py-3", placeholder: '6 characters or more' %>
+                        <%= f.password_field :password, class: "form-control form-control-lg form-control-alt py-3"%>
                       </div>
                       <div class="field">
                         <%= f.label :password_confirmation %><br />
-                        <%= f.password_field :password_confirmation, class: "form-control form-control-lg form-control-alt py-3", placeholder: 'repeat your password' %>
+                        <%= f.password_field :password_confirmation, class: "form-control form-control-lg form-control-alt py-3"%>
                       </div>
                       <br>
                       <%= f.submit "Sign Up", class: "col-md-12 btn btn-m mt-2 mb-4 btn-full bg-green1-dark text-uppercase font-900" %>
