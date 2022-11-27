@@ -1,8 +1,7 @@
 class StripePayoutsController < ApplicationController
-before_action :authenticate_user!
 
 	def index
-		callCurl = current_user&.indexStripePayoutsAPI(params)
+		callCurl = !current_user&.stripeCustomerID.blank? ? User.indexStripePayoutsAPI(params,true) : User.indexStripePayoutsAPI(params,false)
 
 		if callCurl['success']
 			@payouts = callCurl['payoutsArray']

@@ -249,14 +249,24 @@ class User < ApplicationRecord
     end
   end
 
-  def indexStripePayoutsAPI(params)
-  
-    if !params['paginateAfter'].blank?
-      curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/payouts`
-    elsif !params['paginateBefore'].blank?
-      curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/payouts`
+  def self.indexStripePayoutsAPI(params,authUser)
+    if authUser
+      if !params['paginateAfter'].blank?
+        curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/payouts`
+      elsif !params['paginateBefore'].blank?
+        curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/payouts`
+      else
+        curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/payouts`
+      end
     else
-      curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -X GET #{SITEurl}/api/v2/payouts`
+
+      if !params['paginateAfter'].blank?
+        curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken:" -X GET #{SITEurl}/api/v2/payouts`
+      elsif !params['paginateBefore'].blank?
+        curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken:" -X GET #{SITEurl}/api/v2/payouts`
+      else
+        curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken:" -X GET #{SITEurl}/api/v2/payouts`
+      end
     end
     
     response = Oj.load(curlCall)
