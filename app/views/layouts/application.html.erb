@@ -13,33 +13,210 @@
     <link rel="stylesheet" type="text/css" href="/assets/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="/assets/style.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900,900i|Source+Sans+Pro:300,300i,400,400i,600,600i,700,700i,900,900i&display=swap" rel="stylesheet">
-        <link rel="apple-touch-icon" sizes="512x512" href="/assets/logo_without_text_and_tagline.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="/assets/logo_without_text_and_tagline.png">
         <!-- <link rel="shortcut icon" href="/assets/logo_without_text_and_tagline.png" /> -->
   </head>
 
-  <body class="theme-light" data-background="none" data-highlight="green1">
+  <body class="theme-light  page-header-fixed" data-background="none" data-highlight="green1">
     
                 
     
     <div id="page">
-      <div class="header header-demo header-logo-left mb-3">
-        <a href="/" class="header-logo">Enabled<span class="color-highlight"> Mobile</span></a>
-        <%= link_to '#', 'data-menu'=>"menu-sidebar-right-1", class: 'header-icon header-icon-1' do %>
-          <i class="fa fa-bars font-14"></i>
-        <% end %>
+      <header id="page-header">
+        <!-- Header Content -->
+        <div class="content-header">
+          <!-- Left Section -->
+          <div class="d-flex align-items-center">
+            <!-- Toggle Sidebar -->
+            <!-- Layout API, functionality initialized in Template._uiApiLayout()-->
+            <button type="button" class="btn btn-sm btn-alt-secondary me-2 d-lg-none" data-toggle="layout" data-action="sidebar_toggle">
+              <i class="fa fa-fw fa-bars"></i>
+            </button>
+            <!-- END Toggle Sidebar -->
 
-        <%= link_to 'https://netwerthcard.com/', class: 'font-14 header-icon header-icon-2' do %>
-          <i class="fa fa-home"></i>
-        <% end %>
+            <!-- Toggle Mini Sidebar -->
+            <!-- Layout API, functionality initialized in Template._uiApiLayout()-->
+            
+            <!-- END Toggle Mini Sidebar -->
 
-      </div>
+            <!-- Open Search Section (visible on smaller screens) -->
+            <!-- Layout API, functionality initialized in Template._uiApiLayout() -->
+            
+            <!-- END Open Search Section -->
+
+            <!-- Search Form (visible on larger screens) -->
+            <form class="d-none d-md-inline-block" action="be_pages_generic_search.html" method="POST">
+                <a class="fw-semibold text-dual" href="https://www.netwerthcard.com/">
+                  <!-- <span class="smini-visible">
+                    <i class="fa fa-circle-notch text-primary"></i>
+                  </span> -->
+                  <strong class="fw-bold">Netwerth</strong><strong class="fw-medium">Card</strong>
+                </a>
+            </form>
+            <!-- END Search Form -->
+          </div>
+          <!-- END Left Section -->
+
+          <!-- Right Section -->
+          <div class="d-flex align-items-center">
+            <!-- User Dropdown -->
+            <% if current_user %>
+              <div class="dropdown d-inline-block ms-2">
+                <button type="button" class="btn btn-sm btn-alt-secondary d-flex align-items-center" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <img class="rounded-circle" src="/assets/sublogo.png" alt="Header Avatar" style="width: 21px;">
+                    <span class="d-none d-sm-inline-block ms-2"><%= Stripe::Customer.retrieve(current_user&.stripeCustomerID)['name'] %></span>
+                  <i class="fa fa-fw fa-angle-down d-none d-sm-inline-block opacity-50 ms-1 mt-1"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-md dropdown-menu-end p-0 border-0" aria-labelledby="page-header-user-dropdown">
+                  <div class="p-3 text-center bg-body-light border-bottom rounded-top">
+                    Your account will invest
+                    <p class="mb-0 text-muted fs-sm fw-medium"><%= Stripe::Customer.retrieve(current_user&.stripeCustomerID)['metadata']['percentToInvest'] %>% of Every Deposit</p>
+
+                  </div>
+                  <div class="p-2">
+                    <a class="dropdown-item d-flex align-items-center justify-content-between" href="/charges">
+                      <span class="fs-sm fw-medium">Deposits</span>
+                    </a>
+                    <a class="dropdown-item d-flex align-items-center justify-content-between" href="/payouts">
+                      <span class="fs-sm fw-medium">Payouts</span>
+                    </a>
+                    <a class="dropdown-item d-flex align-items-center justify-content-between" href="/profile">
+                      <span class="fs-sm fw-medium">Settings</span>
+                    </a>
+                  </div>
+                  <div role="separator" class="dropdown-divider m-0"></div>
+                </div>
+              </div>
+            <% end %>
+            <!-- END User Dropdown -->
+
+            <!-- Notifications Dropdown -->
+            <!-- div class="dropdown d-inline-block ms-2">
+              <button type="button" class="btn btn-sm btn-alt-secondary" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-fw fa-bell"></i>
+                <span class="text-primary">•</span>
+              </button>
+              <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0 border-0 fs-sm" aria-labelledby="page-header-notifications-dropdown" style="">
+                <div class="p-2 bg-body-light border-bottom text-center rounded-top">
+                  <h5 class="dropdown-header text-uppercase">Notifications</h5>
+                </div>
+                <ul class="nav-items mb-0">
+                  <li>
+                    <a class="text-dark d-flex py-2" href="javascript:void(0)">
+                      <div class="flex-shrink-0 me-2 ms-3">
+                        <i class="fa fa-fw fa-check-circle text-success"></i>
+                      </div>
+                      <div class="flex-grow-1 pe-2">
+                        <div class="fw-semibold">You have a new follower</div>
+                        <span class="fw-medium text-muted">15 min ago</span>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="text-dark d-flex py-2" href="javascript:void(0)">
+                      <div class="flex-shrink-0 me-2 ms-3">
+                        <i class="fa fa-fw fa-plus-circle text-primary"></i>
+                      </div>
+                      <div class="flex-grow-1 pe-2">
+                        <div class="fw-semibold">1 new sale, keep it up</div>
+                        <span class="fw-medium text-muted">22 min ago</span>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="text-dark d-flex py-2" href="javascript:void(0)">
+                      <div class="flex-shrink-0 me-2 ms-3">
+                        <i class="fa fa-fw fa-times-circle text-danger"></i>
+                      </div>
+                      <div class="flex-grow-1 pe-2">
+                        <div class="fw-semibold">Update failed, restart server</div>
+                        <span class="fw-medium text-muted">26 min ago</span>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="text-dark d-flex py-2" href="javascript:void(0)">
+                      <div class="flex-shrink-0 me-2 ms-3">
+                        <i class="fa fa-fw fa-plus-circle text-primary"></i>
+                      </div>
+                      <div class="flex-grow-1 pe-2">
+                        <div class="fw-semibold">2 new sales, keep it up</div>
+                        <span class="fw-medium text-muted">33 min ago</span>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="text-dark d-flex py-2" href="javascript:void(0)">
+                      <div class="flex-shrink-0 me-2 ms-3">
+                        <i class="fa fa-fw fa-user-plus text-success"></i>
+                      </div>
+                      <div class="flex-grow-1 pe-2">
+                        <div class="fw-semibold">You have a new subscriber</div>
+                        <span class="fw-medium text-muted">41 min ago</span>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="text-dark d-flex py-2" href="javascript:void(0)">
+                      <div class="flex-shrink-0 me-2 ms-3">
+                        <i class="fa fa-fw fa-check-circle text-success"></i>
+                      </div>
+                      <div class="flex-grow-1 pe-2">
+                        <div class="fw-semibold">You have a new follower</div>
+                        <span class="fw-medium text-muted">42 min ago</span>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+                <div class="p-2 border-top text-center">
+                  <a class="d-inline-block fw-medium" href="javascript:void(0)">
+                    <i class="fa fa-fw fa-arrow-down me-1 opacity-50"></i> Load More..
+                  </a>
+                </div>
+              </div>
+            </div> -->
+            <!-- END Notifications Dropdown -->
+
+            <!-- Toggle Side Overlay -->
+            <!-- Layout API, functionality initialized in Template._uiApiLayout() -->
+            <!-- <button type="button" class="btn btn-sm btn-alt-secondary ms-2" data-toggle="layout" data-action="side_overlay_toggle">
+              <i class="fa fa-fw fa-list-ul fa-flip-horizontal"></i>
+            </button> -->
+            <!-- END Toggle Side Overlay -->
+          </div>
+          <!-- END Right Section -->
+        </div>
+        <!-- END Header Content -->
+
+        <!-- Header Search -->
+        
+        <!-- END Header Search -->
+
+        <!-- Header Loader -->
+        <!-- Please check out the Loaders page under Components category to see examples of showing/hiding it -->
+        <div id="page-header-loader" class="overlay-header bg-body-extra-light">
+          <div class="content-header">
+            <div class="w-100 text-center">
+              <i class="fa fa-fw fa-circle-notch fa-spin"></i>
+            </div>
+          </div>
+        </div>
+        <!-- END Header Loader -->
+      </header>
+      
+
       <% if current_user %>
         <div id="footer-bar" class="footer-bar-1">
 
           <% if request.fullpath.include?('/charges') %>
-            <a href="/charges"><i class="fa fa-money-bill color-highlight"></i><span>Dashboard</span></a>
+            <a href="/charges"><i class="fa fa-rectangle-list color-highlight"></i><span>Deposits</span></a>
           <% else %>
-            <a href="/charges"><i class="fa fa-money-bill"></i><span>Dashboard</span></a>
+            <a href="/charges"><i class="fa fa-rectangle-list"></i><span>Deposits</span></a>
+          <% end %>
+          <% if request.fullpath.include?('/payouts') %>
+            <a href="/payouts"><i class="fa fa-handshake color-highlight"></i><span>Payouts</span></a>
+          <% else %>
+            <a href="/payouts"><i class="fa fa-handshake"></i><span>Payouts</span></a>
           <% end %>
 
           <!--           <% if request.fullpath.include?('/pay-now') %>
@@ -397,33 +574,14 @@
         <% end %>
       </div>
     </div>
-    <!-- <div id="menu-install-pwa-android" class="menu menu-box-bottom menu-box-detached rounded-l" data-menu-height="350" data-menu-effect="menu-parallax" style="height: 350px; display: block;">
-        <div class="boxed-text-l mt-4">
-            <img class="rounded-l mb-3" src="assets/icon-128x128.png" alt="img" width="90">
-            <h4 class="mt-3">Add Sticky on your Home Screen</h4>
-            <p>
-                Install Sticky on your home screen, and access it just like a regular app. It really is that simple!
-            </p>
-            <a href="#" class="pwa-install btn btn-s rounded-s shadow-l text-uppercase font-900 bg-highlight mb-2">Add to Home Screen</a><br>
-            <a href="#" class="pwa-dismiss close-menu color-gray2-light text-uppercase font-900 opacity-60 font-10">Maybe later</a>
-            <div class="clear"></div>
-        </div>
-    </div>
-    <div id="menu-install-pwa-ios" class="menu menu-box-bottom menu-box-detached rounded-l menu-active" data-menu-height="320" data-menu-effect="menu-parallax" style="height: 320px; display: block;">
-        <div class="boxed-text-xl mt-4">
-            <img class="rounded-l mb-3" src="assets/icon-128x128.png" alt="img" width="90">
-            <h4 class="mt-3">Add Sticky on your Home Screen</h4>
-            <p class="mb-0 pb-0">
-                Install Sticky on your home screen, and access it just like a regular app.  Open your Safari menu and tap "Add to Home Screen".
-            </p>
-            <div class="clear"></div>
-            <a href="#" class="pwa-dismiss close-menu color-highlight uppercase ultrabold opacity-80 top-25">Maybe later</a>
-            <i class="fa-ios-arrow fa fa-caret-down font-40"></i>
-        </div>
-    </div> -->
+
     <script type="text/javascript" src="/assets/jquery.js"></script>
     <script type="text/javascript" src="/assets/bootstrap.min.js"></script>
     <script type="text/javascript" src="/assets/custom.js"></script>
+    <script src="/assets/oneui.app.min.js"></script>
+    <script src="/assets/chart.min.js"></script>
+    <script src="/assets/be_pages_dashboard.min.js"></script>
+    <script src="/assets/be_ui_icons.min.js"></script>
     
   </body>
 </html>

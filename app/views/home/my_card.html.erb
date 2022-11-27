@@ -1,0 +1,41 @@
+<div class="block-content">
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped table-vcenter">
+      <thead>
+        <tr>
+          <th class="text-center" style="width: 100px;">
+            <i class="far fa-user"></i>
+          </th>
+          <th>Card Number</th>
+          <th style="width: 30%;">Expiration Month</th>
+          <th style="width: 15%;">Expiration Year</th>
+          <th class="text-center" style="width: 100px;">CVC</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-center">
+            <strong class="fw-bold">Netwerth</strong><strong class="fw-medium">Card</strong>
+          </td>
+          <td class="fw-semibold fs-sm">
+            <a href="be_pages_generic_profile.html"><%= @cardDetails %></a>
+          </td>
+          <td class="fs-sm">client1<em class="text-muted">@example.com</em></td>
+          <td>
+            <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-info-light text-info">Business</span>
+          </td>
+          <td class="text-center">
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm btn-alt-secondary js-bs-tooltip-enabled" data-bs-toggle="tooltip" aria-label="Edit">
+                <i class="fa fa-fw fa-pencil-alt"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-alt-secondary js-bs-tooltip-enabled" data-bs-toggle="tooltip" aria-label="Delete">
+                <i class="fa fa-fw fa-times"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

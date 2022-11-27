@@ -23,6 +23,7 @@ class RegistrationsController < ApplicationController
       }
       flash[:error] = e
       redirect_to request.referrer
+      return
     rescue Exception => e
       render json: {
         message: e,
@@ -30,6 +31,7 @@ class RegistrationsController < ApplicationController
       }
       flash[:error] = e
       redirect_to request.referrer
+      return
     end
   end
 
