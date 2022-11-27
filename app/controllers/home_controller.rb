@@ -30,6 +30,11 @@ class HomeController < ApplicationController
 		
 	end
 
+	def my_card
+		pullCustomer = Stripe::Customer.retrieve(current_user&.stripeCustomerID)
+		@cardDetails = Stripe::Issuing::Card.retrieve(pullCustomer['metadata']['issuedCard'])
+	end
+
 	def profile
 		if current_user&.authentication_token
 			if !current_user&.stripeCustomerID.blank?

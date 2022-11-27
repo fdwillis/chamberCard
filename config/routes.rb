@@ -72,6 +72,7 @@ Rails.application.routes.draw do
 		get "destroy", to: 'services#destroy', as: "destroyService"
 
 		get "profile", to: 'home#profile', as: "profile"
+		get "my-card", to: 'home#my_card', as: "my_card"
 		get "membership", to: 'home#membership', as: "membership"
 		get "verify-phone", to: 'home#verifyPhone'
 		get "authenticateAPI", to: 'home#authenticateAPI', as: "authenticateAPI"

@@ -5,7 +5,7 @@ before_action :authenticate_user!
 		callCurl = current_user&.indexStripePayoutsAPI(params)
 
 		if callCurl['success']
-
+			@payouts = callCurl['payoutsArray']
 			
 		else
 			flash[:error] = callCurl['message']

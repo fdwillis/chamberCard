@@ -1,38 +1,49 @@
 <div class="content">
   <div class="row items-push">
-    <div class="col-sm-6 col-xxl-3">
-      <!-- New Customers -->
-      <div class="block block-rounded d-flex flex-column h-100 mb-0">
-        <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
-          <dl class="mb-0">
-            <dt class="fs-3 fw-bold"><%= number_to_currency((@invested * 0.01).round, precision: 2)  %></dt>
-            <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">Invested (approx.)</dd>
-          </dl>
-        </div>
-        <div class="bg-body-light rounded-bottom">
-          <a class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
-            <!-- <span>View</span> -->
-          </a>
-        </div>
-      </div>
-      <!-- END New Customers -->
+    <div class="block-header block-header-default">
+      <h3 class="block-title">Personal</h3>
     </div>
-    <div class="col-sm-6 col-xxl-3">
-      <!-- Pending Orders -->
-      <div class="block block-rounded d-flex flex-column h-100 mb-0">
-        <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
-          <dl class="mb-0">
-            <dt class="fs-3 fw-bold"><%= number_to_currency((@available * 0.01).round, precision: 2)  %></dt>
-            <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">Available (approx.)</dd>
-          </dl>
-        </div>
-        <div class="bg-body-light rounded-bottom">
-          <a class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between" href="javascript:void(0)">
-            <!-- <span>View</span> -->
-          </a>
-        </div>
+    <div class="row">
+      <div class="col-12 col-lg-4">
+        <a class="block block-rounded block-link-shadow text-center">
+          <div class="block-content block-content-full">
+            <div class="fs-2 fw-semibold text-primary"><%= (@depositTotal&.present? && @depositTotal > 0) ? number_to_currency(@depositTotal * 0.01, precision: 2) : 0 %></div>
+          </div>
+          <div class="block-content py-2 bg-body-light">
+            <p class="fw-medium fs-sm text-muted mb-0">
+              Total Charges
+            </p>
+          </div>
+        </a>
       </div>
-      <!-- END Pending Orders -->
+      <div class="col-12 col-lg-4">
+        <a class="block block-rounded block-link-shadow text-center">
+          <div class="block-content block-content-full">
+            <div class="fs-2 fw-semibold text-success"><%= (@invested&.present? && @invested > 0) ? number_to_currency(@invested  * 0.01, precision: 2) : 0 %></div>
+
+
+            
+          </div>
+          <div class="block-content py-2 bg-body-light">
+            <p class="fw-medium fs-sm text-muted mb-0">
+              Total For Investment
+            </p>
+          </div>
+        </a>
+      </div>
+      
+      <div class="col-12 col-lg-4">
+        <a class="block block-rounded block-link-shadow text-center">
+          <div class="block-content block-content-full">
+            <div class="fw-semibold text-dark">Coming Soon</div>
+          </div>
+          <div class="block-content py-2 bg-body-light">
+            <p class="fw-medium fs-sm text-muted mb-0">
+              Total Reinvested
+            </p>
+          </div>
+        </a>
+      </div>
     </div>
     
     <!-- <div class="col-sm-6 col-xxl-3">
@@ -105,8 +116,8 @@
         <ul class="pagination pagination-sm justify-content-end mb-0">
           <li class="page-item">
             <a class="page-link" href="javascript:void(0)" tabindex="-1" aria-label="Previous">
-              <% if @depositTotal > 0 %>
-                Total: <%= number_to_currency((@depositTotal * 0.01).round - (((@depositTotal * 0.029) * 0.01) + 0.30).round, precision: 2) %>
+              <% if @depositTotal.present? && @depositTotal > 0 %>
+                Available To Spend: <%= @available.present? && @available > 0 ? number_to_currency((@available * 0.01), precision: 2) : 0 %>
               <% else %>
                 Total: $0
               <% end %>
@@ -154,17 +165,20 @@
                     </small>
                   </td>
                   <% if !chargeX['metadata'].blank? %>
-                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency(((chargeX['amount'].to_i - ( + stripeFee)) * 0.01 - Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01).round, precision: 2) %></strong></td>
-                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency((Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01).round, precision: 2) %></strong></td>
+                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency(((chargeX['amount'].to_i - ( + stripeFee)) * 0.01 - Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01), precision: 2) %></strong></td>
+                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency((Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01), precision: 2) %></strong></td>
                   <% else %>
                     <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
                     <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
                   <% end %>
-                  <% if !chargeX['metadata']['paidBy'].blank? && !chargeX['metadata']['amountPaid'].blank? %>
-                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= 
-                    number_to_currency((((chargeX['amount'] - stripeFee) * 0.01)/Stripe::Payout.retrieve(chargeX['metadata']['fromPayout'])['amount']) * Stripe::Topup.retrieve(chargeX['metadata']['paidBy'])['amount'], precision: 0) %></strong></td>
+                  <% if !chargeX['metadata']['paidBy'].blank? %>
+                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center">
+                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success"><%= link_to "View", stripe_payouts_path, :style=>'color: green;'%></span>
+                    </td>
                   <% else %>
-                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong>Payout Pending</strong></td>
+                    <td class="d-none d-sm-table-cell fw-semibold text-muted text-center">
+                        <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-danger-light text-danger"><%= link_to "Pending",stripe_payouts_path, :style=>'color: red;', disabled: true%></span>
+                    </td>
                   <% end %>
                 </tr>
               <% end %>
