@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   end
 
 	devise_scope :user do
-		resources :charges
+		resources :charges, :path => '/deposit-history'
 		resources :snapshots do
 		  member do
 				resources :recordings
@@ -24,7 +24,7 @@ Rails.application.routes.draw do
 	  end
 		resources :schedule
 		resources :orders
-		resources :stripe_payouts, path: '/payouts'
+		resources :stripe_payouts, path: '/payout-history'
 		resources :stripe_sources, path: '/sources'
 		resources :jobs
 	
