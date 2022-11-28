@@ -128,13 +128,14 @@
                 <% stripeFee = (((chargeX['amount'].to_i * 0.029)) + 30).to_i %>
             
                 <td class="text-center">
-                  <a class="fw-semibold" ><%= chargeX['id'][3..17] %></a><br>
+                  <a class="fw-semibold" ><%= chargeX['id'][3..chargeX['id'].size] %></a><br>
                   <small class="fs-sm fw-medium text-muted mb-0"><%= distance_of_time_in_words(0.minutes.ago, Time.at(chargeX['created']).to_datetime) %> ago
                   </small>
                 </td>
+                <% dynamicNumber = (chargeX['metadata'].present? && chargeX['metadata']['topUp'] != '100percentInvested') ? (Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01) : 0 %>
                 <% if !chargeX['metadata'].blank? %>
-                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency(((chargeX['amount'].to_i - ( + stripeFee)) * 0.01 - Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01), precision: 2) %></strong></td>
-                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency((Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01), precision: 2) %></strong></td>
+                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency(((chargeX['amount'].to_i - ( + stripeFee)) * 0.01 - (dynamicNumber)), precision: 2) %></strong></td>
+                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency((dynamicNumber), precision: 2) %></strong></td>
                 <% else %>
                   <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
                   <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
