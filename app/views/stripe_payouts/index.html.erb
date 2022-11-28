@@ -36,7 +36,7 @@
       </a>
     </div>
   </div>
-  <% @payouts.reverse.each_with_index do |payout, indx| %>
+  <% @payouts.each_with_index do |payout, indx| %>
     <div class="row items-push text-center">
       <div class="block-header block-header-default">
         <h3 class="block-title"><%= payout['payoutID'][3..payout['payoutID'].size] %></h3>
