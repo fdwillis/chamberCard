@@ -10,7 +10,19 @@
         </div>
         <div class="block-content py-2 bg-body-light">
           <p class="fw-medium fs-sm text-muted mb-0">
-            Total Charges
+            Deposited
+          </p>
+        </div>
+      </a>
+    </div>
+    <div class="col-12 col-lg-4">
+      <a class="block block-rounded block-link-shadow text-center">
+        <div class="block-content block-content-full">
+          <div class="fs-2 fw-semibold text-primary"><%= @available.present? && @available > 0 ? number_to_currency((@available * 0.01), precision: 2) : 0 %></div>
+        </div>
+        <div class="block-content py-2 bg-body-light">
+          <p class="fw-medium fs-sm text-muted mb-0">
+            Available To Spend
           </p>
         </div>
       </a>
@@ -25,20 +37,32 @@
         </div>
         <div class="block-content py-2 bg-body-light">
           <p class="fw-medium fs-sm text-muted mb-0">
-            Total For Investment
+            Invested
           </p>
         </div>
       </a>
     </div>
     
-    <div class="col-12 col-lg-4">
+    <div class="col-12 col-lg-6">
       <a class="block block-rounded block-link-shadow text-center">
         <div class="block-content block-content-full">
-          <div class="fw-semibold text-dark">Coming Soon</div>
+          <div class="fs-lg fw-semibold text-dark">Available Now</div>
         </div>
         <div class="block-content py-2 bg-body-light">
           <p class="fw-medium fs-sm text-muted mb-0">
-            Total Reinvested
+            Automated Deposits
+          </p>
+        </div>
+      </a>
+    </div>
+    <div class="col-12 col-lg-6">
+      <a class="block block-rounded block-link-shadow text-center">
+        <div class="block-content block-content-full">
+          <div class="fs-lg fw-semibold text-dark">Coming Soon</div>
+        </div>
+        <div class="block-content py-2 bg-body-light">
+          <p class="fw-medium fs-sm text-muted mb-0">
+            Automated Reinvestments
           </p>
         </div>
       </a>
@@ -78,22 +102,6 @@
         </a>
       </div>
     </div>
-    <div class="block-content block-content-full bg-body-light">
-      <!-- total -->
-    <nav aria-label="Photos Search Navigation">
-      <ul class="pagination pagination-sm justify-content-end mb-0">
-        <li class="page-item">
-          <a class="page-link" href="javascript:void(0)" tabindex="-1" aria-label="Previous">
-            <% if @depositTotal.present? && @depositTotal > 0 %>
-              Available To Spend: <%= @available.present? && @available > 0 ? number_to_currency((@available * 0.01), precision: 2) : 0 %>
-            <% else %>
-              Total: $0
-            <% end %>
-          </a>
-        </li>
-      </ul>
-    </nav>
-  </div>
   </div>
   <div id="one-dashboard-search-orders" class="block-content border-bottom d-none">
     <!-- Search Form -->
@@ -114,10 +122,10 @@
       <table class="table table-hover table-vcenter">
         <thead>
           <tr>
-            <th class="text-center">Deposit ID</th>
-            <th class="d-none d-sm-table-cell text-center">Invested</th>
-            <th class="d-none d-sm-table-cell text-center">Available</th>
-            <th class="d-none d-sm-table-cell text-center">Payout</th>
+            <th class="d-none d-sm-table-cell text-center">Deposit ID</th>
+            <th class="text-center">Invested</th>
+            <th class="text-center">Available</th>
+            <th class="text-center">Payout</th>
             
           </tr>
         </thead>
@@ -127,25 +135,25 @@
               <tr>
                 <% stripeFee = (((chargeX['amount'].to_i * 0.029)) + 30).to_i %>
             
-                <td class="text-center">
+                <td class="d-none d-sm-table-cell text-center">
                   <a class="fw-semibold" ><%= chargeX['id'][3..chargeX['id'].size] %></a><br>
                   <small class="fs-sm fw-medium text-muted mb-0"><%= distance_of_time_in_words(0.minutes.ago, Time.at(chargeX['created']).to_datetime) %> ago
                   </small>
                 </td>
                 <% dynamicNumber = (chargeX['metadata'].present? && chargeX['metadata']['topUp'] != '100percentInvested') ? (Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01) : 0 %>
                 <% if !chargeX['metadata'].blank? %>
-                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency(((chargeX['amount'].to_i - ( + stripeFee)) * 0.01 - (dynamicNumber)), precision: 2) %></strong></td>
-                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong><%= number_to_currency((dynamicNumber), precision: 2) %></strong></td>
+                  <td class="fw-semibold text-muted text-center"><strong><%= number_to_currency(((chargeX['amount'].to_i - ( + stripeFee)) * 0.01 - (dynamicNumber)), precision: 2) %></strong></td>
+                  <td class="fw-semibold text-muted text-center"><strong><%= number_to_currency((dynamicNumber), precision: 2) %></strong></td>
                 <% else %>
                   <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
                   <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
                 <% end %>
                 <% if !chargeX['metadata']['paidBy'].blank? %>
-                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-center">
+                  <td class="fw-semibold text-muted text-center">
                       <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success"><%= link_to "View", stripe_payouts_path, :style=>'color: green;'%></span>
                   </td>
                 <% else %>
-                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-center">
+                  <td class="fw-semibold text-muted text-center">
                       <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-danger-light text-danger"><%= link_to "Pending",stripe_payouts_path, :style=>'color: red;', disabled: true%></span>
                   </td>
                 <% end %>
