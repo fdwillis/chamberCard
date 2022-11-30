@@ -24,9 +24,11 @@ class StripePayoutsController < ApplicationController
 		validPaymentIntents = Stripe::PaymentIntent.list({created: {lt: @endDate.to_time.to_i, gt: @startDate.to_time.to_i}})['data']
 
 		validPaymentIntents.each do |payint|
-			amountForDeposit = payint['amount'] - (payint['amount']*0.029).to_i + 30
-			investedAmount = amountForDeposit * (payint['metadata']['percentToInvest'].to_i * 0.01)
-			investedAmountRunning += investedAmount
+			if !payint['metadata'].blank? && payint['metadata']['percentToInvest'].to_i > 0 
+				amountForDeposit = payint['amount'] - (payint['amount']*0.029).to_i + 30
+				investedAmount = amountForDeposit * (payint['metadata']['percentToInvest'].to_i * 0.01)
+				investedAmountRunning += investedAmount
+			end
 		end
 
 		@amountInvested = investedAmountRunning
