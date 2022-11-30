@@ -1,7 +1,23 @@
 class SessionsController < Devise::SessionsController
   after_action :after_login, :only => :create
   before_action :after_logout, :only => :destroy
-  # before_action :after_login, :only => :create
+  before_action :pullPayouts
+
+  def pullPayouts
+    pullPayouts = []
+    investedAmountRunning = 0
+    validPaymentIntents = Stripe::PaymentIntent.list()['data'].map{|d| (!d['metadata']['percentToInvest'].blank?) ? (pullPayouts.append(d)) : next}
+
+    pullPayouts.each do |payint|
+      if !payint['metadata'].blank? && payint['metadata']['percentToInvest'].to_i > 0 
+        amountForDeposit = payint['amount'] - (payint['amount']*0.029).to_i + 30
+        investedAmount = amountForDeposit * (payint['metadata']['percentToInvest'].to_i * 0.01)
+        investedAmountRunning += investedAmount
+      end
+    end
+
+    @amountInvested = investedAmountRunning
+  end
   
   def setSessionVar
     begin
