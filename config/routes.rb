@@ -76,6 +76,7 @@ Rails.application.routes.draw do
 		get "membership", to: 'home#membership', as: "membership"
 		get "verify-phone", to: 'home#verifyPhone'
 		get "authenticateAPI", to: 'home#authenticateAPI', as: "authenticateAPI"
+		get "preview-payout", to: 'stripe_payouts#preview_payout', as: "preview_payout"
 
 	  
 	end	
