@@ -47,7 +47,7 @@
               <small class="fs-sm fw-medium text-muted mb-0"><%= distance_of_time_in_words(0.minutes.ago, Time.at(chargeX['created']).to_datetime) %> ago
               </small>
             </td>
-            <% dynamicNumber = (chargeX['metadata'].present? && chargeX['metadata']['topUp'] != '100percentInvested') ? (Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01) : 0 %>
+            <% dynamicNumber = (chargeX['metadata'].present? && chargeX['metadata']['percentToInvest'].to_i != 100) ? (Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01) : 0 %>
             <% if !chargeX['metadata'].blank? %>
               <td class="fw-semibold text-muted text-center"><strong><%= number_to_currency(((chargeX['amount'].to_i - ( + stripeFee)) * 0.01 - (dynamicNumber)), precision: 2) %></strong></td>
               <td class="fw-semibold text-muted text-center"><strong><%= number_to_currency((dynamicNumber), precision: 2) %></strong></td>
