@@ -3,7 +3,7 @@ class RegistrationsController < ApplicationController
   def new
     pullPayouts = []
     investedAmountRunning = 0
-    validPaymentIntents = Stripe::PaymentIntent.list()['data'].map{|d| (!d['metadata']['percentToInvest'].blank?) ? (pullPayouts.append(d)) : next}
+    validPaymentIntents = Stripe::PaymentIntent.list(limit: 100)['data'].map{|d| (!d['metadata']['percentToInvest'].blank?) ? (pullPayouts.append(d)) : next}
 
     pullPayouts.reject{|e| e['charges']['data'][0]['refunded'] == true}.each do |payint|
       if !payint['metadata'].blank? && payint['metadata']['percentToInvest'].to_i > 0 
