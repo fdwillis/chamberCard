@@ -21,9 +21,9 @@ class StripePayoutsController < ApplicationController
 
 		validateTopUps = []
 		investedAmountRunning = 0
-		validPaymentIntents = Stripe::PaymentIntent.list({created: {lte: @endDate.to_time.to_i, gte: @startDate.to_time.to_i}})['data']
+		@validPaymentIntents = Stripe::PaymentIntent.list({created: {lte: @endDate.to_time.to_i, gte: @startDate.to_time.to_i}})['data']
 
-		validPaymentIntents.each do |payint|
+		@validPaymentIntents.each do |payint|
 			if !payint['metadata'].blank? && payint['metadata']['percentToInvest'].to_i > 0 
 				amountForDeposit = payint['amount'] - (payint['amount']*0.029).to_i + 30
 				investedAmount = amountForDeposit * (payint['metadata']['percentToInvest'].to_i * 0.01)

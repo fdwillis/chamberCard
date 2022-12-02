@@ -24,3 +24,50 @@
     </div>
   </div>
 </div>
+<div class="block-content block-content-full">
+  <!-- Recent Orders Table -->
+  <div class="table-responsive">
+    <table class="table table-hover table-vcenter">
+      <thead>
+        <tr>
+          <th class="d-none d-sm-table-cell text-center">Deposit ID</th>
+          <th class="text-center">Invested</th>
+          <th class="text-center">Available</th>
+          <th class="text-center">Payout</th>
+          
+        </tr>
+      </thead>
+      <tbody class="fs-sm">
+        <% @validPaymentIntents.each do |chargeX| %>
+          <tr>
+            <% stripeFee = (((chargeX['amount'].to_i * 0.029)) + 30).to_i %>
+        
+            <td class="d-none d-sm-table-cell text-center">
+              <a class="fw-semibold" ><%= chargeX['id'][3..chargeX['id'].size] %></a><br>
+              <small class="fs-sm fw-medium text-muted mb-0"><%= distance_of_time_in_words(0.minutes.ago, Time.at(chargeX['created']).to_datetime) %> ago
+              </small>
+            </td>
+            <% dynamicNumber = (chargeX['metadata'].present? && chargeX['metadata']['topUp'] != '100percentInvested') ? (Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01) : 0 %>
+            <% if !chargeX['metadata'].blank? %>
+              <td class="fw-semibold text-muted text-center"><strong><%= number_to_currency(((chargeX['amount'].to_i - ( + stripeFee)) * 0.01 - (dynamicNumber)), precision: 2) %></strong></td>
+              <td class="fw-semibold text-muted text-center"><strong><%= number_to_currency((dynamicNumber), precision: 2) %></strong></td>
+            <% else %>
+              <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
+              <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
+            <% end %>
+            <% if !chargeX['metadata']['paidBy'].blank? %>
+              <td class="fw-semibold text-muted text-center">
+                  <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success"><%= link_to "View", stripe_payouts_path, :style=>'color: green;'%></span>
+              </td>
+            <% else %>
+              <td class="fw-semibold text-muted text-center">
+                  <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-danger-light text-danger"><%= link_to "Pending",stripe_payouts_path, :style=>'color: red;', disabled: true%></span>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <!-- END Recent Orders Table -->
+</div>
