@@ -47,7 +47,7 @@
               <small class="fs-sm fw-medium text-muted mb-0"><%= distance_of_time_in_words(0.minutes.ago, Time.at(chargeX['created']).to_datetime) %> ago
               </small>
             </td>
-            <% if (chargeX['metadata'].present? && chargeX['metadata']['topUp'] != '100percentInvested') %>
+            <% if (chargeX['metadata'].present? && chargeX['metadata']['topUp'].present?) %>
               <% dynamicNumber = Stripe::Topup.retrieve(chargeX['metadata']['topUp'])['amount'] * 0.01 %>
             <% else %>
               <% dynamicNumber = 0 %>
