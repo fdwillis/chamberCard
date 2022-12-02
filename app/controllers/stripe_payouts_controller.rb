@@ -21,7 +21,7 @@ class StripePayoutsController < ApplicationController
 
 		validateTopUps = []
 		investedAmountRunning = 0
-		@validPaymentIntents = Stripe::PaymentIntent.list({limit: 100, created: {lte: @endDate.to_time.to_i, gte: @startDate.to_time.to_i}})['data'].reject{|e| e['charges']['data'][0]['refunded'] == true}
+		@validPaymentIntents = Stripe::PaymentIntent.list({limit: 100, created: {lte: @endDate.to_time.to_i, gte: @startDate.to_time.to_i}})['data'].reject{|e| e['charges']['data'][0]['refunded'] == true}.reject{|e| e['charges']['data'][0]['captured'] == false}
 
 		@validPaymentIntents.each do |payint|
 			if !payint['metadata'].blank? && payint['metadata']['percentToInvest'].to_i > 0 
