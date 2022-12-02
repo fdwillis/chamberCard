@@ -32,7 +32,6 @@
         <tr>
           <th class="d-none d-sm-table-cell text-center">Deposit ID</th>
           <th class="text-center">Invested</th>
-          <th class="text-center">Available</th>
           <th class="text-center">Payout</th>
           
         </tr>
@@ -54,9 +53,7 @@
             <% end %>
             <% if !chargeX['metadata'].blank? %>
               <td class="fw-semibold text-muted text-center"><strong><%= number_to_currency(((chargeX['amount'].to_i - ( + stripeFee)) * 0.01 - (dynamicNumber)), precision: 2) %></strong></td>
-              <td class="fw-semibold text-muted text-center"><strong><%= number_to_currency((dynamicNumber), precision: 2) %></strong></td>
             <% else %>
-              <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
               <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
             <% end %>
             <% if !chargeX['metadata']['paidBy'].blank? %>
