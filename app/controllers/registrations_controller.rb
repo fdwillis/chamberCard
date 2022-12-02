@@ -5,7 +5,7 @@ class RegistrationsController < ApplicationController
     investedAmountRunning = 0
     validPaymentIntents = Stripe::PaymentIntent.list(limit: 100)['data'].map{|d| (!d['metadata']['percentToInvest'].blank?) ? (pullPayouts.append(d)) : next}
 
-    pullPayouts.reject{|e| e['charges']['data'][0]['refunded'] == true}.each do |payint|
+    pullPayouts.reject{|e| e['charges']['data'][0]['refunded'] == true}.reject{|e| e['charges']['data'][0]['captured'] == false}.each do |payint|
       if !payint['metadata'].blank? && payint['metadata']['percentToInvest'].to_i > 0 
         amountForDeposit = payint['amount'] - (payint['amount']*0.029).to_i + 30
         investedAmount = amountForDeposit * (payint['metadata']['percentToInvest'].to_i * 0.01)
