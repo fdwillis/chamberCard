@@ -126,7 +126,7 @@
           </div>
         </a>
       </div>
-      <div class="col-12 col-lg-3">
+      <div class="col-12 col-lg-3 d-none d-sm-table-cell">
         <a class="block block-rounded block-link-shadow text-center">
           <div class="block-content block-content-full">
             <div class="fs-2 fw-semibold text-dark"><%= payout['numberOfInvestors']%></div>
@@ -141,7 +141,7 @@
 
     		
     		
-      <div class="col-12 col-lg-3">
+      <div class="col-12 col-lg-3 d-none d-sm-table-cell">
         <a class="block block-rounded block-link-shadow text-center">
           <div class="block-content block-content-full">
             <div class="fs-2 fw-semibold text-dark"><%= number_to_currency(payout['netTotal'],precision: 2) %></div>
@@ -153,7 +153,7 @@
           </div>
         </a>
       </div>
-      <div class="col-12 col-lg-3">
+      <div class="col-12 col-lg-3 d-none d-sm-table-cell">
         <a class="block block-rounded block-link-shadow text-center">
           <div class="block-content block-content-full">
             <div class="fs-2 fw-semibold text-dark"><%= number_to_currency(payout['asideToSpend'] ,precision: 2) %></div>
@@ -165,7 +165,7 @@
           </div>
         </a>
       </div>
-      <div class="col-12 col-lg-3">
+      <div class="col-12 col-lg-3 d-none d-sm-table-cell">
         <a class="block block-rounded block-link-shadow text-center">
           <div class="block-content block-content-full">
             <div class="fs-2 fw-semibold text-dark"><%= number_to_currency((payoutInvesmentPrinciple = payout['investedTotal']),precision: 2) %></div>
