@@ -10,7 +10,7 @@
    </h3>
   </div>     
   <div class="row text-center">
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-lg-3">
       <a class="block block-rounded block-link-shadow text-center">
         <div class="block-content block-content-full">
           <div class="fs-2 fw-semibold text-success"><i class="fa fa-2x fa-check-circle text-success"></i></div>
@@ -23,7 +23,7 @@
       </a>
     </div>
 
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-lg-3">
       <a class="block block-rounded block-link-shadow text-center">
         <div class="block-content block-content-full">
           <div class="fs-2 fw-semibold text-success"><i class="fa fa-2x fa-minus-circle text-warning" ></i></div>
@@ -31,6 +31,30 @@
         <div class="block-content py-2">
           <p class="fw-medium fs-sm text-muted mb-0">
             Payouts For Others
+          </p>
+        </div>
+      </a>
+    </div>
+    <div class="col-12 col-lg-3">
+      <a class="block block-rounded block-link-shadow text-center">
+        <div class="block-content block-content-full">
+          <div class="fs-2 fw-semibold text-success"><i class="fa fa-2x fa-calendar-check"></i></div>
+        </div>
+        <div class="block-content py-2">
+          <p class="fw-medium fs-sm text-muted mb-0">
+            Payout Received
+          </p>
+        </div>
+      </a>
+    </div>
+    <div class="col-12 col-lg-3">
+      <a class="block block-rounded block-link-shadow text-center">
+        <div class="block-content block-content-full">
+          <div class="fs-2 fw-semibold text-warning"><i class="fa fa-2x fa-calendar-xmark"></i></div>
+        </div>
+        <div class="block-content py-2">
+          <p class="fw-medium fs-sm text-muted mb-0">
+            Payout Pending
           </p>
         </div>
       </a>
@@ -157,11 +181,12 @@
   	    <table class="table table-borderless table-striped table-vcenter fs-sm">
   	    	<thead>
             <tr>
-              <th class="text-center">ID</th>
-              <th class="text-center">Payout</th>
+              <th class="text-center d-none d-sm-table-cell">&nbsp;</th>
+              <th class="text-center d-none d-sm-table-cell">Ownership</th>
               <th class="text-center d-none d-sm-table-cell">Deposited</th>
               <th class="text-center">Invested</th>
-              <th class="text-center d-none d-sm-table-cell">Ownership</th>
+              <th class="text-center">Payout</th>
+              <th class="text-center">Received</th>
               
             </tr>
           </thead>
@@ -171,39 +196,52 @@
   	    	
   	    	<% payout['deposits'].each do |chargeX| %>
             <% chargeXFiltered = Charge.paymentIntentNet(chargeX['id']) %>
-  	    		<% chargeXChargeAmount = chargeXFiltered[:net] * 0.01 %>
+  	    		<% chargeXChargeNet = chargeXFiltered[:net] * 0.01 %>
 
-  	    		<% investedFromchargeX = chargeXChargeAmount * (chargeX['metadata']['percentToInvest'].to_i * 0.01) %>
+  	    		<% investedFromchargeX = chargeXChargeNet * (chargeX['metadata']['percentToInvest'].to_i * 0.01) %>
   		      <% ownershipForchargeX = ((investedFromchargeX/(payout['investedTotal']))) %>
 
   		      <tbody>
   		        <tr>
-  		          <td class="text-center">
+  		          <td class="text-center d-none d-sm-table-cell">
     		          <% if chargeX['customer'] == current_user&.stripeCustomerID %>
   			            <div class="text-success">
-  			              <i class="fa fa-2x fa-check-circle"><p class="font-11 d-none d-sm-table-cell"><%= chargeX['id'][3..chargeX['id'].size] %></p></i>
+  			              <i class="fa fa-2x fa-check-circle"></i>
 
   			            </div>
     		          <% else %>
     			            <div class="text-warning">
-    			              <i class="fa fa-2x fa-minus-circle" ><p class="font-11 d-none d-sm-table-cell"><%= chargeX['id'][3..chargeX['id'].size] %></p></i>
+    			              <i class="fa fa-2x fa-minus-circle" ></i>
     			            </div>
     			        <% end %>
                   
   		          </td>
-  		          <td class="text-center">
-  		            <a><%= number_to_currency(((ownershipForchargeX * 0.01) *  payout['payoutTotal']), precision: 2) %></a>
+  		          <td class="text-center d-none d-sm-table-cell">
+  		            <a><%= number_to_percentage(ownershipForchargeX * 100, precision: 2) %></a>
   		          </td>
   		          <td class="text-center d-none d-sm-table-cell">
-  		            <a><%= number_to_currency(chargeXChargeAmount, precision: 2)%></a>
+  		            <a><%= number_to_currency(chargeXChargeNet, precision: 2)%></a>
   		          </td>
   		          <td class="text-center">
   		            <a><%= number_to_currency(investedFromchargeX, precision: 2)%></a>
   		          </td>
-
-  		          <td class="text-center d-none d-sm-table-cell">
-  		            <a><%= number_to_percentage(ownershipForchargeX * 100, precision: 2) %></a>
+  		          <td class="text-center">
+  		            <a><%= number_to_currency(((ownershipForchargeX * 0.01) *  payout['payoutTotal']), precision: 2) %></a>
   		          </td>
+
+
+                <td class="text-center">
+                  <% if chargeX['metadata']['payout'] == true.to_s %>
+                    <div class="text-success">
+                      <i class="fa fa-2x fa-calendar-check"></i>
+
+                    </div>
+                  <% else %>
+                      <div class="text-warning">
+                        <i class="fa fa-2x fa-calendar-xmark"></i>
+                      </div>
+                  <% end %>
+                </td>
 
   		        </tr>
   		      </tbody>
