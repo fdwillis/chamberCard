@@ -141,7 +141,7 @@
             <% @payments.each do |chargeX| %>
               <tr>
                 <% stripeFee = (((chargeX['amount'].to_i * 0.029)) + 30).to_i %>
-                <%= chargeXFiltered = Charge.paymentIntentNet(chargeX['id']) %>
+                <% chargeXFiltered = Charge.paymentIntentNet(chargeX['id']) %>
                 <% chargeXChargeAmount = chargeXFiltered[:net] * 0.01 %>
             
                 <td class="d-none d-sm-table-cell text-center">
