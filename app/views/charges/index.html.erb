@@ -10,6 +10,30 @@
     </h3>
   </div>
   <div class="row">
+    <div class="col-12 col-lg-6">
+      <a class="block block-rounded block-link-shadow text-center">
+        <div class="block-content block-content-full">
+          <div class="fs-2 fw-semibold text-success"><i class="fa fa-2x fa-calendar-check"></i></div>
+        </div>
+        <div class="block-content py-2">
+          <p class="fw-medium fs-sm text-muted mb-0">
+            Payout Received
+          </p>
+        </div>
+      </a>
+    </div>
+    <div class="col-12 col-lg-6">
+      <a class="block block-rounded block-link-shadow text-center">
+        <div class="block-content block-content-full">
+          <div class="fs-2 fw-semibold text-warning"><i class="fa fa-2x fa-calendar-xmark"></i></div>
+        </div>
+        <div class="block-content py-2">
+          <p class="fw-medium fs-sm text-muted mb-0">
+            Payout Pending
+          </p>
+        </div>
+      </a>
+    </div>
     <div class="col-12 col-lg-4">
       <a class="block block-rounded block-link-shadow text-center">
         <div class="block-content block-content-full">
@@ -38,9 +62,6 @@
       <a class="block block-rounded block-link-shadow text-center">
         <div class="block-content block-content-full">
           <div class="fs-2 fw-semibold text-success"><%= (@invested&.present? && @invested > 0) ? number_to_currency(@invested, precision: 2) : 0 %></div>
-
-
-          
         </div>
         <div class="block-content py-2 bg-body-light">
           <p class="fw-medium fs-sm text-muted mb-0">
@@ -169,15 +190,22 @@
                   <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
                   <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
                 <% end %>
-                <% if !chargeX['metadata']['paidBy'].blank? %>
-                  <td class="fw-semibold text-muted text-center">
-                      <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success"><%= link_to "View", stripe_payouts_path, :style=>'color: green;'%></span>
-                  </td>
-                <% else %>
-                  <td class="fw-semibold text-muted text-center">
-                      <span class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-danger-light text-danger"><%= link_to "Pending",stripe_payouts_path, :style=>'color: red;', disabled: true%></span>
-                  </td>
-                <% end %>
+                <td class="text-center">
+                  <% if chargeX['metadata']['payout'] == true.to_s %>
+                    <div class="text-success">
+                      <a href="<%= stripe_payouts_path %>" style="color: #28a745;"><i class="fa fa-2x fa-calendar-check"></i>
+                      </a>
+                    </div>
+                  <% else %>
+                      <div class="text-warning">
+                        <a href="<%= stripe_payouts_path %>" style="color: #ffc107;">
+                          
+                          <i class="fa fa-2x fa-calendar-xmark"></i>
+                        </a>
+                      </div>
+                  <% end %>
+                </td>
+              
               </tr>
             <% end %>
           <% end %>
