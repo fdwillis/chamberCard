@@ -44,7 +44,7 @@
       <div class="col-12 col-lg-3">
         <a class="block block-rounded block-link-shadow text-center">
           <div class="block-content block-content-full">
-            <div class="fs-2 fw-semibold text-success"><%= number_to_percentage(payout['ownershipOfPayout'] * 100) %></div>
+            <div class="fs-2 fw-semibold text-success"><%= number_to_percentage(payout['investedForUserX']/payout['investedTotal'] * 100) %></div>
           </div>
           <div class="block-content py-2 bg-success-light">
             <p class="fw-medium fs-sm text-muted mb-0">
@@ -56,7 +56,7 @@
       <div class="col-12 col-lg-3">
         <a class="block block-rounded block-link-shadow text-center">
           <div class="block-content block-content-full">
-            <div class="fs-2 fw-semibold text-success"><%= number_to_currency(((payout['ownershipOfPayout']) * (payout['payoutTotal'] * 0.01)), precision: 2)%></div>
+            <div class="fs-2 fw-semibold text-success"><%= number_to_currency(((payout['investedForUserX']/payout['investedTotal']) * (payout['payoutTotal'] * 0.01)), precision: 2)%></div>
           </div>
           <div class="block-content py-2 bg-success-light">
             <p class="fw-medium fs-sm text-muted mb-0">
