@@ -13,7 +13,7 @@
     <div class="col-12 col-lg-4">
       <a class="block block-rounded block-link-shadow text-center">
         <div class="block-content block-content-full">
-          <div class="fs-2 fw-semibold text-primary"><%= (@depositTotal&.present? && @depositTotal > 0) ? number_to_currency(@depositTotal * 0.01, precision: 2) : 0 %></div>
+          <div class="fs-2 fw-semibold text-primary"><%= (@depositTotal&.present? && @depositTotal > 0) ? number_to_currency(@depositTotal, precision: 2) : 0 %></div>
         </div>
         <div class="block-content py-2 bg-body-light">
           <p class="fw-medium fs-sm text-muted mb-0">
@@ -37,7 +37,7 @@
     <div class="col-12 col-lg-4">
       <a class="block block-rounded block-link-shadow text-center">
         <div class="block-content block-content-full">
-          <div class="fs-2 fw-semibold text-success"><%= (@invested&.present? && @invested > 0) ? number_to_currency(@invested  * 0.01, precision: 2) : 0 %></div>
+          <div class="fs-2 fw-semibold text-success"><%= (@invested&.present? && @invested > 0) ? number_to_currency(@invested, precision: 2) : 0 %></div>
 
 
           
@@ -141,6 +141,8 @@
             <% @payments.each do |chargeX| %>
               <tr>
                 <% stripeFee = (((chargeX['amount'].to_i * 0.029)) + 30).to_i %>
+                <%= chargeXFiltered = Charge.paymentIntentNet(chargeX['id']) %>
+                <% chargeXChargeAmount = chargeXFiltered[:net] * 0.01 %>
             
                 <td class="d-none d-sm-table-cell text-center">
                   <a class="fw-semibold" ><%= chargeX['id'][3..chargeX['id'].size] %></a><br>
@@ -153,8 +155,16 @@
                   <% dynamicNumber = 0 %>
                 <% end %>
                 <% if !chargeX['metadata'].blank? %>
-                  <td class="fw-semibold text-muted text-center"><strong><%= number_to_currency(((chargeX['amount'].to_i - ( + stripeFee)) * 0.01 - (dynamicNumber)), precision: 2) %></strong></td>
-                  <td class="fw-semibold text-muted text-center"><strong><%= number_to_currency((dynamicNumber), precision: 2) %></strong></td>
+                  <td class="fw-semibold text-muted text-center">
+                    <strong><%= number_to_currency(chargeXChargeAmount * (chargeX['metadata']['percentToInvest'].to_i * 0.01), precision: 2) %>
+                      
+                    </strong>
+                  </td>
+                  <td class="fw-semibold text-muted text-center">
+                    <strong><%= number_to_currency((dynamicNumber), precision: 2) %>
+                      
+                    </strong>
+                  </td>
                 <% else %>
                   <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
                   <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
