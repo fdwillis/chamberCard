@@ -1,7 +1,6 @@
 class SessionsController < Devise::SessionsController
   after_action :after_login, :only => :create
   before_action :after_logout, :only => :destroy
-  before_action :pullPayouts
 
   def pullPayouts
     paymentIntents = []

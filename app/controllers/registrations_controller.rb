@@ -1,22 +1,22 @@
 class RegistrationsController < ApplicationController 
 
   def new
-    paymentIntents = []
-    investedAmountRunning = 0
-    validPaymentIntents = Stripe::PaymentIntent.list(limit: 100)['data'].map{|d| (!d['metadata']['percentToInvest'].blank?) ? (paymentIntents.append(d)) : next}
+    # paymentIntents = []
+    # investedAmountRunning = 0
+    # validPaymentIntents = Stripe::PaymentIntent.list(limit: 100)['data'].map{|d| (!d['metadata']['percentToInvest'].blank?) ? (paymentIntents.append(d)) : next}
 
-    paymentIntents.reject{|e| e['charges']['data'][0]['refunded'] == true}.reject{|e| e['charges']['data'][0]['captured'] == false}.each do |payint|
-      if !payint['metadata'].blank? && payint['metadata']['percentToInvest'].to_i > 0 
-        amountForDeposit = payint['amount'] - (payint['amount']*0.029).to_i + 30
-        investedAmount = amountForDeposit * (payint['metadata']['percentToInvest'].to_i * 0.01)
-        investedAmountRunning += investedAmount
-      end
-    end
+    # paymentIntents.reject{|e| e['charges']['data'][0]['refunded'] == true}.reject{|e| e['charges']['data'][0]['captured'] == false}.each do |payint|
+    #   if !payint['metadata'].blank? && payint['metadata']['percentToInvest'].to_i > 0 
+    #     amountForDeposit = payint['amount'] - (payint['amount']*0.029).to_i + 30
+    #     investedAmount = amountForDeposit * (payint['metadata']['percentToInvest'].to_i * 0.01)
+    #     investedAmountRunning += investedAmount
+    #   end
+    # end
 
-    pullPayouts = []
-    @amountInvested = investedAmountRunning
-    topups = Stripe::Topup.list({limit: 100})['data'].map{|d| (!d['metadata']['startDate'].blank? && !d['metadata']['endDate'].blank?) ? (pullPayouts.append(d)) : next}.compact.flatten
-    @topUpSum = topups.map(&:amount).sum
+    # pullPayouts = []
+    # @amountInvested = investedAmountRunning
+    # topups = Stripe::Topup.list({limit: 100})['data'].map{|d| (!d['metadata']['startDate'].blank? && !d['metadata']['endDate'].blank?) ? (pullPayouts.append(d)) : next}.compact.flatten
+    # @topUpSum = topups.map(&:amount).sum
   end
 
   def create
