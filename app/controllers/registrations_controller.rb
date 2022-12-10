@@ -31,6 +31,10 @@ class RegistrationsController < ApplicationController
         flash[:success] = "Your Card Has Been Ordered! \n Welcome To Netwerth!"
         redirect_to profile_path
         return
+      else
+        flash[:success] = "Try again!"
+        redirect_to request.referrer
+        return
       end
     rescue Stripe::StripeError => e
       render json: {
