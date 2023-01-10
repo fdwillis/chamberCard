@@ -16,10 +16,10 @@ Gem::Specification.new do |s|
   s.files = ["README.md".freeze, "bin/clockwork".freeze, "bin/clockworkd".freeze]
   s.homepage = "http://github.com/Rykian/clockwork".freeze
   s.licenses = ["MIT".freeze]
-  s.rubygems_version = "3.3.5".freeze
+  s.rubygems_version = "3.2.3".freeze
   s.summary = "A scheduler process to replace cron.".freeze
 
-  s.installed_by_version = "3.3.5" if s.respond_to? :installed_by_version
+  s.installed_by_version = "3.2.3" if s.respond_to? :installed_by_version
 
   if s.respond_to? :specification_version then
     s.specification_version = 4

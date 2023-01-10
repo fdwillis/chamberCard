@@ -18,10 +18,10 @@ Gem::Specification.new do |s|
   s.licenses = ["MIT".freeze]
   s.rdoc_options = ["--line-numbers".freeze, "--inline-source".freeze, "--title".freeze, "Sinatra".freeze, "--main".freeze, "README.rdoc".freeze, "--encoding=UTF-8".freeze]
   s.required_ruby_version = Gem::Requirement.new(">= 2.3.0".freeze)
-  s.rubygems_version = "3.3.5".freeze
+  s.rubygems_version = "3.2.3".freeze
   s.summary = "Classy web-development dressed in a DSL".freeze
 
-  s.installed_by_version = "3.3.5" if s.respond_to? :installed_by_version
+  s.installed_by_version = "3.2.3" if s.respond_to? :installed_by_version
 
   if s.respond_to? :specification_version then
     s.specification_version = 4

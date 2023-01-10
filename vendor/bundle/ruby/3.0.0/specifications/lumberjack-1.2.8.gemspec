@@ -13,10 +13,10 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/bdurand/lumberjack".freeze
   s.licenses = ["MIT".freeze]
   s.required_ruby_version = Gem::Requirement.new(">= 2.3.0".freeze)
-  s.rubygems_version = "3.3.5".freeze
+  s.rubygems_version = "3.2.3".freeze
   s.summary = "A simple, powerful, and very fast logging utility that can be a drop in replacement for Logger or ActiveSupport::BufferedLogger.".freeze
 
-  s.installed_by_version = "3.3.5" if s.respond_to? :installed_by_version
+  s.installed_by_version = "3.2.3" if s.respond_to? :installed_by_version
 
   if s.respond_to? :specification_version then
     s.specification_version = 4

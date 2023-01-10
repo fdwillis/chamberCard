@@ -15,10 +15,10 @@ Gem::Specification.new do |s|
   s.files = ["MIT-LICENSE.txt".freeze, "README.md".freeze]
   s.homepage = "http://github.com/email-spec/email-spec/".freeze
   s.licenses = ["MIT".freeze]
-  s.rubygems_version = "3.3.5".freeze
+  s.rubygems_version = "3.2.3".freeze
   s.summary = "Easily test email in RSpec, Cucumber or Minitest".freeze
 
-  s.installed_by_version = "3.3.5" if s.respond_to? :installed_by_version
+  s.installed_by_version = "3.2.3" if s.respond_to? :installed_by_version
 
   if s.respond_to? :specification_version then
     s.specification_version = 4

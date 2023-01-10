@@ -1,5 +1,5 @@
 current directory: /home/netwerth/code/netwerthCard/vendor/bundle/ruby/3.0.0/gems/msgpack-1.4.2/ext/msgpack
-/usr/bin/ruby3.0 -I /usr/lib/ruby/vendor_ruby -r ./siteconf20221007-394793-l89k6s.rb extconf.rb
+/home/netwerth/.rbenv/versions/3.0.0/bin/ruby -I /home/netwerth/.rbenv/versions/3.0.0/lib/ruby/3.0.0 -r ./siteconf20230109-573112-5d90mf.rb extconf.rb
 checking for ruby/st.h... yes
 checking for st.h... no
 checking for rb_str_replace() in ruby.h... yes
@@ -13,10 +13,10 @@ checking for rb_hash_clear() in ruby.h... yes
 creating Makefile
 
 current directory: /home/netwerth/code/netwerthCard/vendor/bundle/ruby/3.0.0/gems/msgpack-1.4.2/ext/msgpack
-make DESTDIR\= clean
+make "DESTDIR=" clean
 
 current directory: /home/netwerth/code/netwerthCard/vendor/bundle/ruby/3.0.0/gems/msgpack-1.4.2/ext/msgpack
-make DESTDIR\=
+make "DESTDIR="
 compiling buffer.c
 compiling buffer_class.c
 buffer_class.c: In function ‘read_until_eof’:
@@ -25,13 +25,17 @@ buffer_class.c:261:17: warning: passing argument 3 of ‘rb_rescue2’ from inco
       |                 ^~~~~~~~~~~~~~~~~~~~
       |                 |
       |                 VALUE (*)(VALUE) {aka long unsigned int (*)(long unsigned int)}
-In file included from /usr/include/ruby-3.0.0/ruby/ruby.h:38,
-                 from /usr/include/ruby-3.0.0/ruby.h:38,
+In file included from /home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/ruby/ruby.h:38,
+                 from /home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/ruby.h:38,
                  from compat.h:22,
                  from buffer_class.c:19:
-/usr/include/ruby-3.0.0/ruby/internal/iterator.h:51:40: note: expected ‘VALUE (*)(VALUE,  VALUE)’ {aka ‘long unsigned int (*)(long unsigned int,  long unsigned int)’} but argument is of type ‘VALUE (*)(VALUE)’ {aka ‘long unsigned int (*)(long unsigned int)’}
+/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/ruby/internal/iterator.h:51:40: note: expected ‘VALUE (*)(VALUE,  VALUE)’ {aka ‘long unsigned int (*)(long unsigned int,  long unsigned int)’} but argument is of type ‘VALUE (*)(VALUE)’ {aka ‘long unsigned int (*)(long unsigned int)’}
    51 | VALUE rb_rescue2(VALUE(*)(VALUE),VALUE,VALUE(*)(VALUE,VALUE),VALUE,...);
       |                                        ^~~~~~~~~~~~~~~~~~~~~
+buffer_class.c: At top level:
+cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
+cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
+cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
 compiling extension_value_class.c
 compiling factory_class.c
 compiling packer.c
@@ -44,6 +48,10 @@ packer_ext_registry.h:129:9: warning: ‘lookup_class’ may be used uninitializ
 packer_ext_registry.h:85:11: note: ‘lookup_class’ was declared here
    85 |     VALUE lookup_class;
       |           ^~~~~~~~~~~~
+packer.c: At top level:
+cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
+cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
+cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
 compiling packer_class.c
 compiling packer_ext_registry.c
 compiling rbinit.c
@@ -56,22 +64,25 @@ unpacker_class.c:316:17: warning: passing argument 3 of ‘rb_rescue2’ from in
       |                 ^~~~~~~~~~~~~~~~~~~~~~~~
       |                 |
       |                 VALUE (*)(VALUE) {aka long unsigned int (*)(long unsigned int)}
-In file included from /usr/include/ruby-3.0.0/ruby/ruby.h:38,
-                 from /usr/include/ruby-3.0.0/ruby.h:38,
+In file included from /home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/ruby/ruby.h:38,
+                 from /home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/ruby.h:38,
                  from compat.h:22,
                  from buffer.h:21,
                  from unpacker.h:21,
                  from unpacker_class.c:19:
-/usr/include/ruby-3.0.0/ruby/internal/iterator.h:51:40: note: expected ‘VALUE (*)(VALUE,  VALUE)’ {aka ‘long unsigned int (*)(long unsigned int,  long unsigned int)’} but argument is of type ‘VALUE (*)(VALUE)’ {aka ‘long unsigned int (*)(long unsigned int)’}
+/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/ruby/internal/iterator.h:51:40: note: expected ‘VALUE (*)(VALUE,  VALUE)’ {aka ‘long unsigned int (*)(long unsigned int,  long unsigned int)’} but argument is of type ‘VALUE (*)(VALUE)’ {aka ‘long unsigned int (*)(long unsigned int)’}
    51 | VALUE rb_rescue2(VALUE(*)(VALUE),VALUE,VALUE(*)(VALUE,VALUE),VALUE,...);
       |                                        ^~~~~~~~~~~~~~~~~~~~~
 At top level:
 unpacker_class.c:225:14: warning: ‘Unpacker_peek_next_type’ defined but not used [-Wunused-function]
   225 | static VALUE Unpacker_peek_next_type(VALUE self)
       |              ^~~~~~~~~~~~~~~~~~~~~~~
+cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
+cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
+cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
 compiling unpacker_ext_registry.c
 linking shared-object msgpack/msgpack.so
 
 current directory: /home/netwerth/code/netwerthCard/vendor/bundle/ruby/3.0.0/gems/msgpack-1.4.2/ext/msgpack
-make DESTDIR\= install
-/usr/bin/install -c -m 0755 msgpack.so ./.gem.20221007-394793-6nndp0/msgpack
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 msgpack.so ./.gem.20230109-573112-mzpreo/msgpack

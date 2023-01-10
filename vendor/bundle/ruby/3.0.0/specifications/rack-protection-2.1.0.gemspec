@@ -14,10 +14,10 @@ Gem::Specification.new do |s|
   s.email = "sinatrarb@googlegroups.com".freeze
   s.homepage = "http://sinatrarb.com/protection/".freeze
   s.licenses = ["MIT".freeze]
-  s.rubygems_version = "3.3.5".freeze
+  s.rubygems_version = "3.2.3".freeze
   s.summary = "Protect against typical web attacks, works with all Rack apps, including Rails.".freeze
 
-  s.installed_by_version = "3.3.5" if s.respond_to? :installed_by_version
+  s.installed_by_version = "3.2.3" if s.respond_to? :installed_by_version
 
   if s.respond_to? :specification_version then
     s.specification_version = 4

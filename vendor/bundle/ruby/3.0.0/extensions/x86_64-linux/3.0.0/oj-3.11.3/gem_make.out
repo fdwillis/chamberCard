@@ -1,6 +1,6 @@
 current directory: /home/netwerth/code/netwerthCard/vendor/bundle/ruby/3.0.0/gems/oj-3.11.3/ext/oj
-/usr/bin/ruby3.0 -I /usr/lib/ruby/vendor_ruby -r ./siteconf20221007-396640-w9ehag.rb extconf.rb
->>>>> Creating Makefile for ruby version 3.0.2 on x86_64-linux-gnu <<<<<
+/home/netwerth/.rbenv/versions/3.0.0/bin/ruby -I /home/netwerth/.rbenv/versions/3.0.0/lib/ruby/3.0.0 -r ./siteconf20230109-579470-kna7ri.rb extconf.rb
+>>>>> Creating Makefile for ruby version 3.0.0 on x86_64-linux <<<<<
 checking for rb_time_timespec()... yes
 checking for rb_ivar_count()... yes
 checking for rb_ivar_foreach()... yes
@@ -10,10 +10,10 @@ checking for pthread_mutex_init()... yes
 creating Makefile
 
 current directory: /home/netwerth/code/netwerthCard/vendor/bundle/ruby/3.0.0/gems/oj-3.11.3/ext/oj
-make DESTDIR\= clean
+make "DESTDIR=" clean
 
 current directory: /home/netwerth/code/netwerthCard/vendor/bundle/ruby/3.0.0/gems/oj-3.11.3/ext/oj
-make DESTDIR\=
+make "DESTDIR="
 compiling cache8.c
 compiling circarray.c
 compiling code.c
@@ -50,5 +50,5 @@ compiling wab.c
 linking shared-object oj/oj.so
 
 current directory: /home/netwerth/code/netwerthCard/vendor/bundle/ruby/3.0.0/gems/oj-3.11.3/ext/oj
-make DESTDIR\= install
-/usr/bin/install -c -m 0755 oj.so ./.gem.20221007-396640-98uz2r/oj
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 oj.so ./.gem.20230109-579470-bknd0k/oj
