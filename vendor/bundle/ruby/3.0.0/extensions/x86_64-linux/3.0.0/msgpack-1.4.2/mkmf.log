@@ -1,6 +1,6 @@
 have_header: checking for ruby/st.h... -------------------- yes
 
-"x86_64-linux-gnu-gcc -o conftest -I/usr/include/x86_64-linux-gnu/ruby-3.0.0 -I/usr/include/ruby-3.0.0/ruby/backward -I/usr/include/ruby-3.0.0 -I. -Wdate-time -D_FORTIFY_SOURCE=2   -g -O2 -ffile-prefix-map=/build/ruby3.0-RodkHa/ruby3.0-3.0.2=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC conftest.c  -L. -L/usr/lib/x86_64-linux-gnu -L. -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -lruby-3.0  -lm   -lc"
+"gcc -o conftest -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/x86_64-linux -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/ruby/backward -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0 -I. -I/home/netwerth/.rbenv/versions/3.0.0/include    -O3 -ggdb3 -Wall -Wextra -Wdeprecated-declarations -Wduplicated-cond -Wimplicit-function-declaration -Wimplicit-int -Wmisleading-indentation -Wpointer-arith -Wwrite-strings -Wimplicit-fallthrough=0 -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-packed-bitfield-compat -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wsuggest-attribute=format -Wsuggest-attribute=noreturn -Wunused-variable  -fPIC conftest.c  -L. -L/home/netwerth/.rbenv/versions/3.0.0/lib -Wl,-rpath,/home/netwerth/.rbenv/versions/3.0.0/lib -L. -L/home/netwerth/.rbenv/versions/3.0.0/lib  -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -Wl,-rpath,/home/netwerth/.rbenv/versions/3.0.0/lib -L/home/netwerth/.rbenv/versions/3.0.0/lib -lruby  -lm   -lc"
 checked program was:
 /* begin */
 1: #include "ruby.h"
@@ -11,7 +11,7 @@ checked program was:
 6: }
 /* end */
 
-"x86_64-linux-gnu-gcc -E -I/usr/include/x86_64-linux-gnu/ruby-3.0.0 -I/usr/include/ruby-3.0.0/ruby/backward -I/usr/include/ruby-3.0.0 -I. -Wdate-time -D_FORTIFY_SOURCE=2   -g -O2 -ffile-prefix-map=/build/ruby3.0-RodkHa/ruby3.0-3.0.2=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC  conftest.c -o conftest.i"
+"gcc -E -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/x86_64-linux -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/ruby/backward -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0 -I. -I/home/netwerth/.rbenv/versions/3.0.0/include    -O3 -ggdb3 -Wall -Wextra -Wdeprecated-declarations -Wduplicated-cond -Wimplicit-function-declaration -Wimplicit-int -Wmisleading-indentation -Wpointer-arith -Wwrite-strings -Wimplicit-fallthrough=0 -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-packed-bitfield-compat -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wsuggest-attribute=format -Wsuggest-attribute=noreturn -Wunused-variable  -fPIC  conftest.c -o conftest.i"
 checked program was:
 /* begin */
 1: #include "ruby.h"
@@ -23,7 +23,7 @@ checked program was:
 
 have_header: checking for st.h... -------------------- no
 
-"x86_64-linux-gnu-gcc -E -I/usr/include/x86_64-linux-gnu/ruby-3.0.0 -I/usr/include/ruby-3.0.0/ruby/backward -I/usr/include/ruby-3.0.0 -I. -Wdate-time -D_FORTIFY_SOURCE=2   -g -O2 -ffile-prefix-map=/build/ruby3.0-RodkHa/ruby3.0-3.0.2=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC  conftest.c -o conftest.i"
+"gcc -E -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/x86_64-linux -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/ruby/backward -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0 -I. -I/home/netwerth/.rbenv/versions/3.0.0/include    -O3 -ggdb3 -Wall -Wextra -Wdeprecated-declarations -Wduplicated-cond -Wimplicit-function-declaration -Wimplicit-int -Wmisleading-indentation -Wpointer-arith -Wwrite-strings -Wimplicit-fallthrough=0 -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-packed-bitfield-compat -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wsuggest-attribute=format -Wsuggest-attribute=noreturn -Wunused-variable  -fPIC  conftest.c -o conftest.i"
 conftest.c:3:10: fatal error: st.h: No such file or directory
     3 | #include <st.h>
       |          ^~~~~~
@@ -39,7 +39,7 @@ checked program was:
 
 have_func: checking for rb_str_replace() in ruby.h... -------------------- yes
 
-"x86_64-linux-gnu-gcc -o conftest -I/usr/include/x86_64-linux-gnu/ruby-3.0.0 -I/usr/include/ruby-3.0.0/ruby/backward -I/usr/include/ruby-3.0.0 -I. -Wdate-time -D_FORTIFY_SOURCE=2   -g -O2 -ffile-prefix-map=/build/ruby3.0-RodkHa/ruby3.0-3.0.2=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC conftest.c  -L. -L/usr/lib/x86_64-linux-gnu -L. -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -lruby-3.0  -lm   -lc"
+"gcc -o conftest -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/x86_64-linux -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/ruby/backward -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0 -I. -I/home/netwerth/.rbenv/versions/3.0.0/include    -O3 -ggdb3 -Wall -Wextra -Wdeprecated-declarations -Wduplicated-cond -Wimplicit-function-declaration -Wimplicit-int -Wmisleading-indentation -Wpointer-arith -Wwrite-strings -Wimplicit-fallthrough=0 -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-packed-bitfield-compat -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wsuggest-attribute=format -Wsuggest-attribute=noreturn -Wunused-variable  -fPIC conftest.c  -L. -L/home/netwerth/.rbenv/versions/3.0.0/lib -Wl,-rpath,/home/netwerth/.rbenv/versions/3.0.0/lib -L. -L/home/netwerth/.rbenv/versions/3.0.0/lib  -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -Wl,-rpath,/home/netwerth/.rbenv/versions/3.0.0/lib -L/home/netwerth/.rbenv/versions/3.0.0/lib -lruby  -lm   -lc"
 checked program was:
 /* begin */
  1: #include "ruby.h"
@@ -64,7 +64,7 @@ checked program was:
 
 have_func: checking for rb_intern_str() in ruby.h... -------------------- yes
 
-"x86_64-linux-gnu-gcc -o conftest -I/usr/include/x86_64-linux-gnu/ruby-3.0.0 -I/usr/include/ruby-3.0.0/ruby/backward -I/usr/include/ruby-3.0.0 -I. -Wdate-time -D_FORTIFY_SOURCE=2   -g -O2 -ffile-prefix-map=/build/ruby3.0-RodkHa/ruby3.0-3.0.2=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC conftest.c  -L. -L/usr/lib/x86_64-linux-gnu -L. -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -lruby-3.0  -lm   -lc"
+"gcc -o conftest -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/x86_64-linux -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/ruby/backward -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0 -I. -I/home/netwerth/.rbenv/versions/3.0.0/include    -O3 -ggdb3 -Wall -Wextra -Wdeprecated-declarations -Wduplicated-cond -Wimplicit-function-declaration -Wimplicit-int -Wmisleading-indentation -Wpointer-arith -Wwrite-strings -Wimplicit-fallthrough=0 -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-packed-bitfield-compat -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wsuggest-attribute=format -Wsuggest-attribute=noreturn -Wunused-variable  -fPIC conftest.c  -L. -L/home/netwerth/.rbenv/versions/3.0.0/lib -Wl,-rpath,/home/netwerth/.rbenv/versions/3.0.0/lib -L. -L/home/netwerth/.rbenv/versions/3.0.0/lib  -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -Wl,-rpath,/home/netwerth/.rbenv/versions/3.0.0/lib -L/home/netwerth/.rbenv/versions/3.0.0/lib -lruby  -lm   -lc"
 checked program was:
 /* begin */
  1: #include "ruby.h"
@@ -89,13 +89,17 @@ checked program was:
 
 have_func: checking for rb_enc_interned_str() in ruby.h... -------------------- yes
 
-"x86_64-linux-gnu-gcc -o conftest -I/usr/include/x86_64-linux-gnu/ruby-3.0.0 -I/usr/include/ruby-3.0.0/ruby/backward -I/usr/include/ruby-3.0.0 -I. -Wdate-time -D_FORTIFY_SOURCE=2   -g -O2 -ffile-prefix-map=/build/ruby3.0-RodkHa/ruby3.0-3.0.2=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC conftest.c  -L. -L/usr/lib/x86_64-linux-gnu -L. -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -lruby-3.0  -lm   -lc"
+"gcc -o conftest -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/x86_64-linux -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/ruby/backward -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0 -I. -I/home/netwerth/.rbenv/versions/3.0.0/include    -O3 -ggdb3 -Wall -Wextra -Wdeprecated-declarations -Wduplicated-cond -Wimplicit-function-declaration -Wimplicit-int -Wmisleading-indentation -Wpointer-arith -Wwrite-strings -Wimplicit-fallthrough=0 -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-packed-bitfield-compat -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wsuggest-attribute=format -Wsuggest-attribute=noreturn -Wunused-variable  -fPIC conftest.c  -L. -L/home/netwerth/.rbenv/versions/3.0.0/lib -Wl,-rpath,/home/netwerth/.rbenv/versions/3.0.0/lib -L. -L/home/netwerth/.rbenv/versions/3.0.0/lib  -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -Wl,-rpath,/home/netwerth/.rbenv/versions/3.0.0/lib -L/home/netwerth/.rbenv/versions/3.0.0/lib -lruby  -lm   -lc"
 conftest.c: In function ‘t’:
 conftest.c:16:57: error: ‘rb_enc_interned_str’ undeclared (first use in this function); did you mean ‘rb_interned_str’?
    16 | int t(void) { void ((*volatile p)()); p = (void ((*)()))rb_enc_interned_str; return !p; }
       |                                                         ^~~~~~~~~~~~~~~~~~~
       |                                                         rb_interned_str
 conftest.c:16:57: note: each undeclared identifier is reported only once for each function it appears in
+conftest.c: At top level:
+cc1: note: unrecognized command-line option ‘-Wno-self-assign’ may have been intended to silence earlier diagnostics
+cc1: note: unrecognized command-line option ‘-Wno-parentheses-equality’ may have been intended to silence earlier diagnostics
+cc1: note: unrecognized command-line option ‘-Wno-constant-logical-operand’ may have been intended to silence earlier diagnostics
 checked program was:
 /* begin */
  1: #include "ruby.h"
@@ -116,7 +120,7 @@ checked program was:
 16: int t(void) { void ((*volatile p)()); p = (void ((*)()))rb_enc_interned_str; return !p; }
 /* end */
 
-"x86_64-linux-gnu-gcc -o conftest -I/usr/include/x86_64-linux-gnu/ruby-3.0.0 -I/usr/include/ruby-3.0.0/ruby/backward -I/usr/include/ruby-3.0.0 -I. -Wdate-time -D_FORTIFY_SOURCE=2   -g -O2 -ffile-prefix-map=/build/ruby3.0-RodkHa/ruby3.0-3.0.2=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC conftest.c  -L. -L/usr/lib/x86_64-linux-gnu -L. -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -lruby-3.0  -lm   -lc"
+"gcc -o conftest -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/x86_64-linux -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/ruby/backward -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0 -I. -I/home/netwerth/.rbenv/versions/3.0.0/include    -O3 -ggdb3 -Wall -Wextra -Wdeprecated-declarations -Wduplicated-cond -Wimplicit-function-declaration -Wimplicit-int -Wmisleading-indentation -Wpointer-arith -Wwrite-strings -Wimplicit-fallthrough=0 -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-packed-bitfield-compat -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wsuggest-attribute=format -Wsuggest-attribute=noreturn -Wunused-variable  -fPIC conftest.c  -L. -L/home/netwerth/.rbenv/versions/3.0.0/lib -Wl,-rpath,/home/netwerth/.rbenv/versions/3.0.0/lib -L. -L/home/netwerth/.rbenv/versions/3.0.0/lib  -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -Wl,-rpath,/home/netwerth/.rbenv/versions/3.0.0/lib -L/home/netwerth/.rbenv/versions/3.0.0/lib -lruby  -lm   -lc"
 checked program was:
 /* begin */
  1: #include "ruby.h"
@@ -142,7 +146,7 @@ checked program was:
 
 have_func: checking for rb_sym2str() in ruby.h... -------------------- yes
 
-"x86_64-linux-gnu-gcc -o conftest -I/usr/include/x86_64-linux-gnu/ruby-3.0.0 -I/usr/include/ruby-3.0.0/ruby/backward -I/usr/include/ruby-3.0.0 -I. -Wdate-time -D_FORTIFY_SOURCE=2   -g -O2 -ffile-prefix-map=/build/ruby3.0-RodkHa/ruby3.0-3.0.2=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC conftest.c  -L. -L/usr/lib/x86_64-linux-gnu -L. -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -lruby-3.0  -lm   -lc"
+"gcc -o conftest -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/x86_64-linux -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/ruby/backward -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0 -I. -I/home/netwerth/.rbenv/versions/3.0.0/include    -O3 -ggdb3 -Wall -Wextra -Wdeprecated-declarations -Wduplicated-cond -Wimplicit-function-declaration -Wimplicit-int -Wmisleading-indentation -Wpointer-arith -Wwrite-strings -Wimplicit-fallthrough=0 -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-packed-bitfield-compat -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wsuggest-attribute=format -Wsuggest-attribute=noreturn -Wunused-variable  -fPIC conftest.c  -L. -L/home/netwerth/.rbenv/versions/3.0.0/lib -Wl,-rpath,/home/netwerth/.rbenv/versions/3.0.0/lib -L. -L/home/netwerth/.rbenv/versions/3.0.0/lib  -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -Wl,-rpath,/home/netwerth/.rbenv/versions/3.0.0/lib -L/home/netwerth/.rbenv/versions/3.0.0/lib -lruby  -lm   -lc"
 checked program was:
 /* begin */
  1: #include "ruby.h"
@@ -167,7 +171,7 @@ checked program was:
 
 have_func: checking for rb_str_intern() in ruby.h... -------------------- yes
 
-"x86_64-linux-gnu-gcc -o conftest -I/usr/include/x86_64-linux-gnu/ruby-3.0.0 -I/usr/include/ruby-3.0.0/ruby/backward -I/usr/include/ruby-3.0.0 -I. -Wdate-time -D_FORTIFY_SOURCE=2   -g -O2 -ffile-prefix-map=/build/ruby3.0-RodkHa/ruby3.0-3.0.2=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC conftest.c  -L. -L/usr/lib/x86_64-linux-gnu -L. -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -lruby-3.0  -lm   -lc"
+"gcc -o conftest -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/x86_64-linux -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/ruby/backward -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0 -I. -I/home/netwerth/.rbenv/versions/3.0.0/include    -O3 -ggdb3 -Wall -Wextra -Wdeprecated-declarations -Wduplicated-cond -Wimplicit-function-declaration -Wimplicit-int -Wmisleading-indentation -Wpointer-arith -Wwrite-strings -Wimplicit-fallthrough=0 -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-packed-bitfield-compat -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wsuggest-attribute=format -Wsuggest-attribute=noreturn -Wunused-variable  -fPIC conftest.c  -L. -L/home/netwerth/.rbenv/versions/3.0.0/lib -Wl,-rpath,/home/netwerth/.rbenv/versions/3.0.0/lib -L. -L/home/netwerth/.rbenv/versions/3.0.0/lib  -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -Wl,-rpath,/home/netwerth/.rbenv/versions/3.0.0/lib -L/home/netwerth/.rbenv/versions/3.0.0/lib -lruby  -lm   -lc"
 checked program was:
 /* begin */
  1: #include "ruby.h"
@@ -192,7 +196,7 @@ checked program was:
 
 have_func: checking for rb_block_lambda() in ruby.h... -------------------- yes
 
-"x86_64-linux-gnu-gcc -o conftest -I/usr/include/x86_64-linux-gnu/ruby-3.0.0 -I/usr/include/ruby-3.0.0/ruby/backward -I/usr/include/ruby-3.0.0 -I. -Wdate-time -D_FORTIFY_SOURCE=2   -g -O2 -ffile-prefix-map=/build/ruby3.0-RodkHa/ruby3.0-3.0.2=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC conftest.c  -L. -L/usr/lib/x86_64-linux-gnu -L. -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -lruby-3.0  -lm   -lc"
+"gcc -o conftest -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/x86_64-linux -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/ruby/backward -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0 -I. -I/home/netwerth/.rbenv/versions/3.0.0/include    -O3 -ggdb3 -Wall -Wextra -Wdeprecated-declarations -Wduplicated-cond -Wimplicit-function-declaration -Wimplicit-int -Wmisleading-indentation -Wpointer-arith -Wwrite-strings -Wimplicit-fallthrough=0 -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-packed-bitfield-compat -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wsuggest-attribute=format -Wsuggest-attribute=noreturn -Wunused-variable  -fPIC conftest.c  -L. -L/home/netwerth/.rbenv/versions/3.0.0/lib -Wl,-rpath,/home/netwerth/.rbenv/versions/3.0.0/lib -L. -L/home/netwerth/.rbenv/versions/3.0.0/lib  -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -Wl,-rpath,/home/netwerth/.rbenv/versions/3.0.0/lib -L/home/netwerth/.rbenv/versions/3.0.0/lib -lruby  -lm   -lc"
 checked program was:
 /* begin */
  1: #include "ruby.h"
@@ -217,7 +221,7 @@ checked program was:
 
 have_func: checking for rb_hash_dup() in ruby.h... -------------------- yes
 
-"x86_64-linux-gnu-gcc -o conftest -I/usr/include/x86_64-linux-gnu/ruby-3.0.0 -I/usr/include/ruby-3.0.0/ruby/backward -I/usr/include/ruby-3.0.0 -I. -Wdate-time -D_FORTIFY_SOURCE=2   -g -O2 -ffile-prefix-map=/build/ruby3.0-RodkHa/ruby3.0-3.0.2=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC conftest.c  -L. -L/usr/lib/x86_64-linux-gnu -L. -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -lruby-3.0  -lm   -lc"
+"gcc -o conftest -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/x86_64-linux -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/ruby/backward -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0 -I. -I/home/netwerth/.rbenv/versions/3.0.0/include    -O3 -ggdb3 -Wall -Wextra -Wdeprecated-declarations -Wduplicated-cond -Wimplicit-function-declaration -Wimplicit-int -Wmisleading-indentation -Wpointer-arith -Wwrite-strings -Wimplicit-fallthrough=0 -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-packed-bitfield-compat -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wsuggest-attribute=format -Wsuggest-attribute=noreturn -Wunused-variable  -fPIC conftest.c  -L. -L/home/netwerth/.rbenv/versions/3.0.0/lib -Wl,-rpath,/home/netwerth/.rbenv/versions/3.0.0/lib -L. -L/home/netwerth/.rbenv/versions/3.0.0/lib  -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -Wl,-rpath,/home/netwerth/.rbenv/versions/3.0.0/lib -L/home/netwerth/.rbenv/versions/3.0.0/lib -lruby  -lm   -lc"
 checked program was:
 /* begin */
  1: #include "ruby.h"
@@ -242,7 +246,7 @@ checked program was:
 
 have_func: checking for rb_hash_clear() in ruby.h... -------------------- yes
 
-"x86_64-linux-gnu-gcc -o conftest -I/usr/include/x86_64-linux-gnu/ruby-3.0.0 -I/usr/include/ruby-3.0.0/ruby/backward -I/usr/include/ruby-3.0.0 -I. -Wdate-time -D_FORTIFY_SOURCE=2   -g -O2 -ffile-prefix-map=/build/ruby3.0-RodkHa/ruby3.0-3.0.2=. -fstack-protector-strong -Wformat -Werror=format-security -fPIC conftest.c  -L. -L/usr/lib/x86_64-linux-gnu -L. -Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -lruby-3.0  -lm   -lc"
+"gcc -o conftest -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/x86_64-linux -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0/ruby/backward -I/home/netwerth/.rbenv/versions/3.0.0/include/ruby-3.0.0 -I. -I/home/netwerth/.rbenv/versions/3.0.0/include    -O3 -ggdb3 -Wall -Wextra -Wdeprecated-declarations -Wduplicated-cond -Wimplicit-function-declaration -Wimplicit-int -Wmisleading-indentation -Wpointer-arith -Wwrite-strings -Wimplicit-fallthrough=0 -Wmissing-noreturn -Wno-cast-function-type -Wno-constant-logical-operand -Wno-long-long -Wno-missing-field-initializers -Wno-overlength-strings -Wno-packed-bitfield-compat -Wno-parentheses-equality -Wno-self-assign -Wno-tautological-compare -Wno-unused-parameter -Wno-unused-value -Wsuggest-attribute=format -Wsuggest-attribute=noreturn -Wunused-variable  -fPIC conftest.c  -L. -L/home/netwerth/.rbenv/versions/3.0.0/lib -Wl,-rpath,/home/netwerth/.rbenv/versions/3.0.0/lib -L. -L/home/netwerth/.rbenv/versions/3.0.0/lib  -fstack-protector-strong -rdynamic -Wl,-export-dynamic     -Wl,-rpath,/home/netwerth/.rbenv/versions/3.0.0/lib -L/home/netwerth/.rbenv/versions/3.0.0/lib -lruby  -lm   -lc"
 checked program was:
 /* begin */
  1: #include "ruby.h"

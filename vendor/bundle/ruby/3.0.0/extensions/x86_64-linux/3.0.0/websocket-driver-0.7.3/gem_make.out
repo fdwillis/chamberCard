@@ -1,15 +1,15 @@
 current directory: /home/netwerth/code/netwerthCard/vendor/bundle/ruby/3.0.0/gems/websocket-driver-0.7.3/ext/websocket-driver
-/usr/bin/ruby3.0 -I /usr/lib/ruby/vendor_ruby -r ./siteconf20221007-394793-kqvl75.rb extconf.rb
+/home/netwerth/.rbenv/versions/3.0.0/bin/ruby -I /home/netwerth/.rbenv/versions/3.0.0/lib/ruby/3.0.0 -r ./siteconf20230109-579470-b276br.rb extconf.rb
 creating Makefile
 
 current directory: /home/netwerth/code/netwerthCard/vendor/bundle/ruby/3.0.0/gems/websocket-driver-0.7.3/ext/websocket-driver
-make DESTDIR\= clean
+make "DESTDIR=" clean
 
 current directory: /home/netwerth/code/netwerthCard/vendor/bundle/ruby/3.0.0/gems/websocket-driver-0.7.3/ext/websocket-driver
-make DESTDIR\=
+make "DESTDIR="
 compiling websocket_mask.c
 linking shared-object websocket_mask.so
 
 current directory: /home/netwerth/code/netwerthCard/vendor/bundle/ruby/3.0.0/gems/websocket-driver-0.7.3/ext/websocket-driver
-make DESTDIR\= install
-/usr/bin/install -c -m 0755 websocket_mask.so ./.gem.20221007-394793-i409jr
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 websocket_mask.so ./.gem.20230109-579470-9x6axu

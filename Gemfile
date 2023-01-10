@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.0.2'
+ruby '3.0.0'
 
 gem 'rails', '~> 6.0.3', '>= 6.0.3.3'
 gem 'pg'
@@ -14,38 +14,24 @@ gem 'jquery-rails'
 gem 'jquery'
 gem 'pwa'
 gem 'activerecord-session_store'
-gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dabd025dcbd36a8a60f'
-
 
 gem 'stripe'
-gem 'plaid'
 gem 'simple_token_authentication'
 gem 'figaro'
 gem 'activesupport'
-gem 'geocoder'
-gem 'cloudinary'
-gem 'carrierwave'
 gem 'font-awesome-rails'
 gem 'friendly_id'
 gem 'devise'
-gem 'curb'
 gem 'awesome_print'
 gem 'clockwork'
 gem 'faker'
 gem 'keen'
-gem 'ngrok-tunnel'
-gem 'lazy_high_charts'
 gem 'oj'
-gem 'curb'
 gem 'split', require: 'split/dashboard'
+gem 'geocoder'
 gem 'byebug'
 gem 'redis'
 gem 'rails_12factor', group: :production
-
-
-# 
-
-gem 'bootsnap', '>= 1.1.0', require: false
 
 group :development do
   gem 'web-console', '>= 3.3.0'

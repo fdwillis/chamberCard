@@ -1,10 +1,3 @@
-GIT
-  remote: https://github.com/mimemagicrb/mimemagic.git
-  revision: 01f92d86d15d85cfd0f20dabd025dcbd36a8a60f
-  ref: 01f92d86d15d85cfd0f20dabd025dcbd36a8a60f
-  specs:
-    mimemagic (0.3.5)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -72,11 +65,8 @@ GEM
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     awesome_print (1.9.2)
-    aws_cf_signer (0.1.3)
     bcrypt (3.1.16)
     bindex (0.8.1)
-    bootsnap (1.7.3)
-      msgpack (~> 1.0)
     builder (3.2.4)
     byebug (11.1.3)
     capybara (3.35.3)
@@ -87,20 +77,9 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
-    carrierwave (2.2.1)
-      activemodel (>= 5.0.0)
-      activesupport (>= 5.0.0)
-      addressable (~> 2.6)
-      image_processing (~> 1.1)
-      marcel (~> 1.0.0)
-      mini_mime (>= 0.1.3)
-      ssrf_filter (~> 1.0)
     clockwork (2.0.4)
       activesupport
       tzinfo
-    cloudinary (1.20.0)
-      aws_cf_signer
-      rest-client (>= 2.0.0)
     coderay (1.1.3)
     coffee-rails (5.0.0)
       coffee-script (>= 2.2.0)
@@ -111,7 +90,6 @@ GEM
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.8)
     crass (1.0.6)
-    curb (0.9.11)
     devise (4.7.3)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -119,8 +97,6 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.4.4)
-    domain_name (0.5.20190701)
-      unf (>= 0.0.5, < 1.0.0)
     email_spec (2.2.0)
       htmlentities (~> 4.3.3)
       launchy (~> 2.1)
@@ -134,29 +110,6 @@ GEM
       railties (>= 5.0.0)
     faker (2.17.0)
       i18n (>= 1.6, < 2)
-    faraday (1.10.0)
-      faraday-em_http (~> 1.0)
-      faraday-em_synchrony (~> 1.0)
-      faraday-excon (~> 1.1)
-      faraday-httpclient (~> 1.0)
-      faraday-multipart (~> 1.0)
-      faraday-net_http (~> 1.0)
-      faraday-net_http_persistent (~> 1.0)
-      faraday-patron (~> 1.0)
-      faraday-rack (~> 1.0)
-      faraday-retry (~> 1.0)
-      ruby2_keywords (>= 0.0.4)
-    faraday-em_http (1.0.0)
-    faraday-em_synchrony (1.0.0)
-    faraday-excon (1.1.0)
-    faraday-httpclient (1.0.1)
-    faraday-multipart (1.0.3)
-      multipart-post (>= 1.2, < 3)
-    faraday-net_http (1.0.1)
-    faraday-net_http_persistent (1.2.0)
-    faraday-patron (1.0.0)
-    faraday-rack (1.0.0)
-    faraday-retry (1.0.3)
     ffi (1.15.0)
     figaro (1.2.0)
       thor (>= 0.14.0, < 2)
@@ -165,7 +118,7 @@ GEM
     formatador (0.2.5)
     friendly_id (5.4.2)
       activerecord (>= 4.0.0)
-    geocoder (1.6.6)
+    geocoder (1.8.1)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     guard (2.16.2)
@@ -182,16 +135,9 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
-    hash-deep-merge (0.1.1)
     htmlentities (4.3.4)
-    http-accept (1.7.0)
-    http-cookie (1.0.3)
-      domain_name (~> 0.5)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
-    image_processing (1.12.1)
-      mini_magick (>= 4.9.5, < 5)
-      ruby-vips (>= 2.0.17, < 3)
     jbuilder (2.11.2)
       activesupport (>= 5.0.0)
     jquery (0.0.1)
@@ -204,8 +150,6 @@ GEM
       multi_json (~> 1.12)
     launchy (2.5.0)
       addressable (~> 2.7)
-    lazy_high_charts (1.6.1)
-      hash-deep-merge
     letter_opener (1.7.0)
       launchy (~> 2.2)
     listen (3.5.1)
@@ -219,10 +163,6 @@ GEM
       mini_mime (>= 0.1.1)
     marcel (1.0.1)
     method_source (1.0.0)
-    mime-types (3.3.1)
-      mime-types-data (~> 3.2015)
-    mime-types-data (3.2021.0225)
-    mini_magick (4.11.0)
     mini_mime (1.0.3)
     mini_portile2 (2.5.0)
     minitest (5.14.4)
@@ -230,17 +170,13 @@ GEM
       activesupport (>= 5.0)
       nestive-rails (~> 1.0)
       railties (>= 5.0)
-    msgpack (1.4.2)
     multi_json (1.15.0)
-    multipart-post (2.1.1)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
     nenv (0.3.0)
     nestive-rails (1.0.2)
       actionview (>= 5.0)
       railties (>= 5.0)
-    netrc (0.11.0)
-    ngrok-tunnel (2.1.1)
     nio4r (2.5.7)
     nokogiri (1.11.2)
       mini_portile2 (~> 2.5.0)
@@ -251,8 +187,6 @@ GEM
     oj (3.11.3)
     orm_adapter (0.5.0)
     pg (1.2.3)
-    plaid (15.2.0)
-      faraday (~> 1.0, >= 1.0.1)
     power_assert (2.0.0)
     pry (0.14.0)
       coderay (~> 1.1)
@@ -304,7 +238,7 @@ GEM
       method_source
       rake (>= 0.8.7)
       thor (>= 0.20.3, < 2.0)
-    rake (13.0.3)
+    rake (13.0.6)
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
@@ -313,11 +247,6 @@ GEM
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
-    rest-client (2.1.0)
-      http-accept (>= 1.7.0, < 2.0)
-      http-cookie (>= 1.0.2, < 2.0)
-      mime-types (>= 1.16, < 4.0)
-      netrc (~> 0.8)
     rspec (3.10.0)
       rspec-core (~> 3.10.0)
       rspec-expectations (~> 3.10.0)
@@ -342,8 +271,6 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.10.2)
-    ruby-vips (2.1.0)
-      ffi (~> 1.12)
     ruby2_keywords (0.0.4)
     shellany (0.0.1)
     shoulda (4.0.0)
@@ -377,7 +304,6 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    ssrf_filter (1.0.7)
     stripe (5.31.0)
     test-unit (3.4.0)
       power_assert
@@ -391,9 +317,6 @@ GEM
       thread_safe (~> 0.1)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
-    unf (0.1.4)
-      unf_ext
-    unf_ext (0.0.7.7)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.1.0)
@@ -415,14 +338,10 @@ DEPENDENCIES
   activerecord-session_store
   activesupport
   awesome_print
-  bootsnap (>= 1.1.0)
   byebug
   capybara
-  carrierwave
   clockwork
-  cloudinary
   coffee-rails
-  curb
   devise
   email_spec
   factory_bot_rails
@@ -436,14 +355,10 @@ DEPENDENCIES
   jquery
   jquery-rails
   keen
-  lazy_high_charts
   letter_opener
   listen
-  mimemagic!
-  ngrok-tunnel
   oj
   pg
-  plaid
   puma (~> 4.1)
   pwa
   rails (~> 6.0.3, >= 6.0.3.3)
@@ -466,7 +381,7 @@ DEPENDENCIES
   web-console (>= 3.3.0)
 
 RUBY VERSION
-   ruby 3.0.2p107
+   ruby 3.0.0p0
 
 BUNDLED WITH
-   2.1.4
+   2.4.2

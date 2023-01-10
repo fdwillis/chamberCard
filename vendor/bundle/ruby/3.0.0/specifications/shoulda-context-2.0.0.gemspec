@@ -16,8 +16,8 @@ Gem::Specification.new do |s|
   s.files = ["exe/convert_to_should_syntax".freeze]
   s.homepage = "http://thoughtbot.com/community/".freeze
   s.licenses = ["MIT".freeze]
-  s.rubygems_version = "3.3.5".freeze
+  s.rubygems_version = "3.2.3".freeze
   s.summary = "Context framework extracted from Shoulda".freeze
 
-  s.installed_by_version = "3.3.5" if s.respond_to? :installed_by_version
+  s.installed_by_version = "3.2.3" if s.respond_to? :installed_by_version
 end

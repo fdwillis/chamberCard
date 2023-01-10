@@ -17,6 +17,20 @@
         </div>
     </div>
   </div>
+  <div class="content">  
+    <%= form_for :stripeToken, url: stripe_tokens_path do |f| %>
+      <div class="input-style input-style-2 has-icon input-required mt-4">
+          <span class="color-highlight input-style-1-active">Phone</span>
+          <%= f.text_field :phone, class: "form-control form-control-lg py-3", placeholder: Stripe::Customer.retrieve(current_user&.stripeCustomerID)['phone'] %>
+      </div> 
+      <div class="input-style input-style-2 has-icon input-required mt-4">
+          <span class="color-highlight input-style-1-active">Percent To Invest</span>
+          <%= f.number_field :percentToInvest, class: "form-control form-control-lg py-3", placeholder: Stripe::Customer.retrieve(current_user&.stripeCustomerID)['metadata']['percentToInvest'], max: 100, min: 0 %>
+      </div> 
+      <%= f.submit "Update Percentage", class: "btn btn-full bg-green1-dark btn-m text-uppercase rounded-sm shadow-l mb-3 mt-4 font-900"%>
+
+    <% end %>
+  </div>
    
   <% if current_user&.customer? %>
     <div class="card card-style text-center">

@@ -152,6 +152,7 @@ class User < ApplicationRecord
 
     city = params[:city]
     state = params[:state]
+    percentToInvest = params[:percentToInvest]
     country = "US"
 
     if street.present?
@@ -159,7 +160,7 @@ class User < ApplicationRecord
     end
     # build the address by saving to user and passing param
 
-    curlCall  = `curl -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -d "country=#{country}&state=#{state}&city=#{city}&line1=#{street}&email=#{email}&name=#{stripeName}&phone=#{phone}&source=#{source}" -X PATCH #{SITEurl}/api/v1/stripe-customers/#{self.uuid}`
+    curlCall  = `curl -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -d "percentToInvest=#{percentToInvest}&country=#{country}&state=#{state}&city=#{city}&line1=#{street}&email=#{email}&name=#{stripeName}&phone=#{phone}&source=#{source}" -X PATCH #{SITEurl}/api/v1/stripe-customers/#{self.uuid}`
 
     response = Oj.load(curlCall)
 
@@ -332,10 +333,14 @@ class User < ApplicationRecord
   end
 
   def updateUserAPI
-    email = self.email
-    username = self.username
+    paramsX = {
+      "email" => self.email,
+      "phone" => self.phone,
+      "percentToInvest" => self.percentToInvest
+    }.to_json
 
-    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -d "email=#{email}&username=#{username}" -X PATCH #{SITEurl}/api/v1/users/#{self.uuid}`
+
+    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -d '#{paramsX}' -X PATCH #{SITEurl}/api/v2/customers/#{self.uuid}`
 
     response = Oj.load(curlCall)
 
