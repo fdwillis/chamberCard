@@ -1,11 +1,12 @@
 <div class="content">
-  <h3>A 3% fee will be added by <%= link_to "Stripe", "https://www.stripe.com/pricing", "target" => "_blank"%></h3>
-  <br>
+  A 3% fee will be added by <%= link_to "Stripe", "https://www.stripe.com/pricing", "target" => "_blank"%> to all deposits
+  <h3>Single <%= Stripe::Product.retrieve(@prices.map(&:product).uniq[0])['name'] %></h3>
+  <div class="divider w-100 mt-2 mb-2 divider-margins"></div>
   <%= form_for :newInvoice, url: newInvoice_path do |f| %>
           <div class="row mb-0">
               <div class="col-12">
                 <div class="input-style input-style-2">
-                    <span class="input-style-1-active">Deposit Amount</span>
+                    <span class="input-style-1-active">Single Deposit Amount</span>
                     <%= f.number_field :amount, placeholder: "20.45", class: "form-control", required: true, :step => "0.01" %>
                 </div>
                 <div class="input-style input-style-2">
@@ -14,4 +15,14 @@
               </div>
           </div>
         <% end %>
+  <div class="divider divider-margins w-100 mt-2 mb-3"></div>
+  <h2>- OR -</h2>
+  <div class="divider divider-margins w-100 mt-2 mb-3"></div>
+
+  <h3>Recurring <%= Stripe::Product.retrieve(@prices.map(&:product).uniq[0])['name'] %></h3>
+  <h6>Your total will be transfered to the Netwerth Stock Market Debit Card every month.</h6>
+  <div class="divider divider-margins w-100 mt-2 mb-3"></div>
+
 </div>
+
+

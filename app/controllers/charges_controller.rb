@@ -42,7 +42,7 @@ class ChargesController < ApplicationController
 	end
 
 	def new
-
+		@prices = Stripe::Price.list({limit: 100})['data'].reject{|e| e['metadata']['depositPrice'].to_sym == true}
 	end
 
 	def initiateCharge
