@@ -59,10 +59,7 @@ class ChargesController < ApplicationController
 			},{
 				monthlyAmount: 1000,
 				stripePriceID: ENV['stripePriceID1000']
-			},{
-				monthlyAmount: 500000,
-				stripePriceID: ENV['stripePriceID500000']
-			},
+			}
 		]
 	end
 
