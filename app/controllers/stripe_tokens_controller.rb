@@ -7,8 +7,8 @@ before_action :authenticate_user!
 				callCurl = current_user.createStripeBankTokenAPI(stripeTokenParams)
 			elsif !stripeTokenParams[:cvc].blank?
 				callCurl = current_user.createStripeCardTokenAPI(stripeTokenParams)
-			elsif !stripeTokenParams[:percentToInvest].blank?
-				current_user.update(phone: stripeTokenParams[:phone], percentToInvest: stripeTokenParams[:percentToInvest].to_i)
+			elsif !stripeTokenParams[:percentToInvest].blank? || !stripeTokenParams[:phone].blank?
+				current_user.update(phone: stripeTokenParams[:phone].present? ? stripeTokenParams[:phone].to_s : current_user&.phone, percentToInvest: stripeTokenParams[:percentToInvest].present? ? stripeTokenParams[:percentToInvest].to_i : current_user&.percentToInvest)
 				callCurl = current_user.updateUserAPI
 			end
 		end
