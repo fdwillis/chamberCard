@@ -38,11 +38,22 @@ class ChargesController < ApplicationController
 		rescue Exception => e
 			flash[:error] = "Something is wrong. \n #{e}"
 			redirect_to root_path
-		end	
-	end
+		end
+		end
 
 	def new
-		@prices = Stripe::Price.list({limit: 100})['data'].reject{|e| e['metadata']['depositPrice'].to_sym == true}
+		@paymentLinks = [
+			{
+				monthlyAmount: 5,
+				stripePriceID: ENV['stripePriceID5']
+			},{
+				monthlyAmount: 10,
+				stripePriceID: ENV['stripePriceID10']
+			},{
+				monthlyAmount: 500000,
+				stripePriceID: ENV['stripePriceID500000']
+			},
+		]
 	end
 
 	def initiateCharge
@@ -63,11 +74,23 @@ class ChargesController < ApplicationController
 
 
 	def newInvoice
-		paramsX = {
-      "amount" => newInvoiceParams[:amount].to_s,
-    }.to_json
+		case true
+		when params['newInvoice'].present?
+			paramsX = {
+	      "amount" => newInvoiceParams[:amount].to_s,
+	    }.to_json
 
-    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{current_user.authentication_token}" -d '#{paramsX}' -X POST #{SITEurl}/api/v2/stripe-charges`
+	    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{current_user.authentication_token}" -d '#{paramsX}' -X POST #{SITEurl}/api/v2/stripe-charges`
+		when params['newSubscription'].present?
+			debugger
+			
+		end
+
+		# if newInvoiceParams
+	  # end
+
+		# if newSubscriptionParams
+	  # end
 
 		response = Oj.load(curlCall)
 		sleep 3
@@ -104,34 +127,14 @@ class ChargesController < ApplicationController
 	private
 
 	def newInvoiceParams
-		paramsClean = params.require(:newInvoice).permit(:customer, :amount, :desc, :title)
+		paramsClean = params.require(:newInvoice).permit(:amount, :quantity)
+	end
+
+	def newSubscriptionParams
+		paramsClean = params.require(:newSubscription).permit(:price,:quantity)
 	end
 
 	def newChargeParams
 		paramsClean = params.require(:newCharge).permit(:uuid, :quantity, :desc)
 	end
-
-	def stripeAmount(string)
-    converted = (string.gsub(/[^0-9]/i, '').to_i)
-
-    if string.include?(".")
-      dollars = string.split(".")[0]
-      cents = string.split(".")[1]
-
-      if cents.length == 2
-        stripe_amount = "#{dollars}#{cents}"
-      else
-        if cents === "0"
-          stripe_amount = ("#{dollars}00")
-        else
-          stripe_amount = ("#{dollars}#{cents.to_i * 10}")
-        end
-      end
-
-      return stripe_amount
-    else
-      stripe_amount = converted * 100
-      return stripe_amount
-    end
-  end
 end

@@ -1,6 +1,6 @@
-<div class="content">
+<div class="">
   A 3% fee will be added by <%= link_to "Stripe", "https://www.stripe.com/pricing", "target" => "_blank"%> to all deposits
-  <h3>Single <%= Stripe::Product.retrieve(@prices.map(&:product).uniq[0])['name'] %></h3>
+  <h3>Single Deposit</h3>
   <div class="divider w-100 mt-2 mb-2 divider-margins"></div>
   <%= form_for :newInvoice, url: newInvoice_path do |f| %>
           <div class="row mb-0">
@@ -19,10 +19,31 @@
   <h2>- OR -</h2>
   <div class="divider divider-margins w-100 mt-2 mb-3"></div>
 
-  <h3>Recurring <%= Stripe::Product.retrieve(@prices.map(&:product).uniq[0])['name'] %></h3>
-  <h6>Your total will be transfered to the Netwerth Stock Market Debit Card every month.</h6>
+  <h3>Recurring Deposit</h3>
+  <h6>Pick as many plans as you'd like!</h6>
   <div class="divider divider-margins w-100 mt-2 mb-3"></div>
-
+  
+  <div class="row">
+    <% @paymentLinks.each do |payLink| %>
+      <div class="col-4">
+        <div class="block block-rounded block-link-shadow text-center">
+          <!-- <div class="block-content py-2 bg-success-light">
+            <p class="fw-medium fs-sm text-muted mb-0">
+              You Own This Plan
+            </p>
+          </div> -->
+          <div class="block-content block-content-full">
+            <div class="fs-2 fw-semibold text-success"><%= number_to_currency(payLink[:monthlyAmount], precision: 2) %> / month</div>
+          </div>
+          <div class="block-content py-2">
+            <p class="fw-medium fs-sm text-muted mb-0">
+              <%= link_to "Choose Your Quantity", new_stripe_subscription_path(id: payLink[:stripePriceID] ), class: 'btn btn-full bg-green1-dark btn-m text-uppercase rounded-sm shadow-l mb-3 mt-4 font-900' %>
+            </p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>
 
 

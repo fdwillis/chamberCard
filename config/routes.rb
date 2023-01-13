@@ -34,6 +34,7 @@ Rails.application.routes.draw do
 		resources :checkout
 
 		resources :stripe_customers, :path => '/customers'
+		resources :stripe_subscriptions, :path => '/subscriptions'
 		resources :stripe_tokens, :path => '/stripe-tokens'
 		
 		post "zazi", to: 'checkout#zazi', as: "zazi"
