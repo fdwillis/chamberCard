@@ -24,6 +24,7 @@ class ChargesController < ApplicationController
 			  	pullSource
 					@payments = response['selfCharges'] #edit stripe session meta for scheduling
 					@available = response['available'] #edit stripe session meta for scheduling
+					@subscriptionTotal = response['subscriptionTotal'] 
 					@depositTotal = response['selfChargeTotal'] #edit stripe session meta for scheduling
 					@invested = response['invested'] #edit stripe session meta for scheduling
 					@hasMore = response['has_more']

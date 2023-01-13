@@ -74,7 +74,7 @@
     <div class="col-12 col-lg-6">
       <a class="block block-rounded block-link-shadow text-center">
         <div class="block-content block-content-full">
-          <div class="fs-lg fw-semibold text-dark">Available Now</div>
+          <div class="fs-lg fw-semibold text-dark"><%= number_to_currency((@subscriptionTotal) * 0.01, precision: 2) %></div>
         </div>
         <div class="block-content py-2 bg-body-light">
           <p class="fw-medium fs-sm text-muted mb-0">
