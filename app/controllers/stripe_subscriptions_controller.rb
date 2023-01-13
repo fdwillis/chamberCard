@@ -31,7 +31,7 @@ before_action :authenticate_user!
 
 		if callCurl['success']
 			flash[:success] = "Your Plan Was Created!"
-			redirect_to new_charge_path
+			redirect_to charges_path
 		else
 			flash[:error] = callCurl['error']
 			redirect_to new_charge_path

@@ -25,7 +25,8 @@
   
   <div class="row">
     <% @paymentLinks.each do |payLink| %>
-      <div class="col-4">
+      <% if  payLink[:stripePriceID].present? %>  
+        <div class="col-4">
         <div class="block block-rounded block-link-shadow text-center">
           <!-- <div class="block-content py-2 bg-success-light">
             <p class="fw-medium fs-sm text-muted mb-0">
@@ -40,8 +41,9 @@
               <%= link_to "Choose Your Quantity", new_stripe_subscription_path(id: payLink[:stripePriceID] ), class: 'btn btn-full bg-green1-dark btn-m text-uppercase rounded-sm shadow-l mb-3 mt-4 font-900' %>
             </p>
           </div>
+            </div>
         </div>
-      </div>
+      <% end %>
     <% end %>
   </div>
 </div>

@@ -51,6 +51,15 @@ class ChargesController < ApplicationController
 				monthlyAmount: 10,
 				stripePriceID: ENV['stripePriceID10']
 			},{
+				monthlyAmount: 50,
+				stripePriceID: ENV['stripePriceID50']
+			},{
+				monthlyAmount: 250,
+				stripePriceID: ENV['stripePriceID250']
+			},{
+				monthlyAmount: 1000,
+				stripePriceID: ENV['stripePriceID1000']
+			},{
 				monthlyAmount: 500000,
 				stripePriceID: ENV['stripePriceID500000']
 			},
