@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-12">
+    <div class="block block-rounded block-link-shadow text-center">
+      <!-- <div class="block-content py-2 bg-success-light">
+        <p class="fw-medium fs-sm text-muted mb-0">
+          You Own This Plan
+        </p>
+      </div> -->
+      <div class="block-content block-content-full">
+        <div class="fs-2 fw-semibold text-success"> <%= number_to_currency(Stripe::Price.retrieve(params['id'])['unit_amount'] * 0.01, precision: 2) %> / month</div>
+      </div>
+      <%= form_for :newSubscription, url: stripe_subscriptions_path, method: :post do |f| %>
+	      <div class="input-style input-style-2 has-icon input-required mt-4">
+	        <span class="color-highlight input-style-1-active">Quantity</span>
+	        <%= f.number_field :quantity, class: "form-control form-control-lg py-3", placeholder: 3, max: 100, min: 0 %>
+	        <%= f.hidden_field :stripePriceID, value: params['id'] %>
+	      </div>
+	      <div class="block-content py-2">
+	        <p class="fw-medium fs-sm text-muted mb-0">
+	          <%= f.submit "Submit Recurring Deposit", class: 'btn btn-full bg-green1-dark btn-m text-uppercase rounded-sm shadow-l mb-3 mt-4 font-900' %>
+	        </p>
+	      </div>
+	    <% end %>
+    </div>
+  </div>
+  </div>

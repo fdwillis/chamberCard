@@ -231,6 +231,17 @@ class User < ApplicationRecord
     end
   end
 
+  def createStripeSubscriptionAPI(params)
+    paramsX = {
+      "price" => params['stripePriceID'],
+      "quantity" => params['quantity'],
+    }.to_json
+
+    curlCall = `curl -H "Content-Type: application/json" -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{self.authentication_token}" -d '#{paramsX}' -X POST #{SITEurl}/api/v2/stripe-subscriptions`
+
+    response = Oj.load(curlCall)
+  end
+
   def indexStripeCustomerAPI(params)
   
     if !params['paginateAfter'].blank?
