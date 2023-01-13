@@ -35,7 +35,6 @@
           <div class="block-content block-content-full">
             <div class="fs-2 fw-semibold text-success"><%= number_to_currency(payLink[:monthlyAmount], precision: 2) %> / month</div>
           </div>
-          <%= payLink[:stripePriceID] %>
           <div class="block-content py-2">
             <p class="fw-medium fs-sm text-muted mb-0">
               <%= link_to "Choose Your Quantity", new_stripe_subscription_path(id: payLink[:stripePriceID] ), class: 'btn btn-full bg-green1-dark btn-m text-uppercase rounded-sm shadow-l mb-3 mt-4 font-900' %>
