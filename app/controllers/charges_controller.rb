@@ -21,8 +21,8 @@ class ChargesController < ApplicationController
 				curlCall = current_user&.indexStripeChargesAPI(params)
 				response = Oj.load(curlCall)
 			  if response['success']
-			  	pullSource
-					@payments = response['selfCharges'] #edit stripe session meta for scheduling
+			  	@reinvestments = response['reinvestments']
+					@payments = response['selfCharges'] + @reinvestments
 					@available = response['available'] #edit stripe session meta for scheduling
 					@subscriptionTotal = response['subscriptionTotal'] 
 					@depositTotal = response['selfChargeTotal'] #edit stripe session meta for scheduling
@@ -63,20 +63,47 @@ class ChargesController < ApplicationController
 		]
 	end
 
-	def initiateCharge
-		if request.post?
-			uuid = params[:initiateCharge][:customerID]
-			curlCall = `curl -H "appName: #{ENV['appName']}" -H "nxtwxrthxxthToken: #{current_user.authentication_token}" -d "" -X GET #{SITEurl}/api/v1/users/#{uuid}`
+	def create
+		begin	
+			if params[:charges][:reinvestment].to_sym == :true
+				cardHolderID = Stripe::Customer.retrieve(current_user&.stripeCustomerID)['metadata']['cardHolder']
+				amountToReinvest = (params[:charges][:amount].to_f * 100).to_i
+
+
+				cardholder = Stripe::Issuing::Cardholder.retrieve(cardHolderID)
+	      loadSpendingMeta = cardholder['spending_controls']['spending_limits']
+	      someCalAmount = loadSpendingMeta&.first['amount'].to_i - amountToReinvest
 				
-	    response = Oj.load(curlCall)
-	    
-	    if response['success']
-				redirect_to getinitiateCharge_path(customerUUID: uuid)
+				payout = Stripe::Payout.create({
+				  amount: amountToReinvest,
+				  currency: 'usd',
+				  source_type:'issuing',
+				  metadata: {reinvestment: true, stripeCustomerID: current_user&.stripeCustomerID, cardHolder: cardHolderID, payout: false }
+				})
+	      updateAmount = Stripe::Issuing::Cardholder.update(cardHolderID,{spending_controls: {spending_limits: [amount: someCalAmount, interval: 'per_authorization']}})
+
+				if payout['id'].present?
+					flash[:success] = "Your Reinvestment Was Successful"
+					redirect_to charges_path
+				end
 			else
-				flash[:error] = response['message']
+				flash[:error] = "Something Went Wrong"
 				redirect_to charges_path
 			end
-		end
+		rescue Stripe::StripeError => e
+			render json: {
+				error: e,
+				success: false
+			}
+		rescue Exception => e
+			render json: {
+				message: e
+			}
+		end	
+	end
+
+	def show
+		@available = Stripe::Issuing::Cardholder.retrieve(Stripe::Customer.retrieve(current_user&.stripeCustomerID)['metadata']['cardHolder'])['spending_controls']['spending_limits'][0]['amount']
 	end
 
 
@@ -108,27 +135,6 @@ class ChargesController < ApplicationController
 			flash[:error] = response['message']
       redirect_to request.referrer
     end
-	end
-
-
-	def payNow
-		if current_user&.authentication_token
-			curlCall = current_user&.indexStripeChargesAPI(params)
-
-			response = Oj.load(curlCall)
-			
-	    if response['success']
-				@pending = response['pending']
-	    else
-				flash[:error] = response['message']
-	      redirect_to charges_path
-	    end
-
-
-		else
-			current_user = nil
-      reset_session
-		end
 	end
 
 	private

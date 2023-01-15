@@ -194,17 +194,21 @@
       		
 
   	    	
-  	    	<% payout['deposits'].each do |chargeX| %>
-            <% chargeXFiltered = Charge.paymentIntentNet(chargeX['id']) %>
-  	    		<% chargeXChargeNet = chargeXFiltered[:net] * 0.01 %>
+  	    	<% payout['deposits'].sort_by{|p| p['created']}.reverse.each do |chargeX| %>
+            <% if chargeX['id'].include?('pi_')%>
+              <% chargeXFiltered = Charge.paymentIntentNet(chargeX['id']) %>
+    	    		<% chargeXChargeNet = chargeXFiltered[:net] * 0.01 %>
 
-  	    		<% investedFromchargeX = chargeXChargeNet * (chargeX['metadata']['percentToInvest'].to_i * 0.01) %>
+    	    		<% investedFromchargeX = chargeXChargeNet * (chargeX['metadata']['percentToInvest'].to_i * 0.01) %>
+            <% else %>
+              <% investedFromchargeX = chargeX['amount'] * 0.01 %>
+            <% end %>
   		      <% ownershipForchargeX = ((investedFromchargeX/(payout['investedTotal']))) %>
 
   		      <tbody>
   		        <tr>
   		          <td class="text-center">
-    		          <% if chargeX['customer'] == current_user&.stripeCustomerID %>
+    		          <% if chargeX['customer'] == current_user&.stripeCustomerID || chargeX['metadata']['stripeCustomerID'] == current_user&.stripeCustomerID %>
   			            <div class="text-success">
   			              <i class="fa fa-2x fa-check-circle"></i>
 
@@ -220,7 +224,7 @@
   		            <a><%= number_to_percentage(ownershipForchargeX * 100, precision: 2) %></a>
   		          </td>
   		          <td class="text-center d-none d-sm-table-cell">
-  		            <a><%= number_to_currency(chargeXChargeNet, precision: 2)%></a>
+  		            <a><%= number_to_currency(chargeXChargeNet.present? ? chargeXChargeNet : investedFromchargeX, precision: 2)%></a>
   		          </td>
   		          <td class="text-center">
   		            <a><%= number_to_currency(investedFromchargeX, precision: 2)%></a>

@@ -12,7 +12,6 @@ gem 'uglifier'
 gem 'coffee-rails'
 gem 'jquery-rails'
 gem 'jquery'
-gem 'pwa'
 gem 'activerecord-session_store'
 
 gem 'stripe'
