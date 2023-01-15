@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-	mount Pwa::Engine, at: '/'
 	mount Split::Dashboard, at: 'split'
 
 	
@@ -40,7 +39,6 @@ Rails.application.routes.draw do
 		post "zazi", to: 'checkout#zazi', as: "zazi"
 				
 		post "setSessionVar", to: 'sessions#setSessionVar', as: "set-session-vars"
-		post "initiateCharge", to: 'charges#initiateCharge', as: "initiateCharge"
 		post "newInvoice", to: 'charges#newInvoice', as: "newInvoice"
 		
 		post "trackingNumber", to: 'products#trackingNumber', as: "trackingNumber"
@@ -66,9 +64,6 @@ Rails.application.routes.draw do
 		get "/customers/:id/payments", to: 'charges#payments', as: "payments"
 		get "success", to: 'checkout#success', as: "success"
 		get "cancel", to: 'checkout#cancel', as: "cancel"
-
-		get "initiateCharge", to: 'charges#initiateCharge', as: "getinitiateCharge"
-		get "pay-now", to: 'charges#payNow', as: "pay-now"
 		
 		get "destroy", to: 'services#destroy', as: "destroyService"
 

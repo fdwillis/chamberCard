@@ -37,7 +37,7 @@
         </tr>
       </thead>
       <tbody class="fs-sm">
-        <% @validPaymentIntents.each do |chargeX| %>
+        <% (@validPaymentIntents+@validPayouts).sort_by{|p| p['created']}.reverse.each do |chargeX| %>
           <tr>
             <% stripeFee = (((chargeX['amount'].to_i * 0.029)) + 30).to_i %>
         
@@ -52,7 +52,11 @@
               <% dynamicNumber = 0 %>
             <% end %>
             <% if !chargeX['metadata'].blank? %>
-              <td class="fw-semibold text-muted text-center"><strong><%= number_to_currency(((chargeX['amount'].to_i - ( + stripeFee)) * 0.01 - (dynamicNumber)), precision: 2) %></strong></td>
+              <% if chargeX['id'].include?('pi_') %>
+                <td class="fw-semibold text-muted text-center"><strong><%= number_to_currency(((chargeX['amount'].to_i - ( + stripeFee)) * 0.01 - (dynamicNumber)), precision: 2) %></strong></td>
+              <% else %>
+                <td class="fw-semibold text-muted text-center"><strong><%= number_to_currency(((chargeX['amount'].to_i) * 0.01), precision: 2) %></strong></td>
+              <% end %>
             <% else %>
               <td class="d-none d-sm-table-cell fw-semibold text-muted text-center"><strong></strong></td>
             <% end %>
