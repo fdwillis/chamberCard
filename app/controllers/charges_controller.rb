@@ -15,8 +15,7 @@ class ChargesController < ApplicationController
 	
 	def index
 		begin
-
-			sleep 1
+			pullSource
 			if current_user&.authentication_token
 				curlCall = current_user&.indexStripeChargesAPI(params)
 				response = Oj.load(curlCall)
@@ -127,7 +126,7 @@ class ChargesController < ApplicationController
 	  # end
 
 		response = Oj.load(curlCall)
-		sleep 3
+
     if response['success']
 			flash[:success] = "Deposit Made"
       redirect_to charges_path
