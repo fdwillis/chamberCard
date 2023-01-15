@@ -4,7 +4,7 @@ ZERO fees for reinvestments
     <div class="row mb-0">
         <div class="col-12">
           <div class="input-style input-style-2">
-              <span class="input-style-1-active">Single Deposit Amount</span>
+              <span class="input-style-1-active">Reinvestment Amount</span>
               <%= f.number_field :amount, placeholder: "20.45", class: "form-control", required: true ,max: @available*0.01 %>
               <%= f.hidden_field :reinvestment, value: true %>
           </div>
