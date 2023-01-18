@@ -208,12 +208,17 @@
   		      <tbody>
   		        <tr>
   		          <td class="text-center">
-    		          <% if chargeX['customer'] == current_user&.stripeCustomerID || chargeX['metadata']['stripeCustomerID'] == current_user&.stripeCustomerID %>
+    		          <% if current_user.present? ? (chargeX['customer'] == current_user&.stripeCustomerID): false %>
   			            <div class="text-success">
   			              <i class="fa fa-2x fa-check-circle"></i>
 
   			            </div>
-    		          <% else %>
+    		          <% elsif current_user&.present? ? current_user&.stripeCustomerID == chargeX['metadata']['stripeCustomerID'] : false %>
+                    <div class="text-success">
+                      <i class="fa fa-2x fa-check-circle"></i>
+
+                    </div>
+                  <% else %>
     			            <div class="text-warning">
     			              <i class="fa fa-2x fa-minus-circle" ></i>
     			            </div>
