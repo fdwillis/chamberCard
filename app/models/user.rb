@@ -21,6 +21,7 @@ class User < ApplicationRecord
       "legalName" => params['legalName'],
       "email" => params['email'],
       "phone_number" => params['phone_number'],
+      "appName" => params['appName'],
       "percentToInvest" => params['percentToInvest'],
       "password" => params['password'],
       "password_confirmation" => params['password_confirmation'],
