@@ -5,35 +5,11 @@
       <!-- <span class="smini-visible">
         <i class="fa fa-circle-notch text-primary"></i>
       </span> -->
-      <strong class="fw-bold">Netwerth</strong><strong class="fw-medium">Card</strong>
+      <strong class="fw-bold">The Chamber</strong><strong class="fw-medium">Card</strong>
     </a> - Deposit History
     </h3>
   </div>
   <div class="row">
-    <div class="col-12 col-lg-6">
-      <a class="block block-rounded block-link-shadow text-center">
-        <div class="block-content block-content-full">
-          <div class="fs-2 fw-semibold text-success"><i class="fa fa-2x fa-calendar-check"></i></div>
-        </div>
-        <div class="block-content py-2">
-          <p class="fw-medium fs-sm text-muted mb-0">
-            Payout Received
-          </p>
-        </div>
-      </a>
-    </div>
-    <div class="col-12 col-lg-6">
-      <a class="block block-rounded block-link-shadow text-center">
-        <div class="block-content block-content-full">
-          <div class="fs-2 fw-semibold text-warning"><i class="fa fa-2x fa-calendar-xmark"></i></div>
-        </div>
-        <div class="block-content py-2">
-          <p class="fw-medium fs-sm text-muted mb-0">
-            Payout Pending
-          </p>
-        </div>
-      </a>
-    </div>
     <div class="col-12 col-lg-4">
       <a class="block block-rounded block-link-shadow text-center">
         <div class="block-content block-content-full">
@@ -61,19 +37,6 @@
     <div class="col-12 col-lg-4">
       <a class="block block-rounded block-link-shadow text-center">
         <div class="block-content block-content-full">
-          <div class="fs-2 fw-semibold text-success"><%= (@invested&.present? && @invested > 0) ? number_to_currency(@invested, precision: 2) : 0 %></div>
-        </div>
-        <div class="block-content py-2 bg-body-light">
-          <p class="fw-medium fs-sm text-muted mb-0">
-            Invested
-          </p>
-        </div>
-      </a>
-    </div>
-    
-    <div class="col-12 col-lg-6">
-      <a class="block block-rounded block-link-shadow text-center">
-        <div class="block-content block-content-full">
           <div class="fs-lg fw-semibold text-dark"><%= number_to_currency((@subscriptionTotal) * 0.01, precision: 2) %></div>
         </div>
         <div class="block-content py-2 bg-body-light">
@@ -83,20 +46,8 @@
         </div>
       </a>
     </div>
-    <div class="col-12 col-lg-6">
-      <a class="block block-rounded block-link-shadow text-center">
-        <div class="block-content block-content-full">
-          <div class="fs-lg fw-semibold text-dark"><%= number_to_currency(@reinvestments.map{|re| re['amount']}.sum * 0.01, precision: 2) %></div>
-        </div>
-        <div class="block-content py-2 bg-body-light">
-          <p class="fw-medium fs-sm text-muted mb-0">
-            Reinvestments
-          </p>
-        </div>
-      </a>
-    </div>
   </div>
-  <small class="block-title text-center">To change your recurring deposits<br>contact <%= mail_to "team@netwerthcard.com" %></small>
+  <small class="block-title text-center">To change your recurring deposits<br>contact <%= mail_to "admin@twbcc.com" %></small>
 </div>
 <div class="block block-rounded">
   <div class="block-header block-header-default">
@@ -111,19 +62,6 @@
       <% end %>
     </div>
 
-  </div>
-  <div class="block-header block-header-default">
-    <h3 class="block-title">Reinvest Balance</h3>
-    <div class="block-options space-x-1">
-      <% if @cardSource %>
-        <a href="/deposit-history/<%= current_user&.stripeCustomerID %>" class="col-12">
-            <button type="button" class="btn btn-sm bg-green1-dark" data-toggle="class-toggle" data-target="#one-dashboard-search-orders" data-class="d-none">
-              REINVEST
-            </button>
-        </a>
-      <% end %>
-    </div>
-    
   </div>
   <div id="one-dashboard-search-orders" class="block-content border-bottom d-none">
     <!-- Search Form -->
